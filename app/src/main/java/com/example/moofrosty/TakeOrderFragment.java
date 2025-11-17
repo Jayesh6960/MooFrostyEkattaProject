@@ -230,7 +230,6 @@ public class TakeOrderFragment extends Fragment implements FilterSelectionListen
         if (adapter != null) {
             adapter.updateList(filteredList);
         }
-
         // Update the text view
         if ((selectedCategory == null || selectedCategory.equals("All")) && (selectedBrand == null || selectedBrand.equals("All"))) {
             filterTextView.setText("All Categories");

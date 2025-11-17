@@ -11,13 +11,11 @@
         android:layout_width="match_parent"
         android:id="@+id/app_bar_layout"
         android:layout_height="wrap_content">
-
         <include
             android:id="@+id/laxmilayout"
             layout="@layout/toolbar_layout"/>
     </com.google.android.material.appbar.AppBarLayout>
         <!-- Header title and icons -->
-
         <!-- Stats Row -->
         <RelativeLayout
             android:layout_width="match_parent"
@@ -81,7 +79,6 @@
                 android:textSize="18sp"
                 android:textColor="#1565C0"
                 android:layout_marginBottom="12dp" />
-
             <!-- Outlet Creation Section -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -132,7 +129,6 @@
                 android:elevation="3dp"
                 android:padding="12dp"
                 android:layout_marginBottom="16dp">
-
                 <TextView
                     android:text="Outlet Performance - Sales"
                     android:textStyle="bold"
@@ -156,7 +152,6 @@
                 android:elevation="4dp"
                 android:padding="12dp"
                 android:layout_margin="12dp">
-
                 <TextView
                     android:id="@+id/tv_title_assortment"
                     android:layout_width="wrap_content"
@@ -166,7 +161,6 @@
                     android:textSize="16sp"
                     android:textColor="#0D47A1"
                     android:layout_marginBottom="8dp" />
-
                 <com.github.mikephil.charting.charts.BarChart
                     android:id="@+id/barChartAssortment"
                     android:layout_width="match_parent"
@@ -174,7 +168,6 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="8dp" />
             </LinearLayout>
-
             <!-- Table Section -->
             <TableLayout
                 android:layout_width="match_parent"
@@ -240,9 +233,7 @@
                         android:padding="8dp"
                         android:gravity="center" />
                 </TableRow>
-
             </TableLayout>
-
             <!-- Buttons -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -250,7 +241,6 @@
                 android:orientation="horizontal"
                 android:gravity="center"
                 android:layout_marginBottom="16dp">
-
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_qps"
                     android:layout_width="0dp"
@@ -270,8 +260,6 @@
                     android:background="@drawable/btn_qps_background"
                 android:textColor="@android:color/white" />
             </LinearLayout>
-
-
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_next"
                 android:layout_width="match_parent"

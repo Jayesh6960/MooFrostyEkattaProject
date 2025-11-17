@@ -50,15 +50,12 @@ public class ActionPointActivitys extends AppCompatActivity {
 //        LinearLayout toolbarlayout;
 //        ImageView header_back_arrow;
 //        TextView header_title;
-
     private TextInputLayout searchBarLayout;
     private LinearLayout toolbarLayout;
     private ImageView headerBackArrow;
     private TextView headerTitle;
     private ImageButton iconCart, iconScan, iconPower;
     AppBarLayout appbarlayout;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -174,12 +171,10 @@ public class ActionPointActivitys extends AppCompatActivity {
 
     private void initToolbar() {
         View toolbarRoot = findViewById(R.id.laxmilayout);
-
         searchBarLayout = toolbarRoot.findViewById(R.id.search_bar_layout);
         iconScan = toolbarRoot.findViewById(R.id.icon_scan);
         iconPower = toolbarRoot.findViewById(R.id.icon_power);
         iconCart = toolbarRoot.findViewById(R.id.icon_cart);
-
         toolbarLayout = toolbarRoot.findViewById(R.id.toolbarlayout);
         headerBackArrow = toolbarRoot.findViewById(R.id.header_back_arrow);
         headerTitle = toolbarRoot.findViewById(R.id.header_title);
@@ -239,12 +234,10 @@ public class ActionPointActivitys extends AppCompatActivity {
         chart.getDescription().setEnabled(false);
         chart.getAxisRight().setEnabled(false);
         chart.getAxisLeft().setDrawGridLines(false);
-
         XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
         xAxis.setGranularity(1f);
-
         chart.animateY(1000);
         chart.invalidate();
     }
