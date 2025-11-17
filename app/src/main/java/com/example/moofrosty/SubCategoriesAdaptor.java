@@ -48,12 +48,10 @@ public class SubCategoriesAdaptor extends RecyclerView.Adapter<SubCategoriesAdap
         });
 
     }
-
     @Override
     public int getItemCount() {
         return list.size();
     }
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
         TextView name;

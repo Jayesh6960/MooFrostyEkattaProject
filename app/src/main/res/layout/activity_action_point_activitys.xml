@@ -21,7 +21,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/blue_gredient"
+            android:background="@drawable/btn_qps_background"
             android:padding="8dp"
             >
             <!-- Left aligned text -->
@@ -65,10 +65,12 @@
         android:layout_height="match_parent"
         android:padding="12dp"
         android:fillViewport="true">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <TextView
                 android:text="Action Point"
                 android:layout_width="match_parent"
@@ -77,7 +79,8 @@
                 android:textStyle="bold"
                 android:textSize="18sp"
                 android:textColor="#1565C0"
-                android:layout_marginBottom="12dp"/>
+                android:layout_marginBottom="12dp" />
+
             <!-- Outlet Creation Section -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -94,8 +97,8 @@
                     android:textSize="14sp"
                     android:textColor="#424242"
                     android:layout_marginBottom="8dp"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -108,80 +111,67 @@
                         android:textSize="14sp"
                         android:textColor="#616161"
                         android:layout_marginEnd="12dp"
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"/>
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
                     <Spinner
                         android:id="@+id/spinner_plg"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="#1565C0"/>
+                        android:backgroundTint="#1565C0" />
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- BarCharts -->
+            <!-- Sales -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@android:color/white"
+                android:elevation="3dp"
+                android:padding="12dp"
+                android:layout_marginBottom="16dp">
 
-                <!-- Sales -->
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:text="Outlet Performance - Sales"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="#212121"
+                    android:layout_marginBottom="4dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:background="@android:color/white"
-                    android:elevation="3dp"
-                    android:padding="12dp"
-                    android:layout_marginBottom="16dp">
-
-                    <TextView
-                        android:text="Outlet Performance - Sales"
-                        android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:textColor="#212121"
-                        android:layout_marginBottom="4dp"
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"/>
-
-                    <com.github.mikephil.charting.charts.BarChart
-                        android:id="@+id/barChartSales"
-                        android:layout_width="match_parent"
-                        android:layout_height="220dp"
-                       />
-                </LinearLayout>
-
-                <!-- Assortment -->
-                <LinearLayout
+                    android:layout_width="wrap_content"/>
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/barChartSales"
                     android:layout_width="match_parent"
+                    android:layout_height="220dp" />
+            </LinearLayout>
+
+            <!-- Assortment -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@android:color/white"
+                android:elevation="4dp"
+                android:padding="12dp"
+                android:layout_margin="12dp">
+
+                <TextView
+                    android:id="@+id/tv_title_assortment"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:background="@android:color/white"
-                    android:elevation="4dp"
-                    android:padding="12dp"
-                    android:layout_margin="12dp"
-                    android:clipToOutline="true"
-                    android:backgroundTintMode="src_over">
-                    <!-- Section Title -->
-                    <TextView
-                        android:id="@+id/tv_title_assortment"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Outlet Performance - Assortment"
-                        android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:textColor="#0D47A1"
-                        android:layout_marginBottom="8dp" />
+                    android:text="Outlet Performance - Assortment"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="#0D47A1"
+                    android:layout_marginBottom="8dp" />
 
-                    <!-- Bar Chart View -->
-                    <com.github.mikephil.charting.charts.BarChart
-                        android:id="@+id/barChartAssortment"
-                        android:layout_width="match_parent"
-                        android:layout_height="220dp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginBottom="8dp"
-                         />
-                </LinearLayout>
-
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/barChartAssortment"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="8dp" />
             </LinearLayout>
 
             <!-- Table Section -->
@@ -193,7 +183,6 @@
                 android:layout_margin="8dp"
                 android:padding="2dp">
 
-                <!-- Header Row -->
                 <TableRow>
                     <TextView
                         android:text="PARAM"
@@ -201,7 +190,7 @@
                         android:gravity="center"
                         android:textStyle="bold"
                         android:textColor="@android:color/white"
-                        android:background="@drawable/header_cell_blue" />
+                        android:background="@drawable/btn_qps_background" />
 
                     <TextView
                         android:text="MOC TGT"
@@ -209,7 +198,7 @@
                         android:gravity="center"
                         android:textStyle="bold"
                         android:textColor="@android:color/white"
-                        android:background="@drawable/header_cell_blue" />
+                        android:background="@drawable/btn_qps_background"/>
 
                     <TextView
                         android:text="MOC ACH"
@@ -217,7 +206,7 @@
                         android:gravity="center"
                         android:textStyle="bold"
                         android:textColor="@android:color/white"
-                        android:background="@drawable/header_cell_blue" />
+                        android:background="@drawable/btn_qps_background" />
 
                     <TextView
                         android:text="BTD"
@@ -225,45 +214,33 @@
                         android:gravity="center"
                         android:textStyle="bold"
                         android:textColor="@android:color/white"
-                        android:background="@drawable/header_cell_blue" />
+                        android:background="@drawable/btn_qps_background" />
                 </TableRow>
-                <!-- Data Row -->
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center">
 
+                <TableRow>
                     <TextView
                         android:text="Others"
                         android:padding="8dp"
                         android:gravity="center"
-                        android:textStyle="bold"
-                        android:background="@drawable/cell_border_white"
                         android:layout_weight="1" />
 
                     <TextView
                         android:text="67"
                         android:padding="8dp"
-                        android:gravity="center"
-                        android:background="@drawable/cell_border_white"
-                        android:layout_weight="1" />
+                        android:gravity="center" />
 
                     <TextView
                         android:text="67"
                         android:padding="8dp"
-                        android:gravity="center"
-                        android:background="@drawable/cell_border_white"
-                        android:layout_weight="1" />
+                        android:gravity="center" />
 
                     <TextView
                         android:text="0"
                         android:padding="8dp"
-                        android:gravity="center"
-                        android:background="@drawable/cell_border_white"
-                        android:layout_weight="1" />
+                        android:gravity="center" />
                 </TableRow>
-            </TableLayout>
 
+            </TableLayout>
 
             <!-- Buttons -->
             <LinearLayout
@@ -272,40 +249,39 @@
                 android:orientation="horizontal"
                 android:gravity="center"
                 android:layout_marginBottom="16dp">
-                <com.google.android.material.button.MaterialButton
+
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_qps"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="QPS"
+                    android:textColor="@color/white"
                     android:background="@drawable/btn_qps_background"
-                    android:textColor="@android:color/white"
-                    app:backgroundTint="@color/blue"
-                    android:backgroundTint="#2196F3"
-                    android:layout_marginEnd="8dp"/>
-                <com.google.android.material.button.MaterialButton
+                android:layout_marginEnd="8dp" />
+
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_btpr"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/btn_qps_background"
                     android:text="BTPR"
-                    android:textColor="@android:color/white"
-                    app:backgroundTint="@color/blue"/>
+                    android:background="@drawable/btn_qps_background"
+                android:textColor="@android:color/white" />
             </LinearLayout>
 
-            <com.google.android.material.button.MaterialButton
+
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_next"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Next"
-                android:textSize="20dp"
+                android:textColor="@color/white"
+                android:textSize="20sp"
                 android:background="@drawable/btn_qps_background"
-                app:backgroundTint="@color/blue"
                 android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:backgroundTint="#1565C0"
-                android:layout_marginBottom="32dp"/>
+                android:layout_marginBottom="32dp" />
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

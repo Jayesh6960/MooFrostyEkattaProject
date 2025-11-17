@@ -27,9 +27,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     public interface CartInteractionListener {
         void onAddToCartClick(Product product);
+
         void onIncrementUnit(Product product);
+
         void onDecrementUnit(Product product);
+
         void onIncrementCase(Product product);
+
         void onDecrementCase(Product product);
     }
 
@@ -186,7 +190,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 tvSavings.setText(String.format(Locale.getDefault(), "₹%,.0f", cartItem.getTotalSavings()));
                 tvNetPrice.setText(String.format(Locale.getDefault(), "₹%,.0f", cartItem.getTotalPrice()));
             }
-
             // --- Set Click Listeners ---
             // This will no longer crash because 'listener' is not null
             btnAddToCart.setOnClickListener(v -> listener.onAddToCartClick(currentProduct));
@@ -194,7 +197,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             btnUnitMinus.setOnClickListener(v -> listener.onDecrementUnit(currentProduct));
             btnCasePlus.setOnClickListener(v -> listener.onIncrementCase(currentProduct));
             btnCaseMinus.setOnClickListener(v -> listener.onDecrementCase(currentProduct));
-
             // (Your button enable/disable logic)
             boolean canAddMore = currentQuantity < product.getStockInt();
             btnUnitPlus.setEnabled(canAddMore);

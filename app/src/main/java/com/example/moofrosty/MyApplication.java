@@ -1,9 +1,7 @@
 package com.example.moofrosty;
 
 import android.app.Application;
-
 import androidx.appcompat.app.AppCompatDelegate;
-
 public class MyApplication extends Application {
 
     @Override

@@ -15,7 +15,7 @@ import java.util.List;
 public class MenuAdapters extends RecyclerView.Adapter<MenuAdapters.MenuViewHolder> {
 
     private List<MenuOption> optionList;
-  //  private AdapterView.OnItemClickListener mListener;
+    //  private AdapterView.OnItemClickListener mListener;
 
     private OnItemClickListener mListener;
 
@@ -52,7 +52,7 @@ public class MenuAdapters extends RecyclerView.Adapter<MenuAdapters.MenuViewHold
         return optionList.size();
     }
 
-     class MenuViewHolder extends RecyclerView.ViewHolder {
+    class MenuViewHolder extends RecyclerView.ViewHolder {
         ImageView imgMenuIcon;
         TextView tvMenuTitle;
 

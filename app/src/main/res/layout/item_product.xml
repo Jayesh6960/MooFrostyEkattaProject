@@ -14,14 +14,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_marginBottom="10dp"
+        android:orientation="vertical"
         android:padding="12dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <ImageView
                 android:id="@+id/img_product"
                 android:layout_width="80dp"
@@ -52,6 +53,7 @@
                     android:layout_marginTop="18dp"
                     android:orientation="horizontal"
                     android:weightSum="4">
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -148,17 +150,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/add_to_cart"
-                android:textColor="@color/colorPrimary"
-                app:strokeColor="@color/colorPrimary"
-                android:visibility="visible" />
+                android:textColor="@color/Purple_Color"
+                android:visibility="visible"
+                app:strokeColor="@color/Purple_Color" />
 
             <LinearLayout
                 android:id="@+id/quantity_controls"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone"
-               >
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -206,6 +207,7 @@
                         android:layout_height="wrap_content"
                         android:text="Units"
                         android:textSize="14sp" />
+
                     <ImageButton
                         android:id="@+id/btn_unit_minus"
                         android:layout_width="40dp"
@@ -234,48 +236,48 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_marginTop="8dp"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Savings:"
-                        android:textSize="14sp"
-                        android:textColor="@color/textGreen"/>
+                        android:textColor="@color/textGreen"
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/tv_savings"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        tools:text="₹500"
+                        android:textColor="@color/textGreen"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        android:textColor="@color/textGreen"/>
+                        tools:text="₹500" />
 
                     <View
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_weight="1"/>
+                        android:layout_weight="1" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Net Price:"
-                        android:textSize="14sp"
-                        android:textColor="@android:color/black"/>
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/tv_net_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        tools:text="₹500"
+                        android:textColor="@android:color/black"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        android:textColor="@android:color/black"/>
+                        tools:text="₹500" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -289,6 +291,7 @@
             android:layout_marginTop="15dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/tv_capacity"
                 android:layout_width="wrap_content"
@@ -299,9 +302,11 @@
                 android:paddingEnd="12dp"
                 android:paddingBottom="6dp"
                 android:text="4L"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/Purple_Color"
                 android:textSize="12sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="visible"
+                app:strokeColor="@color/Purple_Color" />
 
             <View
                 android:layout_width="0dp"
@@ -316,8 +321,9 @@
                 android:background="@drawable/tag_border_blue"
                 android:padding="6dp"
                 android:text="VMQ: 1"
-                android:textColor="@color/colorPrimary"
-                android:textSize="12sp" />
+                android:textColor="@color/Purple_Color"
+                android:textSize="12sp"
+                android:visibility="visible" />
 
             <TextView
                 android:id="@+id/tv_l3mrr"
@@ -327,8 +333,8 @@
                 android:background="@drawable/tag_border_blue"
                 android:padding="6dp"
                 android:text="L3MRR: 0"
-                android:textColor="@color/colorPrimary"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                app:strokeColor="@color/Purple_Color" />
 
             <TextView
                 android:id="@+id/tv_mtd"
@@ -338,8 +344,8 @@
                 android:background="@drawable/tag_border_blue"
                 android:padding="6dp"
                 android:text="MTD: 0"
-                android:textColor="@color/colorPrimary"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                app:strokeColor="@color/Purple_Color" />
         </LinearLayout>
 
     </LinearLayout>

@@ -50,12 +50,17 @@ public class CategoriesFragment extends Fragment {
                     loadTabFragment(new CategoriesListFragment());
                 }
             }
-            @Override public void onTabUnselected(TabLayout.Tab tab) {}
-            @Override public void onTabReselected(TabLayout.Tab tab) {}
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
         });
 
     }
-
     private void loadTabFragment(Fragment fragment) {
         // Use getChildFragmentManager() because this fragment is nested
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();

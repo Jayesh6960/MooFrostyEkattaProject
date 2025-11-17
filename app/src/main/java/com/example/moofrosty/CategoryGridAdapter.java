@@ -27,7 +27,6 @@ public class CategoryGridAdapter extends RecyclerView.Adapter<CategoryGridAdapte
         this.categoryList = categoryList;
         this.listener = listener;
     }
-
     @NonNull
     @Override
     public CategoryGridAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -35,7 +34,6 @@ public class CategoryGridAdapter extends RecyclerView.Adapter<CategoryGridAdapte
                 .inflate(R.layout.item_category_grid, parent, false);
         return new ViewHolder(view);
     }
-
     @Override
     public void onBindViewHolder(@NonNull CategoryGridAdapter.ViewHolder holder, int position) {
         SubCategories category = categoryList.get(position);
@@ -49,12 +47,10 @@ public class CategoryGridAdapter extends RecyclerView.Adapter<CategoryGridAdapte
             }
         });
     }
-
     @Override
     public int getItemCount() {
         return categoryList.size();
     }
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imgCategory;
         TextView tvCategoryName;

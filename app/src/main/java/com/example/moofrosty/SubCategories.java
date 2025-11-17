@@ -10,6 +10,11 @@ public class SubCategories {
         this.name = name;
     }
 
-    public int getImage() { return image; }
-    public String getName() { return name; }
+    public int getImage() {
+        return image;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

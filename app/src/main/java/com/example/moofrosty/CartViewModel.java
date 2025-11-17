@@ -19,7 +19,7 @@ public class CartViewModel extends ViewModel {
 
 
     // LiveData for totals, calculated from the cartMap
-      private final MutableLiveData<CartTotals> _cartTotals = new MutableLiveData<>(new CartTotals());
+    private final MutableLiveData<CartTotals> _cartTotals = new MutableLiveData<>(new CartTotals());
 
     public LiveData<CartTotals> getCartTotals() {
         return cartRepository.getCartTotals();

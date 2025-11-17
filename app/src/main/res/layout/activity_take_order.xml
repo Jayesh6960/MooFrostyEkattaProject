@@ -76,7 +76,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/app_bar_layout"
-        android:background="@drawable/blue_gredient"
+        android:background="@drawable/btn_qps_background"
         android:orientation="horizontal"
         android:padding="8dp">
 

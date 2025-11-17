@@ -9,7 +9,6 @@ public class BrandModel {
         this.imageResId = imageResId;
         this.name = name;
     }
-
     public int getImageResId() {
         return imageResId;
     }

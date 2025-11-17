@@ -51,9 +51,9 @@
             android:layout_height="56dp"
             android:text="+ New Request"
             android:textAllCaps="false"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/Purple_Color"
             android:textSize="16sp"
-            app:strokeColor="@color/colorPrimary"
+            app:strokeColor="@color/Purple_Color"
             app:strokeWidth="1dp" />
     </LinearLayout>
 

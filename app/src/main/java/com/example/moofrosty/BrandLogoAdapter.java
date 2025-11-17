@@ -51,9 +51,6 @@ public class BrandLogoAdapter extends RecyclerView.Adapter<BrandLogoAdapter.View
     public int getItemCount() {
         return brandList.size();
     }
-
-
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imgBrand;
         TextView txtBrand;

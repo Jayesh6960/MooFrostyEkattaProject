@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -38,13 +39,13 @@ import java.util.ArrayList;
 
 public class ActionPointActivitys extends AppCompatActivity {
 
-        private BarChart barChartSales, barChartAssortment;
-        private Spinner spinnerPlg;
-        //private Switch switchMode;
-        private MaterialButton btnQps, btnBtpr, btnNext;
-        private TextView tvEsp, tvTa, tvTlsd;
-      //  private ImageButton icCar,iconscan,iconpower;
-        LinearLayout headerLayout;
+    private BarChart barChartSales, barChartAssortment;
+    private Spinner spinnerPlg;
+    //private Switch switchMode;
+    private AppCompatButton btnQps, btnBtpr, btnNext;
+    private TextView tvEsp, tvTa, tvTlsd;
+    //  private ImageButton icCar,iconscan,iconpower;
+    LinearLayout headerLayout;
 //        TextInputLayout search_bar_layout;
 //        LinearLayout toolbarlayout;
 //        ImageView header_back_arrow;
@@ -58,22 +59,20 @@ public class ActionPointActivitys extends AppCompatActivity {
     AppBarLayout appbarlayout;
 
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        setContentView(R.layout.activity_action_point_activitys);
+        appbarlayout = findViewById(R.id.app_bar_layout);
+        ViewCompat.setOnApplyWindowInsetsListener(appbarlayout, (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(v.getPaddingLeft(), systemBars.top, v.getPaddingRight(), v.getPaddingBottom());
+            return insets;
+        });
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
-            setContentView(R.layout.activity_action_point_activitys);
-            appbarlayout = findViewById(R.id.app_bar_layout);
-            ViewCompat.setOnApplyWindowInsetsListener(appbarlayout, (v, insets) -> {
-                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-                v.setPadding(v.getPaddingLeft(), systemBars.top, v.getPaddingRight(), v.getPaddingBottom());
-                return insets;
-            });
-
-            initToolbar();
-            initViews();
-
+        initToolbar();
+        initViews();
 
 //            // Get views from included layout
 //            search_bar_layout = toolbarRoot.findViewById(R.id.search_bar_layout);
@@ -108,33 +107,33 @@ public class ActionPointActivitys extends AppCompatActivity {
 //            tvEsp = findViewById(R.id.tv_esp);
 //            tvTa = findViewById(R.id.tv_ta);
 //            tvTlsd = findViewById(R.id.tv_tlsd);
-            //updated made in the cark activity
-            setupSpinner();
-            setupBarChart(barChartSales, "Sales Performance");
-            setupBarChart(barChartAssortment, "Assortment Performance");
-            // === Button Click Listeners ===
-            btnQps.setOnClickListener(v -> showMessage("QPS button clicked"));
-            btnBtpr.setOnClickListener(v -> showMessage("BTPR button clicked"));
+        //updated made in the cark activity
+        setupSpinner();
+        setupBarChart(barChartSales, "Sales Performance");
+        setupBarChart(barChartAssortment, "Assortment Performance");
+        // === Button Click Listeners ===
+        btnQps.setOnClickListener(v -> showMessage("QPS button clicked"));
+        btnBtpr.setOnClickListener(v -> showMessage("BTPR button clicked"));
 
-            // ✅ Next button now navigates to DrawableActivity
-            btnNext.setOnClickListener(v -> {
-                Intent intent = new Intent(ActionPointActivitys.this, TakeOrderActivity.class);
+        // ✅ Next button now navigates to DrawableActivity
+        btnNext.setOnClickListener(v -> {
+            Intent intent = new Intent(ActionPointActivitys.this, TakeOrderActivity.class);
+            startActivity(intent);
+            finish(); // optional — removes this screen from back stack
+        });
+        // === Switch Toggle Listener ===
+        //        switchMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        //            if (isChecked) showMessage("Switch ON");
+        //            else showMessage("Switch OFF");
+        //        });
+        iconCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ActionPointActivitys.this, CartActivity.class);
                 startActivity(intent);
-                finish(); // optional — removes this screen from back stack
-            });
-            // === Switch Toggle Listener ===
-    //        switchMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
-    //            if (isChecked) showMessage("Switch ON");
-    //            else showMessage("Switch OFF");
-    //        });
-            iconCart.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(ActionPointActivitys.this, CartActivity.class);
-                    startActivity(intent);
-                }
-            });
-        }
+            }
+        });
+    }
 
 //    private void setupSpinner() {
 //        ArrayAdapter<String> plgAdapter = new ArrayAdapter<>(
@@ -184,16 +183,14 @@ public class ActionPointActivitys extends AppCompatActivity {
         toolbarLayout = toolbarRoot.findViewById(R.id.toolbarlayout);
         headerBackArrow = toolbarRoot.findViewById(R.id.header_back_arrow);
         headerTitle = toolbarRoot.findViewById(R.id.header_title);
-
         // Use title bar (hide search bar)
         searchBarLayout.setVisibility(View.GONE);
         iconScan.setVisibility(View.GONE);
         iconCart.setVisibility(View.GONE);
-
         toolbarLayout.setVisibility(View.VISIBLE);
         headerTitle.setText("Amul IceCream Club");
 
-        headerBackArrow.setOnClickListener(v -> showExitDialog() );
+        headerBackArrow.setOnClickListener(v -> showExitDialog());
     }
 
     @Override
@@ -257,7 +254,7 @@ public class ActionPointActivitys extends AppCompatActivity {
     }
 
     private void showExitDialog() {
-        AlertDialog.Builder builder=  new android.app.AlertDialog.Builder(this)
+        AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this)
                 .setTitle("Exit App")
                 .setMessage("Do you want to exit?")
                 .setPositiveButton("Yes", (dialog, which) -> {

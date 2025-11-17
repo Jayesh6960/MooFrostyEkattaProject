@@ -16,25 +16,19 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 
 public class MainActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.setStatusBarColor(ContextCompat.getColor(this, R.color.selector_nav_item));
-
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.selector_nav_item));//used to  make the Responvise to all the device
         WindowInsetsControllerCompat insetsController =
                 new WindowInsetsControllerCompat(window, window.getDecorView());
         insetsController.setAppearanceLightStatusBars(false);
-
         //   WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-
             // 🟢 Add padding so content stays visible (not overlapped)
             v.setPadding(
                     systemBars.left,
@@ -42,10 +36,8 @@ public class MainActivity extends AppCompatActivity {
                     systemBars.right,
                     systemBars.bottom
             );
-
             return insets;
         });
-
         Button openSheetBtn = findViewById(R.id.btn);
         openSheetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,8 +47,5 @@ public class MainActivity extends AppCompatActivity {
                 bottomSheet.show(getSupportFragmentManager(), "BottomSheetWithTabs");
             }
         });
-
-
-
     }
 }
