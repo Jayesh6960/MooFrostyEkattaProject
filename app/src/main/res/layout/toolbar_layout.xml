@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@color/white"
+    app:contentInsetStart="0dp"
+    android:id="@+id/toolbars"
+    app:popupTheme="@style/Theme.AppCompat.Light">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/search_bar_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="8dp"
+            android:layout_toStartOf="@id/icon_scan"
+            android:background="@drawable/searchbarbackground"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:endIconMode="custom"
+            app:endIconDrawable="@drawable/ic_baseline_mic_24"
+            app:endIconTint="@color/black"
+            app:hintEnabled="false"
+            app:startIconDrawable="@drawable/ic_baseline_search_24"
+            app:startIconTint="@color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/search_products"
+                android:inputType="text"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:textSize="14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <LinearLayout
+            android:id="@+id/toolbarlayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:visibility="gone"
+            android:paddingEnd="16dp"
+            android:elevation="4dp">
+
+            <ImageView
+                android:id="@+id/header_back_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_arrow_back_24"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <TextView
+                android:id="@+id/header_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Title"
+                android:textSize="18dp"
+                android:textColor="@android:color/black" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/icon_power"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_baseline_power_settings_new_24"
+            android:contentDescription="@string/power"
+            app:tint="@android:color/black" />
+
+
+
+        <FrameLayout
+            android:id="@+id/cart_button_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="12dp"
+            android:layout_toStartOf="@id/icon_power">
+
+            <ImageButton
+                android:id="@+id/icon_cart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_baseline_shopping_cart_24"
+                android:contentDescription="@string/cart"
+                app:tint="@android:color/black" />
+
+            <TextView
+                android:id="@+id/cart_badge"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="top|end"
+                android:background="@drawable/badge_background"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                android:text="2"
+                />
+        </FrameLayout>
+
+        <ImageButton
+            android:id="@+id/icon_scan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="12dp"
+            android:layout_toStartOf="@id/cart_button_layout"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_baseline_qr_code_scanner_24"
+            android:contentDescription="@string/scan"
+            app:tint="@android:color/black" />
+
+    </RelativeLayout>
+</androidx.appcompat.widget.Toolbar>

@@ -1,0 +1,16 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+        <style name="Base.Theme.MooFrosty" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/selector_nav_item</item>
+        <item name="colorPrimaryVariant">@color/selector_nav_item</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="android:statusBarColor">@color/selector_nav_item</item>
+        <item name="android:navigationBarColor">@android:color/white</item>
+
+        <!-- Optional: make TextInputLayout clean and modern -->
+        <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense</item>
+    </style>
+
+    <style name="Theme.MooFrosty" parent="Base.Theme.MooFrosty" />
+</resources>

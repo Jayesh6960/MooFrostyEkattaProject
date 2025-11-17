@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_shop"
+        android:icon="@drawable/iconhome"
+        android:title="Shop Front" />
+
+    <item
+        android:id="@+id/nav_take_order"
+        android:icon="@drawable/iconhome"
+        android:title="Take Order" />
+
+    <item
+        android:id="@+id/nav_orders"
+        android:icon="@drawable/iconhome"
+        android:title="Orders" />
+
+    <item
+        android:id="@+id/nav_mission"
+        android:icon="@drawable/iconhome"
+        android:title="Mission" />
+
+    <item
+        android:id="@+id/nav_menu"
+        android:icon="@drawable/iconmenu"
+        android:title="Menu" />
+</menu>

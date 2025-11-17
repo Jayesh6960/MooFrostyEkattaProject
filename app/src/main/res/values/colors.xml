@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="grey">#7C7A7A</color>
+    <color name="grey2">#B8B7B7</color>
+    <color name="selector_nav_item">#C8E6F7</color>
+    <color name="blue">#38B4F8</color>
+
+    <color name="colorPrimary">#0D6EfD</color>
+    <color name="colorPrimaryDark">#0A58CA</color>
+    <color name="colorAccent">#0D6EfD</color>
+
+    <color name="infoBarBlue">#0D6EfD</color>
+    <color name="textGreen">#198754</color>
+
+    <color name="bottom_nav_color">#0D6EfD</color>
+
+</resources>
