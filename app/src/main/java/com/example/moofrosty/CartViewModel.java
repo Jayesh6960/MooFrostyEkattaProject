@@ -255,7 +255,6 @@ public class CartViewModel extends ViewModel {
 //            this.totalUnitCount = unitCount;
 //        }
 //    }
-
     public void addToCart(Product product) {
         cartRepository.addToCart(product); // Just pass the call
     }

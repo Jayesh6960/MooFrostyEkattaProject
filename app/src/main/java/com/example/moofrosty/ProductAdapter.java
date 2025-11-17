@@ -1,5 +1,6 @@
 package com.example.moofrosty;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.HashMap;
@@ -61,6 +63,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_product, parent, false);
         // --- MODIFIED: Pass listener ---
         return new ProductViewHolder(view, cartListener);
+
+
     }
 
     @Override
@@ -157,8 +161,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             tvMtd = itemView.findViewById(R.id.tv_mtd);
             tvSavings = itemView.findViewById(R.id.tv_savings);
             tvNetPrice = itemView.findViewById(R.id.tv_net_price);
+
         }
 
+        @SuppressLint("ResourceAsColor")
         public void bind(Product product, CartItem cartItem) {
             this.currentProduct = product;
 
@@ -179,6 +185,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
             if (currentQuantity == 0) {
                 btnAddToCart.setVisibility(View.VISIBLE);
+                btnAddToCart.setTextColor(R.color.infoBarBlue);
                 quantityControls.setVisibility(View.GONE);
             } else {
                 btnAddToCart.setVisibility(View.GONE);

@@ -95,8 +95,6 @@
                 android:src="@drawable/ic_baseline_shopping_cart_24"
                 android:background="@drawable/tag_border_blue"
                 android:padding="8dp"/>
-
-
         </LinearLayout>
 
     </RelativeLayout>

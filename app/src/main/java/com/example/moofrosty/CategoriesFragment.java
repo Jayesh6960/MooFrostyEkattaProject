@@ -59,7 +59,6 @@ public class CategoriesFragment extends Fragment {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
-
     }
     private void loadTabFragment(Fragment fragment) {
         // Use getChildFragmentManager() because this fragment is nested

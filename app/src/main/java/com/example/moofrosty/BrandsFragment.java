@@ -20,25 +20,20 @@ public class BrandsFragment extends Fragment {
     private RecyclerView recyclerView;
     private BrandsAdapter adapter;
     private List<BrandModel> brandList;
-
     private FilterSelectionListener listener;
-
     public BrandsFragment() {
 
     }
-
     public static BrandsFragment newInstance(FilterSelectionListener listener) {
         BrandsFragment fragment = new BrandsFragment();
         fragment.listener = listener;
         return fragment;
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -46,14 +41,12 @@ public class BrandsFragment extends Fragment {
         View view= inflater.inflate(R.layout.fragment_brands, container, false);
         return view;
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.recyclerViewBrands);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
         recyclerView.setLayoutManager(gridLayoutManager);
-
         // Initialize data
         brandList = new ArrayList<>();
         brandList.add(new BrandModel(R.drawable.amulbrand, "Amul"));
@@ -64,7 +57,6 @@ public class BrandsFragment extends Fragment {
         brandList.add(new BrandModel(R.drawable.motherdairybrand, "motherdairy"));
         brandList.add(new BrandModel(R.drawable.havmorebrand, "havemore"));
         brandList.add(new BrandModel(R.drawable.vadinalbrand, "Vadinal"));
-
         adapter = new BrandsAdapter(brandList,listener);
         recyclerView.setAdapter(adapter);
     }

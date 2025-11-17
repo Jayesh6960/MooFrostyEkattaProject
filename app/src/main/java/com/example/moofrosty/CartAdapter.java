@@ -55,25 +55,20 @@ public class CartAdapter extends ListAdapter<CartItem, CartAdapter.CartViewHolde
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_cart_product, parent, false);
         return new CartViewHolder(view, listener);
     }
-
     @Override
     public void onBindViewHolder(@NonNull CartViewHolder holder, int position) {
        // holder.bind(getItem(position));
         holder.bind(cartList.get(position));
     }
-
     static class CartViewHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvRate, tvMrp, tvQuantity, tvSavingsBadge;
         ImageView imgProduct;
         ImageButton btnPlus, btnMinus, btnDelete;
-
         CartInteractionListener listener;
         CartItem currentItem;
-
         public CartViewHolder(@NonNull View itemView, CartInteractionListener listener) {
             super(itemView);
             this.listener = listener;
-
             tvName = itemView.findViewById(R.id.tv_product_name_cart);
             tvRate = itemView.findViewById(R.id.tv_rate_cart);
             tvMrp = itemView.findViewById(R.id.tv_mrp_cart);
@@ -83,21 +78,17 @@ public class CartAdapter extends ListAdapter<CartItem, CartAdapter.CartViewHolde
             btnMinus = itemView.findViewById(R.id.btn_unit_minus_cart);
             btnDelete = itemView.findViewById(R.id.btn_delete_cart);
             tvSavingsBadge = itemView.findViewById(R.id.tv_item_savings_badge);
-
             // Add strikethrough to MRP
             tvMrp.setPaintFlags(tvMrp.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         }
-
         public void bind(CartItem item) {
             this.currentItem = item;
             Product product = item.getProduct();
-
             tvName.setText(product.getName());
             tvRate.setText(product.getRate());
             tvMrp.setText(product.getMrp());
             imgProduct.setImageResource(product.getImageResId());
             tvQuantity.setText(String.valueOf(item.getQuantity()));
-
             // Set savings badge
             double totalSavings = item.getTotalSavings();
             if (totalSavings > 0) {
@@ -106,17 +97,14 @@ public class CartAdapter extends ListAdapter<CartItem, CartAdapter.CartViewHolde
             } else {
                 tvSavingsBadge.setVisibility(View.GONE);
             }
-
             // Set listeners
             btnPlus.setOnClickListener(v -> listener.onIncrementUnit(product));
             btnMinus.setOnClickListener(v -> listener.onDecrementUnit(product));
             btnDelete.setOnClickListener(v -> listener.onDeleteItem(product));
-
             btnPlus.setEnabled(item.getQuantity() < product.getStockInt());
             btnMinus.setEnabled(item.getQuantity() > 1);
         }
     }
-
     private static final DiffUtil.ItemCallback<CartItem> DIFF_CALLBACK =
             new DiffUtil.ItemCallback<CartItem>() {
                 @Override

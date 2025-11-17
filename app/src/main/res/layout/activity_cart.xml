@@ -130,38 +130,38 @@
     </androidx.core.widget.NestedScrollView>
 
 
+    <RelativeLayout
+        android:id="@+id/relativelayoutbottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="0dp"
+        android:background="#0AB90A"
+        android:padding="12dp">
 
-        <RelativeLayout
-            android:id="@+id/relativelayoutbottom"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tv_checkout_price"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#012921"
-            android:layout_alignParentBottom="true"
-            android:padding="12dp">
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:text="Total: ₹1,225" />
 
-            <TextView
-                android:id="@+id/tv_checkout_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                tools:text="Total: ₹1,225" />
-
-            <TextView
-                android:id="@+id/btn_checkout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:drawableEnd="@drawable/ic_baseline_chevron_right_24"
-                android:drawableTint="@android:color/white"
-                android:text="Checkout "
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-        </RelativeLayout>
+        <TextView
+            android:id="@+id/btn_checkout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:drawableEnd="@drawable/ic_baseline_chevron_right_24"
+            android:drawableTint="@android:color/white"
+            android:text="Checkout "
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
 
 </RelativeLayout>
