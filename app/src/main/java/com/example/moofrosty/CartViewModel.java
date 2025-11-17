@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CartViewModel extends ViewModel {
@@ -15,6 +16,14 @@ public class CartViewModel extends ViewModel {
 
     public LiveData<Map<String, CartItem>> getCartMap() {
         return cartRepository.getCartMap();
+    }
+
+    public LiveData<List<Order>> getOrders() {
+        return cartRepository.getOrders();
+    }
+
+    public void checkout() {
+        cartRepository.checkout();
     }
 
 
