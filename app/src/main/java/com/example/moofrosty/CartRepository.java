@@ -3,7 +3,9 @@ package com.example.moofrosty;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CartRepository {
@@ -18,6 +20,48 @@ public class CartRepository {
     private final MutableLiveData<CartTotals> _cartTotals = new MutableLiveData<>(new CartTotals());
     public LiveData<CartTotals> getCartTotals() {
         return _cartTotals;
+    }
+
+    private final MutableLiveData<List<Order>> _ordersList = new MutableLiveData<>(new ArrayList<>());
+    public LiveData<List<Order>> getOrders() {
+        return _ordersList;
+    }
+
+    public void checkout() {
+        Map<String, CartItem> currentCart = _cartMap.getValue();
+        CartTotals currentTotals = _cartTotals.getValue();
+
+        if (currentCart == null || currentCart.isEmpty() || currentTotals == null) {
+            return;
+        }
+
+        List<CartItem> items = new ArrayList<>(currentCart.values());
+        String newOrderId = "20SMN00002P3387" + System.currentTimeMillis();
+        Order newOrder = new Order(newOrderId, currentTotals.totalPrice, currentTotals.totalUnitCount, "Billed", items);
+
+        List<Order> currentOrders = _ordersList.getValue();
+        if (currentOrders == null) {
+            currentOrders = new ArrayList<>();
+        }
+        currentOrders.add(0, newOrder);
+        _ordersList.setValue(currentOrders);
+
+        // --- RESET THE CART ---
+        _cartMap.setValue(new HashMap<>());
+        _cartTotals.setValue(new CartTotals());
+    }
+
+    public Order getOrderById(String orderId) {
+        List<Order> currentOrders = _ordersList.getValue();
+        if (currentOrders == null || orderId == null) {
+            return null;
+        }
+        for (Order order : currentOrders) {
+            if (orderId.equals(order.getId())) {
+                return order;
+            }
+        }
+        return null;
     }
 
     public static synchronized CartRepository getInstance() {

@@ -48,6 +48,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
             super.onCreate(savedInstanceState);
             WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
             setContentView(R.layout.activity_take_order);
+
             bottomNav = findViewById(R.id.bottom_navigation);
             appBarLayout = findViewById(R.id.app_bar_layout);
             infoBar = findViewById(R.id.info_bar);
@@ -102,13 +103,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
                         selectedFragment = new TakeOrderFragment();
                     } else if (itemId == R.id.nav_shop_front) {
                          selectedFragment = new ShopFrontFragment();
-                     //   selectedFragment = new TakeOrderFragment();
                     } else if (itemId == R.id.nav_orders) {
-                        // selectedFragment = new OrdersFragment();
-                        selectedFragment = new TakeOrderFragment();
+                        selectedFragment = new OrdersFragment();
                     } else if (itemId == R.id.nav_mission) {
-                        // selectedFragment = new MissionFragment();
-                        selectedFragment = new TakeOrderFragment();
+                         selectedFragment = new MissionFragment();
                     } else if (itemId == R.id.nav_menu) {
                         selectedFragment = new MenuFragment();
                         isMenuFragment = true;

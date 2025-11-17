@@ -50,7 +50,12 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.CartI
             v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), systemBars.bottom);
             return insets;
         });
-
+        // check out code
+        TextView btnCheckout = findViewById(R.id.btn_checkout);
+        btnCheckout.setOnClickListener(v -> {
+            cartViewModel.checkout(); // Call the checkout method
+            finish(); // Close this activity
+        });
 
         // --- FIND TOOLBAR TITLE ---
         toolbarTitle = findViewById(R.id.toolbar_title);
