@@ -27,11 +27,9 @@ public class ShopFrontFragment extends Fragment {
     TextView viewMore;
     ImageView offerOpen,damageopen;
     private FilterViewModel filterViewModel;
-
     public ShopFrontFragment() {
         // Required empty public constructor
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -39,7 +37,6 @@ public class ShopFrontFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_shop_front, container, false);
         return view;
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
