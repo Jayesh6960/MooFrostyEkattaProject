@@ -13,8 +13,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:orientation="vertical">
-
-
     <RelativeLayout
         android:id="@+id/relativelayoutmenu"
         android:layout_width="match_parent"
@@ -22,14 +20,12 @@
         android:visibility="gone"
         android:background="@color/selector_nav_item"
         android:padding="16dp">
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:orientation="vertical">
-
             <TextView
                 android:id="@+id/tv_header_title"
                 android:layout_width="wrap_content"
@@ -64,7 +60,6 @@
         android:layout_width="match_parent"
         android:layout_below="@id/relativelayoutmenu"
         android:layout_height="wrap_content">
-
         <include
             android:id="@+id/main_toolbar"
             layout="@layout/toolbar_layout" />
@@ -76,10 +71,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/app_bar_layout"
-        android:background="@drawable/btn_qps_background"
+        android:background="@color/Pink_color"
         android:orientation="horizontal"
         android:padding="8dp">
-
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -105,7 +99,6 @@
             android:textStyle="bold" />
     </LinearLayout>
     </LinearLayout>
-
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
@@ -127,7 +120,6 @@
         app:itemTextColor="@color/bottom_nav_color_selector"
         app:labelVisibilityMode="labeled"
         app:menu="@menu/bottom_nav_menubar" />
-
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/floating_cart_bar"
         android:layout_width="wrap_content"
@@ -140,12 +132,10 @@
         android:layout_margin="8dp"
         android:visibility="gone"
         >
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="12dp">
-
             <TextView
                 android:id="@+id/tv_cart_item_count"
                 android:layout_width="wrap_content"
@@ -166,13 +156,10 @@
                 android:background="@color/colorPrimary"
                 android:layout_marginRight="10sp"
                 android:layout_marginLeft="10sp" />
-
-
             <TextView
                 android:id="@+id/tv_cart_total_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:layout_toRightOf="@id/partline"
                 android:layout_centerVertical="true"
                 android:textColor="@android:color/white"
