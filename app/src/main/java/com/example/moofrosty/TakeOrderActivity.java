@@ -85,7 +85,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
                     cartBadge.setText(String.valueOf(totals.uniqueItemCount));
                 }
             });
-
             bottomNav.setOnItemSelectedListener(navListener);
             // Load the default fragment
             if (savedInstanceState == null) {
