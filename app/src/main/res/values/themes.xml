@@ -8,9 +8,22 @@
         <item name="android:statusBarColor">@color/selector_nav_item</item>
         <item name="android:navigationBarColor">@android:color/white</item>
 
-        <!-- Optional: make TextInputLayout clean and modern -->
-        <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense</item>
+            <item name="textInputStyle">@style/MooTextInputLayout</item>
+
     </style>
+
+    <style name="LoginTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="boxStrokeColor">@color/blue</item>
+        <item name="boxStrokeWidth">1dp</item>
+    </style>
+
+    <style name="MooTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense">
+        <item name="hintTextColor">@color/orange</item>
+        <item name="boxStrokeColor">@color/blue</item>
+        <item name="boxStrokeWidth">1dp</item>
+    </style>
+
+
 
     <style name="Theme.MooFrosty" parent="Base.Theme.MooFrosty" />
 </resources>

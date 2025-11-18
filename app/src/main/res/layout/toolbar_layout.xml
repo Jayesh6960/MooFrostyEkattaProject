@@ -96,7 +96,7 @@
                 android:src="@drawable/ic_baseline_shopping_cart_24"
                 android:background="@android:color/transparent"
                 android:contentDescription="@string/cart"
-                app:tint="@color/black" />
+                 />
 
             <TextView
                 android:id="@+id/cart_badge"
@@ -123,6 +123,6 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_baseline_qr_code_scanner_24"
             android:contentDescription="@string/scan"
-            app:tint="@android:color/black" />
+             />
     </RelativeLayout>
 </androidx.appcompat.widget.Toolbar>

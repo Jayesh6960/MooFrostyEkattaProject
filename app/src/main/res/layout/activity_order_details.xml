@@ -62,7 +62,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="Confirm Return"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
             android:textStyle="bold"
+            android:textSize="17dp"
             android:background="@drawable/btn_qps_background"/>
     </FrameLayout>
     <androidx.core.widget.NestedScrollView
@@ -144,6 +147,7 @@
                         android:layout_marginTop="16dp"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_order_items"
                 android:layout_width="match_parent"

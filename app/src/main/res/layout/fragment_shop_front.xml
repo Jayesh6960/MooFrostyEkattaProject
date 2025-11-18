@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#E1F5FE"
+    android:background="#FAD2DE"
     tools:context=".ShopFrontFragment">
 
     <LinearLayout
@@ -45,10 +45,10 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:drawableEnd="@drawable/ic_baseline_chevron_right_24"
-                android:drawableTint="@color/colorPrimary"
+                android:drawableTint="@color/Purple_Color"
                 android:gravity="center"
                 android:text="View More "
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/Purple_Color"
                 android:textStyle="bold" />
         </RelativeLayout>
 
@@ -121,7 +121,7 @@
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    app:cardBackgroundColor="#D6EAFE"
+                    app:cardBackgroundColor="#F4B0C5"
                     app:cardCornerRadius="30dp"
                     app:cardElevation="0dp">
                     <ImageView
