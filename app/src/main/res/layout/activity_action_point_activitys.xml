@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -183,7 +184,7 @@
                         android:gravity="center"
                         android:textStyle="bold"
                         android:textColor="@android:color/white"
-                        android:background="@drawable/btn_qps_background" />
+                        android:background="@drawable/btn_qps_background_nocorner" />
 
                     <TextView
                         android:text="MOC TGT"
@@ -191,7 +192,7 @@
                         android:gravity="center"
                         android:textStyle="bold"
                         android:textColor="@android:color/white"
-                        android:background="@drawable/btn_qps_background"/>
+                        android:background="@drawable/btn_qps_background_nocorner"/>
 
                     <TextView
                         android:text="MOC ACH"
@@ -199,7 +200,7 @@
                         android:gravity="center"
                         android:textStyle="bold"
                         android:textColor="@android:color/white"
-                        android:background="@drawable/btn_qps_background" />
+                        android:background="@drawable/btn_qps_background_nocorner" />
 
                     <TextView
                         android:text="BTD"
@@ -264,9 +265,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Next"
-                android:textColor="@color/white"
+                android:textColor="#C72F66"
                 android:textSize="20sp"
-                android:background="@drawable/btn_qps_background"
+                android:background="@drawable/btn_back_stroke"
                 android:textAllCaps="false"
                 android:layout_marginBottom="32dp" />
 
