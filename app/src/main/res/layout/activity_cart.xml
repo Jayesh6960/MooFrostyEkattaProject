@@ -136,7 +136,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="0dp"
-        android:background="#0AB90A"
+        android:background="#04800B"
         android:padding="12dp">
 
         <TextView
