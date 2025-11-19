@@ -38,7 +38,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.ArrayList;
 
 public class ActionPointActivitys extends AppCompatActivity {
-
     private BarChart barChartSales, barChartAssortment;
     private Spinner spinnerPlg;
     //private Switch switchMode;
@@ -67,7 +66,6 @@ public class ActionPointActivitys extends AppCompatActivity {
             v.setPadding(v.getPaddingLeft(), systemBars.top, v.getPaddingRight(), v.getPaddingBottom());
             return insets;
         });
-
         initToolbar();
         initViews();
 
@@ -187,12 +185,10 @@ public class ActionPointActivitys extends AppCompatActivity {
 
         headerBackArrow.setOnClickListener(v -> showExitDialog());
     }
-
     @Override
     public void onBackPressed() {
         showExitDialog();
     }
-
     private void initViews() {
         barChartSales = findViewById(R.id.barChartSales);
         barChartAssortment = findViewById(R.id.barChartAssortment);
@@ -215,13 +211,11 @@ public class ActionPointActivitys extends AppCompatActivity {
         );
         spinnerPlg.setAdapter(plgAdapter);
     }
-
     private void setupBarChart(BarChart chart, String label) {
         ArrayList<BarEntry> entries = new ArrayList<>();
         entries.add(new BarEntry(1, 45));
         entries.add(new BarEntry(2, 67));
         entries.add(new BarEntry(3, 23));
-
         BarDataSet dataSet = new BarDataSet(entries, label);
         dataSet.setColor(getColor(R.color.blue));
         dataSet.setValueTextColor(getColor(android.R.color.black));
@@ -241,11 +235,9 @@ public class ActionPointActivitys extends AppCompatActivity {
         chart.animateY(1000);
         chart.invalidate();
     }
-
     private void showMessage(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
-
     private void showExitDialog() {
         AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this)
                 .setTitle("Exit App")
@@ -259,7 +251,7 @@ public class ActionPointActivitys extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
         dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-                .setTextColor(getResources().getColor(R.color.colorPrimary));
+                .setTextColor(getResources().getColor(R.color.colorPrimary));// color  used to set  the text color of the button
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
                 .setTextColor(getResources().getColor(R.color.colorPrimary));
     }
