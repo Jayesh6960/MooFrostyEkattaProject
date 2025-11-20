@@ -6,7 +6,6 @@ import android.widget.ImageView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.LinearLayout;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
@@ -14,7 +13,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
-
 import com.example.moofrosty.AllOffersFragment;
 import com.example.moofrosty.TopOffersFragment;
 import com.google.android.material.appbar.AppBarLayout;
@@ -47,7 +45,6 @@ public class Offers extends AppCompatActivity {
         loadFragment(new com.example.moofrosty.AllOffersFragment());
        // loadFragment(new com.example.moofrosty.TopOffersFragment());
     }
-
     private void initViews() {
         tabLayout = findViewById(R.id.tab_layout);
         headerBackArrow = findViewById(R.id.header_back_arrow);
@@ -57,7 +54,6 @@ public class Offers extends AppCompatActivity {
         searchBarLayout = findViewById(R.id.search_bar_layout);
         appBarLayout = findViewById(R.id.app_bar_layout);
     }
-
     private void handleInsets() {
         ViewCompat.setOnApplyWindowInsetsListener(appBarLayout, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -67,14 +63,11 @@ public class Offers extends AppCompatActivity {
     }
 
     private void setupToolbar() {
-
         searchBarLayout.setVisibility(View.GONE);
         titleLayout.setVisibility(View.VISIBLE);
         iconScan.setVisibility(View.GONE);
-
         headerTitle.setText("Offers");
         headerTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
-
         headerBackArrow.setOnClickListener(v -> finish());
     }
 
@@ -116,7 +109,6 @@ public class Offers extends AppCompatActivity {
             @Override public void onTabReselected(TabLayout.Tab tab) {}
         });
     }
-
     private void loadFragment(Fragment fragment) {
         getSupportFragmentManager()
                 .beginTransaction()

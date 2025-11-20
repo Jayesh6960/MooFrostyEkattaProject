@@ -39,7 +39,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
         // --- NEWLY ADDED ---
         private CartViewModel cartViewModel;
-        private ImageButton iconCart;
+        private ImageButton iconCart,icScan;
         private TextView cartBadge;
         private FrameLayout floatingCartBar; // Find it here
 
@@ -54,6 +54,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
             infoBar = findViewById(R.id.info_bar);
             relativescreen = findViewById(R.id.relativelayoutmenu);
             top_barContainer = findViewById(R.id.top_bar_container);
+            icScan=findViewById(R.id.icon_scan);
 
             // --- NEW Views ---
             iconCart = findViewById(R.id.icon_cart);
@@ -69,6 +70,19 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
                 Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
                 v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), systemBars.bottom);
                 return insets;
+            });
+            //new Code updated the in the Takeorder Activity
+            icScan.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    QRcode fragment = new QRcode();
+
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, fragment)
+                            .addToBackStack(null)
+                            .commit();
+                }
             });
 
             filterViewModel = new ViewModelProvider(this).get(FilterViewModel.class);
@@ -168,7 +182,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 //                        .addToBackStack(null) // So user can press back
 //                        .commit();
 //            }
-
             Intent intent = new Intent(TakeOrderActivity.this,CartActivity.class);
             startActivity(intent);
         }
