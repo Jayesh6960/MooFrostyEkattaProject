@@ -68,7 +68,6 @@ public class ActionPointActivitys extends AppCompatActivity {
         });
         initToolbar();
         initViews();
-
 //            // Get views from included layout
 //            search_bar_layout = toolbarRoot.findViewById(R.id.search_bar_layout);
 //            iconscan = toolbarRoot.findViewById(R.id.icon_scan);
@@ -129,7 +128,6 @@ public class ActionPointActivitys extends AppCompatActivity {
             }
         });
     }
-
 //    private void setupSpinner() {
 //        ArrayAdapter<String> plgAdapter = new ArrayAdapter<>(
 //                this,
@@ -220,10 +218,8 @@ public class ActionPointActivitys extends AppCompatActivity {
         dataSet.setColor(getColor(R.color.blue));
         dataSet.setValueTextColor(getColor(android.R.color.black));
         dataSet.setValueTextSize(12f);
-
         BarData data = new BarData(dataSet);
         data.setBarWidth(0.5f);
-
         chart.setData(data);
         chart.getDescription().setEnabled(false);
         chart.getAxisRight().setEnabled(false);
@@ -253,6 +249,6 @@ public class ActionPointActivitys extends AppCompatActivity {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE)
                 .setTextColor(getResources().getColor(R.color.colorPrimary));// color  used to set  the text color of the button
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-                .setTextColor(getResources().getColor(R.color.colorPrimary));
+                .setTextColor(getResources().getColor(R.color.colorPrimary));//color
     }
 }

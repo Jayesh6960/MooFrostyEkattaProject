@@ -15,36 +15,27 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 public class SubCategoriesFragment extends Fragment {
-
     public SubCategoriesFragment() {
         // Required empty public constructor
     }
-
     public static SubCategoriesFragment newInstance(FilterSelectionListener listener) {
         SubCategoriesFragment fragment = new SubCategoriesFragment();
         fragment.listener = listener;
         return fragment;
     }
-
     private FilterSelectionListener listener;
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
+                             Bundle savedInstanceState) { //fixed the class name as the camalcase and do the development
         View view = inflater.inflate(R.layout.fragment_sub_categories, container, false);
         return view;
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         RecyclerView recyclerView = view.findViewById(R.id.recyclerViewSub);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        ArrayList<SubCategories> list = new ArrayList<>();
+        ArrayList<SubCategories> list = new ArrayList<>();//Subcategories  name modle created
         list.add(new SubCategories(R.drawable.conecategory, "Big Cones"));
         list.add(new SubCategories(R.drawable.kulficategory, "Kulfi"));
         list.add(new SubCategories(R.drawable.cupcategory, "Cups"));
@@ -54,7 +45,6 @@ public class SubCategoriesFragment extends Fragment {
         list.add(new SubCategories(R.drawable.familypackone, "Family Pack Small"));
         list.add(new SubCategories(R.drawable.miniconecategory, "Mini Cone"));
         list.add(new SubCategories(R.drawable.familypacktwo, "Party Pack"));
-
         recyclerView.setAdapter(new SubCategoriesAdaptor(list,listener));
     }
 }

@@ -1,25 +1,126 @@
 package com.example.moofrosty;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.LinearLayout;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+
+import com.example.moofrosty.AllOffersFragment;
+import com.example.moofrosty.TopOffersFragment;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.textfield.TextInputLayout;
 
 public class Offers extends AppCompatActivity {
+
+    private TabLayout tabLayout;
+
+    ImageView headerBackArrow;
+    ImageButton iconScan;
+    TextView headerTitle;
+    LinearLayout titleLayout;
+    TextInputLayout searchBarLayout;
+    AppBarLayout appBarLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         setContentView(R.layout.activity_offers);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+
+        initViews();
+        handleInsets();
+        setupToolbar();
+        setupTabs();
+        // Load default fragment → All Offers
+        loadFragment(new com.example.moofrosty.AllOffersFragment());
+       // loadFragment(new com.example.moofrosty.TopOffersFragment());
+    }
+
+    private void initViews() {
+        tabLayout = findViewById(R.id.tab_layout);
+        headerBackArrow = findViewById(R.id.header_back_arrow);
+        iconScan = findViewById(R.id.icon_scan);
+        headerTitle = findViewById(R.id.header_title);
+        titleLayout = findViewById(R.id.toolbarlayout);
+        searchBarLayout = findViewById(R.id.search_bar_layout);
+        appBarLayout = findViewById(R.id.app_bar_layout);
+    }
+
+    private void handleInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(appBarLayout, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            v.setPadding(v.getPaddingLeft(), systemBars.top, v.getPaddingRight(), v.getPaddingBottom());
             return insets;
         });
+    }
 
+    private void setupToolbar() {
+
+        searchBarLayout.setVisibility(View.GONE);
+        titleLayout.setVisibility(View.VISIBLE);
+        iconScan.setVisibility(View.GONE);
+
+        headerTitle.setText("Offers");
+        headerTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
+
+        headerBackArrow.setOnClickListener(v -> finish());
+    }
+
+    private void setupTabs() {
+
+        tabLayout.removeAllTabs();
+
+        tabLayout.addTab(tabLayout.newTab().setText("All Offers"));
+        tabLayout.addTab(tabLayout.newTab().setText("Top Offers"));
+
+        // Highlight first tab
+        TabLayout.Tab firstTab = tabLayout.getTabAt(0);
+        if (firstTab != null) firstTab.select();
+
+        // Tab click listener
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
+                Fragment fragment = null;
+
+                if (tab.getPosition() == 0) {
+                    fragment = new com.example.moofrosty.AllOffersFragment();
+                } else if (tab.getPosition() == 1) {
+                    fragment = new com.example.moofrosty.TopOffersFragment();
+                }
+
+                if (fragment != null){
+                    loadFragment(fragment);
+                }
+                else {
+                    loadFragment(fragment);
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {}
+
+            @Override public void onTabReselected(TabLayout.Tab tab) {}
+        });
+    }
+
+    private void loadFragment(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
     }
 }

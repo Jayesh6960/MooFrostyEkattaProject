@@ -29,14 +29,12 @@ public class LoginActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
         usernameEditText = findViewById(R.id.username);
         passwordEditText = findViewById(R.id.password_toggle);
         loginButton = findViewById(R.id.btn_login);
 
         // Set click listener for the login button
         loginButton.setOnClickListener(v -> handleLogin());
-
     }
     private void handleLogin() {
         String username = usernameEditText.getText() != null ? usernameEditText.getText().toString().trim() : "";

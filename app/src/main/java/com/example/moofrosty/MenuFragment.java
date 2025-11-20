@@ -79,7 +79,10 @@ public class MenuFragment extends Fragment implements MenuAdapters.OnItemClickLi
         switch (selectedTitle) {
             case "Offers":
                 // Example: Open an "OffersFragment"
-            //    loadFragment(new OffersFragment());
+                //code updated  in the above activity
+                Intent intent1 = new Intent(getActivity(), Offers.class);
+                intent1.putExtra("ACTIVITY_TITLE", selectedTitle);
+                startActivity(intent1);
                 break;
 
             case "Ushop":

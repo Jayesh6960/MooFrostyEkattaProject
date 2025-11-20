@@ -74,7 +74,6 @@ public class BottomSheetSubCategeries extends BottomSheetDialogFragment {
             @Override public void onTabReselected(TabLayout.Tab tab) {}
         });
 
-
     }
 
 //    private void replaceFragment(Fragment fragment) {
