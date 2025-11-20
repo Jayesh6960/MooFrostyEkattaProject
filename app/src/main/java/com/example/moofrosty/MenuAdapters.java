@@ -32,14 +32,12 @@ public class MenuAdapters extends RecyclerView.Adapter<MenuAdapters.MenuViewHold
         this.mListener = listener;
     }
 
-
     @NonNull
     @Override
     public MenuViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_menu_option, parent, false);
         return new MenuViewHolder(view);
     }
-
     @Override
     public void onBindViewHolder(@NonNull MenuViewHolder holder, int position) {
         MenuOption option = optionList.get(position);

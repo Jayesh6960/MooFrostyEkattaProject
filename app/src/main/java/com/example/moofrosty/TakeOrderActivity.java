@@ -99,7 +99,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
                     int itemId = item.getItemId();
                     if (itemId == R.id.nav_take_order) {
-                        selectedFragment = new TakeOrderFragment();
+                        selectedFragment = new TakeOrderFragment();//have created the class  used to create the constrctor and store  call as  per  constructor
                     } else if (itemId == R.id.nav_shop_front) {
                          selectedFragment = new ShopFrontFragment();
                     } else if (itemId == R.id.nav_orders) {
@@ -110,7 +110,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
                         selectedFragment = new MenuFragment();
                         isMenuFragment = true;
                     }
-
                     if (selectedFragment == null) {
                         selectedFragment = new ShopFrontFragment(); // Default
                     }
@@ -118,7 +117,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
                     if (isMenuFragment) {
                         appBarLayout.setVisibility(View.GONE);
                         infoBar.setVisibility(View.GONE);
-                        relativescreen.setVisibility(View.VISIBLE);
+                        relativescreen.setVisibility(View.VISIBLE);// check the visibility of the code
                     } else {
                         appBarLayout.setVisibility(View.VISIBLE);
                         infoBar.setVisibility(View.VISIBLE);
@@ -139,7 +138,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
             else {
                 super.onBackPressed();}
         }
-
         private void showExitDialog() {
             new android.app.AlertDialog.Builder(this)
                     .setTitle("Exit App")
@@ -155,6 +153,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
         }
 
         private void loadFragment(Fragment fragment) {
+            // we keep the one fregment constant  and make teh changing  in the  every single screen
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment);

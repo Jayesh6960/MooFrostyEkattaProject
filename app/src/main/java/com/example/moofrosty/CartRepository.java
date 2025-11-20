@@ -12,17 +12,20 @@ public class CartRepository {
     private static CartRepository instance;
 
     private final MutableLiveData<Map<String, CartItem>> _cartMap = new MutableLiveData<>(new HashMap<>());
+
     public LiveData<Map<String, CartItem>> getCartMap() {
         return _cartMap;
     }
 
     // --- FIX: Use the new independent CartTotals class ---
     private final MutableLiveData<CartTotals> _cartTotals = new MutableLiveData<>(new CartTotals());
+
     public LiveData<CartTotals> getCartTotals() {
         return _cartTotals;
     }
 
     private final MutableLiveData<List<Order>> _ordersList = new MutableLiveData<>(new ArrayList<>());
+
     public LiveData<List<Order>> getOrders() {
         return _ordersList;
     }
