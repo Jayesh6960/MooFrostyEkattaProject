@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -96,6 +97,27 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public void updateList(List<Product> filteredList) {
         this.productList = filteredList;
         notifyDataSetChanged(); // Refresh the RecyclerView
+    }
+
+    public void filterList(List<Product> fullList, String query) {
+        List<Product> filteredList = new ArrayList<>();
+
+        if (query == null || query.isEmpty()) {
+            // If search is empty, show everything
+            filteredList.addAll(fullList);
+        } else {
+            String filterPattern = query.toLowerCase().trim();
+
+            for (Product item : fullList) {
+                // Check if product name contains the search text
+                if (item.getName().toLowerCase().contains(filterPattern)) {
+                    filteredList.add(item);
+                }
+            }
+        }
+
+        // Reuse the updateList method
+        updateList(filteredList);
     }
 
     public void setCartMap(Map<String, CartItem> newCartMap) {

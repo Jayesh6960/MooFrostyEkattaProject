@@ -60,7 +60,13 @@ public class ActionPointActivitys extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_action_point_activitys);
+        WindowInsetsControllerCompat windowInsetsController =
+                WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+        // false = "Not Light" = White Icons
+        // true  = "Light"     = Black Icons
+        windowInsetsController.setAppearanceLightStatusBars(false);
         appbarlayout = findViewById(R.id.app_bar_layout);
         ViewCompat.setOnApplyWindowInsetsListener(appbarlayout, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -70,6 +76,16 @@ public class ActionPointActivitys extends AppCompatActivity {
 
         initToolbar();
         initViews();
+
+        ImageButton iconPower = findViewById(R.id.icon_power);
+        iconPower.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ActionPointActivitys.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
 //            // Get views from included layout
 //            search_bar_layout = toolbarRoot.findViewById(R.id.search_bar_layout);
@@ -116,7 +132,6 @@ public class ActionPointActivitys extends AppCompatActivity {
         btnNext.setOnClickListener(v -> {
             Intent intent = new Intent(ActionPointActivitys.this, TakeOrderActivity.class);
             startActivity(intent);
-            finish(); // optional — removes this screen from back stack
         });
         // === Switch Toggle Listener ===
         //        switchMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -259,8 +274,8 @@ public class ActionPointActivitys extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
         dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-                .setTextColor(getResources().getColor(R.color.colorPrimary));
+                .setTextColor(getResources().getColor(R.color.Purple_Color));
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-                .setTextColor(getResources().getColor(R.color.colorPrimary));
+                .setTextColor(getResources().getColor(R.color.Purple_Color));
     }
 }

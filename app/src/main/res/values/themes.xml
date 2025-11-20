@@ -5,7 +5,7 @@
         <item name="colorPrimaryVariant">@color/selector_nav_item</item>
         <item name="colorOnPrimary">@android:color/white</item>
         <item name="colorSurface">@color/white</item>
-        <item name="android:statusBarColor">@color/selector_nav_item</item>
+        <item name="android:statusBarColor">@color/Purple_Color</item>
         <item name="android:navigationBarColor">@android:color/white</item>
 
             <item name="textInputStyle">@style/MooTextInputLayout</item>
@@ -21,6 +21,9 @@
         <item name="hintTextColor">@color/orange</item>
         <item name="boxStrokeColor">@color/blue</item>
         <item name="boxStrokeWidth">1dp</item>
+    </style>
+    <style name="OutlinedButtonCustom" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textColor">@color/black</item>
     </style>
 
 

@@ -28,7 +28,7 @@
         app:tabGravity="fill"
         android:layout_marginBottom="10dp"
         android:layout_centerVertical="true"
-        app:tabIndicatorColor="@android:color/transparent"
+        app:tabIndicatorColor="@color/Purple_Color"
         app:tabMode="fixed"
         app:tabRippleColor="@null"
         app:tabSelectedTextColor="@color/Purple_Color"

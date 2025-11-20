@@ -285,6 +285,13 @@ public class TakeOrderFragment extends Fragment implements FilterSelectionListen
         }
     }
 
+    public void onSearchQuery(String query) {
+        if (adapter != null && productList != null) {
+            // We filter from 'allProducts' which is your master list
+            adapter.filterList(productList, query);
+        }
+    }
+
     @Override
     public void onAddToCartClick(Product product) {
         cartViewModel.addToCart(product);
