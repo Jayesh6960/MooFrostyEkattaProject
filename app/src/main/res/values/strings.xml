@@ -15,7 +15,7 @@
     <string name="mission">Mission</string>
     <string name="menu">Menu</string>
     <string name="all_categories">All Categories</string>
-    <string name="sub_categories_brands">SUB-CATEGORIES</string>
+    <string name="sub_categories_brands">Sub-Categories</string>
     <string name="refresh">Refresh</string>
     <string name="others">Others</string>
     <string name="all_packs">All Packs</string>
@@ -25,4 +25,30 @@
     <string name="margin">Margin</string>
     <string name="stk_pcs">Stk (pcs)</string>
     <string name="add_to_cart">Add to cart</string>
+
+    <string name="back">Back</string>
+    <string name="support">Support</string>
+
+    <!-- Mail Support -->
+    <string name="mail_support">Mail Support</string>
+    <string name="support_email">support@moofrosty.com</string>
+
+    <!-- Call Helpline -->
+    <string name="call_helpline">Call Helpline Support (Application Issues)</string>
+    <string name="helpline_number">18002102088</string>
+
+    <!-- Salary & Other Issues -->
+    <string name="salary_issues">For Salary &amp; Other Issues</string>
+
+    <string name="three_p_rs">3P RS Salesman</string>
+    <string name="non_three_p_rs">NON 3P RS Salesman</string>
+    <string name="contact_tsf">Contact TSF Helpline</string>
+    <string name="tsf_number">18002096934</string>
+    <string name="contact_rs">Contact Your RS</string>
+    <string name="month_year">Nov 2025</string>
+    <string name="employee_name">Employee Name</string>
+    <string name="attendance_calendar">Attendance Calendar</string>
+    <string name="close">Close</string>
+    <string name="apply">Apply</string>
+    <string name="cancel">Cancel</string>
 </resources>

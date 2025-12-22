@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="2dp"
+    app:cardCornerRadius="0dp"
+    app:cardElevation="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="4"
+        android:padding="12dp">
+
+        <!-- Parameter Name -->
+        <TextView
+            android:id="@+id/tv_col_param"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.6"
+            android:text="Sales"
+            android:textColor="#000"
+            android:textStyle="bold"/>
+
+        <!-- Target -->
+        <TextView
+            android:id="@+id/tv_col_tgt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            android:text="0"
+            android:gravity="end"
+            android:textColor="#333"/>
+
+        <!-- Achieved -->
+        <TextView
+            android:id="@+id/tv_col_ach"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            android:text="0"
+            android:gravity="end"
+            android:textColor="#333"/>
+
+        <!-- Percentage -->
+        <TextView
+            android:id="@+id/tv_col_perc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            android:text="0%"
+            android:gravity="end"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

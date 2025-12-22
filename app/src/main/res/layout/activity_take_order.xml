@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:id="@+id/main"
     android:layout_height="match_parent"
-    tools:context=".TakeOrderActivity">
+    tools:context=".ui.enterstoreorders.takeorder.TakeOrderActivity">
 
     <LinearLayout
         android:id="@+id/top_bar_container"
