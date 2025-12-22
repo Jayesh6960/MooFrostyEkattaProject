@@ -81,6 +81,7 @@
         <activity
             android:name=".ui.enterstoreorders.takeorder.TakeOrderActivity"
             android:exported="true" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

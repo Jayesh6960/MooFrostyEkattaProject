@@ -43,9 +43,7 @@ public class TopOffersFragment extends Fragment {
     }
 
     private void loadTopOffers() {
-
         list = new ArrayList<>();
-
         list.add(new OfferModel(
                 "🔥 Hot Deal: 50% OFF",
                 "Limited-time mega offer!",

@@ -22,7 +22,6 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class DamageExpiryActivity extends AppCompatActivity {
-
     private TabLayout tabLayout;
     ImageView headerbackarrow;
     AppBarLayout appbarlayout;
@@ -31,8 +30,6 @@ public class DamageExpiryActivity extends AppCompatActivity {
     ImageButton iconscan;
     LinearLayout titlelayout;
     TextInputLayout searbar;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +45,6 @@ public class DamageExpiryActivity extends AppCompatActivity {
             v.setPadding(v.getPaddingLeft(), systemBars.top, v.getPaddingRight(), v.getPaddingBottom());
             return insets;
         });
-
         String title = getIntent().getStringExtra("ACTIVITY_TITLE");
 
         toolbars = findViewById(R.id.toolbars);
