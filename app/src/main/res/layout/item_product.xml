@@ -136,19 +136,26 @@
             </LinearLayout>
         </LinearLayout>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1 Case = 6 Units"
+            android:textSize="15dp"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/black"/>
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp">
+            android:layout_marginTop="10dp">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_add_to_cart"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                style="@style/OutlinedButtonCustom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/add_to_cart"
-                android:textColor="@color/Purple_Color"
+
                 android:visibility="visible"
                 app:strokeColor="@color/Purple_Color" />
             <LinearLayout

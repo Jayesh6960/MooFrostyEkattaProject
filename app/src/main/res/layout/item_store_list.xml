@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginBottom="1dp"
+    app:cardElevation="5dp"
+    app:cardCornerRadius="5dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:padding="12dp">
+
+        <!-- Store Name -->
+        <TextView
+            android:id="@+id/tv_store_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Shrikrishna Dudh Dairy"
+            android:textColor="#333"
+
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/btn_call"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Tags Row -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/tv_store_name"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:id="@+id/tv_rr_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="RR: 3.3K"
+                android:textSize="14sp"
+                android:textColor="#009688"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"/>
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/cabinateicon"
+                app:tint="#F44336"
+                android:layout_marginStart="10dp"/>
+        </LinearLayout>
+
+        <!-- Direction Button -->
+        <ImageView
+            android:id="@+id/btn_direction"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:src="@drawable/directionicon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <!-- Call Button -->
+        <ImageView
+            android:id="@+id/btn_call"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:src="@drawable/callicon"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintEnd_toStartOf="@id/btn_direction"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <!-- Status Icon -->
+        <ImageView
+            android:id="@+id/img_status"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/locationuser"
+            app:tint="#4CAF50"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

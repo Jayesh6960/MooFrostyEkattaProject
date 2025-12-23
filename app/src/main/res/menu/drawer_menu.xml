@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/menu_iteams"
+            android:icon="@drawable/iteams"
+            android:title="I-Teams" />
+        <item
+            android:id="@+id/menu_store"
+            android:icon="@drawable/newstorecreation"
+            android:title="New Store Creation" />
+        <item
+            android:id="@+id/menu_collection"
+            android:icon="@drawable/collectionsummary"
+            android:title="Collection Summary" />
+        <item
+            android:id="@+id/menu_visitor"
+            android:icon="@android:drawable/ic_menu_my_calendar"
+            android:title="Visitor Details" />
+        <item
+            android:id="@+id/menu_fos"
+            android:icon="@drawable/fossummary"
+            android:title="Today's FOS Summary" />
+        <item
+            android:id="@+id/change_password"
+            android:icon="@drawable/changepassword"
+            android:title="Change Password" />
+        <item
+            android:id="@+id/helpline"
+            android:icon="@drawable/helpline"
+            android:title="HelpLine" />
+        <item
+            android:id="@+id/privacy_policy"
+            android:icon="@drawable/privacypolicy"
+            android:title="Privacy Policy" />
+        <item
+            android:id="@+id/terms_condition"
+            android:icon="@drawable/termsandcondition"
+            android:title="Teams and Condition" />
+        <item
+            android:id="@+id/menu_logout"
+            android:icon="@drawable/logout"
+            android:title="Logout" />
+
+    </group>
+</menu>

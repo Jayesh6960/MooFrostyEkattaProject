@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".CategoriesFragment">
+    tools:context=".ui.enterstoreorders.categories.CategoriesFragment">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
@@ -13,8 +13,8 @@
         android:layout_height="wrap_content"
         app:tabGravity="fill"
         app:tabMode="fixed"
-        app:tabIndicatorColor="@color/colorPrimary"
-        app:tabSelectedTextColor="@color/colorPrimary"
+        app:tabIndicatorColor="@color/Purple_Color"
+        app:tabSelectedTextColor="@color/Purple_Color"
         app:tabTextColor="@color/grey"
         android:background="@android:color/white"/>
 
