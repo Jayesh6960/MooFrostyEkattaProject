@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    tools:context=".ui.newstorecreation.Step3KycSelectionFragment">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Step 3: Select KYC Document"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <RadioGroup
+        android:id="@+id/radio_group_kyc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <RadioButton
+            android:id="@+id/rb_udyam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Udyam Aadhar" />
+
+        <RadioButton
+            android:id="@+id/rb_aadhar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Aadhar Card" />
+
+        <RadioButton
+            android:id="@+id/rb_gst"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GST Certificate" />
+
+        <RadioButton
+            android:id="@+id/rb_fssai"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FSSAI License" />
+    </RadioGroup>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_next"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginTop="30dp"
+        android:text="Next" />
+
+</LinearLayout>

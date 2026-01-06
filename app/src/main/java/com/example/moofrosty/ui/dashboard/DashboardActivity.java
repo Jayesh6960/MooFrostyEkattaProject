@@ -21,6 +21,7 @@ import com.example.moofrosty.data.local.SessionManager;
 import com.example.moofrosty.ui.attendance.AttendanceActivity;
 import com.example.moofrosty.R;
 import com.example.moofrosty.ui.login.LoginActivity;
+import com.example.moofrosty.ui.newstorecreation.NewStoreActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -196,6 +197,12 @@ public class DashboardActivity extends AppCompatActivity {
                 if (id == R.id.menu_iteams) {
                     Intent intent = new Intent(DashboardActivity.this, AttendanceActivity.class);
                     startActivity(intent);
+                    return true;
+                } else if (id == R.id.menu_store) {
+                    // Open the New Store Creation List/History Page
+                    Intent intent = new Intent(DashboardActivity.this, NewStoreActivity.class);
+                    startActivity(intent);
+                    drawerLayout.closeDrawer(GravityCompat.START);
                     return true;
                 } else if (id == R.id.menu_logout) {
                     sessionManager.logout();
