@@ -1,10 +1,17 @@
 package com.example.moofrosty.ui.newstorecreation;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +26,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moofrosty.R;
+import com.example.moofrosty.core.network.Resource;
+import com.example.moofrosty.core.utils.NetworkUtil;
+import com.example.moofrosty.data.local.SessionManager;
+import com.example.moofrosty.data.model.StoreListResponse;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Calendar;
@@ -26,9 +37,11 @@ import java.util.Calendar;
 public class NewStoreActivity extends AppCompatActivity {
 
     private NewStoreListViewModel viewModel;
-    private TextView tvDate;
+    private TextView tvDate, tvEmpty;
     private RecyclerView recyclerView;
     private NewStoreListAdapter adapter;
+    private SessionManager sessionManager;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +53,14 @@ public class NewStoreActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
+        sessionManager = new SessionManager(this);
         // 1. Init Views
         ImageView btnBack = findViewById(R.id.btn_back);
         TextView tvTitle = findViewById(R.id.tv_toolbar_title);
         tvDate = findViewById(R.id.tv_date_picker);
+        tvEmpty = findViewById(R.id.tv_empty_state);
         recyclerView = findViewById(R.id.recycler_new_stores);
+        progressBar = findViewById(R.id.progress_bar);
         FloatingActionButton fabAdd = findViewById(R.id.fab_add_store);
 
         // 2. Setup ViewModel
@@ -63,28 +78,150 @@ public class NewStoreActivity extends AppCompatActivity {
 
         // 6. FAB Logic
         fabAdd.setOnClickListener(v -> {
-            // Opens the Create Store Form
-            // Ensure you have CreateStoreFormActivity created or change this line
             Intent intent = new Intent(NewStoreActivity.this, StoreOtpVerificationActivity.class);
             startActivity(intent);
-            Toast.makeText(this, "new screen open", Toast.LENGTH_SHORT).show();
         });
 
         // 7. Observers
         viewModel.getSelectedDate().observe(this, date -> tvDate.setText(date));
 
-        viewModel.getStoreList().observe(this, list -> {
-            if (list != null) {
-                adapter = new NewStoreListAdapter(list);
-                recyclerView.setAdapter(adapter);
+        // --- API & LOADING LOGIC ---
+        viewModel.getStoreList().observe(this, resource -> {
+            if (resource == null) return;
+
+            switch (resource.status) {
+                case LOADING:
+                    progressBar.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
+                    tvEmpty.setVisibility(View.GONE);
+                    break;
+
+                case SUCCESS:
+                    progressBar.setVisibility(View.GONE);
+                    if (resource.data != null && !resource.data.isEmpty()) {
+                        recyclerView.setVisibility(View.VISIBLE);
+                        tvEmpty.setVisibility(View.GONE);
+                        adapter = new NewStoreListAdapter(resource.data, this::showStoreDetailsPopup);
+                        recyclerView.setAdapter(adapter);
+                    } else {
+                        recyclerView.setVisibility(View.GONE);
+                        tvEmpty.setVisibility(View.VISIBLE);
+                    }
+                    break;
+
+                case ERROR:
+                    progressBar.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.GONE);
+                    tvEmpty.setVisibility(View.VISIBLE);
+                    tvEmpty.setText(resource.message != null ? resource.message : "Something went wrong");
+                    Toast.makeText(this, resource.message, Toast.LENGTH_SHORT).show();
+                    break;
             }
         });
+
+        // 8. Initial Load with Network Check
+        checkNetworkAndLoad();
     }
 
+    private void checkNetworkAndLoad() {
+        if (NetworkUtil.isNetworkAvailable(this)) {
+            // Passing token starts the fetch
+            viewModel.setToken(sessionManager.getToken());
+        } else {
+            Toast.makeText(this, "No Internet Connection", Toast.LENGTH_LONG).show();
+            // Optional: Show a retry button or empty state
+        }
+    }
+
+    // If date changes, we need to check network again
     private void showDatePicker() {
         Calendar cal = Calendar.getInstance();
         new DatePickerDialog(this, (view, year, month, dayOfMonth) -> {
-            viewModel.setDate(year, month, dayOfMonth);
+            if (NetworkUtil.isNetworkAvailable(this)) {
+                viewModel.setDate(year, month, dayOfMonth);
+            } else {
+                Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+            }
         }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)).show();
     }
+
+    private void showStoreDetailsPopup(StoreListResponse.StoreModel item) {
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_store_details);
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        }
+
+        TextView tvProposalId = dialog.findViewById(R.id.tv_proposal_id);
+        TextView tvStoreId = dialog.findViewById(R.id.tv_store_id);
+        TextView tvStoreName = dialog.findViewById(R.id.tv_store_name);
+        TextView tvMobile = dialog.findViewById(R.id.tv_mobile);
+        TextView tvStatus = dialog.findViewById(R.id.tv_status);
+        TextView tvReason = dialog.findViewById(R.id.tv_reason);
+        TextView tvAddress = dialog.findViewById(R.id.tv_address);
+        TextView tvDate = dialog.findViewById(R.id.tv_created_date);
+        TextView tvBeat = dialog.findViewById(R.id.tv_beat_desc);
+        TextView tvBusiness = dialog.findViewById(R.id.tv_business);
+
+        tvProposalId.setText("SE_SMN0000" + item.getShopId());
+        tvStoreId.setText("HUL-I170011P44" + (item.getShopId() == 0 ? "1" : item.getShopId()));
+        tvStoreName.setText(item.getStoreName());
+        tvMobile.setText(item.getMobileNumber());
+
+        String statusText = "PENDING";
+        if (item.getStatus() == 1) statusText = "APPROVED";
+        else if (item.getStatus() == 2) statusText = "REJECTED";
+        tvStatus.setText(statusText);
+
+        tvReason.setText("NA");
+        tvAddress.setText(item.getAddress());
+        tvDate.setText(item.getCreatedAt().substring(0, 10));
+        tvBeat.setText("Waluj Pandharpur");
+        tvBusiness.setText("Udyam Aadhaar");
+
+        dialog.show();
+    }
 }
+//        // 2. Setup ViewModel
+//        viewModel = new ViewModelProvider(this).get(NewStoreListViewModel.class);
+//
+//        // 3. Setup Toolbar
+//        tvTitle.setText("New Store Creation");
+//        btnBack.setOnClickListener(v -> finish());
+//
+//        // 4. Setup Recycler
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//
+//        // 5. Date Picker Logic
+//        tvDate.setOnClickListener(v -> showDatePicker());
+//
+//        // 6. FAB Logic
+//        fabAdd.setOnClickListener(v -> {
+//            // Opens the Create Store Form
+//            // Ensure you have CreateStoreFormActivity created or change this line
+//            Intent intent = new Intent(NewStoreActivity.this, StoreOtpVerificationActivity.class);
+//            startActivity(intent);
+//            Toast.makeText(this, "new screen open", Toast.LENGTH_SHORT).show();
+//        });
+//
+//        // 7. Observers
+//        viewModel.getSelectedDate().observe(this, date -> tvDate.setText(date));
+//
+//        viewModel.getStoreList().observe(this, list -> {
+//            if (list != null) {
+//                adapter = new NewStoreListAdapter(list);
+//                recyclerView.setAdapter(adapter);
+//            }
+//        });
+//    }
+//
+//    private void showDatePicker() {
+//        Calendar cal = Calendar.getInstance();
+//        new DatePickerDialog(this, (view, year, month, dayOfMonth) -> {
+//            viewModel.setDate(year, month, dayOfMonth);
+//        }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)).show();
+//    }
+//}

@@ -18,6 +18,7 @@ import com.example.moofrosty.R;
 import com.example.moofrosty.core.network.Resource;
 import com.example.moofrosty.core.utils.NetworkUtil;
 import com.example.moofrosty.data.local.SessionManager;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -115,6 +116,11 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
                             String storeName = (resource.data.getData() != null) ? resource.data.getData().getStoreName() : "Unknown Store";
                             Toast.makeText(this, "Number exists for store: " + storeName, Toast.LENGTH_LONG).show();
 
+                            showRegisteredNumberBottomSheet(
+                                    resource.data.getData().getStoreName(),
+                                    resource.data.getData().getRsSsIdentifier()
+                            );
+
                             tvStatus.setText("Mobile number already registered for " + storeName);
                             tvStatus.setTextColor(getColor(android.R.color.holo_red_dark));
                             tvStatus.setVisibility(View.VISIBLE);
@@ -129,6 +135,26 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    //    Updated code Date 06-01-2026
+    private void showRegisteredNumberBottomSheet(String storeDetails, String rsDetails) {
+        BottomSheetDialog dialog = new BottomSheetDialog(this);
+        dialog.setContentView(R.layout.bottomsheet_store_exits_by_mobile);
+
+        TextView tvStore = dialog.findViewById(R.id.tvStoreDetails);
+        TextView tvRs = dialog.findViewById(R.id.tvRSDetails);
+//        TextView tvBusiness = dialog.findViewById(R.id.tvverifed);
+
+        if (tvStore != null)
+            tvStore.setText(storeDetails != null ? storeDetails : "N/A");
+
+        if (tvRs != null)
+            tvRs.setText(rsDetails != null ? rsDetails : "N/A");
+
+
+        dialog.setCancelable(true);
+        dialog.show();
     }
 
     private void showOtpScreen() {
