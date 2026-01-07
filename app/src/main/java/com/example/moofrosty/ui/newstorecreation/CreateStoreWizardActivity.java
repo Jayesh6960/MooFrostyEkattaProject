@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,10 @@ public class CreateStoreWizardActivity extends AppCompatActivity {
     private CreateStoreViewModel viewModel;
     private int currentStep = 1;
 
+    // Step UI
+    private TextView tvBadge1, tvBadge2, tvBadge3;
+    private View lineStep1, lineStep2;
+
     // Location vars
     private FusedLocationProviderClient fusedLocationClient;
     private LocationCallback locationCallback;
@@ -54,16 +59,54 @@ public class CreateStoreWizardActivity extends AppCompatActivity {
             viewModel.mobileNumber = getIntent().getStringExtra("MOBILE_NUMBER");
         }
 
-        // Initialize Location Client
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        checkLocationPermissionAndStart();
-
+        // Toolbar
         ImageView btnBack = findViewById(R.id.btn_back);
         TextView tvTitle = findViewById(R.id.tv_toolbar_title);
         tvTitle.setText("Store Registration");
         btnBack.setOnClickListener(v -> handleBack());
 
+        // Step Views
+        tvBadge1 = findViewById(R.id.tvBadge1);
+        tvBadge2 = findViewById(R.id.tvBadge2);
+        tvBadge3 = findViewById(R.id.tvBadge3);
+        lineStep1 = findViewById(R.id.lineStep1);
+        lineStep2 = findViewById(R.id.lineStep2);
+
+        // Initialize Location Client
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        checkLocationPermissionAndStart();
+        // Initial Fragment
+        updateStepUI(1);
         loadFragment(new Step1OwnerFragment());
+    }
+
+    private void updateStepUI(int step) {
+
+        // Reset all badges
+        tvBadge1.setBackgroundResource(R.drawable.grey_bg_storeregister);
+        tvBadge2.setBackgroundResource(R.drawable.grey_bg_storeregister);
+        tvBadge3.setBackgroundResource(R.drawable.grey_bg_storeregister);
+
+        // Reset lines
+        lineStep1.setBackgroundResource(R.color.grey);
+        lineStep2.setBackgroundResource(R.color.grey);
+
+        // Step 1 active
+        if (step >= 1) {
+            tvBadge1.setBackgroundResource(R.drawable.green_bg_storeregister);
+        }
+
+        // Step 2 active
+        if (step >= 2) {
+            tvBadge2.setBackgroundResource(R.drawable.green_bg_storeregister);
+            lineStep1.setBackgroundResource(R.color.green);
+        }
+
+        // Step 3 active
+        if (step >= 3) {
+            tvBadge3.setBackgroundResource(R.drawable.green_bg_storeregister);
+            lineStep2.setBackgroundResource(R.color.green);
+        }
     }
 
     // --- LOCATION LOGIC START ---

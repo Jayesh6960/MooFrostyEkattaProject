@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -60,10 +61,13 @@ public class DashboardHomeFragment extends Fragment {
         // Using requireActivity() allows data to survive configuration changes
         viewModel = new ViewModelProvider(requireActivity()).get(DashboardViewModel.class);
 
-        // 3. Setup RecyclerView
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(requireContext(), 3, GridLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(gridLayoutManager);
+//        // 3. Setup RecyclerView
+//        GridLayoutManager gridLayoutManager = new GridLayoutManager(requireContext(), 3, GridLayoutManager.HORIZONTAL, false);
+//        recyclerView.setLayoutManager(gridLayoutManager);
+        LinearLayoutManager layoutManager =
+                new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
 
+        recyclerView.setLayoutManager(layoutManager);
         // 4. Observers
         viewModel.getDashboardItems().observe(getViewLifecycleOwner(), items -> {
             currentListForDetail = items;
@@ -78,9 +82,9 @@ public class DashboardHomeFragment extends Fragment {
         // 5. Dropdown Logic
         tvMocDropdown.setOnClickListener(v -> {
             PopupMenu popup = new PopupMenu(requireContext(), v);
+            popup.getMenu().add("MOC 01 (01 Jan - 31 Jan)");
             popup.getMenu().add("MOC 12 (01 Dec - 31 Dec)");
             popup.getMenu().add("MOC 11 (01 Nov - 30 Nov)");
-            popup.getMenu().add("MOC 10 (01 Oct - 31 Oct)");
 
             popup.setOnMenuItemClickListener(menuItem -> {
                 String fullTitle = menuItem.getTitle().toString();

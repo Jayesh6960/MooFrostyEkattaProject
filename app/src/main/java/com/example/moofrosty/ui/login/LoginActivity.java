@@ -3,6 +3,7 @@ package com.example.moofrosty.ui.login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -26,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     private MaterialButton loginButton;
     private LoginViewModel loginViewModel;
     private SessionManager sessionManager;
+    private View loadingLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         emailEditText = findViewById(R.id.username);                   ///    1
         passwordEditText = findViewById(R.id.password_toggle);
         loginButton = findViewById(R.id.btn_login);
-
+        loadingLayout = findViewById(R.id.loadingLayout);
 //        // 3. Observe ViewModel (The "Neat" Part)
 //        loginViewModel.getLoginResult().observe(this, resource -> {
 //            if (resource != null) {
@@ -137,11 +139,29 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+//    private void setLoadingState(boolean isLoading) {
+//        if (isLoading) {
+//            loginButton.setEnabled(false);
+//            loginButton.setText("Please Wait...");
+//        } else {
+//            loginButton.setEnabled(true);
+//            loginButton.setText("Login");
+//        }
+//    }
+
     private void setLoadingState(boolean isLoading) {
         if (isLoading) {
+            loadingLayout.setVisibility(View.VISIBLE);
+            loginButton.setEnabled(false);
+            emailEditText.setEnabled(false);
+            passwordEditText.setEnabled(false);
             loginButton.setEnabled(false);
             loginButton.setText("Please Wait...");
         } else {
+            loadingLayout.setVisibility(View.GONE);
+            loginButton.setEnabled(true);
+            emailEditText.setEnabled(true);
+            passwordEditText.setEnabled(true);
             loginButton.setEnabled(true);
             loginButton.setText("Login");
         }

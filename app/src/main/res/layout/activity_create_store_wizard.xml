@@ -12,7 +12,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="#2196F3"
+        android:background="@color/Pink_color"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingStart="12dp">
@@ -21,6 +21,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_baseline_arrow_back_24"
+            app:tint="@color/white"
             />
         <TextView
             android:id="@+id/tv_toolbar_title"
@@ -31,6 +32,102 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginStart="16dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <!-- Step 1 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tvBadge1"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:text="1"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:background="@drawable/green_bg_storeregister"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Owner\nProfile"
+                android:textSize="12sp"
+                android:gravity="center"/>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/lineStep1"
+            android:layout_width="35dp"
+            android:layout_height="2dp"
+            android:background="@color/grey"/>
+
+        <!-- Step 2 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tvBadge2"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:text="2"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:background="@drawable/grey_bg_storeregister"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Shop\nProfile"
+                android:textSize="12sp"
+                android:gravity="center"/>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/lineStep2"
+            android:layout_width="35dp"
+            android:layout_height="2dp"
+            android:background="@color/grey"/>
+
+        <!-- Step 3 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tvBadge3"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:text="3"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:background="@drawable/grey_bg_storeregister"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Shop\nKYC"
+                android:textSize="12sp"
+                android:gravity="center"/>
+        </LinearLayout>
     </LinearLayout>
 
     <FrameLayout
