@@ -4,7 +4,7 @@
         <item
             android:id="@+id/menu_iteams"
             android:icon="@drawable/iteams"
-            android:title="I-Teams" />
+            android:title="Attendance" />
         <item
             android:id="@+id/menu_store"
             android:icon="@drawable/newstorecreation"
@@ -12,10 +12,12 @@
         <item
             android:id="@+id/menu_collection"
             android:icon="@drawable/collectionsummary"
+            android:visible="false"
             android:title="Collection Summary" />
         <item
             android:id="@+id/menu_visitor"
             android:icon="@android:drawable/ic_menu_my_calendar"
+            android:visible="false"
             android:title="Visitor Details" />
         <item
             android:id="@+id/menu_fos"
@@ -28,6 +30,7 @@
         <item
             android:id="@+id/helpline"
             android:icon="@drawable/helpline"
+            android:visible="false"
             android:title="HelpLine" />
         <item
             android:id="@+id/privacy_policy"

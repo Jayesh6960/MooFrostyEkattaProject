@@ -19,4 +19,7 @@ public class BeatModel {
     public int getTotalStores() { return totalStores; }
     public boolean isSelected() { return isSelected; }
     public void setSelected(boolean selected) { isSelected = selected; }
+
+    // Added Setter as requested
+    public void setTotalStores(int totalStores) { this.totalStores = totalStores; }
 }

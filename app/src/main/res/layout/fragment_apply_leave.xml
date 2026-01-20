@@ -30,6 +30,8 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:boxStrokeColor="@color/Purple_Color"
+            app:hintTextColor="@color/Purple_Color"
             android:hint="Leave Type">
             <AutoCompleteTextView
                 android:id="@+id/spinner_leave_type"
@@ -78,6 +80,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            app:boxStrokeColor="@color/Purple_Color"
+            app:hintTextColor="@color/Purple_Color"
             android:hint="Leave Reason">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_reason"
@@ -93,7 +97,7 @@
             android:layout_height="55dp"
             android:text="Apply Leave"
             android:layout_marginTop="24dp"
-            android:backgroundTint="#2196F3"
+            android:backgroundTint="@color/Pink_color"
             android:textAllCaps="false"
             android:textSize="17dp"
             app:cornerRadius="8dp"/>

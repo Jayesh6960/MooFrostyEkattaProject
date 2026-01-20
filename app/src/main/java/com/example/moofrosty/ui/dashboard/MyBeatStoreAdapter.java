@@ -44,42 +44,50 @@ public class MyBeatStoreAdapter extends RecyclerView.Adapter<MyBeatStoreAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Store store = stores.get(position);
-        holder.tvName.setText(store.getName());
-        holder.tvRR.setText("RR: " + (store.getOrderValue() > 0 ? "OK" : "0"));
+        // 1. UPDATE: Use getStoreName() instead of getName()
+        holder.tvName.setText(store.getStoreName());
 
-        // Status Icons
+        // 2. Status Icons
         if (store.isOrderTaken()) {
-            holder.imgStatus.setImageResource(R.drawable.cartgreenicon); // Use proper cart icon
+            holder.imgStatus.setImageResource(R.drawable.cartgreenicon);
             holder.imgStatus.setVisibility(View.VISIBLE);
         } else if (store.isVisited()) {
-            holder.imgStatus.setImageResource(R.drawable.locationuser); // Check icon
+            holder.imgStatus.setImageResource(R.drawable.locationuser);
             holder.imgStatus.setVisibility(View.VISIBLE);
         } else {
             holder.imgStatus.setVisibility(View.INVISIBLE);
         }
 
-        // Call Action
+        // 3. UPDATE: Use getMobileNumber()
         holder.btnCall.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_DIAL);
-            intent.setData(Uri.parse("tel:" + store.getPhoneNumber()));
-            context.startActivity(intent);
+            String mobile = store.getMobileNumber();
+            if (mobile != null && !mobile.isEmpty()) {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:" + mobile));
+                context.startActivity(intent);
+            }
         });
 
-        // Direction Action
+        // 4. UPDATE: Use getLat() / getLng() parsing logic
         holder.btnDirection.setOnClickListener(v -> {
-            Uri gmmIntentUri = Uri.parse("google.navigation:q=" + store.getLat() + "," + store.getLng());
-            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-            mapIntent.setPackage("com.google.android.apps.maps");
-            if (mapIntent.resolveActivity(context.getPackageManager()) != null) {
-                context.startActivity(mapIntent);
+            double lat = store.getLat();
+            double lng = store.getLng();
+
+            if (lat != 0.0 && lng != 0.0) {
+                Uri gmmIntentUri = Uri.parse("google.navigation:q=" + lat + "," + lng);
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                if (mapIntent.resolveActivity(context.getPackageManager()) != null) {
+                    context.startActivity(mapIntent);
+                }
             }
         });
 
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, StoreProfileActivity.class);
-            // Fix: Passed directly as Serializable (No (Parcelable) cast needed)
-            intent.putExtra("STORE_DATA", (Serializable) store);
-            context.startActivity(intent);
+            // Uncomment and use correct Activity when ready
+             Intent intent = new Intent(context, StoreProfileActivity.class);
+             intent.putExtra("STORE_DATA", (Serializable) store);
+             context.startActivity(intent);
         });
     }
 
@@ -95,7 +103,7 @@ public class MyBeatStoreAdapter extends RecyclerView.Adapter<MyBeatStoreAdapter.
         public ViewHolder(View v) {
             super(v);
             tvName = v.findViewById(R.id.tv_store_name);
-            tvRR = v.findViewById(R.id.tv_rr_value);
+        //    tvRR = v.findViewById(R.id.tv_rr_value);
             btnCall = v.findViewById(R.id.btn_call);
             btnDirection = v.findViewById(R.id.btn_direction);
             imgStatus = v.findViewById(R.id.img_status);

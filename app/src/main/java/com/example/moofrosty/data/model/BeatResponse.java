@@ -25,7 +25,7 @@ public class BeatResponse {
     @SerializedName("status")
     private boolean status;
 
-    @SerializedName("bdodata")   // 🔴 EXACT JSON KEY
+    @SerializedName("bdodata")
     private List<BeatData> bdodata;
 
     public boolean isStatus() {
@@ -60,7 +60,6 @@ public class BeatResponse {
             return to;
         }
 
-        // 🔴 REQUIRED FOR DROPDOWN TEXT
         @Override
         public String toString() {
             return from + " - " + to;

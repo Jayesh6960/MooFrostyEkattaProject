@@ -2,7 +2,10 @@ package com.example.moofrosty.ui.dashboard;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,6 +38,7 @@ public class DashboardActivity extends AppCompatActivity {
    // private View topBarContainer, homeContainer, myBeatContainer;
     private ImageView btnMenu;
     SessionManager sessionManager;
+    private TextView tvTitle;
 
 
     // Dynamic Views
@@ -50,6 +54,109 @@ public class DashboardActivity extends AppCompatActivity {
         WindowInsetsControllerCompat windowInsetsController =
                 WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
         windowInsetsController.setAppearanceLightStatusBars(true); // Changed to true for dark text on white status bar
+
+        // 1. Init Views
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+        bottomNav = findViewById(R.id.bottom_navigation);
+        btnMenu = findViewById(R.id.btn_menu);
+
+
+        // 2. Window Insets
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.app_bar_layout), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(v.getPaddingLeft(), systemBars.top, v.getPaddingRight(), v.getPaddingBottom());
+            return insets;
+        });
+
+        ViewCompat.setOnApplyWindowInsetsListener(bottomNav, (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), systemBars.bottom);
+            return insets;
+        });
+
+        // 3. Load Default Fragment (Home)
+        if (savedInstanceState == null) {
+            loadFragment(new DashboardHomeFragment());
+        }
+        tvTitle = findViewById(R.id.tv_title);
+        sessionManager = new SessionManager(this);
+        // 3. Get Name and Set Text
+        String userName = sessionManager.getUserFullName();
+        Log.d("usernamedetail", "detailsname: " + userName);
+        tvTitle.setText(userName);
+        updateNavHeader();
+        // 4. Click Listeners
+        btnMenu.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
+
+            navigationView.setNavigationItemSelectedListener(item -> {
+                int id = item.getItemId();
+                if (id == R.id.menu_iteams) {
+                    Intent intent = new Intent(DashboardActivity.this, AttendanceActivity.class);
+                    startActivity(intent);
+                    return true;
+                } else if (id == R.id.menu_store) {
+                    // Open the New Store Creation List/History Page
+                    Intent intent = new Intent(DashboardActivity.this, NewStoreActivity.class);
+                    startActivity(intent);
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                    return true;
+                } else if (id == R.id.menu_logout) {
+                    sessionManager.logout();
+                    Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    return true;
+                }
+
+                drawerLayout.closeDrawer(GravityCompat.START);
+         //       Toast.makeText(this, "Clicked: " + item.getTitle(), Toast.LENGTH_SHORT).show();
+                return true;
+            });
+
+        // 5. Bottom Nav Switching
+        bottomNav.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.nav_home) {
+                loadFragment(new DashboardHomeFragment());
+                return true;
+            } else if (id == R.id.nav_beat) {
+                loadFragment(new DashboardMyBeatFragment());
+                return true;
+            }
+            return false;
+        });
+    }
+
+    private void updateNavHeader() {
+        View headerView = navigationView.getHeaderView(0);
+        TextView tvHeaderName = headerView.findViewById(R.id.headerlayoutnamedashboard);
+        TextView tvHeaderMobile = headerView.findViewById(R.id.headerlayoutnumberdashboard);
+        String fullName = sessionManager.getUserFullName();
+        String mobile = sessionManager.getUserMobile();
+        tvHeaderName.setText(fullName);
+        tvHeaderMobile.setText(mobile);
+    }
+
+    private void loadFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+}
+
+
+
 
 //        // 2. Initialize Views
 //        drawerLayout = findViewById(R.id.drawer_layout);
@@ -162,88 +269,3 @@ public class DashboardActivity extends AppCompatActivity {
 //            intent.putExtra("TITLE", tvMocDropdown.getText().toString());
 //            startActivity(intent);
 //        });
-
-        // 1. Init Views
-        drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
-        bottomNav = findViewById(R.id.bottom_navigation);
-        btnMenu = findViewById(R.id.btn_menu);
-
-        // 2. Window Insets
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.top_bar_container), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(v.getPaddingLeft(), systemBars.top, v.getPaddingRight(), v.getPaddingBottom());
-            return insets;
-        });
-
-        ViewCompat.setOnApplyWindowInsetsListener(bottomNav, (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), systemBars.bottom);
-            return insets;
-        });
-
-        // 3. Load Default Fragment (Home)
-        if (savedInstanceState == null) {
-            loadFragment(new DashboardHomeFragment());
-        }
-
-        sessionManager = new SessionManager(this);
-
-        // 4. Click Listeners
-        btnMenu.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
-
-            navigationView.setNavigationItemSelectedListener(item -> {
-                int id = item.getItemId();
-                if (id == R.id.menu_iteams) {
-                    Intent intent = new Intent(DashboardActivity.this, AttendanceActivity.class);
-                    startActivity(intent);
-                    return true;
-                } else if (id == R.id.menu_store) {
-                    // Open the New Store Creation List/History Page
-                    Intent intent = new Intent(DashboardActivity.this, NewStoreActivity.class);
-                    startActivity(intent);
-                    drawerLayout.closeDrawer(GravityCompat.START);
-                    return true;
-                } else if (id == R.id.menu_logout) {
-                    sessionManager.logout();
-                    Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                    return true;
-                }
-
-                drawerLayout.closeDrawer(GravityCompat.START);
-         //       Toast.makeText(this, "Clicked: " + item.getTitle(), Toast.LENGTH_SHORT).show();
-                return true;
-            });
-
-        // 5. Bottom Nav Switching
-        bottomNav.setOnItemSelectedListener(item -> {
-            int id = item.getItemId();
-            if (id == R.id.nav_home) {
-                loadFragment(new DashboardHomeFragment());
-                return true;
-            } else if (id == R.id.nav_beat) {
-                loadFragment(new DashboardMyBeatFragment());
-                return true;
-            }
-            return false;
-        });
-    }
-
-    private void loadFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, fragment);
-        fragmentTransaction.commit();
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-}

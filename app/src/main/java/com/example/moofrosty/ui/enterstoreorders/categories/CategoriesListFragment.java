@@ -73,7 +73,7 @@ public class CategoriesListFragment extends Fragment {
         };
 
         // Pass the listener to the adapter
-        SubCategoriesAdaptor adapter = new SubCategoriesAdaptor(list, categoryClickListener);
-        recyclerView.setAdapter(adapter);
+//        SubCategoriesAdaptor adapter = new SubCategoriesAdaptor(list, categoryClickListener);
+//        recyclerView.setAdapter(adapter);
     }
 }

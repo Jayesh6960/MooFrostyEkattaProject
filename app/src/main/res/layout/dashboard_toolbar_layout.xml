@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/dashboard_toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@color/white"
+    app:contentInsetStart="0dp"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp">
+
+        <!-- Back Arrow -->
+
+        <FrameLayout
+            android:id="@+id/start_icon_container"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true">
+
+            <ImageView
+                android:id="@+id/btn_menu"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/hamburger_icon"
+                app:tint="@color/Pink_color"
+                android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/btn_back"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_baseline_arrow_back_24"
+                android:visibility="gone"
+                app:tint="@color/white" />
+        </FrameLayout>
+        <!--        <ImageView-->
+        <!--            android:id="@+id/btn_menu"-->
+        <!--            android:layout_width="24dp"-->
+        <!--            android:layout_height="24dp"-->
+        <!--            android:layout_alignParentStart="true"-->
+        <!--            android:layout_centerVertical="true"-->
+        <!--            android:src="@android:drawable/ic_menu_sort_by_size"-->
+        <!--            app:tint="@color/black" />-->
+
+        <!--        <ImageView-->
+        <!--            android:id="@+id/btn_back"-->
+        <!--            android:layout_width="24dp"-->
+        <!--            android:layout_height="24dp"-->
+        <!--            android:layout_alignParentStart="true"-->
+        <!--            android:layout_centerVertical="true"-->
+        <!--            android:src="@drawable/ic_baseline_arrow_back_24"-->
+        <!--            app:tint="@color/white"-->
+        <!--            android:clickable="true"-->
+        <!--            android:visibility="gone"-->
+        <!--            android:focusable="true"/>-->
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="12dp"
+            android:layout_toEndOf="@id/start_icon_container"
+            android:text="Vaibhav Laxman Kulkarni"
+            android:textColor="@color/Pink_color"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <!-- Date Picker -->
+        <TextView
+            android:id="@+id/tv_date_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:drawableEnd="@drawable/ic_calendar_white"
+            android:drawablePadding="8dp"
+            android:padding="8dp"
+            android:text="2025-12-25"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+</androidx.appcompat.widget.Toolbar>

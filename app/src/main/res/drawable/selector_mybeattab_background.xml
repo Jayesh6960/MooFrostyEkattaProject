@@ -5,7 +5,7 @@
         <inset android:insetLeft="4dp" android:insetRight="4dp" android:insetTop="2dp" android:insetBottom="2dp">
             <shape android:shape="rectangle">
                 <corners android:radius="20dp"/>
-                <solid android:color="@color/blue"/>
+                <solid android:color="@color/Purple_Color"/>
             </shape>
         </inset>
     </item>
@@ -16,7 +16,7 @@
             <shape android:shape="rectangle">
                 <corners android:radius="20dp"/>
                 <solid android:color="#FFFFFF"/>
-                <stroke android:width="1dp" android:color="@color/blue"/>
+                <stroke android:width="1dp" android:color="@color/Purple_Color"/>
             </shape>
         </inset>
     </item>

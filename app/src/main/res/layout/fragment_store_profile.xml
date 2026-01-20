@@ -113,6 +113,7 @@
                         android:layout_height="wrap_content"
                         android:text="Verified"
                         android:textColor="#4CAF50"
+                        android:visibility="gone"
                         android:gravity="center_vertical"
                         android:textSize="16dp"
                         android:drawablePadding="5dp"
@@ -147,6 +148,7 @@
                     android:text="Collect Payment"
                     android:backgroundTint="#2196F3"
                     android:textAllCaps="false"
+                    android:visibility="gone"
                     android:textSize="16dp"
                     android:layout_gravity="center_horizontal"
                     android:textColor="#FFF"
@@ -166,6 +168,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:orientation="vertical">
 
                 <!-- Header -->
@@ -238,6 +241,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:visibility="gone"
             app:cardCornerRadius="4dp"
             xmlns:app="http://schemas.android.com/apk/res-auto">
 

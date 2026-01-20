@@ -13,31 +13,32 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.moofrosty.data.model.CategoryModel;
+import com.example.moofrosty.ui.filter.CategorySelectionListener;
 import com.example.moofrosty.ui.filter.FilterSelectionListener;
 import com.example.moofrosty.R;
 import com.example.moofrosty.ui.brands.BrandsFragment;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.tabs.TabLayout;
 
-public class BottomSheetSubCategeries extends BottomSheetDialogFragment {
-    private FilterSelectionListener filterListener;
+public class BottomSheetSubCategeries extends BottomSheetDialogFragment implements CategorySelectionListener, FilterSelectionListener {
+    private FilterSelectionListener parentFilterListener; // The Parent Fragment (TakeOrderFragment)
+    private TabLayout tabLayout;
+    private int selectedCategoryId = 0;
 
     public BottomSheetSubCategeries() {
         // Required empty public constructor
     }
 
-    TabLayout tabLayout;
-    ViewPager2 viewPager;
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        // Get the parent fragment (TakeOrderFragment) and cast it as the listener
+        // Find parent fragment to communicate back
         Fragment parent = getParentFragment();
         if (parent instanceof FilterSelectionListener) {
-            filterListener = (FilterSelectionListener) parent;
+            parentFilterListener = (FilterSelectionListener) parent;
         } else {
-            throw new RuntimeException("Parent fragment must implement FilterSelectionListener");
+            // Log warning or throw exception if strict
         }
     }
 
@@ -54,36 +55,97 @@ public class BottomSheetSubCategeries extends BottomSheetDialogFragment {
         super.onViewCreated(view, savedInstanceState);
         tabLayout = view.findViewById(R.id.tabLayout);
 
-       // replaceFragment(new SubCategoriesFragment());
-        // Load initial fragment
-        replaceFragment(SubCategoriesFragment.newInstance(filterListener));
+        tabLayout.removeAllTabs();
+        tabLayout.addTab(tabLayout.newTab().setText("Categories"));
+        tabLayout.addTab(tabLayout.newTab().setText("Sub-Categories"));
+
+        // Load Tab 1 (Categories) by default
+        tabLayout.removeAllTabs();
+        tabLayout.addTab(tabLayout.newTab().setText("Categories"));
+        tabLayout.addTab(tabLayout.newTab().setText("Sub-Categories"));
+
+        // Load Tab 1: Categories (pass 'this' as listener)
+        replaceFragment(CategoryFragment.newInstance());
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-//                if (tab.getPosition() == 0) {
-//                    replaceFragment(new SubCategoriesFragment());
-//                } else if (tab.getPosition() == 1) {
-//                    replaceFragment(new BrandsFragment());
-//                }
                 if (tab.getPosition() == 0) {
-                    replaceFragment(SubCategoriesFragment.newInstance(filterListener));
-                } else if (tab.getPosition() == 1) {
-                    replaceFragment(BrandsFragment.newInstance(filterListener));
+                    replaceFragment(CategoryFragment.newInstance());
+                } else {
+                    // Pass 'this' as listener so SubCategoriesFragment calls onFilterSelected() here
+                    replaceFragment(SubCategoriesFragment.newInstance(selectedCategoryId));
                 }
             }
 
-            @Override public void onTabUnselected(TabLayout.Tab tab) {}
-            @Override public void onTabReselected(TabLayout.Tab tab) {}
-        });
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
 
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+        });
     }
+        // 1. Handle Click from CategoriesFragment (Tab 1)
+        @Override
+        public void onCategorySelected(CategoryModel category) {
+            this.selectedCategoryId = category.categoryId;
+
+            if (parentFilterListener != null) {
+                parentFilterListener.onFilterSelected("category", category.categoryTitle);
+            }
+
+            TabLayout.Tab tab = tabLayout.getTabAt(1);
+            if (tab != null) tab.select();
+        }
+        // --- Scenario 2: API Loads (Index 0 Default) ---
+        @Override
+        public void onDefaultCategoryLoaded(CategoryModel category) {
+            // Just set the ID. Do NOT switch tabs.
+            this.selectedCategoryId = category.categoryId;
+        }
+        // 2. Handle Click from SubCategoriesFragment (Tab 2)
+        @Override
+        public void onFilterSelected(String filterType, String value) {
+            // Pass it up to TakeOrderFragment
+            if (parentFilterListener != null) {
+                parentFilterListener.onFilterSelected(filterType, value);
+            }
+            dismiss(); // Close sheet
+        }
+
+//       // replaceFragment(new SubCategoriesFragment());
+//        // Load initial fragment
+//        replaceFragment(SubCategoriesFragment.newInstance(filterListener));
+//
+//        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+//            @Override
+//            public void onTabSelected(TabLayout.Tab tab) {
+////                if (tab.getPosition() == 0) {
+////                    replaceFragment(new SubCategoriesFragment());
+////                } else if (tab.getPosition() == 1) {
+////                    replaceFragment(new BrandsFragment());
+////                }
+//                if (tab.getPosition() == 0) {
+//                    replaceFragment(SubCategoriesFragment.newInstance(filterListener));
+//                } else if (tab.getPosition() == 1) {
+//                    replaceFragment(BrandsFragment.newInstance(filterListener));
+//                }
+//            }
+//
+//            @Override public void onTabUnselected(TabLayout.Tab tab) {}
+//            @Override public void onTabReselected(TabLayout.Tab tab) {}
+//        });
+
+//    }
 
 //    private void replaceFragment(Fragment fragment) {
 //        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 //        transaction.replace(R.id.fragmentContainer, fragment);
 //        transaction.commit();
 //    }
+
     private void replaceFragment(Fragment fragment) {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.fragmentContainer, fragment);

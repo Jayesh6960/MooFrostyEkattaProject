@@ -7,7 +7,7 @@ public class Product {
     public final double mrpPrice;
     public final double ratePrice;
     public int stock;
-    public final int caseSize = 6; // Fixed case size as requested
+    public int caseSize = 6; // Fixed case size as requested
 
     String name;
     String mrp;
@@ -62,7 +62,6 @@ public class Product {
     public double getSavings() {
         return mrpPrice - ratePrice;
     }
-
 
 
     // --- ADD GETTERS ---

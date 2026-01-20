@@ -14,82 +14,88 @@
         android:background="@android:color/white">
 
         <!-- Toolbar -->
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:background="@color/blue"
-            android:elevation="4dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp">
+            android:background="@color/Pink_color"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp">
 
             <ImageView
-                android:id="@+id/menuIcon"
+                android:id="@+id/btn_back"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_baseline_arrow_back_24"
-                android:tint="@color/white"
-                android:layout_gravity="start"/>
+                app:tint="@color/white" />
 
             <TextView
-                android:id="@+id/toolbarTitle"
+                android:id="@+id/tv_toolbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="iTeams"
-                android:textColor="@android:color/white"
-                android:textSize="20sp"
-                android:layout_gravity="center"/>
-        </androidx.appcompat.widget.Toolbar>
+                android:text="Profile"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_marginStart="16dp"/>
+        </LinearLayout>
 
-        <!-- TabLayout (ONLY ONE) -->
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorSurface"
-            app:tabMode="scrollable"
-            app:tabGravity="center"
-            app:tabIndicatorFullWidth="false"
-            app:tabIndicatorColor="?attr/colorPrimary"
+            app:tabMode="fixed"
+            app:tabGravity="fill"
+            app:tabIndicatorFullWidth="true"
+            app:tabIndicatorColor="@color/Purple_Color"
+            app:tabSelectedTextColor="@color/Purple_Color"
             app:tabIndicatorHeight="3dp"
+            android:elevation="5dp"
             app:tabRippleColor="?attr/colorPrimary"
             app:tabTextAppearance="@style/MyCustomTabText"
-            app:tabIconTint="@android:color/holo_purple"
-            app:tabTextColor="@android:color/black">
+            app:tabIconTint="@color/Purple_Color"
+            app:tabTextColor="@color/black">
 
             <com.google.android.material.tabs.TabItem
                 android:text="Details"
                 android:icon="@drawable/details"
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content"/>
-
-            <com.google.android.material.tabs.TabItem
-                android:text="Position"
-                android:icon="@drawable/profile"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"/>
-
-            <com.google.android.material.tabs.TabItem
-                android:text="KYC"
-                android:icon="@drawable/kyc"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"/>
+                android:outlineAmbientShadowColor="@color/Purple_Color"
+                android:layout_width="0dp"/>
 
             <com.google.android.material.tabs.TabItem
                 android:text="Bank"
                 android:icon="@drawable/bankdetails"
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content"/>
-
-            <com.google.android.material.tabs.TabItem
-                android:text="Salary"
-                android:layout_height="wrap_content"
-                android:icon="@drawable/salary"
-                android:layout_width="wrap_content"/>
+                android:outlineAmbientShadowColor="@color/Purple_Color"
+                android:layout_width="0dp"/>
 
         </com.google.android.material.tabs.TabLayout>
 
-        <!-- ✅ FrameLayout BELOW TabLayout -->
+
+<!--            <com.google.android.material.tabs.TabItem-->
+<!--                android:text="Position"-->
+<!--                android:visibility="gone"-->
+<!--                android:icon="@drawable/profile"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_width="wrap_content"/>-->
+
+<!--            <com.google.android.material.tabs.TabItem-->
+<!--                android:text="KYC"-->
+<!--                android:icon="@drawable/kyc"-->
+<!--                android:visibility="gone"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_width="wrap_content"/>-->
+
+<!--            <com.google.android.material.tabs.TabItem-->
+<!--                android:text="Salary"-->
+<!--                android:visibility="gone"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:icon="@drawable/salary"-->
+<!--                android:layout_width="wrap_content"/>-->
+
+
         <FrameLayout
             android:id="@+id/fragmentContainer"
             android:layout_width="match_parent"

@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     android:background="@drawable/bg_gradient"
     tools:context=".MainActivity">
     <!-- Centered Card -->
@@ -58,17 +59,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            app:hintTextColor="@color/orange"
+            app:hintTextColor="@color/Purple_Color"
             android:hint="Username"
-            app:cursorColor="@color/orange"
-            app:boxStrokeColor="@color/orange">
+            app:cursorColor="@color/Purple_Color"
+            app:boxStrokeColor="@color/Purple_Color">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-                android:textColorHint="@color/orange"
+                android:textColorHint="@color/Purple_Color"
                 android:textColor="@color/black" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -81,9 +82,9 @@
             android:layout_marginTop="20dp"
             android:hint="Password"
             app:endIconMode="password_toggle"
-            app:hintTextColor="@color/orange"
-            app:cursorColor="@color/orange"
-            app:boxStrokeColor="@color/orange"
+            app:hintTextColor="@color/Purple_Color"
+            app:cursorColor="@color/Purple_Color"
+            app:boxStrokeColor="@color/Purple_Color"
             >
 
             <com.google.android.material.textfield.TextInputEditText
@@ -91,7 +92,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:textColorHint="@color/orange"
+                android:textColorHint="@color/Purple_Color"
                 android:textColor="@color/black" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -104,7 +105,7 @@
             android:text="Login"
             android:textColor="@android:color/white"
             android:textStyle="bold"
-            android:backgroundTint="@color/orange"
+            android:backgroundTint="@color/Pink_color"
             app:cornerRadius="16dp"
             android:padding="14dp" />
 

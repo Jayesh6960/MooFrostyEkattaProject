@@ -50,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="18dp"
                     android:orientation="horizontal"
-                    android:weightSum="4">
+                    android:weightSum="3">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -62,13 +62,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/mrp"
-                            android:textSize="12sp" />
+                            android:textSize="14sp" />
 
                         <TextView
                             android:id="@+id/tv_mrp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="₹1,000"
+                            android:textSize="14sp"
                             android:textColor="@android:color/black" />
                     </LinearLayout>
 
@@ -82,13 +83,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/rate"
-                            android:textSize="12sp" />
+                            android:textSize="14sp" />
 
                         <TextView
                             android:id="@+id/tv_rate"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="₹500"
+                            android:textSize="14sp"
                             android:textColor="@android:color/black" />
                     </LinearLayout>
 
@@ -102,13 +104,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/margin"
-                            android:textSize="12sp" />
+                            android:textSize="14sp" />
 
                         <TextView
                             android:id="@+id/tv_margin"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="100.0%"
+                            android:textSize="14sp"
                             android:textColor="@color/textGreen"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -116,7 +119,8 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="0"
+                        android:visibility="gone"
                         android:orientation="vertical">
 
                         <TextView
@@ -126,7 +130,7 @@
                             android:textSize="12sp" />
 
                         <TextView
-                            android:id="@+id/tv_stock"
+
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="0"
@@ -136,12 +140,33 @@
             </LinearLayout>
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/stk_pcs"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_stock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="  0"
+                android:textColor="@android:color/black" />
+        </LinearLayout>
+
         <TextView
+            android:id="@+id/caseunitnumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="1 Case = 6 Units"
             android:textSize="15dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:textColor="@color/black"/>
 
         <FrameLayout
@@ -317,39 +342,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1" />
 
-            <TextView
-                android:id="@+id/tv_vmq"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/tag_border_blue"
-                android:padding="6dp"
-                android:text="VMQ: 1"
-                android:textColor="@color/Purple_Color"
-                android:textSize="12sp"
-                android:visibility="visible" />
-
-            <TextView
-                android:id="@+id/tv_l3mrr"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/tag_border_blue"
-                android:padding="6dp"
-                android:text="L3MRR: 0"
-                android:textSize="12sp"
-                app:strokeColor="@color/Purple_Color" />
-
-            <TextView
-                android:id="@+id/tv_mtd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/tag_border_blue"
-                android:padding="6dp"
-                android:text="MTD: 0"
-                android:textSize="12sp"
-                app:strokeColor="@color/Purple_Color" />
         </LinearLayout>
 
     </LinearLayout>

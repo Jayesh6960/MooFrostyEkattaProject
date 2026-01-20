@@ -12,6 +12,9 @@ public class StoreListResponse {
     @SerializedName("store")
     private List<StoreModel> storeList;
 
+    @SerializedName("count")
+    private int count;
+
     public boolean isStatus() {
         return status;
     }
@@ -19,6 +22,8 @@ public class StoreListResponse {
     public List<StoreModel> getStoreList() {
         return storeList;
     }
+
+    public int getCount() { return count; }
 
     public static class StoreModel {
         @SerializedName("shopId")
@@ -45,6 +50,11 @@ public class StoreListResponse {
         @SerializedName("status")
         private int status; // 0=Pending, 1=Approved, 2=Rejected
 
+        @SerializedName("shop_kyc")
+        private StoreKyc shopKyc;
+
+        // Getter for KYC
+        public StoreKyc getShopKyc() { return shopKyc; }
         // Getters
         public int getShopId() { return shopId; }
         public String getStoreName() { return storeName; }
@@ -54,5 +64,13 @@ public class StoreListResponse {
         public String getCreatedAt() { return createdAt; }
         public int getBeatId() { return beatId; }
         public int getStatus() { return status; }
+
+        public static class StoreKyc {
+            @SerializedName("documentType")
+            private String documentType;
+
+            public String getDocumentType() { return documentType; }
+        }
     }
+
 }

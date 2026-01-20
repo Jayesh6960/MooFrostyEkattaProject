@@ -23,7 +23,7 @@
     <string name="mrp">MRP</string>
     <string name="rate">Rate</string>
     <string name="margin">Margin</string>
-    <string name="stk_pcs">Stk (pcs)</string>
+    <string name="stk_pcs">Stock Quantity : </string>
     <string name="add_to_cart">Add to cart</string>
 
     <string name="back">Back</string>
