@@ -17,7 +17,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Have a nice day!"
+            android:text="Welcome To The Moo Frosty!"
             android:padding="16dp"
             android:textSize="16sp"
             android:background="@color/white"
@@ -26,7 +26,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#2196F3"
+            android:background="@drawable/btn_qps_background"
             android:padding="12dp"
             android:layout_marginTop="8dp"
             android:orientation="horizontal">
@@ -96,7 +96,7 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:src="@android:drawable/btn_star_big_on"
-                        app:tint="#FFC107"/>
+                        app:tint="@color/coin_yellow"/>
 
                     <TextView
                         android:id="@+id/tv_total_incentives"
@@ -146,9 +146,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Additional\nIncentives"
+                android:text="Additional Incentives"
                 android:textAllCaps="false"
-                android:backgroundTint="#2196F3"
+                android:backgroundTint="@color/Pink_color"
                 android:textColor="@color/white"
                 android:layout_marginEnd="4dp"/>
             <Button
@@ -158,7 +158,7 @@
                 android:visibility="gone"
                 android:text="Envision\nLeaderboard"
                 android:textAllCaps="false"
-                android:backgroundTint="#2196F3"
+                android:backgroundTint="@color/Pink_color"
                 android:textColor="@color/white"
                 android:layout_marginStart="4dp"/>
         </LinearLayout>

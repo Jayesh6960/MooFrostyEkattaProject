@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.moofrosty.R;
 import com.example.moofrosty.ui.attendance.attendancecalender.AttendanceCalendarActivity;
 import com.example.moofrosty.ui.attendance.leave.LeaveActivity;
+import com.example.moofrosty.ui.attendance.profile.ProfileActivity;
 import com.example.moofrosty.ui.attendance.support.SupportAttendace;
 
 import java.util.List;
@@ -66,6 +67,11 @@ public class AttendanceMenuAdapter extends RecyclerView.Adapter<AttendanceMenuAd
             }else if (item.getTitle().equals("Support")) {
                 // --- NEW CODE: Open Calendar Activity ---
                 Intent intent = new Intent(context, SupportAttendace.class);
+                context.startActivity(intent);
+            }
+            else if (item.getTitle().equals("Profile")) {
+                // --- NEW CODE: Open Calendar Activity ---
+                Intent intent = new Intent(context, ProfileActivity.class);
                 context.startActivity(intent);
             }else {
                 // For other icons (Attendance, Regularization, etc.), show a toast for now

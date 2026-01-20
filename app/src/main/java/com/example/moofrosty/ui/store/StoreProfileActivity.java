@@ -1,12 +1,23 @@
 package com.example.moofrosty.ui.store;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.os.Looper;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
@@ -15,7 +26,16 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.moofrosty.R;
+import com.example.moofrosty.core.utils.NetworkUtil;
+import com.example.moofrosty.data.local.SessionManager;
 import com.example.moofrosty.data.model.Store;
+import com.example.moofrosty.ui.enterstoreorders.ActionPointActivitys;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.Priority;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -24,12 +44,38 @@ public class StoreProfileActivity extends AppCompatActivity {
 
     private StoreProfileViewModel viewModel;
     private Store currentStore;
+    private FusedLocationProviderClient fusedLocationClient;
+    private ProgressDialog progressDialog;
+    private SessionManager sessionManager;
+
+    ImageView btnBack;
+    TextView tvTitle;
+    TabLayout tabLayout;
+    ViewPager2 viewPager;
+    Button btnEnterStore;
+
+    // Permissions Launcher
+    private final ActivityResultLauncher<String[]> locationPermissionRequest =
+            registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result -> {
+                Boolean fineLocationGranted = result.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false);
+                Boolean coarseLocationGranted = result.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false);
+                if (fineLocationGranted != null && fineLocationGranted) {
+                    fetchLocationAndProceed();
+                } else {
+                    Toast.makeText(this, "Location permission is required to enter store", Toast.LENGTH_SHORT).show();
+                }
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         setContentView(R.layout.activity_store_profile);
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Processing...");
+        progressDialog.setCancelable(false);
         if (getIntent().getExtras() != null) {
             currentStore = (Store) getIntent().getSerializableExtra("STORE_DATA");
         }
@@ -41,11 +87,12 @@ public class StoreProfileActivity extends AppCompatActivity {
         }
 
         // 3. Init Views
-        ImageView btnBack = findViewById(R.id.btn_back);
-        TextView tvTitle = findViewById(R.id.tv_toolbar_title);
-        TabLayout tabLayout = findViewById(R.id.tab_layout);
-        ViewPager2 viewPager = findViewById(R.id.view_pager);
-        Button btnEnterStore = findViewById(R.id.btn_enter_store);
+         btnBack = findViewById(R.id.btn_back);
+         tvTitle = findViewById(R.id.tv_toolbar_title);
+         tabLayout = findViewById(R.id.tab_layout);
+         viewPager = findViewById(R.id.view_pager);
+         btnEnterStore = findViewById(R.id.btn_enter_store);
+        sessionManager = new SessionManager(this);
 
         // 4. Window Insets (Padding for StatusBar/NavBar)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_container), (v, insets) -> {
@@ -54,25 +101,152 @@ public class StoreProfileActivity extends AppCompatActivity {
             return insets;
         });
 
-        // 5. Setup Toolbar
+//        // 5. Setup Toolbar
+//        if (currentStore != null) {
+//            tvTitle.setText(currentStore.getStoreName() + " - HULI");
+//        }
+//        btnBack.setOnClickListener(v -> finish());
+//
+//        // 6. Setup Tabs & ViewPager
+//        StorePagerAdapter adapter = new StorePagerAdapter(this);
+//        viewPager.setAdapter(adapter);
+//
+//        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+//            if (position == 0) tab.setText("Store Profile");
+//            else tab.setText("Order History");
+//        }).attach();
+//
+//            // 7. Enter Store Button Logic
+//            btnEnterStore.setOnClickListener(v -> {
+//                Toast.makeText(this, "Entering Store: " + currentStore.getStoreName(), Toast.LENGTH_SHORT).show();
+//                // Navigate to Order Taking screen or similar
+//            });
+
+        // 3. Init Views
+        setupViews();
+
+        // 4. Observers
+        observeViewModel();
+    }
+
+    private void setupViews() {
+
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_container), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+
         if (currentStore != null) {
-            tvTitle.setText(currentStore.getName() + " - HULI");
+            tvTitle.setText(currentStore.getStoreName() + " - HULI");
         }
         btnBack.setOnClickListener(v -> finish());
 
-        // 6. Setup Tabs & ViewPager
+        // Setup Tabs
         StorePagerAdapter adapter = new StorePagerAdapter(this);
         viewPager.setAdapter(adapter);
-
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             if (position == 0) tab.setText("Store Profile");
             else tab.setText("Order History");
         }).attach();
 
-        // 7. Enter Store Button Logic
+        // --- ENTER STORE CLICK ---
         btnEnterStore.setOnClickListener(v -> {
-            Toast.makeText(this, "Entering Store: " + currentStore.getName(), Toast.LENGTH_SHORT).show();
-            // Navigate to Order Taking screen or similar
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                locationPermissionRequest.launch(new String[]{
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                });
+            } else {
+                fetchLocationAndProceed();
+            }
         });
+    }
+
+    private void observeViewModel() {
+        // Observe the API Resource Status
+        viewModel.getCheckInStatus().observe(this, resource -> {
+            switch (resource.status) {
+                case LOADING:
+                    progressDialog.setMessage("Checking In...");
+                    progressDialog.show();
+                    break;
+
+                case SUCCESS:
+                    progressDialog.dismiss();
+                    Toast.makeText(this, resource.data, Toast.LENGTH_SHORT).show(); // "Check-in added successfully"
+
+                    // Navigate to next screen
+                    Intent intent = new Intent(this, ActionPointActivitys.class); // Replace with your actual activity
+                    intent.putExtra("STORE_DATA", currentStore);
+                    startActivity(intent);
+                    break;
+
+                case ERROR:
+                    progressDialog.dismiss();
+                    Toast.makeText(this, resource.message, Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        });
+
+        // Observe Geofence Alert
+        viewModel.getGeofenceAlert().observe(this, data -> {
+            showGeofenceDialog(data);
+        });
+    }
+
+    @SuppressLint("MissingPermission")
+    private void fetchLocationAndProceed() {
+        progressDialog.setMessage("Fetching Location...");
+        progressDialog.show();
+
+        // High accuracy request
+        LocationRequest locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 1000)
+                .setWaitForAccurateLocation(true)
+                .setMaxUpdates(1)
+                .build();
+
+        fusedLocationClient.requestLocationUpdates(locationRequest, new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                // Keep dialog open because ViewModel will either dismiss it (on error) or update it (on loading API)
+
+                if (locationResult != null && locationResult.getLastLocation() != null) {
+                    Location loc = locationResult.getLastLocation();
+
+                    // --- CHECK DATA ---
+                    // 1. Attendance Check (Ideally get this from SharedPrefs/Session)
+                    // boolean isAttendanceMarked = sessionManager.isAttendanceMarked();
+                    boolean isAttendanceMarked = true; // Hardcoded for now per your request
+
+                    // 2. Network Check
+                    boolean isNetAvailable = NetworkUtil.isNetworkAvailable(StoreProfileActivity.this);
+
+                    // 3. Get Token
+                    String token = sessionManager.getToken();
+
+                    // --- PASS ALL TO VIEWMODEL ---
+                    viewModel.onEnterStoreClicked(loc, isNetAvailable, isAttendanceMarked, token);
+
+                } else {
+                    progressDialog.dismiss();
+                    Toast.makeText(StoreProfileActivity.this, "Failed to get location. Ensure GPS is on.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, Looper.getMainLooper());
+    }
+
+    private void showGeofenceDialog(StoreProfileViewModel.GeofenceData data) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Geofencing Alert!")
+                .setMessage("Distance from Store: " + String.format("%.2f", data.distance) + "m\n\n" +
+                        "Current Lat: " + data.currentLat + "\n" +
+                        "Current Lng: " + data.currentLng + "\n\n" +
+                        "Please take order within 50m of store location.")
+                .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                .setIcon(android.R.drawable.ic_dialog_alert);
+
+        builder.create().show();
     }
 }

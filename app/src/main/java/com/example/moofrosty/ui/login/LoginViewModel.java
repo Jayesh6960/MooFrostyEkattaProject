@@ -14,7 +14,7 @@ public class LoginViewModel extends ViewModel {
     private MutableLiveData<Resource<LoginResponse>> loginResult = new MutableLiveData<>();
 
     public LoginViewModel() {
-        repository = new LoginRepository();
+        this.repository = new LoginRepository();
     }
 
     public LiveData<Resource<LoginResponse>> getLoginResult() {

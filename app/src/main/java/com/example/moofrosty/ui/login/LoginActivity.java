@@ -15,11 +15,13 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.moofrosty.core.utils.NetworkUtil;
 import com.example.moofrosty.data.local.SessionManager;
+import com.example.moofrosty.data.model.LoginResponse;
 import com.example.moofrosty.ui.dashboard.DashboardActivity;
 import com.example.moofrosty.ui.enterstoreorders.ActionPointActivitys;
 import com.example.moofrosty.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.gson.Gson;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -96,14 +98,18 @@ public class LoginActivity extends AppCompatActivity {
 
                     case SUCCESS:
                         setLoadingState(false);
-                        if (resource.data != null) {
-                            Toast.makeText(this, "Login Successful!", Toast.LENGTH_SHORT).show();
+                        setLoadingState(false);
+                        LoginResponse resp = resource.data;
+                        if (resp != null) {
 
-                            // UPDATED: Direct access (No .getData())
-                            String token = resource.data.getToken();
-                            String name = resource.data.getName();
+                            String token = resp.getToken();
 
-                            sessionManager.saveLoginSession(token, name != null ? name : "User");
+                            // ✅ CONVERT FULL RESPONSE TO JSON
+                            String fullJson = new Gson().toJson(resp);
+
+                            // ✅ SAVE FULL JSON (NOT name)
+                            sessionManager.saveLoginSession(token, fullJson);
+                            Log.d("sessonpass","checkpass"+token+" "+fullJson);
 
                             navigateToDashboard();
                         } else {

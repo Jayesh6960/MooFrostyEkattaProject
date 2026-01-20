@@ -180,7 +180,7 @@ public class NewStoreActivity extends AppCompatActivity {
         tvAddress.setText(item.getAddress());
         tvDate.setText(item.getCreatedAt().substring(0, 10));
         tvBeat.setText("Waluj Pandharpur");
-        tvBusiness.setText("Udyam Aadhaar");
+        tvBusiness.setText(item.getShopKyc().getDocumentType());
 
         dialog.show();
     }

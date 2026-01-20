@@ -2,7 +2,9 @@ package com.example.moofrosty.ui.attendance.attendancecalender;
 
 import android.os.Bundle;
 
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -23,15 +25,19 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 public class AttendanceCalendarActivity extends AppCompatActivity {
 
     private AttendanceCalendarViewModel viewModel;
     private CalendarView calendarView;
     private SessionManager sessionManager;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +52,7 @@ public class AttendanceCalendarActivity extends AppCompatActivity {
 // 1. Init Views
         ImageView btnBack = findViewById(R.id.btn_back);
         calendarView = findViewById(R.id.attendanceCalender); // The Applandeo View
+        progressBar = findViewById(R.id.progressBar);
 
         sessionManager = new SessionManager(this);
         viewModel = new ViewModelProvider(this).get(AttendanceCalendarViewModel.class);
@@ -61,18 +68,72 @@ public class AttendanceCalendarActivity extends AppCompatActivity {
         }
 
         // 3. Observe and Populate Calendar
+//        viewModel.getLeaveData().observe(this, resource -> {
+//            if (resource != null) {
+//                if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
+//                //    populateCalendarEvents(resource.data.getData());
+//                    // --- COMBINING ALL EVENTS HERE ---
+//                    List<EventDay> allEvents = new ArrayList<>();
+//
+//                    // 1. Get Leaves
+//                    if (resource.data.getData() != null) {
+//                        allEvents.addAll(getLeaveEvents(resource.data.getData()));
+//                    }
+//
+//                    // 2. Get Holidays
+//                    if (resource.data.getHolidays() != null) {
+//                        allEvents.addAll(getHolidayEvents(resource.data.getHolidays()));
+//                    }
+//
+//                    // 3. Get Attendance
+//                    if (resource.data.getUserAttendance() != null) {
+//                        allEvents.addAll(getAttendanceEvents(resource.data.getUserAttendance()));
+//                    }
+//
+//                    // Set everything to calendar
+//                    calendarView.setEvents(allEvents);
+//                } else if (resource.status == Resource.Status.ERROR) {
+//                    Toast.makeText(this, resource.message, Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+
         viewModel.getLeaveData().observe(this, resource -> {
             if (resource != null) {
-                if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
-                    populateCalendarEvents(resource.data.getData());
-                } else if (resource.status == Resource.Status.ERROR) {
-                    Toast.makeText(this, resource.message, Toast.LENGTH_SHORT).show();
+                switch (resource.status) {
+                    case LOADING:
+                        progressBar.setVisibility(View.VISIBLE);
+                        break;
+
+                    case SUCCESS:
+                        progressBar.setVisibility(View.GONE);
+
+                        if (resource.data != null) {
+                            List<EventDay> allEvents = new ArrayList<>();
+                            if (resource.data.getData() != null) {
+                                allEvents.addAll(getLeaveEvents(resource.data.getData()));
+                            }
+                            if (resource.data.getHolidays() != null) {
+                                allEvents.addAll(getHolidayEvents(resource.data.getHolidays()));
+                            }
+                            if (resource.data.getUserAttendance() != null) {
+                                allEvents.addAll(getAttendanceEvents(resource.data.getUserAttendance()));
+                            }
+
+                            calendarView.setEvents(allEvents);
+                        }
+                        break;
+
+                    case ERROR:
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(this, resource.message, Toast.LENGTH_SHORT).show();
+                        break;
                 }
             }
         });
     }
-
-    private void populateCalendarEvents(List<LeaveResponse.UserLeaveData> leaveList) {
+   // Collection<? extends EventDay>
+    private List<EventDay> getLeaveEvents(List<LeaveResponse.UserLeaveData> leaveList) {
         List<EventDay> events = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
@@ -91,13 +152,13 @@ public class AttendanceCalendarActivity extends AppCompatActivity {
                             // Map Leave Type to Drawable
                             switch (leave.getLeaveType()) {
                                 case "1": // Medical Leave
-                                    iconRes = R.drawable.ml; // Replace with R.drawable.ml
+                                    iconRes = R.drawable.cl; // Replace with R.drawable.ml
                                     break;
                                 case "2": // Loss of Pay
-                                    iconRes =R.drawable.lwp; // Replace with R.drawable.ic_lwp
+                                    iconRes = R.drawable.ml; // Replace with R.drawable.ic_lwp
                                     break;
                                 case "3": // Casual Leave
-                                    iconRes = R.drawable.cl; // Replace with R.drawable.cl
+                                    iconRes = R.drawable.lwp; // Replace with R.drawable.cl
                                     break;
                                 default:
                                     iconRes = android.R.drawable.star_on; // Default
@@ -115,8 +176,50 @@ public class AttendanceCalendarActivity extends AppCompatActivity {
                 }
             }
         }
-
-        // Set all events to the calendar
-        calendarView.setEvents(events);
+        return events;
     }
+
+        // --- METHOD 2: Process Holidays ---
+        private List<EventDay> getHolidayEvents(List<LeaveResponse.HolidayData> holidayList) {
+            List<EventDay> events = new ArrayList<>();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+
+            for (LeaveResponse.HolidayData holiday : holidayList) {
+                try {
+                    Date date = sdf.parse(holiday.getDate());
+                    if (date != null) {
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(date);
+                        // Use your holiday icon here
+                        events.add(new EventDay(calendar, R.drawable.holidayicon));
+                    }
+                } catch (ParseException e) { e.printStackTrace(); }
+            }
+            return events;
+        }
+
+        // --- METHOD 3: Process Attendance ---
+        private List<EventDay> getAttendanceEvents(List<LeaveResponse.AttendanceData> attendanceList) {
+            List<EventDay> events = new ArrayList<>();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+            // Set to prevent duplicate icons (since user punches IN and OUT on the same day)
+            Set<String> processedDates = new HashSet<>();
+
+            for (LeaveResponse.AttendanceData att : attendanceList) {
+                if (!processedDates.contains(att.getDate())) {
+                    try {
+                        Date date = sdf.parse(att.getDate());
+                        if (date != null) {
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.setTime(date);
+                            // Use your Present icon here
+                            events.add(new EventDay(calendar, R.drawable.presenticon));
+                            processedDates.add(att.getDate());
+                        }
+                    } catch (ParseException e) { e.printStackTrace(); }
+                }
+            }
+            return events;
+        }
+
 }

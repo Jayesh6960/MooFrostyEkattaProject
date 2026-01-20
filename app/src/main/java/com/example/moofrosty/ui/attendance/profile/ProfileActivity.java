@@ -1,6 +1,7 @@
 package com.example.moofrosty.ui.attendance.profile;
 
 import android.os.Bundle;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -28,11 +29,8 @@ public class ProfileActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        // Toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
+        ImageView btnBack = findViewById(R.id.btn_back);
+        btnBack.setOnClickListener(v -> finish());
         // TabLayout
         tabLayout = findViewById(R.id.tabLayout);
 
@@ -51,17 +49,20 @@ public class ProfileActivity extends AppCompatActivity {
                         fragment = new DetailsFragment();
                         break;
                     case 1:
-                    //    fragment = new PositionFragment();
+                        fragment = new BankDetailsFragment();
                         break;
-                    case 2:
-                    //    fragment = new KYCFragment();
-                        break;
-                    case 3:
-                    //    fragment = new BankFragment();
-                        break;
-                    case 4:
-                    //    fragment = new SalaryFragment();
-                        break;
+//                    case 1:
+//                    //    fragment = new PositionFragment();
+//                        break;
+//                    case 2:
+//                    //    fragment = new KYCFragment();
+//                        break;
+//                    case 3:
+//                    //    fragment = new BankFragment();
+//                        break;
+//                    case 4:
+//                    //    fragment = new SalaryFragment();
+//                        break;
                 }
 
                 if (fragment != null) {

@@ -12,7 +12,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="#2196F3"
+        android:background="@color/Pink_color"
         android:padding="12dp">
         <ImageView
             android:id="@+id/btn_back"
@@ -36,14 +36,40 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="#1976D2"
+        android:background="#9B4153"
         android:orientation="horizontal"
         android:weightSum="4"
         android:padding="8dp">
-        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.6" android:text="PARAM" android:textColor="#FFF" android:textStyle="bold"/>
-        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.8" android:text="TGT" android:gravity="end" android:textColor="#FFF" android:textStyle="bold"/>
-        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.8" android:text="ACHV" android:gravity="end" android:textColor="#FFF" android:textStyle="bold"/>
-        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.8" android:text="%" android:gravity="end" android:textColor="#FFF" android:textStyle="bold"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.6"
+            android:text="PARAM"
+            android:textColor="#FFF"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            android:text="TGT"
+            android:gravity="end"
+            android:textColor="#FFF"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            android:text="ACHV"
+            android:gravity="end"
+            android:textColor="#FFF"
+            android:textStyle="bold"/>
+        <TextView android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            android:text="%  "
+            android:gravity="end"
+            android:textColor="#FFF"
+            android:textStyle="bold"/>
     </LinearLayout>
 
     <!-- The List -->

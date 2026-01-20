@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moofrosty.R;
@@ -37,7 +38,7 @@ public class MyBeatCalendarAdapter extends RecyclerView.Adapter<MyBeatCalendarAd
         holder.tvDate.setText(model.getDate());
 
         if (model.isSelected()) {
-            holder.cardView.setCardBackgroundColor(Color.parseColor("#2196F3")); // Blue
+            holder.cardView.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.Purple_Color));
             holder.tvDay.setTextColor(Color.WHITE);
             holder.tvDate.setTextColor(Color.WHITE);
         } else {

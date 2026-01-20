@@ -1,263 +1,194 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:background="#F5F5F5"
-    tools:context=".ui.dashboard.DashboardMyBeatFragment">
+    android:layout_height="match_parent">
 
-    <!-- 1. Horizontal Calendar -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/calendar_recycler"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:background="#E2E2E2"
-        />
-
-    <!-- 2. Beat Dropdown -->
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:padding="12dp"
-        android:layout_marginTop="1dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/tv_beat_dropdown"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Beat: Select"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
-            android:drawableTint="@color/black"/>
-    </LinearLayout>
-
-    <!-- 3. Summary Cards -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="8dp"
-        android:weightSum="3">
-
-        <!-- Order Value Card -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="0dp"
-            android:layout_height="80dp"
-            android:layout_weight="1"
-            app:cardCornerRadius="8dp"
-            app:cardBackgroundColor="#80CBC4"
-            android:layout_marginEnd="4dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="center_horizontal|center_vertical">
-
-                <TextView
-                    android:text="Order Value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:textColor="@color/black"/>
-
-                <TextView
-                    android:id="@+id/tv_order_val"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="2574"
-
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"/>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- Visited Card -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="0dp"
-            android:layout_height="80dp"
-            android:layout_weight="1"
-            app:cardCornerRadius="8dp"
-            app:cardBackgroundColor="#F48FB1"
-            android:layout_marginEnd="4dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="center_horizontal|center_vertical">
-
-                <TextView
-                    android:text="Stores Visited"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:textColor="@color/black"/>/>
-
-                <TextView
-                    android:id="@+id/tv_visited_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="13/40"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"/>/>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- Order Taken Card -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="0dp"
-            android:layout_height="80dp"
-            android:layout_weight="1"
-            app:cardCornerRadius="8dp"
-            app:cardBackgroundColor="#90CAF9">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="center_horizontal|center_vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Order Taken"
-                    android:textSize="15sp"
-                    android:textColor="@color/black"/>/>
-
-                <TextView
-                    android:id="@+id/tv_order_taken_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="8/40"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"/>/>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-    </LinearLayout>
-
-    <!-- 4. Search and Map -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="8dp"
-        android:gravity="center_vertical">
-
-        <EditText
-            android:id="@+id/et_search"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:background="@drawable/rounded_edittext_bg"
-            android:hint="40 Store(s)"
-            android:paddingStart="12dp"
-            android:drawableStart="@android:drawable/ic_menu_search"
-            android:drawableTint="@android:color/darker_gray"
-            android:textSize="14sp"/>
-
-        <ImageView
-            android:id="@+id/btn_map_view"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="8dp"
-            android:src="@android:drawable/ic_dialog_map"
-            app:tint="#2196F3" /> <!-- The Map Button -->
-    </LinearLayout>
-
-<!--    &lt;!&ndash; 5. Chips Filters &ndash;&gt;-->
-<!--    <HorizontalScrollView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:scrollbars="none"-->
-<!--        android:paddingStart="8dp"-->
-<!--        android:paddingBottom="8dp">-->
-
-<!--        <com.google.android.material.chip.ChipGroup-->
-<!--            android:id="@+id/filter_chip_group"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:singleSelection="true"-->
-<!--            app:selectionRequired="true">-->
-
-<!--            <com.google.android.material.chip.Chip-->
-<!--                android:id="@+id/chip_all"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="All"-->
-<!--                android:checked="true"-->
-<!--                android:textColor="@color/selector_mybeat_chip_text"-->
-<!--                app:chipBackgroundColor="@drawable/selector_mybeat_chip_bg"-->
-<!--                style="@style/Widget.MaterialComponents.Chip.Choice"-->
-<!--                app:chipStrokeWidth="0dp"-->
-<!--                app:rippleColor="@android:color/white"/>-->
-
-<!--            <com.google.android.material.chip.Chip-->
-<!--                android:id="@+id/chip_not_visited"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Not Visited"-->
-<!--                android:textColor="@color/selector_mybeat_chip_text"-->
-<!--                app:chipBackgroundColor="@drawable/selector_mybeat_chip_bg"-->
-<!--                style="@style/Widget.MaterialComponents.Chip.Choice"-->
-<!--                app:chipStrokeWidth="0dp"-->
-<!--                app:rippleColor="@android:color/white"/>-->
-
-<!--            <com.google.android.material.chip.Chip-->
-<!--                android:id="@+id/chip_visited"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Visited"-->
-<!--                android:textColor="@color/selector_mybeat_chip_text"-->
-<!--                app:chipBackgroundColor="@drawable/selector_mybeat_chip_bg"-->
-<!--                style="@style/Widget.MaterialComponents.Chip.Choice"-->
-<!--                app:chipStrokeWidth="0dp"-->
-<!--                app:rippleColor="@android:color/white"/>-->
-
-<!--            <com.google.android.material.chip.Chip-->
-<!--                android:id="@+id/chip_order"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Order Taken"-->
-<!--                android:textColor="@color/selector_mybeat_chip_text"-->
-<!--                app:chipBackgroundColor="@drawable/selector_mybeat_chip_bg"-->
-<!--                style="@style/Widget.MaterialComponents.Chip.Choice"-->
-<!--                app:chipStrokeWidth="0dp"-->
-<!--                app:rippleColor="@android:color/white"/>-->
-<!--        </com.google.android.material.chip.ChipGroup>-->
-<!--    </HorizontalScrollView>-->
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tab_layout_filter"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:tabMode="scrollable"
-        app:tabRippleColor="@null"
-        app:tabIndicatorHeight="0dp"
-        app:tabBackground="@drawable/selector_mybeattab_background"
-        app:tabTextColor="@color/selector_mybeattab_text"
-        app:tabTextAppearance="@style/MyCustomTabText"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="4dp"/>
-
-    <!-- 6. Store List -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/store_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FAFAFA"/>
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="#F5F5F5"
+        tools:context=".ui.dashboard.DashboardMyBeatFragment">
 
-</LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/calendar_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:background="#E2E2E2" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="12dp"
+            android:layout_marginTop="1dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_beat_dropdown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Beat: Select"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
+                android:drawableTint="@color/black"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:weightSum="3">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="#80CBC4"
+                android:layout_marginEnd="4dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal|center_vertical">
+                    <TextView
+                        android:text="Order Value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:textColor="@color/black"/>
+                    <TextView
+                        android:id="@+id/tv_order_val"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="#F48FB1"
+                android:layout_marginEnd="4dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal|center_vertical">
+                    <TextView
+                        android:text="Stores Visited"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:textColor="@color/black"/>
+                    <TextView
+                        android:id="@+id/tv_visited_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0/0"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="#90CAF9">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal|center_vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Order Taken"
+                        android:textSize="15sp"
+                        android:textColor="@color/black"/>
+                    <TextView
+                        android:id="@+id/tv_order_taken_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0/0"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:gravity="center_vertical">
+
+            <EditText
+                android:id="@+id/et_search"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_edittext_bg"
+                android:hint="0 Store(s)"
+                android:paddingStart="12dp"
+                android:drawableStart="@drawable/search_icon"
+                android:drawableTint="@color/Purple_Color"
+                android:textSize="14sp"/>
+
+            <ImageView
+                android:id="@+id/btn_map_view"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="8dp"
+                android:src="@android:drawable/ic_dialog_map"
+                app:tint="@color/Purple_Color" />
+        </LinearLayout>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout_filter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabMode="scrollable"
+            app:tabRippleColor="@null"
+            app:tabIndicatorHeight="0dp"
+            app:tabBackground="@drawable/selector_mybeattab_background"
+            app:tabTextColor="@color/selector_mybeattab_text"
+            app:tabTextAppearance="@style/MyCustomTabText"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="4dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/store_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FAFAFA"/>
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
+</FrameLayout>
