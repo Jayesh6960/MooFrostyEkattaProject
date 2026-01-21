@@ -16,6 +16,7 @@ import com.example.moofrosty.core.network.Resource;
 import com.example.moofrosty.data.model.ApplyLeaveRequest;
 import com.example.moofrosty.data.model.GeneralResponse;
 import com.example.moofrosty.data.model.LeaveHistoryResponse;
+import com.example.moofrosty.data.model.LeaveTypeResponse;
 import com.example.moofrosty.data.repository.LeaveRepository;
 
 public class LeaveViewModel  extends ViewModel {
@@ -23,7 +24,7 @@ public class LeaveViewModel  extends ViewModel {
     private LeaveRepository repository;
     private MutableLiveData<Resource<GeneralResponse>> applyLeaveResult = new MutableLiveData<>();
     private MutableLiveData<Resource<LeaveHistoryResponse>> historyResult = new MutableLiveData<>();
-
+    private MutableLiveData<Resource<LeaveTypeResponse>> leaveTypesResult = new MutableLiveData<>();
     public LeaveViewModel() {
         repository = new LeaveRepository();
     }
@@ -38,6 +39,14 @@ public class LeaveViewModel  extends ViewModel {
 
     public void fetchHistory(String token) {
         repository.getLeaveHistory(token, historyResult);
+    }
+
+
+    public LiveData<Resource<LeaveTypeResponse>> getLeaveTypesResult() {
+        return leaveTypesResult;
+    }
+    public void fetchLeaveTypes(String token) {
+        repository.getLeaveTypes(token, leaveTypesResult);
     }
 
 }

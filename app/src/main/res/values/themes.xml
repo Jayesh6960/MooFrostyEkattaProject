@@ -34,4 +34,11 @@
 
 
     <style name="Theme.MooFrosty" parent="Base.Theme.MooFrosty" />
+
+    <style name="CustomDatePickerTheme" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="colorPrimary">@color/Purple_Color</item>
+        <item name="colorAccent">@color/Purple_Color</item>
+
+
+    </style>
 </resources>

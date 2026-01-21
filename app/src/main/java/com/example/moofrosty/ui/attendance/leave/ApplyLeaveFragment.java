@@ -18,12 +18,16 @@ import android.widget.Toast;
 import com.example.moofrosty.R;
 import com.example.moofrosty.core.network.Resource.Status;
 import com.example.moofrosty.core.network.Resource;
+import com.example.moofrosty.core.utils.NetworkUtil;
 import com.example.moofrosty.data.local.SessionManager;
+import com.example.moofrosty.data.model.LeaveTypeResponse;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -35,6 +39,11 @@ public class ApplyLeaveFragment extends Fragment {
     private LeaveViewModel viewModel;
     private SessionManager sessionManager;
     private final Calendar calendar = Calendar.getInstance();
+
+    private final List<LeaveTypeResponse.LeaveType> leaveTypeList = new ArrayList<>();
+    private final List<String> leaveTypeNames = new ArrayList<>();
+
+    private int selectedLeaveTypeId = -1;
 
     public ApplyLeaveFragment() {
 
@@ -74,62 +83,224 @@ public class ApplyLeaveFragment extends Fragment {
         // Submit Logic
         btnApply.setOnClickListener(v -> submitLeave());
 
-        // Observe Result
-        viewModel.getApplyLeaveResult().observe(getViewLifecycleOwner(), resource -> {
-            if (resource != null) {
-                if (resource.status == Resource.Status.LOADING) {
+        checkNetworkAndLoadLeaveTypes();
+        observeLeaveTypes();
+        observeApplyLeave();
+
+//        // Observe Result
+//        viewModel.getApplyLeaveResult().observe(getViewLifecycleOwner(), resource -> {
+//            if (resource != null) {
+//                if (resource.status == Resource.Status.LOADING) {
+//                    btnApply.setEnabled(false);
+//                    btnApply.setText("Applying...");
+//                } else if (resource.status == Resource.Status.SUCCESS) {
+//                    btnApply.setEnabled(true);
+//                    btnApply.setText("Apply Leave");
+//                    Toast.makeText(requireContext(), resource.data.getMessage(), Toast.LENGTH_LONG).show();
+//                    // Clear inputs on success
+//                    etReason.setText("");
+//                    etStartDate.setText("");
+//                    etEndDate.setText("");
+//                } else if (resource.status == Resource.Status.ERROR) {
+//                    btnApply.setEnabled(true);
+//                    btnApply.setText("Apply Leave");
+//                    Toast.makeText(requireContext(), resource.message, Toast.LENGTH_LONG).show();
+//                }
+//            }
+//        });
+    }
+
+    private void checkNetworkAndLoadLeaveTypes() {
+        if (!NetworkUtil.isNetworkAvailable(requireContext())) {
+            Toast.makeText(requireContext(),
+                    "No Internet Connection",
+                    Toast.LENGTH_LONG).show();
+            btnApply.setEnabled(false);
+            return;
+        }
+        String token = sessionManager.getToken();
+        if (token == null || token.isEmpty()) {
+            Toast.makeText(requireContext(),
+                    "Session Expired. Please Login Again.",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+        viewModel.fetchLeaveTypes(token);
+    }
+
+    private void observeLeaveTypes() {
+        viewModel.getLeaveTypesResult().observe(getViewLifecycleOwner(), resource -> {
+
+            if (resource == null) return;
+
+            switch (resource.status) {
+
+                case LOADING:
                     btnApply.setEnabled(false);
-                    btnApply.setText("Applying...");
-                } else if (resource.status == Resource.Status.SUCCESS) {
+                    btnApply.setText("Loading...");
+                    break;
+
+                case SUCCESS:
                     btnApply.setEnabled(true);
                     btnApply.setText("Apply Leave");
-                    Toast.makeText(requireContext(), resource.data.getMessage(), Toast.LENGTH_LONG).show();
-                    // Clear inputs on success
-                    etReason.setText("");
-                    etStartDate.setText("");
-                    etEndDate.setText("");
-                } else if (resource.status == Resource.Status.ERROR) {
-                    btnApply.setEnabled(true);
+
+                    leaveTypeList.clear();
+                    leaveTypeNames.clear();
+
+                    leaveTypeList.addAll(resource.data.getData());
+                    for (LeaveTypeResponse.LeaveType type : leaveTypeList) {
+                        leaveTypeNames.add(type.getLeaveType());
+                    }
+
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                            requireContext(),
+                            android.R.layout.simple_dropdown_item_1line,
+                            leaveTypeNames
+                    );
+                    spinnerLeaveType.setAdapter(adapter);
+
+                    spinnerLeaveType.setOnItemClickListener(
+                            (parent, view, position, id) ->
+                                    selectedLeaveTypeId =
+                                            leaveTypeList.get(position).getLeavesId()
+                    );
+                    break;
+
+                case ERROR:
+                    btnApply.setEnabled(false);
                     btnApply.setText("Apply Leave");
-                    Toast.makeText(requireContext(), resource.message, Toast.LENGTH_LONG).show();
-                }
+                    Toast.makeText(requireContext(),
+                            resource.message,
+                            Toast.LENGTH_LONG).show();
+                    break;
             }
         });
     }
 
+    private void observeApplyLeave() {
+        viewModel.getApplyLeaveResult().observe(getViewLifecycleOwner(), resource -> {
+
+            if (resource == null) return;
+
+            switch (resource.status) {
+
+                case LOADING:
+                    btnApply.setEnabled(false);
+                    btnApply.setText("Applying...");
+                    break;
+
+                case SUCCESS:
+                    btnApply.setEnabled(true);
+                    btnApply.setText("Apply Leave");
+
+                    Toast.makeText(requireContext(),
+                            resource.data.getMessage(),
+                            Toast.LENGTH_LONG).show();
+
+                    // Reset form
+                    etStartDate.setText("");
+                    etEndDate.setText("");
+                    etReason.setText("");
+                    spinnerLeaveType.setText("");
+                    selectedLeaveTypeId = -1;
+                    break;
+
+                case ERROR:
+                    btnApply.setEnabled(true);
+                    btnApply.setText("Apply Leave");
+                    Toast.makeText(requireContext(),
+                            resource.message,
+                            Toast.LENGTH_LONG).show();
+                    break;
+            }
+        });
+    }
+
+
+//    private void showDatePicker(TextInputEditText editText) {
+//        new DatePickerDialog(requireContext(),R.style.CustomDatePickerTheme, (view, year, month, dayOfMonth) -> {
+//            calendar.set(year, month, dayOfMonth);
+//            String format = "yyyy-MM-dd";
+//            SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.US);
+//            editText.setText(sdf.format(calendar.getTime()));
+//        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+//    }
+
     private void showDatePicker(TextInputEditText editText) {
-        new DatePickerDialog(requireContext(), (view, year, month, dayOfMonth) -> {
-            calendar.set(year, month, dayOfMonth);
-            String format = "yyyy-MM-dd";
-            SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.US);
-            editText.setText(sdf.format(calendar.getTime()));
-        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+
+        DatePickerDialog dialog = new DatePickerDialog(
+                requireContext(),
+                R.style.CustomDatePickerTheme,
+                (view, year, month, day) -> {
+                    calendar.set(year, month, day);
+                    SimpleDateFormat sdf =
+                            new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+                    editText.setText(sdf.format(calendar.getTime()));
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+        );
+        dialog.setOnShowListener(d -> {
+            dialog.getButton(DatePickerDialog.BUTTON_POSITIVE)
+                    .setTextColor(getResources().getColor(R.color.Purple_Color));
+
+            dialog.getButton(DatePickerDialog.BUTTON_NEGATIVE)
+                    .setTextColor(getResources().getColor(R.color.Purple_Color));
+        });
+        dialog.show();
     }
 
     private void submitLeave() {
-        String typeText = spinnerLeaveType.getText().toString();
-        String start = etStartDate.getText().toString();
-        String end = etEndDate.getText().toString();
-        String reason = etReason.getText().toString();
 
-        if (typeText.isEmpty() || start.isEmpty() || end.isEmpty() || reason.isEmpty()) {
+        if (!NetworkUtil.isNetworkAvailable(requireContext())) {
+            Toast.makeText(requireContext(), "No Internet Connection", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String start = etStartDate.getText().toString().trim();
+        String end = etEndDate.getText().toString().trim();
+        String reason = etReason.getText().toString().trim();
+
+        if (selectedLeaveTypeId == -1 ||
+                start.isEmpty() ||
+                end.isEmpty() ||
+                reason.isEmpty()) {
+
             Toast.makeText(requireContext(), "All fields are mandatory", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        // Map text to ID (1, 2, 3)
-        String typeId = "1";
-        if (typeText.equals("Medical Leave")) typeId = "2";
-        else if (typeText.equals("Loss of Pay")) typeId = "3";
-
-        // GET TOKEN FROM SESSION
         String token = sessionManager.getToken();
-
-        if (token.isEmpty()) {
-            Toast.makeText(requireContext(), "Session Expired. Please Login Again.", Toast.LENGTH_SHORT).show();
+        if (token == null || token.isEmpty()) {
+            Toast.makeText(requireContext(),
+                    "Session Expired. Please Login Again.",
+                    Toast.LENGTH_SHORT).show();
             return;
         }
-
-        viewModel.applyLeave(token, typeId, start, end, reason);
+        viewModel.applyLeave(token, String.valueOf(selectedLeaveTypeId), start, end, reason
+        );
     }
+
+//    private void submitLeave() {
+//        String typeText = spinnerLeaveType.getText().toString();
+//        String start = etStartDate.getText().toString();
+//        String end = etEndDate.getText().toString();
+//        String reason = etReason.getText().toString();
+//
+//        if (typeText.isEmpty() || start.isEmpty() || end.isEmpty() || reason.isEmpty()) {
+//            Toast.makeText(requireContext(), "All fields are mandatory", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//        // Map text to ID (1, 2, 3)
+//        String typeId = "1";
+//        if (typeText.equals("Medical Leave")) typeId = "2";
+//        else if (typeText.equals("Loss of Pay")) typeId = "3";
+//        // GET TOKEN FROM SESSION
+//        String token = sessionManager.getToken();
+//        if (token.isEmpty()) {
+//            Toast.makeText(requireContext(), "Session Expired. Please Login Again.", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//        viewModel.applyLeave(token, typeId, start, end, reason);
+//    }
 }

@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -133,16 +134,27 @@ public class NewStoreActivity extends AppCompatActivity {
         }
     }
 
-    // If date changes, we need to check network again
     private void showDatePicker() {
         Calendar cal = Calendar.getInstance();
-        new DatePickerDialog(this, (view, year, month, dayOfMonth) -> {
-            if (NetworkUtil.isNetworkAvailable(this)) {
-                viewModel.setDate(year, month, dayOfMonth);
-            } else {
-                Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
-            }
-        }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)).show();
+        DatePickerDialog dialog = new DatePickerDialog(this, R.style.CustomDatePickerTheme,
+                (view, year, month, dayOfMonth) -> {
+                    if (NetworkUtil.isNetworkAvailable(this)) {
+                        viewModel.setDate(year, month, dayOfMonth);
+                    } else {
+                        Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                cal.get(Calendar.YEAR),
+                cal.get(Calendar.MONTH),
+                cal.get(Calendar.DAY_OF_MONTH)
+        );
+        dialog.setOnShowListener(d -> {
+            dialog.getButton(DatePickerDialog.BUTTON_POSITIVE)
+                    .setTextColor(ContextCompat.getColor(this, R.color.Purple_Color));
+            dialog.getButton(DatePickerDialog.BUTTON_NEGATIVE)
+                    .setTextColor(ContextCompat.getColor(this, R.color.Purple_Color));
+        });
+        dialog.show();
     }
 
     private void showStoreDetailsPopup(StoreListResponse.StoreModel item) {

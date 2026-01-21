@@ -197,7 +197,9 @@
                     android:text="Saving Account"
                     android:textColor="#3E3E3E"
                     android:textSize="16sp"
+                    android:textStyle="bold"
                     android:clickable="false"
+                    android:enabled="false"
                     android:padding="16dp" />
             </com.google.android.material.textfield.TextInputLayout>
             <LinearLayout

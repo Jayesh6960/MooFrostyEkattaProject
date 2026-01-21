@@ -8,6 +8,7 @@ import com.example.moofrosty.core.network.Resource;
 import com.example.moofrosty.data.model.ApplyLeaveRequest;
 import com.example.moofrosty.data.model.GeneralResponse;
 import com.example.moofrosty.data.model.LeaveHistoryResponse;
+import com.example.moofrosty.data.model.LeaveTypeResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -70,6 +71,35 @@ public class LeaveRepository {
             }
             @Override
             public void onFailure(Call<LeaveHistoryResponse> call, Throwable t) {
+                liveData.postValue(Resource.error("Network Error: " + t.getMessage(), null));
+            }
+        });
+    }
+
+    public void getLeaveTypes(String rawToken,
+                              MutableLiveData<Resource<LeaveTypeResponse>> liveData) {
+
+        liveData.postValue(Resource.loading(null));
+        String authHeader = "Bearer " + rawToken;
+
+        apiService.getLeaveTypes(authHeader).enqueue(new Callback<LeaveTypeResponse>() {
+            @Override
+            public void onResponse(Call<LeaveTypeResponse> call,
+                                   Response<LeaveTypeResponse> response) {
+
+                if (response.isSuccessful() && response.body() != null) {
+                    if ("success".equalsIgnoreCase(response.body().getStatus())) {
+                        liveData.postValue(Resource.success(response.body()));
+                    } else {
+                        liveData.postValue(Resource.error(response.body().getMessage(), null));
+                    }
+                } else {
+                    liveData.postValue(Resource.error("Error: " + response.code(), null));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LeaveTypeResponse> call, Throwable t) {
                 liveData.postValue(Resource.error("Network Error: " + t.getMessage(), null));
             }
         });

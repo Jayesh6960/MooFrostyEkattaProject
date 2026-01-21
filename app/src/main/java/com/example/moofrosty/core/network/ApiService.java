@@ -8,6 +8,7 @@
     import com.example.moofrosty.data.model.GeneralResponse;
     import com.example.moofrosty.data.model.LeaveHistoryResponse;
     import com.example.moofrosty.data.model.LeaveResponse;
+    import com.example.moofrosty.data.model.LeaveTypeResponse;
     import com.example.moofrosty.data.model.LocationResponse;
     import com.example.moofrosty.data.model.LoginRequest;
     import com.example.moofrosty.data.model.LoginResponse;
@@ -167,6 +168,11 @@
         Call<SubCategoryResponse> getSubCategories(
                 @Header("Authorization") String token,
                 @Path("catId") int catId
+        );
+
+        @GET("api/admin/leaves-type")
+        Call<LeaveTypeResponse> getLeaveTypes(
+                @Header("Authorization") String token
         );
 
     }
