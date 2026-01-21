@@ -63,7 +63,6 @@
             android:hint="Username"
             app:cursorColor="@color/Purple_Color"
             app:boxStrokeColor="@color/Purple_Color">
-
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/username"
                 android:layout_width="match_parent"
@@ -86,7 +85,6 @@
             app:cursorColor="@color/Purple_Color"
             app:boxStrokeColor="@color/Purple_Color"
             >
-
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/password_toggle"
                 android:layout_width="match_parent"

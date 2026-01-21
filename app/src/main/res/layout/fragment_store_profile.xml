@@ -19,6 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
             app:cardCornerRadius="4dp"
+            android:layout_marginTop="15dp"
             app:cardElevation="2dp"
             xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -26,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="20dp">
 
                 <TextView
                     android:id="@+id/tv_owner_name"
@@ -34,8 +35,8 @@
                     android:layout_height="wrap_content"
                     android:text="Owner Name: Loading..."
                     android:textStyle="bold"
-                    android:textColor="#000"
-                    android:textSize="16dp"/>
+                    android:textColor="#000000"
+                    android:textSize="20dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -49,7 +50,7 @@
                         android:layout_height="wrap_content"
                         android:text="HUL Code: ..."
                         android:textColor="#333"
-                        android:textSize="16dp"/>
+                        android:textSize="20dp"/>
 
                     <Space android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
 
@@ -62,7 +63,7 @@
                         android:visibility="gone"
                         android:drawableStart="@android:drawable/ic_delete"
                         android:drawableTint="#F44336"
-                        android:textSize="16dp"/>
+                        android:textSize="18dp"/>
                 </LinearLayout>
 
                 <TextView
@@ -71,7 +72,7 @@
                     android:layout_height="wrap_content"
                     android:text="Party Code: ..."
                     android:textColor="#333"
-                    android:textSize="16dp"
+                    android:textSize="20dp"
                     android:layout_marginTop="2dp"/>
 
                 <!-- Phone Row -->
@@ -95,13 +96,14 @@
                         android:text="9876543210"
                         android:textStyle="bold"
                         android:textColor="#000"
-                        android:textSize="16dp"
+                        android:textSize="20dp"
                         android:layout_marginStart="8dp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Edit"
+                        android:visibility="gone"
                         android:textColor="#2196F3"
                         android:textSize="16dp"
                         android:layout_marginStart="16dp"/>
@@ -139,7 +141,7 @@
                         android:text="Address loading..."
                         android:layout_marginStart="8dp"
                         android:textColor="#333"
-                        android:textSize="16dp"/>
+                        android:textSize="20dp"/>
                 </LinearLayout>
 
                 <Button

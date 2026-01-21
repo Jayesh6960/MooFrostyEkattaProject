@@ -68,6 +68,7 @@
                 android:layout_height="wrap_content"
                 app:boxStrokeColor="@color/Purple_Color"
                 app:hintTextColor="@color/Purple_Color"
+                app:cursorColor="@color/Purple_Color"
                 android:hint="Mobile Number">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -109,6 +110,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:hint="Enter OTP"
+                app:cursorColor="@color/Purple_Color"
                 app:boxStrokeColor="@color/Purple_Color"
                 app:hintTextColor="@color/Purple_Color"
                 android:visibility="gone">
