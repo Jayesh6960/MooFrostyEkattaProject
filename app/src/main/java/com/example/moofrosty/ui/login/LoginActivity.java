@@ -19,11 +19,12 @@ import com.example.moofrosty.data.model.LoginResponse;
 import com.example.moofrosty.ui.dashboard.DashboardActivity;
 import com.example.moofrosty.ui.enterstoreorders.ActionPointActivitys;
 import com.example.moofrosty.R;
+import com.example.moofrosty.ui.splash.BaseActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     private TextInputEditText emailEditText, passwordEditText;
     private MaterialButton loginButton;

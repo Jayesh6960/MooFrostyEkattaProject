@@ -2,6 +2,11 @@ package com.example.moofrosty.data.local;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
+import android.os.Build;
+
+import androidx.core.content.ContextCompat;
 
 import com.example.moofrosty.data.model.UserDetailResponse;
 import com.google.gson.Gson;
@@ -136,6 +141,28 @@ public class SessionManager {
             e.printStackTrace();
         }
         return "";
+    }
+    public boolean isLocationAndPermissionsEnabled() {
+        // Check runtime permissions
+        boolean fineLocation = ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED;
+        boolean backgroundLocation = true;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            backgroundLocation = ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED;
+        }
+        boolean cameraGranted = ContextCompat.checkSelfPermission(context, android.Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED;
+        boolean contactsGranted = ContextCompat.checkSelfPermission(context, android.Manifest.permission.READ_CONTACTS)
+                == PackageManager.PERMISSION_GRANTED;
+
+        boolean allPermissionsGranted = fineLocation && backgroundLocation && cameraGranted && contactsGranted;
+
+        // Check GPS status
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        boolean gpsEnabled = locationManager != null && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+        return allPermissionsGranted && gpsEnabled;
     }
 
     public int getBeatId() {
