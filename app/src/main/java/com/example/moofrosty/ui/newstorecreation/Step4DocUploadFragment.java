@@ -128,7 +128,6 @@ public class Step4DocUploadFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK && data != null) {
 
-            // --- FIX START: Get Uri first, then create File ---
             Uri uri = data.getData();
             if (uri != null) {
                 // This library returns a Uri that points to a file, so getPath() is safe here
@@ -145,7 +144,6 @@ public class Step4DocUploadFragment extends Fragment {
                     imgInside.setImageURI(uri);
                 }
             }
-            // --- FIX END ---
 
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
             Toast.makeText(requireContext(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show();

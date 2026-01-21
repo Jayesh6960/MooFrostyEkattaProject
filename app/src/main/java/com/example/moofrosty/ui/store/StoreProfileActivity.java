@@ -170,7 +170,9 @@ public class StoreProfileActivity extends AppCompatActivity {
             switch (resource.status) {
                 case LOADING:
                     progressDialog.setMessage("Checking In...");
-                    progressDialog.show();
+                    if (!progressDialog.isShowing()) {
+                        progressDialog.show();
+                    }
                     break;
 
                 case SUCCESS:
@@ -192,6 +194,9 @@ public class StoreProfileActivity extends AppCompatActivity {
 
         // Observe Geofence Alert
         viewModel.getGeofenceAlert().observe(this, data -> {
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
             showGeofenceDialog(data);
         });
     }
@@ -237,16 +242,41 @@ public class StoreProfileActivity extends AppCompatActivity {
         }, Looper.getMainLooper());
     }
 
-    private void showGeofenceDialog(StoreProfileViewModel.GeofenceData data) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Geofencing Alert!")
-                .setMessage("Distance from Store: " + String.format("%.2f", data.distance) + "m\n\n" +
-                        "Current Lat: " + data.currentLat + "\n" +
-                        "Current Lng: " + data.currentLng + "\n\n" +
-                        "Please take order within 50m of store location.")
-                .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
-                .setIcon(android.R.drawable.ic_dialog_alert);
+//    private void showGeofenceDialog(StoreProfileViewModel.GeofenceData data) {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+//        builder.setTitle("Geofencing Alert!")
+//                .setMessage("Distance from Store: " + String.format("%.2f", data.distance) + "m\n\n" +
+//                        "Current Lat: " + data.currentLat + "\n" +
+//                        "Current Lng: " + data.currentLng + "\n\n" +
+//                        "Please take order within 50m of store location.")
+//                .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+//                .setIcon(R.drawable.ic_error_icon_geofensing)
+//                        .create();
+//
+//        builder.setOnShowListener(d -> {
+//            builder.getButton(AlertDialog.BUTTON_POSITIVE)
+//                    .setTextColor(getResources().getColor(R.color.Purple_Color));
+//        });
+//
+//        builder.show();
+//    }
 
-        builder.create().show();
+    private void showGeofenceDialog(StoreProfileViewModel.GeofenceData data) {
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Geofencing Alert!")
+                .setMessage(
+                        "Distance from Store: " + String.format("%.2f", data.distance) + "m\n\n" +
+                                "Current Lat: " + data.currentLat + "\n" +
+                                "Current Lng: " + data.currentLng + "\n\n" +
+                                "Please take order within 50m of store location."
+                )
+                .setPositiveButton("OK", null)
+                .setIcon(R.drawable.ic_error_icon_geofensing)
+                .create();
+        dialog.setOnShowListener(d -> {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                    .setTextColor(getResources().getColor(R.color.Purple_Color));
+        });
+        dialog.show();
     }
 }

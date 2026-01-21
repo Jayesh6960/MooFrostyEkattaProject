@@ -103,11 +103,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (resp != null) {
 
                             String token = resp.getToken();
-
-                            // ✅ CONVERT FULL RESPONSE TO JSON
                             String fullJson = new Gson().toJson(resp);
-
-                            // ✅ SAVE FULL JSON (NOT name)
                             sessionManager.saveLoginSession(token, fullJson);
                             Log.d("sessonpass","checkpass"+token+" "+fullJson);
 
@@ -119,7 +115,14 @@ public class LoginActivity extends AppCompatActivity {
 
                     case ERROR:
                         setLoadingState(false);
-                        Toast.makeText(this, resource.message, Toast.LENGTH_SHORT).show();
+                        String errorMsg = resource.message != null ? resource.message : "";
+                        if (errorMsg.contains("401")
+                                || errorMsg.toLowerCase().contains("unauthorized")
+                                || errorMsg.toLowerCase().contains("invalid")) {
+                            Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(this, "Login failed. Please try again", Toast.LENGTH_SHORT).show();
+                        }
                         break;
                 }
             }

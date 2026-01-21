@@ -35,30 +35,6 @@ public class LeaveHistoryAdapter  extends RecyclerView.Adapter<LeaveHistoryAdapt
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         LeaveHistoryResponse.LeaveItem item = list.get(position);
 
-///        // Map Type ID to Name
-///        String typeName = "Casual Leave";
-///        if ("2".equals(item.getLeaveType())) typeName = "Medical Leave";
-///        else if ("3".equals(item.getLeaveType())) typeName = "Loss of Pay";
-///
-///        holder.tvType.setText(typeName);
-///        holder.tvDateRange.setText(item.getStartDate() + " to " + item.getEndDate());
-///        holder.tvReason.setText(item.getReason());
-///
-///        // Status Logic
-///        if (item.getLeaveStatus() == 1) {
-///            holder.tvStatus.setText("Pending");
-///            holder.tvStatus.setTextColor(Color.parseColor("#FFA000")); // Orange
-///            holder.statusCard.setCardBackgroundColor(Color.parseColor("#FFF3E0"));
-///        } else if (item.getLeaveStatus() == 2) {
-///            holder.tvStatus.setText("Approved");
-///            holder.tvStatus.setTextColor(Color.parseColor("#4CAF50")); // Green
-///            holder.statusCard.setCardBackgroundColor(Color.parseColor("#E8F5E9"));
-///        } else {
-///            holder.tvStatus.setText("Rejected");
-///            holder.tvStatus.setTextColor(Color.parseColor("#F44336")); // Red
-///            holder.statusCard.setCardBackgroundColor(Color.parseColor("#FFEBEE"));
-///        }
-
         Context context = holder.itemView.getContext();
 
         // FROM & TO DATE
