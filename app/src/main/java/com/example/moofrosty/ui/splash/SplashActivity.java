@@ -1,5 +1,6 @@
 package com.example.moofrosty.ui.splash;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,7 +19,7 @@ import com.example.moofrosty.ui.dashboard.DashboardActivity;
 import com.example.moofrosty.ui.login.LoginActivity;
 import com.example.moofrosty.R;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends BaseActivity {
 
     private SessionManager sessionManager;
 
@@ -32,9 +33,7 @@ public class SplashActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
         sessionManager = new SessionManager(this);
-
         ImageView logo = findViewById(R.id.splashLogo);
         // Load and start fade-in animation
         Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
@@ -46,7 +45,7 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(new Intent(SplashActivity.this, DashboardActivity.class));
             } else {
                 // No session found -> Go to Login
-                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                startActivity(new Intent(SplashActivity.this, PermissionActivity.class));
             }
             finish(); // Prevent user from returning to splash screen
         }, 3000);
