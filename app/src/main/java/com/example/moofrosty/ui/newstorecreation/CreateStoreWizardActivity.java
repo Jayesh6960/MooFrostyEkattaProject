@@ -15,10 +15,13 @@ import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -42,28 +45,50 @@ public class CreateStoreWizardActivity extends AppCompatActivity {
     // Location vars
     private FusedLocationProviderClient fusedLocationClient;
     private LocationCallback locationCallback;
+    Toolbar toolbar ;
+    ImageView btnBack;
+    ImageView btnMenu;
+    TextView tvTitle;
+    TextView tvDate ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), true);
         setContentView(R.layout.activity_create_store_wizard);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        WindowInsetsControllerCompat windowInsetsController =
+                WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+        windowInsetsController.setAppearanceLightStatusBars(true);
+
+        toolbar = findViewById(R.id.dashboard_toolbar);
+        setSupportActionBar(toolbar);
+        btnBack = findViewById(R.id.btn_back);
+        btnMenu = findViewById(R.id.btn_menu);
+        tvTitle = findViewById(R.id.tv_title);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.app_bar_layout), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            v.setPadding(v.getPaddingLeft(), systemBars.top, v.getPaddingRight(), v.getPaddingBottom());
             return insets;
         });
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.wizard_container), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), systemBars.bottom+16);
+            return insets;
+        });
+
+        tvTitle.setText("Registration");
+        btnBack.setVisibility(View.VISIBLE);
+        btnMenu.setVisibility(View.GONE);
+        btnBack.setOnClickListener(v -> handleBack());
 
         viewModel = new ViewModelProvider(this).get(CreateStoreViewModel.class);
         if(getIntent().hasExtra("MOBILE_NUMBER")) {
             viewModel.mobileNumber = getIntent().getStringExtra("MOBILE_NUMBER");
         }
-
-        // Toolbar
-        ImageView btnBack = findViewById(R.id.btn_back);
-        TextView tvTitle = findViewById(R.id.tv_toolbar_title);
-        tvTitle.setText("Store Registration");
-        btnBack.setOnClickListener(v -> handleBack());
 
         // Step Views
         tvBadge1 = findViewById(R.id.tvBadge1);

@@ -21,7 +21,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,31 +40,63 @@ import java.util.Calendar;
 public class NewStoreActivity extends AppCompatActivity {
 
     private NewStoreListViewModel viewModel;
-    private TextView tvDate, tvEmpty;
+    private TextView tvDate, tvEmpty, tvTitle;
     private RecyclerView recyclerView;
     private NewStoreListAdapter adapter;
     private SessionManager sessionManager;
     private ProgressBar progressBar;
+    ImageView btnBack ,btnMenu;
+    FloatingActionButton fabAdd;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+//        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_new_store);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        WindowInsetsControllerCompat windowInsetsController =
+                WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+        windowInsetsController.setAppearanceLightStatusBars(true);
+
+        fabAdd = findViewById(R.id.fab_add_store);
+        toolbar = findViewById(R.id.dashboard_toolbar);
+        setSupportActionBar(toolbar);
+        btnBack = findViewById(R.id.btn_back);
+        btnMenu = findViewById(R.id.btn_menu);
+        tvTitle = findViewById(R.id.tv_title);
+        tvDate = findViewById(R.id.tv_date_picker);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.app_bar_layout), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            v.setPadding(v.getPaddingLeft(), systemBars.top, v.getPaddingRight(), v.getPaddingBottom());
             return insets;
         });
+        ViewCompat.setOnApplyWindowInsetsListener(fabAdd, (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), systemBars.bottom+16);
+            return insets;
+        });
+
+        tvTitle.setText("New Store Creation");
+        btnBack.setVisibility(View.VISIBLE);
+        btnMenu.setVisibility(View.GONE);
+        tvDate.setVisibility(View.VISIBLE);
+
+
         sessionManager = new SessionManager(this);
         // 1. Init Views
-        ImageView btnBack = findViewById(R.id.btn_back);
-        TextView tvTitle = findViewById(R.id.tv_toolbar_title);
-        tvDate = findViewById(R.id.tv_date_picker);
+//        ImageView btnBack = findViewById(R.id.btn_back);
+//        TextView tvTitle = findViewById(R.id.tv_toolbar_title);
+//        tvDate = findViewById(R.id.tv_date_picker);
         tvEmpty = findViewById(R.id.tv_empty_state);
         recyclerView = findViewById(R.id.recycler_new_stores);
         progressBar = findViewById(R.id.progress_bar);
-        FloatingActionButton fabAdd = findViewById(R.id.fab_add_store);
+
 
         // 2. Setup ViewModel
         viewModel = new ViewModelProvider(this).get(NewStoreListViewModel.class);
@@ -74,7 +108,6 @@ public class NewStoreActivity extends AppCompatActivity {
         // 4. Setup Recycler
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // 5. Date Picker Logic
         tvDate.setOnClickListener(v -> showDatePicker());
 
         // 6. FAB Logic
