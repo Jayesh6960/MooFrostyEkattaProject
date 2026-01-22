@@ -3,6 +3,7 @@ package com.example.moofrosty.ui.newstorecreation;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -116,8 +117,12 @@ public class Step4DocUploadFragment extends Fragment {
 
     private void pickImage(int reqCode) {
         currentImageRequest = reqCode;
+        requireActivity().getWindow().clearFlags(
+                View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        );
         ImagePicker.with(this)
-                .crop()
+               // .crop()
                 .compress(1024)
                 .maxResultSize(1080, 1080)
                 .start();

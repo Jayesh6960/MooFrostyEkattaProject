@@ -5,7 +5,7 @@
     android:id="@+id/dashboard_toolbar"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:background="@color/white"
+    android:background="@color/Pink_color"
     app:contentInsetStart="0dp"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
@@ -14,8 +14,6 @@
         android:layout_height="wrap_content"
         android:paddingStart="12dp"
         android:paddingEnd="12dp">
-
-        <!-- Back Arrow -->
 
         <FrameLayout
             android:id="@+id/start_icon_container"
@@ -30,14 +28,14 @@
                 android:layout_height="24dp"
                 android:src="@drawable/hamburger_icon"
                 app:tint="@color/Pink_color"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/btn_back"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_baseline_arrow_back_24"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:tint="@color/white" />
         </FrameLayout>
 
@@ -49,9 +47,9 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="12dp"
             android:layout_toEndOf="@id/start_icon_container"
-            android:text="Vaibhav Laxman Kulkarni"
-            android:textColor="@color/Pink_color"
-            android:textSize="16sp"
+            android:text="Toolbar Title"
+            android:textColor="@color/white"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <!-- Date Picker -->
@@ -63,8 +61,10 @@
             android:layout_centerVertical="true"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:drawableEnd="@drawable/ic_calendar_white"
+            android:drawableTint="@color/white"
             android:drawablePadding="8dp"
             android:padding="8dp"
+            android:gravity="center_vertical"
             android:text="2025-12-25"
             android:textColor="@color/white"
             android:textStyle="bold"

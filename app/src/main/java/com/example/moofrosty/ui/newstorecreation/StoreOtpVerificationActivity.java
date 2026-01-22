@@ -4,14 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.moofrosty.R;
@@ -32,24 +36,54 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
     private TextInputLayout layoutOtp;
     private MaterialButton btnSendVerification, btnSubmitOtp;
     private TextView tvStatus;
+    Toolbar toolbar ;
+    ImageView btnBack;
+    ImageView btnMenu;
+    TextView tvTitle;
+    TextView tvDate ;
+    ScrollView scrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         setContentView(R.layout.activity_store_otp_verification);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        WindowInsetsControllerCompat windowInsetsController =
+                WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+        windowInsetsController.setAppearanceLightStatusBars(true);
+
+        toolbar = findViewById(R.id.dashboard_toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+        btnBack = findViewById(R.id.btn_back);
+        btnMenu = findViewById(R.id.btn_menu);
+        tvTitle = findViewById(R.id.tv_title);
+        tvDate = findViewById(R.id.tv_date_picker);
+        scrollView = findViewById(R.id.scrollview);
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.app_bar_layout), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            v.setPadding(v.getPaddingLeft(), systemBars.top, v.getPaddingRight(), v.getPaddingBottom());
             return insets;
         });
-        // 1. Init
-        // 1. Init
+        ViewCompat.setOnApplyWindowInsetsListener(scrollView, (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), systemBars.bottom);
+            return insets;
+        });
+
+        tvTitle.setText("OTP Verification");
+
+        btnBack.setVisibility(View.VISIBLE);
+        btnMenu.setVisibility(View.GONE);
+
+        tvDate.setVisibility(View.GONE);
         viewModel = new ViewModelProvider(this).get(StoreVerificationViewModel.class);
         sessionManager = new SessionManager(this);
 
-        ImageView btnBack = findViewById(R.id.btn_back);
-        TextView tvTitle = findViewById(R.id.tv_toolbar_title);
+
         etMobile = findViewById(R.id.et_mobile);
         etOtp = findViewById(R.id.et_otp);
         layoutOtp = findViewById(R.id.layout_otp);
