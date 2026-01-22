@@ -20,10 +20,8 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.moofrosty.R;
 //Last Updated date 22-01-2026
 public class SupportAttendace extends AppCompatActivity {
-    TextView  supportEmail,supportContact,slaescontact;//best prac to declare the variable
+    private TextView  supportEmail,supportContact,slaescontact;//best prac to declare the variable
     CardView cardMailSupport,cardCallSupport;
-
-    private TextView supportEmail, salesmancontact, supportcontact;
     private ImageView btnBack;
 
     @Override
