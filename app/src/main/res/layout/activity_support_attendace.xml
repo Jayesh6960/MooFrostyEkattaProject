@@ -7,40 +7,37 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     tools:context=".ui.attendance.support.SupportAttendace">
-
-
+<!--    //Last updated date 22-01-2026-->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="8dp"
-            android:layout_marginTop="24dp">
-
+            android:layout_height="match_parent"
+            android:orientation="vertical">
             <!-- HEADER -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="56dp"
+                android:background="@color/Pink_color"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:padding="8dp">
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp">
 
                 <ImageView
-                    android:id="@+id/btnBack"
+                    android:id="@+id/btn_back"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_baseline_arrow_back_24"
-                    app:tint="@color/colorPrimary"
-                    android:contentDescription="@string/back" />
+                    app:tint="@color/white" />
 
                 <TextView
-                    android:id="@+id/txtTitle"
+                    android:id="@+id/tv_toolbar_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/support"
-                    android:textSize="18sp"
+                    android:text="Support"
+                    android:textColor="@color/white"
                     android:textStyle="bold"
-                    android:layout_marginStart="12dp"
-                    android:textColor="@color/black" />
+                    android:textSize="18sp"
+                    android:layout_marginStart="16dp"/>
             </LinearLayout>
 
             <!-- CARD 1 : MAIL SUPPORT -->
@@ -60,7 +57,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:gravity="center"
-
                     android:padding="16dp">
 
                     <ImageView
@@ -80,6 +76,7 @@
                         android:layout_height="wrap_content" />
 
                     <TextView
+                        android:id="@+id/support_email"
                         android:text="@string/support_email"
                         android:textColor="@color/colorPrimary"
                         android:textSize="15sp"
@@ -124,6 +121,7 @@
                         android:layout_height="wrap_content" />
 
                     <TextView
+                        android:id="@+id/support_call"
                         android:text="@string/helpline_number"
                         android:textColor="@color/colorPrimary"
                         android:textSize="15sp"
@@ -186,10 +184,12 @@
                                 android:text="@string/contact_tsf"
                                 android:textColor="@color/colorPrimary"
                                 android:layout_marginTop="6dp"
+                                android:textStyle="bold"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content" />
 
                             <TextView
+                                android:id="@+id/salescontact"
                                 android:text="@string/tsf_number"
                                 android:textColor="@color/colorPrimary"
                                 android:layout_width="wrap_content"
@@ -204,24 +204,31 @@
                         <!-- NON 3P RS -->
                         <LinearLayout
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:orientation="vertical"
-                            android:gravity="center">
+                            android:gravity="center_horizontal|center_vertical">
 
                             <TextView
+                                android:id="@+id/tvNonThreePRs"
                                 android:text="@string/non_three_p_rs"
                                 android:textStyle="bold"
                                 android:textColor="@color/black"
+                                android:textSize="16sp"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="12dp" />
 
                             <TextView
+                                android:id="@+id/tvContactRs"
                                 android:text="@string/contact_rs"
                                 android:textColor="@color/colorPrimary"
-                                android:layout_marginTop="6dp"
+                                android:textStyle="bold"
+                                android:textSize="14sp"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp" />
+
                         </LinearLayout>
 
                     </LinearLayout>
