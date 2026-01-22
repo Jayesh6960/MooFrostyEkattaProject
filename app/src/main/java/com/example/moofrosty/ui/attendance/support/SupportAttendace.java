@@ -86,6 +86,7 @@ public class SupportAttendace extends AppCompatActivity {
         slaescontact.setOnClickListener(v -> {
             String number = slaescontact.getText().toString();
 
+
             Intent intent = new Intent(Intent.ACTION_DIAL);
             intent.setData(Uri.parse("tel:" + number));
             startActivity(intent);

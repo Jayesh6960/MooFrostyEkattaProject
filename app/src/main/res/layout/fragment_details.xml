@@ -77,7 +77,7 @@
                 android:textStyle="bold"
                 android:enabled="false"
                 android:focusable="false"
-                android:hint="Firstname (as in Govt. ID proof)"
+                android:hint="First Name (as in Govt. ID proof)"
                 android:inputType="textPersonName" />
         </com.google.android.material.textfield.TextInputLayout>
 
