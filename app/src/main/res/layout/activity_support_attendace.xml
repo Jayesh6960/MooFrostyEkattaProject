@@ -54,7 +54,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="150dp"
                     android:orientation="vertical"
                     android:gravity="center"
                     android:padding="16dp">
@@ -89,7 +89,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardCallSupport"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginTop="12dp"
                 app:cardCornerRadius="10dp"
                 android:layout_marginLeft="10dp"
@@ -99,7 +99,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="150dp"
                     android:orientation="vertical"
                     android:gravity="center"
                     android:padding="16dp">
@@ -145,38 +145,41 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:orientation="vertical"
-
                     android:padding="16dp">
 
+                    <!-- Title -->
                     <TextView
                         android:text="@string/salary_issues"
                         android:textStyle="bold"
                         android:textColor="@color/colorPrimary"
-                        android:layout_gravity="center"
-                        android:textSize="17dp"
-                        android:layout_width="wrap_content"
+                        android:gravity="center"
+                        android:textSize="17sp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
+                    <!-- Container -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginTop="12dp">
+                        android:layout_marginTop="16dp">
 
-                        <!-- 3P RS -->
+                        <!-- 3P RS Section -->
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:orientation="vertical"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:padding="12dp">
 
                             <TextView
                                 android:text="@string/three_p_rs"
                                 android:textStyle="bold"
                                 android:textColor="@color/black"
+                                android:textSize="15sp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content" />
 
@@ -192,16 +195,19 @@
                                 android:id="@+id/salescontact"
                                 android:text="@string/tsf_number"
                                 android:textColor="@color/colorPrimary"
+                                android:textSize="14sp"
+                                android:layout_marginTop="4dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content" />
                         </LinearLayout>
 
+                        <!-- Divider -->
                         <View
                             android:layout_width="1dp"
                             android:layout_height="match_parent"
                             android:background="@color/black" />
 
-                        <!-- NON 3P RS -->
+                        <!-- NON 3P RS Section -->
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"

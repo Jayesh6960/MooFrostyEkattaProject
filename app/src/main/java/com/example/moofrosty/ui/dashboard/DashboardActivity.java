@@ -25,10 +25,11 @@ import com.example.moofrosty.ui.attendance.AttendanceActivity;
 import com.example.moofrosty.R;
 import com.example.moofrosty.ui.login.LoginActivity;
 import com.example.moofrosty.ui.newstorecreation.NewStoreActivity;
+import com.example.moofrosty.ui.splash.BaseActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
-public class DashboardActivity extends AppCompatActivity {
+public class DashboardActivity extends BaseActivity{
 
    // private List<DashboardItem> currentListForDetail = new ArrayList<>();
   //  private DashboardViewModel viewModel;

@@ -29,7 +29,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="85dp"
                     android:layout_height="wrap_content"
                     android:text="From :"
                     android:textSize="14sp"
@@ -39,11 +39,10 @@
                 <TextView
                     android:id="@+id/tvFromDate"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:text="21st Jul 2025"
-                    android:textSize="14sp"
-                    android:textColor="#000"/>
+                    android:layout_height="match_parent"
+                    android:text="  21st Jul 2025"
+                    android:textColor="#000"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <!-- TO -->
@@ -54,7 +53,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="85dp"
                     android:layout_height="wrap_content"
                     android:text="To :"
                     android:textSize="14sp"
@@ -65,8 +64,7 @@
                     android:id="@+id/tvToDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:text="21st Jul 2025"
+                    android:text="  21st Jul 2025"
                     android:textSize="14sp"
                     android:textColor="#000"/>
             </LinearLayout>
@@ -79,7 +77,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="85dp"
                     android:layout_height="wrap_content"
                     android:text="Leave Type :"
                     android:textSize="14sp"
@@ -90,8 +88,7 @@
                     android:id="@+id/tvLeaveType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:text="Casual Leave"
+                    android:text="  Casual Leave"
                     android:textSize="14sp"
                     android:textColor="#000"/>
             </LinearLayout>
@@ -103,7 +100,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="85dp"
                     android:layout_height="wrap_content"
                     android:text="Reason :"
                     android:textSize="14sp"
@@ -114,8 +111,8 @@
                     android:id="@+id/tvReasonType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:text="Casual Leave"
+
+                    android:text="  Casual Leave"
                     android:textSize="14sp"
                     android:textColor="#000"/>
             </LinearLayout>
@@ -128,7 +125,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="85dp"
                     android:layout_height="wrap_content"
                     android:text="Status :"
                     android:textSize="14sp"
@@ -139,8 +136,7 @@
                     android:id="@+id/tvStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:text="Approved"
+                    android:text="  Approved"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:textColor="#2E7D32"/>

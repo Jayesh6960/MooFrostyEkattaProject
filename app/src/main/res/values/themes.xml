@@ -38,7 +38,12 @@
     <style name="CustomDatePickerTheme" parent="Theme.MaterialComponents.Light.Dialog">
         <item name="colorPrimary">@color/Purple_Color</item>
         <item name="colorAccent">@color/Purple_Color</item>
+    </style>
 
+    <style name="ImagePickerTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/Purple_Color</item>
+        <item name="colorAccent">@color/Purple_Color</item>
+        <item name="colorOnPrimary">@color/Purple_Color</item>
 
     </style>
 </resources>
