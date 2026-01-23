@@ -19,7 +19,8 @@
             android:layout_height="wrap_content"
             android:text="Welcome To The Moo Frosty!"
             android:padding="16dp"
-            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textSize="18sp"
             android:background="@color/white"
             android:textColor="#333333"/>
 

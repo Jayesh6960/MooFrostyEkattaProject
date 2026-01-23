@@ -178,8 +178,7 @@
                     android:enabled="false" />
             </com.google.android.material.textfield.TextInputLayout>
 
-
-
+<!--//Update code date 23-01-2026-->
             <!-- Account Type -->
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -187,7 +186,8 @@
                 android:hint="Account Type *"
                 android:layout_marginTop="16dp"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                app:endIconMode="dropdown_menu">
+                app:endIconMode="custom"
+                app:endIconDrawable="@null">
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     android:id="@+id/spinnerAccountType"
