@@ -2,6 +2,7 @@ package com.example.moofrosty.ui.attendance.profile;
 
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -13,11 +14,14 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.moofrosty.R;
+import com.example.moofrosty.ToolbarHelper;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
-
+//Code Updated date 23-01-2026
 public class ProfileActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
+//    private TextView title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,21 +33,27 @@ public class ProfileActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.app_bar_layout), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(v.getPaddingLeft(), systemBars.top, v.getPaddingRight(), v.getPaddingBottom());
+            return insets;
+        });
         ImageView btnBack = findViewById(R.id.btn_back);
         btnBack.setOnClickListener(v -> finish());
         // TabLayout
         tabLayout = findViewById(R.id.tabLayout);
+        ToolbarHelper.setupToolbar(this, "Profile", true, false);
+//        title.setText("Profile Details");
 
         // Load default fragment (Details)
         loadFragment(new DetailsFragment());
-
         // Tab selection listener
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(@NonNull TabLayout.Tab tab) {
 
                 Fragment fragment = null;
-//are used to decleared the class name as the constctor
+//Commnet Out file b not yet updated  out file  Not yet Chn
                 switch (tab.getPosition()) {
                     case 0:
                         fragment = new DetailsFragment();

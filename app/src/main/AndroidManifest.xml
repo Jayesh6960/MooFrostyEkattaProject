@@ -1,35 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
     <!-- Permissions -->
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
+
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-<!--    To updated the location or map display over the screen -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- To updated the location or map display over the screen -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
-<!--    to updated the locationm in the background-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /> <!-- to updated the locationm in the background -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-
-    <!-- Queries for Google Maps -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" /> <!-- Queries for Google Maps -->
     <queries>
         <package android:name="com.google.android.apps.maps" />
 
         <intent>
             <action android:name="android.intent.action.VIEW" />
+
             <data android:scheme="geo" />
         </intent>
     </queries>
@@ -45,111 +41,84 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MooFrosty"
         tools:node="merge">
-
+        <activity
+            android:name=".ui.attendance.Toolbarhelper"
+            android:exported="false" />
         <!-- Store Creation -->
         <activity
             android:name=".ui.newstorecreation.CreateStoreWizardActivity"
             android:exported="false" />
-
         <activity
             android:name=".ui.newstorecreation.StoreOtpVerificationActivity"
             android:exported="false" />
-
         <activity
             android:name=".ui.newstorecreation.NewStoreActivity"
-            android:exported="false" />
-
-        <!-- Attendance -->
+            android:exported="false" /> <!-- Attendance -->
         <activity
             android:name=".ui.attendance.profile.ProfileActivity"
             android:exported="false" />
-
         <activity
             android:name=".ui.attendance.support.SupportAttendace"
             android:exported="false" />
-
         <activity
             android:name=".ui.attendance.attendancecalender.AttendanceCalendarActivity"
             android:exported="false" />
-
         <activity
             android:name=".ui.attendance.leave.LeaveActivity"
             android:exported="false" />
-
         <activity
             android:name=".ui.attendance.AttendanceActivity"
-            android:exported="false" />
-
-        <!-- Splash & Login -->
+            android:exported="false" /> <!-- Splash & Login -->
         <activity
             android:name=".ui.splash.PermissionActivity"
             android:exported="false" />
-
         <activity
             android:name=".ui.splash.BaseActivity"
             android:exported="false" />
-
         <activity
             android:name=".ui.login.LoginActivity"
-            android:exported="false" />
-
-        <!-- Dashboard -->
+            android:exported="false" /> <!-- Dashboard -->
         <activity
             android:name=".ui.dashboard.ViewMoreDetailsActivity"
             android:exported="false" />
-
         <activity
             android:name=".ui.dashboard.DashboardActivity"
-            android:exported="true" />
-
-        <!-- Store -->
+            android:exported="true" /> <!-- Store -->
         <activity
             android:name=".ui.store.StoreProfileActivity"
-            android:exported="false" />
-
-        <!-- Orders -->
+            android:exported="false" /> <!-- Orders -->
         <activity
             android:name=".ui.enterstoreorders.ordersdetails.OrderDetailsActivity"
             android:exported="false" />
-
         <activity
             android:name=".ui.enterstoreorders.ActionPointActivitys"
             android:exported="true" />
-
         <activity
             android:name=".ui.enterstoreorders.damageexpiry.DamageExpiryActivity"
             android:exported="false" />
-
         <activity
             android:name=".ui.enterstoreorders.takeorder.TakeOrderActivity"
-            android:exported="true" />
-
-        <!-- Cart & Offers -->
+            android:exported="true" /> <!-- Cart & Offers -->
         <activity
             android:name=".ui.cart.CartActivity"
             android:exported="false" />
-
         <activity
             android:name=".ui.offers.Offers"
-            android:exported="false" />
-
-        <!-- Main Activity -->
+            android:exported="false" /> <!-- Main Activity -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-
-        <!-- ✅ ONLY ONE SplashActivity (Launcher Activity) -->
+            android:windowSoftInputMode="adjustPan" /> <!-- ✅ ONLY ONE SplashActivity (Launcher Activity) -->
         <activity
             android:name=".ui.splash.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>
