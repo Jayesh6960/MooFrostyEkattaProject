@@ -71,6 +71,7 @@
 
         <!-- List -->
         <FrameLayout
+            android:id="@+id/frame_newStore"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -99,13 +100,12 @@
         </FrameLayout>
     </LinearLayout>
 
-    <!-- FAB -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_store"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
+        android:layout_margin="46dp"
         android:src="@android:drawable/ic_input_add"
         app:tint="@color/white"
         app:backgroundTint="@color/Pink_color"/>
