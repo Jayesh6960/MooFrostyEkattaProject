@@ -76,7 +76,7 @@ public class NewStoreActivity extends AppCompatActivity {
             v.setPadding(v.getPaddingLeft(), systemBars.top, v.getPaddingRight(), v.getPaddingBottom());
             return insets;
         });
-        ViewCompat.setOnApplyWindowInsetsListener(fabAdd, (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.frame_newStore), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), systemBars.bottom+16);
             return insets;

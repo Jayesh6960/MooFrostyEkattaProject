@@ -117,10 +117,6 @@ public class Step4DocUploadFragment extends Fragment {
 
     private void pickImage(int reqCode) {
         currentImageRequest = reqCode;
-        requireActivity().getWindow().clearFlags(
-                View.SYSTEM_UI_FLAG_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-        );
         ImagePicker.with(this)
                // .crop()
                 .compress(1024)
