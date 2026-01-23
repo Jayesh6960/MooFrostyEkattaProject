@@ -14,32 +14,45 @@
         android:background="@android:color/white">
 
         <!-- Toolbar -->
-        <LinearLayout
+<!--        teemp closed-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="56dp"-->
+<!--            android:background="@color/Pink_color"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:gravity="center_vertical"-->
+<!--            android:paddingStart="12dp"-->
+<!--            android:paddingEnd="12dp">-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/btn_back"-->
+<!--                android:layout_width="24dp"-->
+<!--                android:layout_height="24dp"-->
+<!--                android:src="@drawable/ic_baseline_arrow_back_24"-->
+<!--                app:tint="@color/white" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/tv_toolbar_title"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Profile"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textStyle="bold"-->
+<!--                android:textSize="18sp"-->
+<!--                android:layout_marginStart="16dp"/>-->
+<!--        </LinearLayout>-->
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar_layout"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="@color/Pink_color"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp">
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/btn_back"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_baseline_arrow_back_24"
-                app:tint="@color/white" />
+            <include
+                android:id="@+id/main_toolbar"
+                layout="@layout/toolbar_layout_drawabletab" />
 
-            <TextView
-                android:id="@+id/tv_toolbar_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Profile"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:layout_marginStart="16dp"/>
-        </LinearLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"

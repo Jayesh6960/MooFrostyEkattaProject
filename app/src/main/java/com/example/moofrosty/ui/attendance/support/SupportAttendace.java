@@ -1,12 +1,10 @@
 package com.example.moofrosty.ui.attendance.support;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,18 +16,20 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.moofrosty.R;
-//Last Updated date 22-01-2026
+import com.example.moofrosty.ToolbarHelper;
+//Code Updatee date 23-01-2023
+//Toolbarhelper include
 public class SupportAttendace extends AppCompatActivity {
-    private TextView  supportEmail,supportContact,slaescontact;//best prac to declare the variable
-    CardView cardMailSupport,cardCallSupport;
-    private ImageView btnBack;
+
+    private TextView supportEmail, supportContact, salesContact;
+    private CardView cardMailSupport, cardCallSupport;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_support_attendace);
 
-        // Handle status bar padding (Edge to Edge)
+        // ----- EDGE TO EDGE (STATUS BAR PADDING) -----
         View main = findViewById(R.id.main);
         ViewCompat.setOnApplyWindowInsetsListener(main, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -37,30 +37,18 @@ public class SupportAttendace extends AppCompatActivity {
             return insets;
         });
 
-        // Set STATUS BAR COLOR same as toolbar (Pink_color)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.Pink_color));
-        }
+        // ----- COMMON TOOLBAR SETUP (FROM HELPER) -----
+        ToolbarHelper.setupToolbar(this, "Support", true, false);
 
-        // Toolbar Back Button
-        ImageView btnBack = findViewById(R.id.btn_back);
-        btnBack.setColorFilter(ContextCompat.getColor(this, R.color.white));
-        btnBack.setOnClickListener(v -> finish());
+        // ----- CARD & TEXT REFERENCES -----
+        cardMailSupport = findViewById(R.id.cardMailSupport);
+        cardCallSupport = findViewById(R.id.cardCallSupport);
 
-        // Toolbar Title Color
-        TextView title = findViewById(R.id.tv_toolbar_title);
-        title.setTextColor(ContextCompat.getColor(this, R.color.white));
+        supportEmail = findViewById(R.id.support_email);
+        supportContact = findViewById(R.id.support_call);
+        salesContact = findViewById(R.id.salescontact);
 
-        // Card references
-        CardView cardMailSupport = findViewById(R.id.cardMailSupport);
-        CardView cardCallSupport = findViewById(R.id.cardCallSupport);
-
-        // Text references
-         TextView supportEmail = findViewById(R.id.support_email);
-         TextView supportContact = findViewById(R.id.support_call);
-         TextView  slaescontact=findViewById(R.id.salescontact);
-
-        // MAIL SUPPORT CLICK
+        // ----- MAIL SUPPORT CLICK -----
         cardMailSupport.setOnClickListener(v -> {
             String email = supportEmail.getText().toString();
 
@@ -75,7 +63,7 @@ public class SupportAttendace extends AppCompatActivity {
             }
         });
 
-        // CALL SUPPORT CLICK
+        // ----- CALL SUPPORT CLICK -----
         cardCallSupport.setOnClickListener(v -> {
             String number = supportContact.getText().toString();
 
@@ -83,9 +71,10 @@ public class SupportAttendace extends AppCompatActivity {
             intent.setData(Uri.parse("tel:" + number));
             startActivity(intent);
         });
-        slaescontact.setOnClickListener(v -> {
-            String number = slaescontact.getText().toString();
 
+        // ----- SALES CONTACT CLICK -----
+        salesContact.setOnClickListener(v -> {
+            String number = salesContact.getText().toString();
 
             Intent intent = new Intent(Intent.ACTION_DIAL);
             intent.setData(Uri.parse("tel:" + number));
