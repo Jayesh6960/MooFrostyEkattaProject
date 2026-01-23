@@ -234,8 +234,6 @@
                     android:backgroundTint="@color/grey2"
                     android:textColor="@android:color/white"/>
             </LinearLayout>
-
-
         </LinearLayout>
 
         </ScrollView>
