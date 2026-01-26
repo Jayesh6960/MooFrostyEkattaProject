@@ -274,8 +274,8 @@ public class ActionPointActivitys extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
         dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-                .setTextColor(getResources().getColor(R.color.Purple_Color));
+                .setTextColor(getResources().getColor(R.color.infoBarBlue));
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-                .setTextColor(getResources().getColor(R.color.Purple_Color));
+                .setTextColor(getResources().getColor(R.color.infoBarBlue));
     }
 }

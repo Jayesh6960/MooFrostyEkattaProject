@@ -2,6 +2,7 @@ package com.example.moofrosty.ui.attendance.attendancecalender;
 
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -97,13 +98,63 @@ public class AttendanceCalendarActivity extends AppCompatActivity {
 //                }
 //            }
 //        });
-
+//Updated Date 26-01-2026
         viewModel.getLeaveData().observe(this, resource -> {
             if (resource != null) {
                 switch (resource.status) {
                     case LOADING:
                         progressBar.setVisibility(View.VISIBLE);
                         break;
+//                    case SUCCESS:
+//                        progressBar.setVisibility(View.GONE);
+//
+//                        if (resource.data != null) {
+//                            List<EventDay> allEvents = new ArrayList<>();
+//                            Calendar today = Calendar.getInstance();
+//                            boolean todayHandled = false;
+//
+//                            // 1. Leaves
+//                            if (resource.data.getData() != null) {
+//                                for (EventDay e : getLeaveEvents(resource.data.getData())) {
+//                                    if (isSameDay(e.getCalendar(), today)) {
+//                                        todayHandled = true;
+//                                    }
+//                                    allEvents.add(e);
+//                                }
+//                            }
+//
+//                            // 2. Holidays
+//                            if (resource.data.getHolidays() != null) {
+//                                for (EventDay e : getHolidayEvents(resource.data.getHolidays())) {
+//                                    if (isSameDay(e.getCalendar(), today)) {
+//                                        todayHandled = true;
+//                                    }
+//                                    allEvents.add(e);
+//                                }
+//                            }
+//
+//                            // 3. Attendance
+//                            if (resource.data.getUserAttendance() != null) {
+//                                for (EventDay e : getAttendanceEvents(resource.data.getUserAttendance())) {
+//                                    if (isSameDay(e.getCalendar(), today)) {
+//                                        todayHandled = true;
+//                                    }
+//                                    allEvents.add(e);
+//                                }
+//                            }
+//
+//                            // 🔥 Always overlay TODAY background on top
+//                            allEvents.add(new EventDay(today, R.drawable.today_background));
+//
+//                            calendarView.setEvents(allEvents);
+//                        }
+//                        break;
+
+
+
+
+
+
 
                     case SUCCESS:
                         progressBar.setVisibility(View.GONE);
@@ -131,6 +182,8 @@ public class AttendanceCalendarActivity extends AppCompatActivity {
                 }
             }
         });
+
+
     }
    // Collection<? extends EventDay>
     private List<EventDay> getLeaveEvents(List<LeaveResponse.UserLeaveData> leaveList) {
@@ -177,6 +230,10 @@ public class AttendanceCalendarActivity extends AppCompatActivity {
             }
         }
         return events;
+    }
+    private boolean isSameDay(Calendar c1, Calendar c2) {
+        return c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR) &&
+                c1.get(Calendar.DAY_OF_YEAR) == c2.get(Calendar.DAY_OF_YEAR);
     }
 
         // --- METHOD 2: Process Holidays ---
