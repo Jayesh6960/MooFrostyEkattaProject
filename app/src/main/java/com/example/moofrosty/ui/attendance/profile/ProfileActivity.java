@@ -102,10 +102,12 @@
 package com.example.moofrosty.ui.attendance.profile;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.fragment.app.Fragment;
 
 import com.example.moofrosty.R;
@@ -125,13 +127,14 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         // Setup Toolbar using your helper
-        ToolbarHelper.setupToolbar(this, "Profile", true, false);
+
 
         // Back button from toolbar layout
         ImageView btnBack = findViewById(R.id.btn_back);
         if (btnBack != null) {
             btnBack.setOnClickListener(v -> finish());
         }
+
 
         // TabLayout
         tabLayout = findViewById(R.id.tabLayout);
