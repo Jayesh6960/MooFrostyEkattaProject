@@ -1,29 +1,31 @@
 package com.example.moofrosty.ui.attendance.support;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.moofrosty.R;
-import com.example.moofrosty.ToolbarHelper;
-//Code Updatee date 23-01-2023
-//Toolbarhelper include
-public class SupportAttendace extends AppCompatActivity {
 
-    private TextView supportEmail, supportContact, salesContact;
+public class SupportAttendance extends AppCompatActivity {
+
+    private TextView supportEmail, supportContact, salesContact, tvTitle;
     private CardView cardMailSupport, cardCallSupport;
+    private Toolbar toolbar;
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,8 +39,16 @@ public class SupportAttendace extends AppCompatActivity {
             return insets;
         });
 
-        // ----- COMMON TOOLBAR SETUP (FROM HELPER) -----
-        ToolbarHelper.setupToolbar(this, "Support", true, false);
+        // ----- TOOLBAR SETUP -----
+        toolbar = findViewById(R.id.dashboard_toolbar);
+        setSupportActionBar(toolbar);
+
+        tvTitle = findViewById(R.id.tv_title);
+        ImageView btnBack = findViewById(R.id.btn_back);
+
+        tvTitle.setText("Support");
+        btnBack.setVisibility(View.VISIBLE);
+        btnBack.setOnClickListener(v -> finish());
 
         // ----- CARD & TEXT REFERENCES -----
         cardMailSupport = findViewById(R.id.cardMailSupport);
@@ -50,7 +60,12 @@ public class SupportAttendace extends AppCompatActivity {
 
         // ----- MAIL SUPPORT CLICK -----
         cardMailSupport.setOnClickListener(v -> {
-            String email = supportEmail.getText().toString();
+            String email = supportEmail.getText().toString().trim();
+
+            if (email.isEmpty()) {
+                Toast.makeText(this, "Email not available", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             Intent intent = new Intent(Intent.ACTION_SENDTO);
             intent.setData(Uri.parse("mailto:" + email));
@@ -65,7 +80,12 @@ public class SupportAttendace extends AppCompatActivity {
 
         // ----- CALL SUPPORT CLICK -----
         cardCallSupport.setOnClickListener(v -> {
-            String number = supportContact.getText().toString();
+            String number = supportContact.getText().toString().trim();
+
+            if (number.isEmpty()) {
+                Toast.makeText(this, "Contact number not available", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             Intent intent = new Intent(Intent.ACTION_DIAL);
             intent.setData(Uri.parse("tel:" + number));
@@ -74,7 +94,12 @@ public class SupportAttendace extends AppCompatActivity {
 
         // ----- SALES CONTACT CLICK -----
         salesContact.setOnClickListener(v -> {
-            String number = salesContact.getText().toString();
+            String number = salesContact.getText().toString().trim();
+
+            if (number.isEmpty()) {
+                Toast.makeText(this, "Sales contact not available", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             Intent intent = new Intent(Intent.ACTION_DIAL);
             intent.setData(Uri.parse("tel:" + number));

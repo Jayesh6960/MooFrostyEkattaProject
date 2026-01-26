@@ -41,9 +41,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MooFrosty"
         tools:node="merge">
-        <activity
-            android:name=".ui.attendance.Toolbarhelper"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".ui.attendance.Toolbarhelper"-->
+<!--            android:exported="false" />-->
         <!-- Store Creation -->
         <activity
             android:name=".ui.newstorecreation.CreateStoreWizardActivity"
@@ -58,7 +58,7 @@
             android:name=".ui.attendance.profile.ProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.attendance.support.SupportAttendace"
+            android:name=".ui.attendance.support.SupportAttendance"
             android:exported="false" />
         <activity
             android:name=".ui.attendance.attendancecalender.AttendanceCalendarActivity"

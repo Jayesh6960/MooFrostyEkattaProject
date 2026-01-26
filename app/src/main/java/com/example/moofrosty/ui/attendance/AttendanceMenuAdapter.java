@@ -16,7 +16,7 @@ import com.example.moofrosty.R;
 import com.example.moofrosty.ui.attendance.attendancecalender.AttendanceCalendarActivity;
 import com.example.moofrosty.ui.attendance.leave.LeaveActivity;
 import com.example.moofrosty.ui.attendance.profile.ProfileActivity;
-import com.example.moofrosty.ui.attendance.support.SupportAttendace;
+import com.example.moofrosty.ui.attendance.support.SupportAttendance;
 
 import java.util.List;
 
@@ -66,7 +66,7 @@ public class AttendanceMenuAdapter extends RecyclerView.Adapter<AttendanceMenuAd
                 context.startActivity(intent);
             }else if (item.getTitle().equals("Support")) {
                 // --- NEW CODE: Open Calendar Activity ---
-                Intent intent = new Intent(context, SupportAttendace.class);
+                Intent intent = new Intent(context, SupportAttendance.class);
                 context.startActivity(intent);
             }
             else if (item.getTitle().equals("Profile")) {
