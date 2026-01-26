@@ -105,7 +105,10 @@ public class Step4DocUploadFragment extends Fragment {
                     btnSubmit.setEnabled(false);
                 } else if(res.status == Resource.Status.SUCCESS) {
                     Toast.makeText(requireContext(), "Store Added Successfully!", Toast.LENGTH_LONG).show();
-                    requireActivity().finish();
+                    Intent intent = new Intent(requireActivity(),NewStoreActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    requireActivity().finish(); // safety
                 } else if(res.status == Resource.Status.ERROR) {
                     btnSubmit.setText("Submit");
                     btnSubmit.setEnabled(true);

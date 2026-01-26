@@ -53,8 +53,11 @@ public class Step1OwnerFragment extends Fragment {
             String name = etOwner.getText().toString();
             String email = etEmail.getText().toString();
 
-            if(name.isEmpty()) {
-                etOwner.setError("Required");
+            if(name.isEmpty() ) {
+                etOwner.setError("OwnerFull Name Required");
+                return;
+            } else if (email.isEmpty()){
+                etEmail.setError("Email Required");
                 return;
             }
             viewModel.ownerName = name;

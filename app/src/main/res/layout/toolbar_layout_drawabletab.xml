@@ -39,8 +39,6 @@
                 app:tint="@color/white" />
         </FrameLayout>
 
-        <!-- Title -->
-
         <!-- Date Picker -->
         <TextView
             android:id="@+id/tv_title"
@@ -49,6 +47,7 @@
             android:layout_marginStart="11dp"
             android:layout_toEndOf="@id/start_icon_container"
             android:text="Toolbar Title"
+            android:gravity="center_vertical"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -63,7 +62,6 @@
             android:drawableEnd="@drawable/ic_calendar_white"
             android:drawableTint="@color/white"
             android:drawablePadding="8dp"
-            android:padding="8dp"
             android:gravity="center_vertical"
             android:text="2025-12-25"
             android:textColor="@color/white"

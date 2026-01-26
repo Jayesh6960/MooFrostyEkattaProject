@@ -83,7 +83,7 @@ public class CreateStoreWizardActivity extends AppCompatActivity {
         tvTitle.setText("Registration");
         btnBack.setVisibility(View.VISIBLE);
         btnMenu.setVisibility(View.GONE);
-        btnBack.setOnClickListener(v -> handleBack());
+        btnBack.setOnClickListener(v -> onBackPressed());
 
         viewModel = new ViewModelProvider(this).get(CreateStoreViewModel.class);
         if(getIntent().hasExtra("MOBILE_NUMBER")) {
@@ -101,6 +101,10 @@ public class CreateStoreWizardActivity extends AppCompatActivity {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         checkLocationPermissionAndStart();
         // Initial Fragment
+
+        if (savedInstanceState == null) {
+            loadStep(1);
+        }
         updateStepUI(1);
         loadFragment(new Step1OwnerFragment());
     }
@@ -193,29 +197,72 @@ public class CreateStoreWizardActivity extends AppCompatActivity {
         }
     }
 
-    public void nextStep() {
-        currentStep++;
-        Fragment fragment = null;
-        if(currentStep == 2) fragment = new Step2ShopFragment();
-        else if(currentStep == 3) fragment = new Step3KycSelectionFragment();
-        else if(currentStep == 4) fragment = new Step4DocUploadFragment();
+//    public void nextStep() {
+//        Fragment fragment = null;
+//
+//        if (currentStep == 1) fragment = new Step2ShopFragment();
+//        else if (currentStep == 2) fragment = new Step3KycSelectionFragment();
+//        else if (currentStep == 3) fragment = new Step4DocUploadFragment();
+//
+//        if (fragment != null) {
+//            getSupportFragmentManager().beginTransaction()
+//                    .replace(R.id.wizard_container, fragment)
+//                    .addToBackStack(null)
+//                    .commit();
+//        }
+//    }
 
-        if(fragment != null) {
-            getSupportFragmentManager().beginTransaction()
+    public void nextStep() {
+        if (currentStep < 4) {
+            currentStep++;
+            loadStep(currentStep);
+        }
+    }
+
+    private void loadStep(int step) {
+        Fragment fragment = null;
+
+        if (step == 1) fragment = new Step1OwnerFragment();
+        else if (step == 2) fragment = new Step2ShopFragment();
+        else if (step == 3) fragment = new Step3KycSelectionFragment();
+        else if (step == 4) fragment = new Step4DocUploadFragment();
+
+        if (fragment != null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
                     .replace(R.id.wizard_container, fragment)
-                    .addToBackStack(null)
+                    .addToBackStack(String.valueOf(step))
                     .commit();
         }
     }
 
-    private void handleBack() {
-        if(currentStep > 1) {
-            currentStep--;
+    // 🔥 FIXED BACK HANDLING
+    @Override
+    public void onBackPressed() {
+        if (currentStep > 1) {
+            currentStep--; // 🔥 THIS WAS MISSING
             getSupportFragmentManager().popBackStack();
         } else {
             finish();
         }
     }
+
+//    private void handleBack() {
+//        if(currentStep > 1) {
+//            currentStep--;
+//            getSupportFragmentManager().popBackStack();
+//        } else {
+//            finish();
+//        }
+//    }
+
+//    private void handleBack() {
+//        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+//            getSupportFragmentManager().popBackStack();
+//        } else {
+//            finish();
+//        }
+//    }
 
     private void loadFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
@@ -223,6 +270,6 @@ public class CreateStoreWizardActivity extends AppCompatActivity {
                 .commit();
     }
 
-    @Override public void onBackPressed() { handleBack(); }
+//    @Override public void onBackPressed() { handleBack(); }
 
 }
