@@ -104,11 +104,10 @@ package com.example.moofrosty.ui.attendance.profile;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+
 import androidx.fragment.app.Fragment;
 
 import com.example.moofrosty.R;
@@ -119,9 +118,6 @@ import com.google.android.material.tabs.TabLayout;
 public class ProfileActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
-    private Toolbar toolbar;
-    TextView tvTitle;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,7 +127,6 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         // Setup Toolbar using your helper
-//        ToolbarHelper.setupToolbar(this, "Profile", true, false);
 
 
         // Back button from toolbar layout
@@ -140,12 +135,6 @@ public class ProfileActivity extends AppCompatActivity {
             btnBack.setOnClickListener(v -> finish());
         }
 
-        toolbar = findViewById(R.id.dashboard_toolbar);
-        setSupportActionBar(toolbar);
-        tvTitle = findViewById(R.id.tv_title);
-        tvTitle.setText("Profile");
-        btnBack.setVisibility(View.VISIBLE);
-        btnBack.setOnClickListener(v -> finish());
 
         // TabLayout
         tabLayout = findViewById(R.id.tabLayout);
