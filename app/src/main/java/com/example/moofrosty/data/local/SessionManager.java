@@ -13,7 +13,7 @@ import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
+//Session manager is for the Global
 public class SessionManager {
 
     private static final String PREF_NAME = "MoofrostySession";
@@ -29,6 +29,9 @@ public class SessionManager {
     private SharedPreferences.Editor editor;
     private Context context;
     private Gson gson;
+
+    // 🔹 NEW KEY (ONLY ADDITION FOR LOCATION FLOW)
+    private static final String KEY_LOCATION_READY = "location_ready";
 
 //    public SessionManager(Context context) {
 //        pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
@@ -64,24 +67,7 @@ public class SessionManager {
         editor.apply();
     }
 
-//    public UserDetail getUserDetail() {
-//        String json = pref.getString(KEY_USER_DETAILS, "");
-//        if (json.isEmpty()) return null;
-//        return gson.fromJson(json, UserDetail.class);
-//    }
-
-
     // ---------------- BEAT (NEW + REQUIRED) ----------------
-//    public void saveBeat(UserDetailResponse.Data data) {
-//        if (data != null && data.getBeat() != null) {
-//            editor.putInt(KEY_BEAT_ID, data.getBeat().beatId);
-//            editor.putString(
-//                    KEY_BEAT_NAME,
-//                    data.getBeat().beatNameFrom + " - " + data.getBeat().beatNameTo
-//            );
-//            editor.apply();
-//        }
-//    }
 
     public String getUserFullName() {
         String json = pref.getString(KEY_USER_JSON, "");
@@ -93,12 +79,9 @@ public class SessionManager {
             JSONObject root = new JSONObject(json);
             JSONObject userObj = null;
 
-            // In your LoginResponse JSON, 'user' is inside the root object
             if (root.has("user") && !root.isNull("user")) {
                 userObj = root.getJSONObject("user");
-            }
-            // Fallback: If you saved just the user object directly
-            else if (root.has("firstName")) {
+            } else if (root.has("firstName")) {
                 userObj = root;
             }
 
@@ -107,7 +90,6 @@ public class SessionManager {
                 String middle = userObj.optString("middleName", "");
                 String last = userObj.optString("lastName", "");
 
-                // Logic to handle empty middle name smoothly
                 if (!middle.isEmpty()) {
                     fullName = first + " " + middle + " " + last;
                 } else {
@@ -142,25 +124,43 @@ public class SessionManager {
         }
         return "";
     }
+
+    // 🔹 REAL SYSTEM CHECK (UNCHANGED – PERFECT)
     public boolean isLocationAndPermissionsEnabled() {
-        // Check runtime permissions
-        boolean fineLocation = ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED;
-        boolean backgroundLocation = true;
+
+        boolean fineLocation =
+                ContextCompat.checkSelfPermission(context,
+                        android.Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED;
+
+        boolean backgroundLocationGranted = true;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            backgroundLocation = ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_BACKGROUND_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED;
+            backgroundLocationGranted =
+                    ContextCompat.checkSelfPermission(context,
+                            android.Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+                            == PackageManager.PERMISSION_GRANTED;
         }
-        boolean cameraGranted = ContextCompat.checkSelfPermission(context, android.Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_GRANTED;
-        boolean contactsGranted = ContextCompat.checkSelfPermission(context, android.Manifest.permission.READ_CONTACTS)
-                == PackageManager.PERMISSION_GRANTED;
 
-        boolean allPermissionsGranted = fineLocation && backgroundLocation && cameraGranted && contactsGranted;
+        boolean cameraGranted =
+                ContextCompat.checkSelfPermission(context,
+                        android.Manifest.permission.CAMERA)
+                        == PackageManager.PERMISSION_GRANTED;
 
-        // Check GPS status
-        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        boolean gpsEnabled = locationManager != null && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        boolean contactsGranted =
+                ContextCompat.checkSelfPermission(context,
+                        android.Manifest.permission.READ_CONTACTS)
+                        == PackageManager.PERMISSION_GRANTED;
+
+        boolean allPermissionsGranted =
+                fineLocation && backgroundLocationGranted && cameraGranted && contactsGranted;
+
+        LocationManager locationManager =
+                (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+
+        boolean gpsEnabled = false;
+        if (locationManager != null) {
+            gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        }
 
         return allPermissionsGranted && gpsEnabled;
     }
@@ -171,5 +171,17 @@ public class SessionManager {
 
     public String getBeatName() {
         return pref.getString(KEY_BEAT_NAME, "");
+    }
+
+    // 🔹 ONLY UPDATED PART (REQUIRED)
+    public void setLocationAndPermissionsEnabled(boolean enabled) {
+        // This does NOT mean real permission state
+        // Only remembers that user completed permission + GPS flow once
+        editor.putBoolean(KEY_LOCATION_READY, enabled);
+        editor.apply();
+    }
+
+    public boolean wasLocationFlowCompleted() {
+        return pref.getBoolean(KEY_LOCATION_READY, false);
     }
 }
