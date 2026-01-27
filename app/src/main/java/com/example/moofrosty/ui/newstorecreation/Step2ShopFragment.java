@@ -105,6 +105,7 @@ public class Step2ShopFragment extends Fragment {
                     (LocationResponse.Country) parent.getItemAtPosition(position);
 
             viewModel.selectedCountryId = String.valueOf(country.getId());
+            viewModel.selectedCountryName = country.getName(); // Save Name!
 
             // CLEAR DEPENDENTS
             viewModel.selectedStateId = "";
@@ -134,6 +135,7 @@ public class Step2ShopFragment extends Fragment {
                     (LocationResponse.State) parent.getItemAtPosition(position);
 
             viewModel.selectedStateId = String.valueOf(state.getId());
+            viewModel.selectedStateName = state.getName();
 
             viewModel.selectedDistId = "";
             viewModel.selectedCityId = "";
@@ -160,6 +162,7 @@ public class Step2ShopFragment extends Fragment {
                     (LocationResponse.District) parent.getItemAtPosition(position);
 
             viewModel.selectedDistId = String.valueOf(dist.getId());
+            viewModel.selectedDistName = dist.getName();
 
             viewModel.selectedCityId = "";
             spCity.setText("");
@@ -183,6 +186,7 @@ public class Step2ShopFragment extends Fragment {
                     (LocationResponse.City) parent.getItemAtPosition(position);
 
             viewModel.selectedCityId = String.valueOf(city.getId());
+            viewModel.selectedCityName = city.getName();
         });
 
         viewModel.rssList.observe(getViewLifecycleOwner(), res -> {
@@ -254,7 +258,24 @@ public class Step2ShopFragment extends Fragment {
             BeatResponse.BeatData beat =
                     (BeatResponse.BeatData) parent.getItemAtPosition(position);
             viewModel.selectedBeatId = String.valueOf(beat.getId());
+            viewModel.selectedBeatName = beat.getFrom()+"-"+beat.getTo();
         });
+
+        // --- 🔥 FIX: RESTORE DATA ---
+        if (viewModel.storeName != null) etShopName.setText(viewModel.storeName);
+        if (viewModel.pinCode != null) etPin.setText(viewModel.pinCode);
+        if (viewModel.address != null) etAddress.setText(viewModel.address);
+
+        // Restore Dropdowns (We set the text, but false hides the filter list)
+        if (viewModel.outletType != null) spOutletType.setText(viewModel.outletType, false);
+        if (viewModel.rsId != null) spRsId.setText(viewModel.rsId, false);
+        if (viewModel.secondaryChannel != null) spSecondaryChannel.setText(viewModel.secondaryChannel, false);
+        if (viewModel.selectedBeatId != null) spBeat.setText(viewModel.selectedBeatName, false);
+        if (viewModel.selectedCountryId != null) spCountry.setText(viewModel.selectedCountryName, false);
+        if (viewModel.selectedStateId != null) spState.setText(viewModel.selectedStateName, false);
+        if (viewModel.selectedDistId  != null) spDist.setText(viewModel.selectedDistName, false);
+        if (viewModel.selectedCityId  != null) spState.setText(viewModel.selectedCityName, false);
+
 
         // -------- NEXT BUTTON --------
         btnNext.setOnClickListener(v -> {
@@ -266,9 +287,7 @@ public class Step2ShopFragment extends Fragment {
                     || viewModel.selectedCityId.isEmpty()
                     || viewModel.selectedBeatId.isEmpty()) {
 
-                Toast.makeText(requireContext(),
-                        "Please fill all required fields",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), "Please fill all required fields", Toast.LENGTH_SHORT).show();
                 return;
             }
 

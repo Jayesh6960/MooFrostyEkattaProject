@@ -9,32 +9,44 @@
     android:background="#F5F5F5"
     tools:context=".ui.attendance.leave.LeaveActivity">
 
-    <!-- Toolbar -->
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@color/Pink_color"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp">
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/btn_back"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_baseline_arrow_back_24"
-            app:tint="@color/white" />
-        <TextView
-            android:id="@+id/tv_toolbar_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Leave"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginStart="16dp"/>
-    </LinearLayout>
+        <include
+            android:id="@+id/main_toolbar"
+            layout="@layout/toolbar_layout_drawabletab" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+<!--    &lt;!&ndash; Toolbar &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="56dp"-->
+<!--        android:background="@color/Pink_color"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:gravity="center_vertical"-->
+<!--        android:paddingStart="12dp"-->
+<!--        android:paddingEnd="12dp">-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/btn_back"-->
+<!--            android:layout_width="24dp"-->
+<!--            android:layout_height="24dp"-->
+<!--            android:src="@drawable/ic_baseline_arrow_back_24"-->
+<!--            app:tint="@color/white" />-->
+<!--        <TextView-->
+<!--            android:id="@+id/tv_toolbar_title"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Leave"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="18sp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:layout_marginStart="16dp"/>-->
+<!--    </LinearLayout>-->
 
     <!-- Simple Tabs -->
     <com.google.android.material.tabs.TabLayout

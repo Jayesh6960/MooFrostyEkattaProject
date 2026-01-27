@@ -196,10 +196,15 @@
                                 Log.d("addstoreaftercall", "API Success Status: " + response.body().getStatus());
                                 Log.d("addstoreaftercall", "API Message: " + response.body().getMessage());
 
-                                if("success".equalsIgnoreCase(response.body().getStatus()))
+                                if ("true".equalsIgnoreCase(response.body().getStatus())) {
+
                                     liveData.postValue(Resource.success(response.body()));
-                                else
-                                    liveData.postValue(Resource.error(response.body().getMessage(), null));
+
+                                } else {
+                                    String cleanMsg =
+                                            cleanErrorMessage(response.body().getMessage());
+                                    liveData.postValue(Resource.error(cleanMsg, null));
+                                }
                             } else {
                                 // Log raw error body if possible
                                 String errorBody = "";
@@ -208,7 +213,8 @@
                                 } catch (Exception e) { errorBody = "Unknown error"; }
 
                                 Log.e("addstoreaftercall", "API Error Body: " + errorBody);
-                                liveData.postValue(Resource.error("Error: " + response.code() + " " + response.message(), null));
+//                                liveData.postValue(Resource.error("Error: " + response.code() + " " + response.message(), null)  );
+                                liveData.postValue(Resource.error("Something went wrong. Please try again.", null));
                             }
                         }
                         @Override public void onFailure(Call<GeneralResponse> call, Throwable t) {
@@ -218,6 +224,14 @@
                             liveData.postValue(Resource.error("Network Error: " + t.getMessage(), null));
                         }
                     });
+        }
+
+        private String cleanErrorMessage(String message) {
+            if (message == null) return "Something went wrong";
+            if (message.contains(" (and")) {
+                return message.substring(0, message.indexOf(" (and")).trim();
+            }
+            return message;
         }
 
         // Helper to prevent null pointer exceptions
