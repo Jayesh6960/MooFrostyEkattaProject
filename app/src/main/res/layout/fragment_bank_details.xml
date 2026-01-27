@@ -148,12 +148,12 @@
                     android:id="@+id/etConfirmAccountNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="************"
+                    android:text="123456789"
                     android:textStyle="bold"
                     android:clickable="false"
                     android:textColor="#3E3E3E"
                     android:enabled="false"
-                    android:inputType="textPassword" />
+                    android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
 
 

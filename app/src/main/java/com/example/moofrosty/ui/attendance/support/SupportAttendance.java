@@ -15,40 +15,57 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.example.moofrosty.R;
 
 public class SupportAttendance extends AppCompatActivity {
 
-    private TextView supportEmail, supportContact, salesContact, tvTitle;
+    private TextView supportEmail, supportContact, salesContact;
     private CardView cardMailSupport, cardCallSupport;
     private Toolbar toolbar;
+    ImageView btnBack;
+    ImageView btnMenu;
+    TextView tvTitle;
+    TextView tvDate ;
 
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         setContentView(R.layout.activity_support_attendace);
+        WindowInsetsControllerCompat windowInsetsController =
+                WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+        windowInsetsController.setAppearanceLightStatusBars(true);
 
-        // ----- EDGE TO EDGE (STATUS BAR PADDING) -----
-        View main = findViewById(R.id.main);
-        ViewCompat.setOnApplyWindowInsetsListener(main, (v, insets) -> {
+
+        btnBack = findViewById(R.id.btn_back);
+        toolbar = findViewById(R.id.dashboard_toolbar);
+        setSupportActionBar(toolbar);
+        btnMenu = findViewById(R.id.btn_menu);
+        tvTitle = findViewById(R.id.tv_title);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.app_bar_layout), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(0, systemBars.top, 0, 0);
+            v.setPadding(v.getPaddingLeft(), systemBars.top, v.getPaddingRight(), v.getPaddingBottom());
+            return insets;
+        });
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), systemBars.bottom+16);
             return insets;
         });
 
-        // ----- TOOLBAR SETUP -----
-        toolbar = findViewById(R.id.dashboard_toolbar);
-        setSupportActionBar(toolbar);
-
-        tvTitle = findViewById(R.id.tv_title);
-        ImageView btnBack = findViewById(R.id.btn_back);
-
         tvTitle.setText("Support");
         btnBack.setVisibility(View.VISIBLE);
-        btnBack.setOnClickListener(v -> finish());
+        btnMenu.setVisibility(View.GONE);
+        btnBack.setOnClickListener(v -> onBackPressed());
 
         // ----- CARD & TEXT REFERENCES -----
         cardMailSupport = findViewById(R.id.cardMailSupport);

@@ -40,6 +40,15 @@ public class Step3KycSelectionFragment extends Fragment {
         viewModel = new ViewModelProvider(requireActivity()).get(CreateStoreViewModel.class);
         radioGroup = view.findViewById(R.id.radio_group_kyc);
         MaterialButton btnNext = view.findViewById(R.id.btn_next);
+        // --- 🔥 FIX: RESTORE SELECTION ---
+        if (viewModel.selectedDocType != null) {
+            String type = viewModel.selectedDocType;
+            if (type.equals("Udyam Aadhar")) radioGroup.check(R.id.rb_udyam);
+            else if (type.equals("Aadhar Card")) radioGroup.check(R.id.rb_aadhar);
+            else if (type.equals("GST Certificate")) radioGroup.check(R.id.rb_gst);
+            else if (type.equals("FSSAI License")) radioGroup.check(R.id.rb_fssai);
+        }
+
 
         btnNext.setOnClickListener(v -> {
             int selectedId = radioGroup.getCheckedRadioButtonId();

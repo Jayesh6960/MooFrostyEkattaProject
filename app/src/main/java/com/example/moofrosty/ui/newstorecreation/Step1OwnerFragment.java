@@ -44,6 +44,14 @@ public class Step1OwnerFragment extends Fragment {
         MaterialButton btnNext = view.findViewById(R.id.btn_next);
 
         // Pre-fill mobile number if passed from previous activity
+
+        // When you come back, the ViewModel still holds the text. Put it back in the box.
+        if (viewModel.ownerName != null) {
+            etOwner.setText(viewModel.ownerName);
+        }
+        if (viewModel.email != null) {
+            etEmail.setText(viewModel.email);
+        }
         if (viewModel.mobileNumber != null) {
             etMobile.setText(viewModel.mobileNumber);
             etMobile.setEnabled(false);
@@ -55,9 +63,6 @@ public class Step1OwnerFragment extends Fragment {
 
             if(name.isEmpty() ) {
                 etOwner.setError("OwnerFull Name Required");
-                return;
-            } else if (email.isEmpty()){
-                etEmail.setError("Email Required");
                 return;
             }
             viewModel.ownerName = name;

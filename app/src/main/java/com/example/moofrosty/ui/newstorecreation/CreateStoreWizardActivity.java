@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
@@ -54,7 +55,7 @@ public class CreateStoreWizardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), true);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         setContentView(R.layout.activity_create_store_wizard);
         WindowInsetsControllerCompat windowInsetsController =
                 WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
@@ -102,40 +103,33 @@ public class CreateStoreWizardActivity extends AppCompatActivity {
         checkLocationPermissionAndStart();
         // Initial Fragment
 
+//        if (savedInstanceState == null) {
+//            viewModel.currentStep = 1; // Start fresh
+//            loadStep(1);
+//        } else {
+//            // Restore the step we were on
+//            loadStep(viewModel.currentStep);
+//        }
+        // -- 3. INITIAL LOAD --
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // Check the VIEWMODEL count, not a local variable
+                if (viewModel.currentStep > 1) {
+                    viewModel.currentStep--;
+                    loadStep(viewModel.currentStep);
+                } else {
+                    // If on Step 1, close the activity
+                    finish();
+                }
+            }
+        });
         if (savedInstanceState == null) {
-            loadStep(1);
+            viewModel.currentStep = 1;
         }
-        updateStepUI(1);
-        loadFragment(new Step1OwnerFragment());
-    }
-
-    private void updateStepUI(int step) {
-
-        // Reset all badges
-        tvBadge1.setBackgroundResource(R.drawable.grey_bg_storeregister);
-        tvBadge2.setBackgroundResource(R.drawable.grey_bg_storeregister);
-        tvBadge3.setBackgroundResource(R.drawable.grey_bg_storeregister);
-
-        // Reset lines
-        lineStep1.setBackgroundResource(R.color.grey);
-        lineStep2.setBackgroundResource(R.color.grey);
-
-        // Step 1 active
-        if (step >= 1) {
-            tvBadge1.setBackgroundResource(R.drawable.green_bg_storeregister);
-        }
-
-        // Step 2 active
-        if (step >= 2) {
-            tvBadge2.setBackgroundResource(R.drawable.green_bg_storeregister);
-            lineStep1.setBackgroundResource(R.color.green);
-        }
-
-        // Step 3 active
-        if (step >= 3) {
-            tvBadge3.setBackgroundResource(R.drawable.green_bg_storeregister);
-            lineStep2.setBackgroundResource(R.color.green);
-        }
+        loadStep(viewModel.currentStep);
+      //  updateStepUI(1);
+     //   loadFragment(new Step1OwnerFragment());
     }
 
     // --- LOCATION LOGIC START ---
@@ -212,40 +206,138 @@ public class CreateStoreWizardActivity extends AppCompatActivity {
 //        }
 //    }
 
-    public void nextStep() {
-        if (currentStep < 4) {
-            currentStep++;
-            loadStep(currentStep);
-        }
-    }
+//    public void nextStep() {
+//        if (currentStep < 4) {
+//            currentStep++; // Increase Count
+//            loadStep(currentStep); // Load correct screen
+//        }
+//    }
 
-    private void loadStep(int step) {
-        Fragment fragment = null;
+    //  viewmodel code
 
-        if (step == 1) fragment = new Step1OwnerFragment();
-        else if (step == 2) fragment = new Step2ShopFragment();
-        else if (step == 3) fragment = new Step3KycSelectionFragment();
-        else if (step == 4) fragment = new Step4DocUploadFragment();
+//    public void nextStep() {
+//        if (viewModel.currentStep < 4) {
+//            viewModel.currentStep++;
+//            loadStep(viewModel.currentStep);
+//        }
+//    }
 
-        if (fragment != null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.wizard_container, fragment)
-                    .addToBackStack(String.valueOf(step))
-                    .commit();
-        }
-    }
+//    private void loadStep(int step) {
+//        Fragment fragment = null;
+//
+//        // Choose Fragment
+//        if (step == 1) fragment = new Step1OwnerFragment();
+//        else if (step == 2) fragment = new Step2ShopFragment();
+//        else if (step == 3) fragment = new Step3KycSelectionFragment();
+//        else if (step == 4) fragment = new Step4DocUploadFragment();
+//
+//        if (fragment != null) {
+//            updateStepUI(step);
+//
+//            getSupportFragmentManager()
+//                    .beginTransaction()
+//                    .replace(R.id.wizard_container, fragment)
+//                    .commit();
+//        }
+//    }
+
+//  viewmodel code
+
+//    private void loadStep(int step) {
+//        Fragment fragment = null;
+//
+//        if (step == 1) fragment = new Step1OwnerFragment();
+//        else if (step == 2) fragment = new Step2ShopFragment();
+//        else if (step == 3) fragment = new Step3KycSelectionFragment();
+//        else if (step == 4) fragment = new Step4DocUploadFragment();
+//
+//        if (fragment != null) {
+//            updateStepUI(step);
+//            // Replace fragment, NO BackStack
+//            getSupportFragmentManager()
+//                    .beginTransaction()
+//                    .replace(R.id.wizard_container, fragment)
+//                    .commit();
+//        }
+//    }
+
+    //  viewmodel code
+//    @Override
+//    public void onBackPressed() {
+//        if (viewModel.currentStep > 1) {
+//            viewModel.currentStep--;
+//            loadStep(viewModel.currentStep);
+//        } else {
+//            finish();
+//        }
+//    }
 
     // 🔥 FIXED BACK HANDLING
-    @Override
-    public void onBackPressed() {
-        if (currentStep > 1) {
-            currentStep--; // 🔥 THIS WAS MISSING
-            getSupportFragmentManager().popBackStack();
-        } else {
-            finish();
-        }
-    }
+//    @Override
+//    public void onBackPressed() {
+//        if (currentStep > 1) {
+//            currentStep--; // Decrease Count
+//            loadStep(currentStep); // Manually load the previous screen
+//        } else {
+//            finish(); // Close activity if at Step 1
+//        }
+//    }
+
+
+//    private void updateStepUI(int step) {
+//
+//        // Reset all badges
+//        tvBadge1.setBackgroundResource(R.drawable.grey_bg_storeregister);
+//        tvBadge2.setBackgroundResource(R.drawable.grey_bg_storeregister);
+//        tvBadge3.setBackgroundResource(R.drawable.grey_bg_storeregister);
+//
+//        // Reset lines
+//        lineStep1.setBackgroundResource(R.color.grey);
+//        lineStep2.setBackgroundResource(R.color.grey);
+//
+//        // Step 1 active
+//        if (step >= 1) {
+//            tvBadge1.setBackgroundResource(R.drawable.green_bg_storeregister);
+//        }
+//
+//        // Step 2 active
+//        if (step >= 2) {
+//            tvBadge2.setBackgroundResource(R.drawable.green_bg_storeregister);
+//            lineStep1.setBackgroundResource(R.color.green);
+//        }
+//
+//        // Step 3 active
+//        if (step >= 3) {
+//            tvBadge3.setBackgroundResource(R.drawable.green_bg_storeregister);
+//            lineStep2.setBackgroundResource(R.color.green);
+//        }
+//    }
+
+//  viewmodel code
+
+//    private void updateStepUI(int step) {
+//        // Reset all to Grey first
+//        tvBadge1.setBackgroundResource(R.drawable.grey_bg_storeregister);
+//        tvBadge2.setBackgroundResource(R.drawable.grey_bg_storeregister);
+//        tvBadge3.setBackgroundResource(R.drawable.grey_bg_storeregister);
+//        lineStep1.setBackgroundResource(R.color.grey);
+//        lineStep2.setBackgroundResource(R.color.grey);
+//
+//        // Turn Green based on step
+//        if (step >= 1) {
+//            tvBadge1.setBackgroundResource(R.drawable.green_bg_storeregister);
+//        }
+//        if (step >= 2) {
+//            tvBadge2.setBackgroundResource(R.drawable.green_bg_storeregister);
+//            lineStep1.setBackgroundResource(R.color.green);
+//        }
+//        if (step >= 3) {
+//            tvBadge3.setBackgroundResource(R.drawable.green_bg_storeregister);
+//            lineStep2.setBackgroundResource(R.color.green);
+//        }
+//        // Note: Step 4 shares the Step 3 UI usually, or you can add more logic here if needed
+//    }
+
 
 //    private void handleBack() {
 //        if(currentStep > 1) {
@@ -264,12 +356,230 @@ public class CreateStoreWizardActivity extends AppCompatActivity {
 //        }
 //    }
 
+
     private void loadFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.wizard_container, fragment)
                 .commit();
     }
 
+    public void nextStep() {
+        if (viewModel.currentStep < 4) {
+            viewModel.currentStep++;
+            loadStep(viewModel.currentStep);
+        }
+    }
+
+    // ⚠️ DO NOT OVERRIDE onBackPressed() HERE.
+    // The "addCallback" in onCreate handles it now.
+
+    private void loadStep(int step) {
+        Fragment fragment = null;
+
+        if (step == 1) fragment = new Step1OwnerFragment();
+        else if (step == 2) fragment = new Step2ShopFragment();
+        else if (step == 3) fragment = new Step3KycSelectionFragment();
+        else if (step == 4) fragment = new Step4DocUploadFragment();
+
+        if (fragment != null) {
+            updateStepUI(step);
+            // Just replace. No backstack logic needed.
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.wizard_container, fragment)
+                    .commit();
+        }
+    }
+
+    private void updateStepUI(int step) {
+        // Reset Visuals
+        tvBadge1.setBackgroundResource(R.drawable.grey_bg_storeregister);
+        tvBadge2.setBackgroundResource(R.drawable.grey_bg_storeregister);
+        tvBadge3.setBackgroundResource(R.drawable.grey_bg_storeregister);
+        lineStep1.setBackgroundResource(R.color.grey);
+        lineStep2.setBackgroundResource(R.color.grey);
+
+        // Activate based on step
+        if (step >= 1) tvBadge1.setBackgroundResource(R.drawable.green_bg_storeregister);
+        if (step >= 2) {
+            tvBadge2.setBackgroundResource(R.drawable.green_bg_storeregister);
+            lineStep1.setBackgroundResource(R.color.green);
+        }
+        if (step >= 3) {
+            tvBadge3.setBackgroundResource(R.drawable.green_bg_storeregister);
+            lineStep2.setBackgroundResource(R.color.green);
+        }
+    }
+
 //    @Override public void onBackPressed() { handleBack(); }
 
 }
+
+//
+//
+////    public void nextStep() {
+////        Fragment fragment = null;
+////
+////        if (currentStep == 1) fragment = new Step2ShopFragment();
+////        else if (currentStep == 2) fragment = new Step3KycSelectionFragment();
+////        else if (currentStep == 3) fragment = new Step4DocUploadFragment();
+////
+////        if (fragment != null) {
+////            getSupportFragmentManager().beginTransaction()
+////                    .replace(R.id.wizard_container, fragment)
+////                    .addToBackStack(null)
+////                    .commit();
+////        }
+////    }
+//
+////    public void nextStep() {
+////        if (currentStep < 4) {
+////            currentStep++; // Increase Count
+////            loadStep(currentStep); // Load correct screen
+////        }
+////    }
+//
+//public void nextStep() {
+//    if (viewModel.currentStep < 4) {
+//        viewModel.currentStep++;
+//        loadStep(viewModel.currentStep);
+//    }
+//}
+//
+////    private void loadStep(int step) {
+////        Fragment fragment = null;
+////
+////        // Choose Fragment
+////        if (step == 1) fragment = new Step1OwnerFragment();
+////        else if (step == 2) fragment = new Step2ShopFragment();
+////        else if (step == 3) fragment = new Step3KycSelectionFragment();
+////        else if (step == 4) fragment = new Step4DocUploadFragment();
+////
+////        if (fragment != null) {
+////            updateStepUI(step);
+////
+////            getSupportFragmentManager()
+////                    .beginTransaction()
+////                    .replace(R.id.wizard_container, fragment)
+////                    .commit();
+////        }
+////    }
+//
+//private void loadStep(int step) {
+//    Fragment fragment = null;
+//
+//    if (step == 1) fragment = new Step1OwnerFragment();
+//    else if (step == 2) fragment = new Step2ShopFragment();
+//    else if (step == 3) fragment = new Step3KycSelectionFragment();
+//    else if (step == 4) fragment = new Step4DocUploadFragment();
+//
+//    if (fragment != null) {
+//        updateStepUI(step);
+//        // Replace fragment, NO BackStack
+//        getSupportFragmentManager()
+//                .beginTransaction()
+//                .replace(R.id.wizard_container, fragment)
+//                .commit();
+//    }
+//}
+//
+//@Override
+//public void onBackPressed() {
+//    if (viewModel.currentStep > 1) {
+//        viewModel.currentStep--;
+//        loadStep(viewModel.currentStep);
+//    } else {
+//        finish();
+//    }
+//}
+//
+//// 🔥 FIXED BACK HANDLING
+////    @Override
+////    public void onBackPressed() {
+////        if (currentStep > 1) {
+////            currentStep--; // Decrease Count
+////            loadStep(currentStep); // Manually load the previous screen
+////        } else {
+////            finish(); // Close activity if at Step 1
+////        }
+////    }
+//
+//
+////    private void updateStepUI(int step) {
+////
+////        // Reset all badges
+////        tvBadge1.setBackgroundResource(R.drawable.grey_bg_storeregister);
+////        tvBadge2.setBackgroundResource(R.drawable.grey_bg_storeregister);
+////        tvBadge3.setBackgroundResource(R.drawable.grey_bg_storeregister);
+////
+////        // Reset lines
+////        lineStep1.setBackgroundResource(R.color.grey);
+////        lineStep2.setBackgroundResource(R.color.grey);
+////
+////        // Step 1 active
+////        if (step >= 1) {
+////            tvBadge1.setBackgroundResource(R.drawable.green_bg_storeregister);
+////        }
+////
+////        // Step 2 active
+////        if (step >= 2) {
+////            tvBadge2.setBackgroundResource(R.drawable.green_bg_storeregister);
+////            lineStep1.setBackgroundResource(R.color.green);
+////        }
+////
+////        // Step 3 active
+////        if (step >= 3) {
+////            tvBadge3.setBackgroundResource(R.drawable.green_bg_storeregister);
+////            lineStep2.setBackgroundResource(R.color.green);
+////        }
+////    }
+//
+//private void updateStepUI(int step) {
+//    // Reset all to Grey first
+//    tvBadge1.setBackgroundResource(R.drawable.grey_bg_storeregister);
+//    tvBadge2.setBackgroundResource(R.drawable.grey_bg_storeregister);
+//    tvBadge3.setBackgroundResource(R.drawable.grey_bg_storeregister);
+//    lineStep1.setBackgroundResource(R.color.grey);
+//    lineStep2.setBackgroundResource(R.color.grey);
+//
+//    // Turn Green based on step
+//    if (step >= 1) {
+//        tvBadge1.setBackgroundResource(R.drawable.green_bg_storeregister);
+//    }
+//    if (step >= 2) {
+//        tvBadge2.setBackgroundResource(R.drawable.green_bg_storeregister);
+//        lineStep1.setBackgroundResource(R.color.green);
+//    }
+//    if (step >= 3) {
+//        tvBadge3.setBackgroundResource(R.drawable.green_bg_storeregister);
+//        lineStep2.setBackgroundResource(R.color.green);
+//    }
+//    // Note: Step 4 shares the Step 3 UI usually, or you can add more logic here if needed
+//}
+//
+//
+////    private void handleBack() {
+////        if(currentStep > 1) {
+////            currentStep--;
+////            getSupportFragmentManager().popBackStack();
+////        } else {
+////            finish();
+////        }
+////    }
+//
+////    private void handleBack() {
+////        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+////            getSupportFragmentManager().popBackStack();
+////        } else {
+////            finish();
+////        }
+////    }
+//
+//
+//private void loadFragment(Fragment fragment) {
+//    getSupportFragmentManager().beginTransaction()
+//            .replace(R.id.wizard_container, fragment)
+//            .commit();
+//}
+//
+////    @Override public void onBackPressed() { handleBack(); }

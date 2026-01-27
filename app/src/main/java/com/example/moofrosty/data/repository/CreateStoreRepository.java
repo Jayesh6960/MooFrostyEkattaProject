@@ -196,7 +196,7 @@
                                 Log.d("addstoreaftercall", "API Success Status: " + response.body().getStatus());
                                 Log.d("addstoreaftercall", "API Message: " + response.body().getMessage());
 
-                                if ("success".equalsIgnoreCase(response.body().getStatus())) {
+                                if ("true".equalsIgnoreCase(response.body().getStatus())) {
 
                                     liveData.postValue(Resource.success(response.body()));
 
