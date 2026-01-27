@@ -75,6 +75,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:orientation="vertical"
                 android:padding="16dp">
 
@@ -145,7 +146,7 @@
             android:padding="8dp">
             <Button
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="55dp"
                 android:layout_weight="1"
                 android:text="Additional Incentives"
                 android:textAllCaps="false"

@@ -105,9 +105,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="46dp"
-        android:layout_marginLeft="150dp"
-        android:src="@drawable/storecretaet"
+        android:layout_marginBottom="55dp"
+        android:layout_marginRight="38dp"
+        android:src="@android:drawable/ic_input_add"
         app:tint="@color/white"
         app:backgroundTint="@color/Pink_color"/>
 

@@ -17,6 +17,7 @@ import java.io.File;
 public class CreateStoreViewModel extends ViewModel {
 
     private CreateStoreRepository repository;
+    public int currentStep = 1;
 
     // Holds all form data
     public CreateStoreRequestModel formData = new CreateStoreRequestModel();
@@ -31,11 +32,20 @@ public class CreateStoreViewModel extends ViewModel {
     public String pinCode = "";
     public String address = "";
 
-    public String selectedCountryId = "";
-    public String selectedStateId = "";
-    public String selectedDistId = "";
-    public String selectedCityId = "";
+    public String selectedCountryId  = "";
+    public String selectedStateId   = "";
+    public String selectedDistId    = "";
+    public String selectedCityId    = "";
     public String selectedBeatId = "";
+
+    // --- NAMES (For UI - Add these!) ---
+    public String selectedrsId;
+    public String selectedoutletType;
+    public String selectedCountryName;
+    public String selectedStateName;
+    public String selectedDistName;
+    public String selectedCityName;
+    public String selectedBeatName;
 
     public String selectedDocType = "";
     public String docNumber = "";

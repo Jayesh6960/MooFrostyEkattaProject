@@ -206,6 +206,7 @@
             android:hint="District"
             app:boxStrokeColor="@color/Purple_Color"
             app:hintTextColor="@color/Purple_Color"
+            app:endIconTint="@color/Purple_Color"
             android:layout_marginTop="8dp">
 
             <AutoCompleteTextView

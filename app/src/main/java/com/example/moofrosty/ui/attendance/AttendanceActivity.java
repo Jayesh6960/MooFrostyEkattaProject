@@ -12,6 +12,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -19,11 +20,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -46,6 +50,13 @@ public class AttendanceActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private TextView tvStatusMessage;
 
+    Toolbar toolbar ;
+    ImageView btnBack;
+    ImageView btnMenu;
+    TextView tvTitle;
+    TextView tvDate ;
+    CardView cardView;
+
     private AttendanceStatusResponse lastStatusData;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 100;
 
@@ -56,23 +67,38 @@ public class AttendanceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         setContentView(R.layout.activity_attendance);
+        WindowInsetsControllerCompat windowInsetsController =
+                WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+        windowInsetsController.setAppearanceLightStatusBars(true);
 
-        // 1. Init Views
-        ImageView btnBack = findViewById(R.id.btn_back);
-        TextView tvTitle = findViewById(R.id.tv_toolbar_title);
+        btnBack = findViewById(R.id.btn_back);
+        cardView = findViewById(R.id.bottom_attendance_card);
         RecyclerView recyclerView = findViewById(R.id.recycler_attendance_menu);
         btnPunch = findViewById(R.id.btn_punch);
         tvStatusMessage = findViewById(R.id.tv_status_message);
+        toolbar = findViewById(R.id.dashboard_toolbar);
+        setSupportActionBar(toolbar);
+        btnMenu = findViewById(R.id.btn_menu);
+        tvTitle = findViewById(R.id.tv_title);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
 
-        // 2. Window Insets
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.app_bar_layout), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            v.setPadding(v.getPaddingLeft(), systemBars.top, v.getPaddingRight(), v.getPaddingBottom());
+            return insets;
+        });
+        ViewCompat.setOnApplyWindowInsetsListener(cardView, (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), systemBars.bottom+16);
             return insets;
         });
 
         tvTitle.setText("Attendance");
-        btnBack.setOnClickListener(v -> finish());
+        btnBack.setVisibility(View.VISIBLE);
+        btnMenu.setVisibility(View.GONE);
+        btnBack.setOnClickListener(v -> onBackPressed());
 
         sessionManager = new SessionManager(this);
 
