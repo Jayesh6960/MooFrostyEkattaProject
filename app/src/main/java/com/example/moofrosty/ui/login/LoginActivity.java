@@ -106,7 +106,9 @@ public class LoginActivity extends BaseActivity {
                             String token = resp.getToken();
                             String fullJson = new Gson().toJson(resp);
                             sessionManager.saveLoginSession(token, fullJson);
+                            sessionManager.saveUserId(resp.getUser().getId());
                             Log.d("sessonpass","checkpass"+token+" "+fullJson);
+                       //     Log.d("sessonpassid","checkpass" + sessionManager.saveUserId(resp.getUser().getId()));
 
                             navigateToDashboard();
                         } else {

@@ -46,7 +46,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
         // --- 1. Get the Order from Repository ---
         String orderId = getIntent().getStringExtra("ORDER_ID");
         CartRepository repository = CartRepository.getInstance();
-        order = repository.getOrderById(orderId);
+//        order = repository.getOrderById(orderId);
 
         if (order == null) {
             finish();

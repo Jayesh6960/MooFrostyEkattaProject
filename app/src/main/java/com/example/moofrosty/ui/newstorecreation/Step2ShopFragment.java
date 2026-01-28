@@ -39,9 +39,11 @@ public class Step2ShopFragment extends Fragment {
         // Required empty public constructor
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_step2_shop, container, false);
     }
 
@@ -64,6 +66,7 @@ public class Step2ShopFragment extends Fragment {
         spOutletType = view.findViewById(R.id.sp_outlet_type);
 
         etShopName = view.findViewById(R.id.et_shop_name);
+        spOutletType = view.findViewById(R.id.sp_outlet_type);
         etPin = view.findViewById(R.id.et_pin);
         etAddress = view.findViewById(R.id.et_address);
 
@@ -81,16 +84,20 @@ public class Step2ShopFragment extends Fragment {
 
         MaterialButton btnNext = view.findViewById(R.id.btn_next);
 
-        // --- OUTLET TYPE SETUP ---
         String[] outletTypes = {"COC", "ROC"};
         ArrayAdapter<String> outletAdapter = new ArrayAdapter<>(requireContext(),
                 android.R.layout.simple_dropdown_item_1line, outletTypes);
         spOutletType.setAdapter(outletAdapter);
-        spOutletType.setOnItemClickListener((parent, v, position, id1) -> {
-            viewModel.outletType = (String) parent.getItemAtPosition(position);
+
+//        spOutletType.setText(outletTypes[0], false); // Defaults to COC
+//        viewModel.outletType = outletTypes[0]; // Ensure ViewModel has default value
+
+        spOutletType.setOnItemClickListener((parent, v, position, id) -> {
+            String selected = (String) parent.getItemAtPosition(position);
+            viewModel.outletType = selected;
         });
 
-        // --- FETCH DATA ---
+        // -------- INITIAL API CALLS (NETWORK CHECK) --------
         if (NetworkUtil.isNetworkAvailable(requireContext())) {
             viewModel.fetchCountries(token);
             viewModel.fetchBeats(token);
@@ -100,31 +107,39 @@ public class Step2ShopFragment extends Fragment {
             Toast.makeText(requireContext(), "No Internet Connection", Toast.LENGTH_SHORT).show();
         }
 
-        // --- COUNTRY OBSERVER ---
         viewModel.countries.observe(getViewLifecycleOwner(), res -> {
             if (res.status == Resource.Status.SUCCESS && res.data != null) {
-                spCountry.setAdapter(new ArrayAdapter<>(requireContext(),
-                        android.R.layout.simple_dropdown_item_1line,
-                        res.data.getData()));
+                ArrayAdapter<LocationResponse.Country> adapter =
+                        new ArrayAdapter<>(requireContext(),
+                                android.R.layout.simple_dropdown_item_1line,
+                                res.data.getData());
+
+                spCountry.setAdapter(adapter);
             }
         });
 
-        spCountry.setOnItemClickListener((parent, v, position, id1) -> {
-            LocationResponse.Country country = (LocationResponse.Country) parent.getItemAtPosition(position);
-            viewModel.selectedCountryId = String.valueOf(country.getId());
-            viewModel.selectedCountryName = country.getName();
+        spCountry.setOnItemClickListener((parent, v, position, id) -> {
+            LocationResponse.Country country =
+                    (LocationResponse.Country) parent.getItemAtPosition(position);
 
+            viewModel.selectedCountryId = String.valueOf(country.getId());
+            viewModel.selectedCountryName = country.getName(); // Save Name!
+
+            // CLEAR DEPENDENTS
             viewModel.selectedStateId = "";
             viewModel.selectedDistId = "";
             viewModel.selectedCityId = "";
+
             spState.setText("");
             spDist.setText("");
             spCity.setText("");
 
-            if (NetworkUtil.isNetworkAvailable(requireContext())) viewModel.fetchStates(token, country.getId());
+            if (NetworkUtil.isNetworkAvailable(requireContext())) {
+                viewModel.fetchStates(token, country.getId());
+            }
         });
 
-        // --- STATE OBSERVER ---
+        // -------- STATE --------
         viewModel.states.observe(getViewLifecycleOwner(), res -> {
             if (res.status == Resource.Status.SUCCESS && res.data != null) {
                 spState.setAdapter(new ArrayAdapter<>(requireContext(),
@@ -133,20 +148,25 @@ public class Step2ShopFragment extends Fragment {
             }
         });
 
-        spState.setOnItemClickListener((parent, v, position, id1) -> {
-            LocationResponse.State state = (LocationResponse.State) parent.getItemAtPosition(position);
+        spState.setOnItemClickListener((parent, v, position, id) -> {
+            LocationResponse.State state =
+                    (LocationResponse.State) parent.getItemAtPosition(position);
+
             viewModel.selectedStateId = String.valueOf(state.getId());
             viewModel.selectedStateName = state.getName();
 
             viewModel.selectedDistId = "";
             viewModel.selectedCityId = "";
+
             spDist.setText("");
             spCity.setText("");
 
-            if (NetworkUtil.isNetworkAvailable(requireContext())) viewModel.fetchDistricts(token, state.getId());
+            if (NetworkUtil.isNetworkAvailable(requireContext())) {
+                viewModel.fetchDistricts(token, state.getId());
+            }
         });
 
-        // --- DISTRICT OBSERVER ---
+        // -------- DISTRICT --------
         viewModel.districts.observe(getViewLifecycleOwner(), res -> {
             if (res.status == Resource.Status.SUCCESS && res.data != null) {
                 spDist.setAdapter(new ArrayAdapter<>(requireContext(),
@@ -155,18 +175,22 @@ public class Step2ShopFragment extends Fragment {
             }
         });
 
-        spDist.setOnItemClickListener((parent, v, position, id1) -> {
-            LocationResponse.District dist = (LocationResponse.District) parent.getItemAtPosition(position);
+        spDist.setOnItemClickListener((parent, v, position, id) -> {
+            LocationResponse.District dist =
+                    (LocationResponse.District) parent.getItemAtPosition(position);
+
             viewModel.selectedDistId = String.valueOf(dist.getId());
             viewModel.selectedDistName = dist.getName();
 
             viewModel.selectedCityId = "";
             spCity.setText("");
 
-            if (NetworkUtil.isNetworkAvailable(requireContext())) viewModel.fetchCities(token, dist.getId());
+            if (NetworkUtil.isNetworkAvailable(requireContext())) {
+                viewModel.fetchCities(token, dist.getId());
+            }
         });
 
-        // --- CITY OBSERVER ---
+        // -------- CITY --------
         viewModel.cities.observe(getViewLifecycleOwner(), res -> {
             if (res.status == Resource.Status.SUCCESS && res.data != null) {
                 spCity.setAdapter(new ArrayAdapter<>(requireContext(),
@@ -175,69 +199,105 @@ public class Step2ShopFragment extends Fragment {
             }
         });
 
-        spCity.setOnItemClickListener((parent, v, position, id1) -> {
-            LocationResponse.City city = (LocationResponse.City) parent.getItemAtPosition(position);
+        spCity.setOnItemClickListener((parent, v, position, id) -> {
+            LocationResponse.City city =
+                    (LocationResponse.City) parent.getItemAtPosition(position);
+
             viewModel.selectedCityId = String.valueOf(city.getId());
             viewModel.selectedCityName = city.getName();
         });
 
-        // --- RS/SS OBSERVER ---
         viewModel.rssList.observe(getViewLifecycleOwner(), res -> {
-            if (res.status == Resource.Status.SUCCESS && res.data != null && res.data.getData() != null) {
-                spRsId.setAdapter(new ArrayAdapter<>(requireContext(),
-                        android.R.layout.simple_dropdown_item_1line,
-                        res.data.getData()));
+            if (res.status == Resource.Status.SUCCESS && res.data != null) {
+                if(res.data.getData() != null) {
+                    ArrayAdapter<RssResponse.RssData> adapter = new ArrayAdapter<>(requireContext(),
+                            android.R.layout.simple_dropdown_item_1line, res.data.getData());
+                    spRsId.setAdapter(adapter);
+                }
             }
         });
 
-        spRsId.setOnItemClickListener((parent, v, position, id1) -> {
-            RssResponse.RssData selected = (RssResponse.RssData) parent.getItemAtPosition(position);
-            viewModel.rsId = selected.getTitle();
+        spRsId.setOnItemClickListener((parent, v, position, id) -> {
+            RssResponse.RssData selectedItem = (RssResponse.RssData) parent.getItemAtPosition(position);
+            viewModel.rsId = String.valueOf(selectedItem.getId());
+            viewModel.selectedrsId = selectedItem.getTitle();
         });
 
-        // --- SECONDARY CHANNEL OBSERVER ---
         viewModel.secondaryChannelList.observe(getViewLifecycleOwner(), res -> {
-            if (res.status == Resource.Status.SUCCESS && res.data != null && res.data.getData() != null) {
-                spSecondaryChannel.setAdapter(new ArrayAdapter<>(requireContext(),
-                        android.R.layout.simple_dropdown_item_1line,
-                        res.data.getData()));
+            if (res.status == Resource.Status.SUCCESS && res.data != null) {
+                if(res.data.getData() != null) {
+                    ArrayAdapter<SecondaryChannelResponse.ChannelData> adapter = new ArrayAdapter<>(requireContext(),
+                            android.R.layout.simple_dropdown_item_1line, res.data.getData());
+                    spSecondaryChannel.setAdapter(adapter);
+                }
             }
         });
 
-        spSecondaryChannel.setOnItemClickListener((parent, v, position, id1) -> {
-            SecondaryChannelResponse.ChannelData selected = (SecondaryChannelResponse.ChannelData) parent.getItemAtPosition(position);
-            viewModel.secondaryChannel = selected.getTitle();
+        spSecondaryChannel.setOnItemClickListener((parent, v, position, id) -> {
+            SecondaryChannelResponse.ChannelData selectedItem = (SecondaryChannelResponse.ChannelData) parent.getItemAtPosition(position);
+            // Save ID to ViewModel
+            viewModel.secondaryChannel = String.valueOf(selectedItem.getId());
+            viewModel.selectedSecondaryChannelName = selectedItem.getTitle();
         });
 
-        // --- BEAT OBSERVER ---
+
+        // -------- BEAT OBSERVER --------
         viewModel.beats.observe(getViewLifecycleOwner(), res -> {
-            if (res.status == Resource.Status.SUCCESS && res.data != null && res.data.getBeatData() != null) {
-                spBeat.setAdapter(new ArrayAdapter<>(requireContext(),
-                        android.R.layout.simple_dropdown_item_1line,
-                        res.data.getBeatData()));
+
+            if (res.status == Resource.Status.LOADING) {
+                // optional loader
+                return;
+            }
+
+            if (res.status == Resource.Status.SUCCESS && res.data != null) {
+
+                if (res.data.getBeatData() == null || res.data.getBeatData().isEmpty()) {
+                    Toast.makeText(requireContext(),
+                            "No beats available",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                ArrayAdapter<BeatResponse.BeatData> adapter =
+                        new ArrayAdapter<>(requireContext(),
+                                android.R.layout.simple_dropdown_item_1line,
+                                res.data.getBeatData());
+
+                spBeat.setAdapter(adapter);
+            }
+
+            if (res.status == Resource.Status.ERROR) {
+                Toast.makeText(requireContext(),
+                        res.message,
+                        Toast.LENGTH_SHORT).show();
             }
         });
 
-        spBeat.setOnItemClickListener((parent, v, position, id1) -> {
-            BeatResponse.BeatData beat = (BeatResponse.BeatData) parent.getItemAtPosition(position);
+// -------- SELECT BEAT --------
+        spBeat.setOnItemClickListener((parent, View, position, id) -> {
+            BeatResponse.BeatData beat =
+                    (BeatResponse.BeatData) parent.getItemAtPosition(position);
             viewModel.selectedBeatId = String.valueOf(beat.getId());
-            viewModel.selectedBeatName = beat.getFrom() + "-" + beat.getTo();
+            viewModel.selectedBeatName = beat.getFrom()+"-"+beat.getTo();
         });
 
-        // --- RESTORE DATA ---
+        // --- 🔥 FIX: RESTORE DATA ---
         if (viewModel.storeName != null) etShopName.setText(viewModel.storeName);
         if (viewModel.pinCode != null) etPin.setText(viewModel.pinCode);
         if (viewModel.address != null) etAddress.setText(viewModel.address);
+
+        // Restore Dropdowns (We set the text, but false hides the filter list)
         if (viewModel.outletType != null) spOutletType.setText(viewModel.outletType, false);
-        if (viewModel.rsId != null) spRsId.setText(viewModel.rsId, false);
-        if (viewModel.secondaryChannel != null) spSecondaryChannel.setText(viewModel.secondaryChannel, false);
+        if (viewModel.rsId != null) spRsId.setText(viewModel.selectedrsId, false);
+        if (viewModel.secondaryChannel != null) spSecondaryChannel.setText(viewModel.selectedSecondaryChannelName, false);
         if (viewModel.selectedBeatId != null) spBeat.setText(viewModel.selectedBeatName, false);
         if (viewModel.selectedCountryId != null) spCountry.setText(viewModel.selectedCountryName, false);
         if (viewModel.selectedStateId != null) spState.setText(viewModel.selectedStateName, false);
         if (viewModel.selectedDistId != null) spDist.setText(viewModel.selectedDistName, false);
         if (viewModel.selectedCityId != null) spCity.setText(viewModel.selectedCityName, false);
 
-        // --- NEXT BUTTON VALIDATION ---
+
+        // -------- NEXT BUTTON --------
         btnNext.setOnClickListener(v -> {
             boolean isValid = true;
 
@@ -304,8 +364,17 @@ public class Step2ShopFragment extends Fragment {
 
             // Backend assignment (unchanged)
             viewModel.storeName = etShopName.getText().toString();
+ //           viewModel.rsId = etRsId.getText().toString();
+//            viewModel.outletType = etType.getText().toString();
             viewModel.pinCode = etPin.getText().toString();
             viewModel.address = etAddress.getText().toString();
+
+//            // ✅ SAME PATTERN
+//            viewModel.secondaryChannel =
+//                    etsecondchannel.getText().toString().trim();
+//
+//            viewModel.ssName =
+//                    etssname.getText().toString().trim();
 
             ((CreateStoreWizardActivity) requireActivity()).nextStep();
         });

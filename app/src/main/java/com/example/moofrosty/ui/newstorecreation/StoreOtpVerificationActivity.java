@@ -86,7 +86,6 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(StoreVerificationViewModel.class);
         sessionManager = new SessionManager(this);
 
-
         etMobile = findViewById(R.id.et_mobile);
         etOtp = findViewById(R.id.et_otp);
         layoutOtp = findViewById(R.id.layout_otp);

@@ -10,13 +10,19 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.moofrosty.R;
+import com.example.moofrosty.core.utils.NetworkUtil;
+import com.example.moofrosty.data.local.SessionManager;
 import com.example.moofrosty.data.model.Order;
+import com.example.moofrosty.data.model.OrderHistoryResponse;
 import com.example.moofrosty.ui.cart.CartViewModel;
 import com.google.android.material.tabs.TabLayout;
 
@@ -30,6 +36,8 @@ public class OrdersFragment extends Fragment implements OrderAdapter.OnOrderClic
     private OrderAdapter adapter;
     private TextView tvOrderCount;
     private TabLayout tabLayout;
+    private SessionManager sessionManager;
+    ProgressBar progressBar;
 
     public OrdersFragment() {
         // Required empty public constructor
@@ -48,43 +56,121 @@ public class OrdersFragment extends Fragment implements OrderAdapter.OnOrderClic
         super.onViewCreated(view, savedInstanceState);
         cartViewModel = new ViewModelProvider(requireActivity()).get(CartViewModel.class);
 
+        sessionManager = new SessionManager(requireContext());
+        cartViewModel = new ViewModelProvider(requireActivity()).get(CartViewModel.class);
+
+        // Pass token to ViewModel so it can make the call
+        cartViewModel.setSessionData(sessionManager.getToken(), 0, 0);
+
+        // 2. Init Views
         tvOrderCount = view.findViewById(R.id.tv_order_count);
         tabLayout = view.findViewById(R.id.tab_layout_orders);
+        recyclerOrders = view.findViewById(R.id.recycler_orders);
+        progressBar = view.findViewById(R.id.progressBar);
 
         setupTabs();
-        setupRecyclerView(view);
+        setupRecyclerView();
+
+        // 3. Fetch Data
+        if (NetworkUtil.isNetworkAvailable(getContext())) {
+            cartViewModel.fetchOrders(); // Trigger API
+        } else {
+            Toast.makeText(getContext(), "No Internet Connection", Toast.LENGTH_SHORT).show();
+        }
+
+        // 4. Observe Data
         setupObservers();
     }
 
     private void setupTabs() {
         tabLayout.addTab(tabLayout.newTab().setText("All"));
-        tabLayout.addTab(tabLayout.newTab().setText("Shikhar Orders"));
-        tabLayout.addTab(tabLayout.newTab().setText("Salesperson Orders"));
-        // Add other tabs...
     }
 
-    private void setupRecyclerView(View view) {
-        recyclerOrders = view.findViewById(R.id.recycler_orders);
+    private void setupRecyclerView() {
         adapter = new OrderAdapter(this);
         recyclerOrders.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerOrders.setAdapter(adapter);
     }
 
     private void setupObservers() {
-        cartViewModel.getOrders().observe(getViewLifecycleOwner(), orders -> {
-            if (orders != null) {
-                adapter.updateList(orders);
-                // Update the count header
-                tvOrderCount.setText(String.format(Locale.getDefault(), "Last 7 Days (%d orders)", orders.size()));
+
+        cartViewModel.getOrderHistory().observe(getViewLifecycleOwner(), resource -> {
+            if (resource != null) {
+                switch (resource.status) {
+                    case LOADING:
+                        // Show progress if needed
+                        progressBar.setVisibility(View.VISIBLE);
+                        Log.d("OrdersFragment", "Loading...");
+                        break;
+
+                    case SUCCESS:
+                        progressBar.setVisibility(View.GONE);
+                        if (resource.data != null && resource.data.data != null) {
+                            Log.d("OrdersFragment", "Success! Items: " + resource.data.data.size());
+                            adapter.updateList(resource.data.data);
+                            tvOrderCount.setText(String.format(Locale.getDefault(), ": (%d)", resource.data.data.size()));
+                        } else {
+                            Log.e("OrdersFragment", "Success but data is NULL");
+                        }
+                        break;
+
+                    case ERROR:
+                        progressBar.setVisibility(View.GONE);
+                        Log.e("OrdersFragment", "Error: " + resource.message);
+                        Toast.makeText(getContext(), "Something wrong", Toast.LENGTH_SHORT).show();
+                        break;
+                }
             }
         });
     }
 
     @Override
-    public void onOrderClick(Order order) {
-        Intent intent = new Intent(getActivity(), OrderDetailsActivity.class);
-        // Pass only the ID
-        intent.putExtra("ORDER_ID", order.getId());
-        startActivity(intent);
+    public void onOrderClick(com.example.moofrosty.data.model.OrderHistoryResponse.OrderData order) {
+        // Handle click (e.g., go to detail page)
+      //  Toast.makeText(getContext(), "Clicked Invoice: " + order.invoiceId, Toast.LENGTH_SHORT).show();
     }
 }
+
+
+     //   dummy code below api not add that
+
+//        tvOrderCount = view.findViewById(R.id.tv_order_count);
+//        tabLayout = view.findViewById(R.id.tab_layout_orders);
+//
+//        setupTabs();
+//        setupRecyclerView(view);
+//        //setupObservers();
+//    }
+//
+//    private void setupTabs() {
+//        tabLayout.addTab(tabLayout.newTab().setText("All"));
+//        tabLayout.addTab(tabLayout.newTab().setText("Shikhar Orders"));
+//        tabLayout.addTab(tabLayout.newTab().setText("Salesperson Orders"));
+//        // Add other tabs...
+//    }
+//
+//    private void setupRecyclerView(View view) {
+//        recyclerOrders = view.findViewById(R.id.recycler_orders);
+//        adapter = new OrderAdapter(this);
+//        recyclerOrders.setLayoutManager(new LinearLayoutManager(getContext()));
+//        recyclerOrders.setAdapter(adapter);
+//    }
+//
+////    private void setupObservers() {
+////        cartViewModel.getOrders().observe(getViewLifecycleOwner(), orders -> {
+////            if (orders != null) {
+////                adapter.updateList(orders);
+////                // Update the count header
+////                tvOrderCount.setText(String.format(Locale.getDefault(), "Last 7 Days (%d orders)", orders.size()));
+////            }
+////        });
+////    }
+//
+//    @Override
+//    public void onOrderClick(Order order) {
+//        Intent intent = new Intent(getActivity(), OrderDetailsActivity.class);
+//        // Pass only the ID
+//        intent.putExtra("ORDER_ID", order.getId());
+//        startActivity(intent);
+//    }
+//}

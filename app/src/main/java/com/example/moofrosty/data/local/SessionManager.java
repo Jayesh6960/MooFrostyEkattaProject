@@ -13,7 +13,7 @@ import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-//Session manager is for the Global
+
 public class SessionManager {
 
     private static final String PREF_NAME = "MoofrostySession";
@@ -21,6 +21,8 @@ public class SessionManager {
     private static final String KEY_USERNAME = "username";
     private static final String KEY_USER_DETAILS = "user_details";
     private static final String KEY_USER_JSON = "user_json";
+
+    private static final String KEY_USER_ID = "user_id";
 
     // NEW keys (Beat)
     private static final String KEY_BEAT_ID = "beat_id";
@@ -67,7 +69,48 @@ public class SessionManager {
         editor.apply();
     }
 
+    public void saveUserId(int userId) {
+        editor.putInt(KEY_USER_ID, userId);
+        editor.apply();
+    }
+
+    public int getUserId() {
+        return pref.getInt(KEY_USER_ID, 0); // 0 = not logged in / invalid
+    }
+
+    public void saveShopId(int shopId) {
+        editor.putInt("shop_id", shopId);
+        editor.apply();
+    }
+
+    // GET
+    public int getShopId() {
+        return pref.getInt("shop_id", 0);
+    }
+
+    // OPTIONAL (on checkout complete)
+    public void clearShopId() {
+        editor.remove("shop_id").apply();
+    }
+
+//    public UserDetail getUserDetail() {
+//        String json = pref.getString(KEY_USER_DETAILS, "");
+//        if (json.isEmpty()) return null;
+//        return gson.fromJson(json, UserDetail.class);
+//    }
+
+
     // ---------------- BEAT (NEW + REQUIRED) ----------------
+//    public void saveBeat(UserDetailResponse.Data data) {
+//        if (data != null && data.getBeat() != null) {
+//            editor.putInt(KEY_BEAT_ID, data.getBeat().beatId);
+//            editor.putString(
+//                    KEY_BEAT_NAME,
+//                    data.getBeat().beatNameFrom + " - " + data.getBeat().beatNameTo
+//            );
+//            editor.apply();
+//        }
+//    }
 
     public String getUserFullName() {
         String json = pref.getString(KEY_USER_JSON, "");
@@ -79,9 +122,12 @@ public class SessionManager {
             JSONObject root = new JSONObject(json);
             JSONObject userObj = null;
 
+            // In your LoginResponse JSON, 'user' is inside the root object
             if (root.has("user") && !root.isNull("user")) {
                 userObj = root.getJSONObject("user");
-            } else if (root.has("firstName")) {
+            }
+            // Fallback: If you saved just the user object directly
+            else if (root.has("firstName")) {
                 userObj = root;
             }
 
@@ -90,6 +136,7 @@ public class SessionManager {
                 String middle = userObj.optString("middleName", "");
                 String last = userObj.optString("lastName", "");
 
+                // Logic to handle empty middle name smoothly
                 if (!middle.isEmpty()) {
                     fullName = first + " " + middle + " " + last;
                 } else {

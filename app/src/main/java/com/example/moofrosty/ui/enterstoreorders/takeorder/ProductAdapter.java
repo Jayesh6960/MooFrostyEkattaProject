@@ -32,9 +32,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     private List<ProductApiModel> productList;
     private CartInteractionListener cartListener;
-    private Map<String, CartItem> cartMap; // Map ProductID (String) to CartItem
+    private Map<String, CartItem> cartMap;
 
-    // Interface to communicate with Fragment/ViewModel
     public interface CartInteractionListener {
         void onAddToCartClick(ProductApiModel product);
         void onIncrementUnit(ProductApiModel product);
@@ -126,34 +125,41 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             tvSavings = itemView.findViewById(R.id.tv_savings);
             tvNetPrice = itemView.findViewById(R.id.tv_net_price);
             caseunitnumber = itemView.findViewById(R.id.caseunitnumber);
-    }
+        }
 
         @SuppressLint("SetTextI18n")
         public void bind(ProductApiModel product, CartItem cartItem) {
             this.currentProduct = product;
             Context context = itemView.getContext();
 
+            // Data Setup
             tvProductName.setText(product.productName);
-            tvMrp.setText("₹" + product.getMrp());
-            tvRate.setText("₹" + product.getSellingPrice());
+            tvMrp.setText("₹" + product.getMrp()); // 3 decimal from model
+            tvRate.setText("₹" + product.getSellingPrice()); // 3 decimal from model
             tvMargin.setText(product.getMargin() + "%");
             tvStock.setText(product.getStock());
             tvCapacity.setText(product.productWeight);
-            caseunitnumber.setText("1 Case = "+product.getUnit()+" Unit");
+
+            int caseSize = product.getCaseSizeInt();
+            int stockInt = product.getStockInt();
+            int currentTotalUnitsInCart = (cartItem != null) ? cartItem.getTotalUnits() : 0;
+
+            if ("case".equalsIgnoreCase(product.productType)) {
+                caseunitnumber.setText("1 Case = " + caseSize + " Units");
+            } else {
+                caseunitnumber.setText("Total Units: " + currentTotalUnitsInCart);
+            }
 
             String imageUrl = "https://moofrosty.ekatta.in/" + product.productImage;
             Glide.with(context).load(imageUrl).placeholder(R.drawable.icecategori).into(imgProduct);
 
-            int currentQuantity = (cartItem == null) ? 0 : cartItem.getQuantity();
-
-            if (currentQuantity == 0) {
+            // Visibility Logic
+            if (currentTotalUnitsInCart == 0) {
+                // Not in cart
                 btnAddToCart.setVisibility(View.VISIBLE);
                 quantityControls.setVisibility(View.GONE);
 
-                int stock = 0;
-                try { stock = Integer.parseInt(product.getStock()); } catch (Exception e) {}
-
-                if (stock <= 0) {
+                if (stockInt <= 0) {
                     btnAddToCart.setEnabled(false);
                     btnAddToCart.setText("Out of Stock");
                     btnAddToCart.setTextColor(ContextCompat.getColor(context, android.R.color.darker_gray));
@@ -163,24 +169,52 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                     btnAddToCart.setTextColor(ContextCompat.getColor(context, R.color.infoBarBlue));
                 }
             } else {
+                // In cart
                 btnAddToCart.setVisibility(View.GONE);
                 quantityControls.setVisibility(View.VISIBLE);
+
                 tvCaseQuantity.setText(String.valueOf(cartItem.getCaseQuantity()));
                 tvUnitQuantity.setText(String.valueOf(cartItem.getUnitQuantity()));
-                tvSavings.setText(String.format(Locale.getDefault(), "₹%,.0f", cartItem.getTotalSavings()));
-                tvNetPrice.setText(String.format(Locale.getDefault(), "₹%,.0f", cartItem.getTotalPrice()));
+
+                // 3 Decimal Formatting for Savings and Net Price
+                tvSavings.setText(String.format(Locale.US, "₹%.3f", cartItem.getTotalSavings()));
+                tvNetPrice.setText(String.format(Locale.US, "₹%.3f", cartItem.getTotalPrice()));
             }
 
-            // --- Product Type Logic ---
-            // If "case", hide unit buttons
+            // --- Case vs Unit Control Logic ---
             if ("case".equalsIgnoreCase(product.productType)) {
-                btnUnitPlus.setVisibility(View.INVISIBLE);
-                btnUnitMinus.setVisibility(View.INVISIBLE);
+                // Show Case Controls, Hide Unit Controls
+                btnCasePlus.setVisibility(View.VISIBLE);
+                btnCaseMinus.setVisibility(View.VISIBLE);
+                tvCaseQuantity.setVisibility(View.VISIBLE);
+
+                btnUnitPlus.setVisibility(View.GONE);
+                btnUnitMinus.setVisibility(View.GONE);
+                tvUnitQuantity.setVisibility(View.GONE);
+
+                // Stock Check for Case Button
+                // Can we add one more case?
+                boolean canAddCase = (currentTotalUnitsInCart + caseSize) <= stockInt;
+                btnCasePlus.setEnabled(canAddCase);
+                if (!canAddCase) btnCasePlus.setAlpha(0.5f); else btnCasePlus.setAlpha(1.0f);
+
             } else {
+                // Show Unit Controls, Hide Case Controls
                 btnUnitPlus.setVisibility(View.VISIBLE);
                 btnUnitMinus.setVisibility(View.VISIBLE);
+                tvUnitQuantity.setVisibility(View.VISIBLE);
+
+                btnCasePlus.setVisibility(View.GONE);
+                btnCaseMinus.setVisibility(View.GONE);
+                tvCaseQuantity.setVisibility(View.GONE);
+
+                // Stock Check for Unit Button
+                boolean canAddUnit = (currentTotalUnitsInCart + 1) <= stockInt;
+                btnUnitPlus.setEnabled(canAddUnit);
+                if (!canAddUnit) btnUnitPlus.setAlpha(0.5f); else btnUnitPlus.setAlpha(1.0f);
             }
 
+            // Listeners
             btnAddToCart.setOnClickListener(v -> listener.onAddToCartClick(currentProduct));
             btnCasePlus.setOnClickListener(v -> listener.onIncrementCase(currentProduct));
             btnCaseMinus.setOnClickListener(v -> listener.onDecrementCase(currentProduct));
@@ -188,6 +222,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             btnUnitMinus.setOnClickListener(v -> listener.onDecrementUnit(currentProduct));
         }
     }
+}
 
 //
 //    private List<Product> productList;
@@ -405,5 +440,5 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 //            }
 //        }
 //    }
-}
+//}
 

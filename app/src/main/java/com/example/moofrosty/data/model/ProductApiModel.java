@@ -14,8 +14,8 @@ public class ProductApiModel {
     public String productImage;
     @SerializedName("category")
     public CategoryModel category;
-    @SerializedName("productType") // <--- ADD THIS
-    public String productType;
+    @SerializedName("productType")
+    public String productType; // "case" or "unit" (or other)
     @SerializedName("productWeight")
     public String productWeight;
     @SerializedName("subcategory")
@@ -23,32 +23,66 @@ public class ProductApiModel {
     @SerializedName("batches")
     public List<BatchModel> batches;
 
-    // Helper to get price from the first batch
+    // --- Helper Methods for Safe Parsing ---
+
+    public double getMrpDouble() {
+        if (batches != null && !batches.isEmpty()) {
+            try { return Double.parseDouble(batches.get(0).mrp); } catch (Exception e) { return 0.0; }
+        }
+        return 0.0;
+    }
+
+    public double getSellingPriceDouble() {
+        if (batches != null && !batches.isEmpty()) {
+            try { return Double.parseDouble(batches.get(0).sellingPrice); } catch (Exception e) { return 0.0; }
+        }
+        return 0.0;
+    }
+
+    public int getStockInt() {
+        if (batches != null && !batches.isEmpty()) {
+            return batches.get(0).quantity;
+        }
+        return 0;
+    }
+
+    public int getCaseSizeInt() {
+        if (batches != null && !batches.isEmpty()) {
+            try {
+                // If the unit field contains text like "10 pcs", parse just the number
+                String unitStr = batches.get(0).unit.replaceAll("[^0-9]", "");
+                if (unitStr.isEmpty()) return 1;
+                return Integer.parseInt(unitStr);
+            } catch (Exception e) { return 1; }
+        }
+        return 1;
+    }
+
+    // --- String Getters for UI (3 Decimals) ---
     public String getMrp() {
-        if (batches != null && !batches.isEmpty()) return batches.get(0).mrp;
-        return "0";
+        return String.format(java.util.Locale.US, "%.3f", getMrpDouble());
     }
+
     public String getSellingPrice() {
-        if (batches != null && !batches.isEmpty()) return batches.get(0).sellingPrice;
-        return "0";
+        return String.format(java.util.Locale.US, "%.3f", getSellingPriceDouble());
     }
+
     public String getMargin() {
-        if (batches != null && !batches.isEmpty()) return batches.get(0).margin;
+        if (batches != null && !batches.isEmpty()) return batches.get(0).marginPercent;
         return "0";
     }
+
     public String getStock() {
-        if (batches != null && !batches.isEmpty()) return String.valueOf(batches.get(0).quantity);
+        return String.valueOf(getStockInt());
+    }
+
+    public String getUnit() {
+        if (batches != null && !batches.isEmpty()) return batches.get(0).unit;
         return "0";
     }
+
     public String getCapacity() {
-        // Assuming productWeight or unit represents capacity
-        // You might need to adjust this based on your logic
         if (batches != null && !batches.isEmpty()) return batches.get(0).unit;
         return "";
-    }
-    public String getUnit() {
-        // Maps to "unit": "6" (Case Size) or "unit": "50" from your JSON
-        if (batches != null && !batches.isEmpty()) return batches.get(0).unit;
-        return "0";
     }
 }
