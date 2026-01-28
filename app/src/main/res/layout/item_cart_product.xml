@@ -33,7 +33,7 @@
                 android:textColor="@android:color/white"
                 android:textSize="10sp"
                 android:textStyle="bold"
-                android:padding="4dp"
+                android:padding="2dp"
                 android:layout_gravity="top|start"
                 tools:text="₹145 SAVED"/>
         </FrameLayout>
@@ -86,7 +86,7 @@
 
             <TextView
                 android:id="@+id/tv_unit_quantity_cart"
-                android:layout_width="40dp"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="1"

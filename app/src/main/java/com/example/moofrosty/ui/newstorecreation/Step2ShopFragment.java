@@ -201,7 +201,8 @@ public class Step2ShopFragment extends Fragment {
 
         spRsId.setOnItemClickListener((parent, v, position, id) -> {
             RssResponse.RssData selectedItem = (RssResponse.RssData) parent.getItemAtPosition(position);
-            viewModel.rsId = String.valueOf(selectedItem.getTitle());
+            viewModel.rsId = String.valueOf(selectedItem.getId());
+            viewModel.selectedrsId = selectedItem.getTitle();
         });
 
         viewModel.secondaryChannelList.observe(getViewLifecycleOwner(), res -> {
@@ -217,7 +218,8 @@ public class Step2ShopFragment extends Fragment {
         spSecondaryChannel.setOnItemClickListener((parent, v, position, id) -> {
             SecondaryChannelResponse.ChannelData selectedItem = (SecondaryChannelResponse.ChannelData) parent.getItemAtPosition(position);
             // Save ID to ViewModel
-            viewModel.secondaryChannel = String.valueOf(selectedItem.getTitle());
+            viewModel.secondaryChannel = String.valueOf(selectedItem.getId());
+            viewModel.selectedSecondaryChannelName = selectedItem.getTitle();
         });
 
 
@@ -268,8 +270,8 @@ public class Step2ShopFragment extends Fragment {
 
         // Restore Dropdowns (We set the text, but false hides the filter list)
         if (viewModel.outletType != null) spOutletType.setText(viewModel.outletType, false);
-        if (viewModel.rsId != null) spRsId.setText(viewModel.rsId, false);
-        if (viewModel.secondaryChannel != null) spSecondaryChannel.setText(viewModel.secondaryChannel, false);
+        if (viewModel.rsId != null) spRsId.setText(viewModel.selectedrsId, false);
+        if (viewModel.secondaryChannel != null) spSecondaryChannel.setText(viewModel.selectedSecondaryChannelName, false);
         if (viewModel.selectedBeatId != null) spBeat.setText(viewModel.selectedBeatName, false);
         if (viewModel.selectedCountryId != null) spCountry.setText(viewModel.selectedCountryName, false);
         if (viewModel.selectedStateId != null) spState.setText(viewModel.selectedStateName, false);

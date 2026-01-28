@@ -22,6 +22,8 @@ public class SessionManager {
     private static final String KEY_USER_DETAILS = "user_details";
     private static final String KEY_USER_JSON = "user_json";
 
+    private static final String KEY_USER_ID = "user_id";
+
     // NEW keys (Beat)
     private static final String KEY_BEAT_ID = "beat_id";
     private static final String KEY_BEAT_NAME = "beat_name";
@@ -62,6 +64,30 @@ public class SessionManager {
     public void logout() {
         editor.clear();
         editor.apply();
+    }
+
+    public void saveUserId(int userId) {
+        editor.putInt(KEY_USER_ID, userId);
+        editor.apply();
+    }
+
+    public int getUserId() {
+        return pref.getInt(KEY_USER_ID, 0); // 0 = not logged in / invalid
+    }
+
+    public void saveShopId(int shopId) {
+        editor.putInt("shop_id", shopId);
+        editor.apply();
+    }
+
+    // GET
+    public int getShopId() {
+        return pref.getInt("shop_id", 0);
+    }
+
+    // OPTIONAL (on checkout complete)
+    public void clearShopId() {
+        editor.remove("shop_id").apply();
     }
 
 //    public UserDetail getUserDetail() {

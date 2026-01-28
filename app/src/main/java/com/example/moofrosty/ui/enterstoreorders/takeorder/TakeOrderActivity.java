@@ -176,7 +176,7 @@ public class TakeOrderActivity extends AppCompatActivity {
                     }
 
                     if (selectedFragment == null) {
-                        selectedFragment = new ShopFrontFragment(); // Default
+                        selectedFragment = new TakeOrderFragment(); // Default
                     }
 
                     if (isMenuFragment) {

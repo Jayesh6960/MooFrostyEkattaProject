@@ -5,6 +5,7 @@
     import com.example.moofrosty.data.model.BeatResponse;
     import com.example.moofrosty.data.model.CategoryResponse;
     import com.example.moofrosty.data.model.CheckInRequest;
+    import com.example.moofrosty.data.model.CheckoutRequest;
     import com.example.moofrosty.data.model.GeneralResponse;
     import com.example.moofrosty.data.model.LeaveHistoryResponse;
     import com.example.moofrosty.data.model.LeaveResponse;
@@ -12,6 +13,7 @@
     import com.example.moofrosty.data.model.LocationResponse;
     import com.example.moofrosty.data.model.LoginRequest;
     import com.example.moofrosty.data.model.LoginResponse;
+    import com.example.moofrosty.data.model.OrderHistoryResponse;
     import com.example.moofrosty.data.model.ProductResponse;
     import com.example.moofrosty.data.model.PunchResponse;
     import com.example.moofrosty.data.model.RssResponse;
@@ -172,6 +174,17 @@
 
         @GET("api/admin/leaves-type")
         Call<LeaveTypeResponse> getLeaveTypes(
+                @Header("Authorization") String token
+        );
+
+        @POST("api/admin/product-checkout")
+        Call<GeneralResponse> checkoutCart(
+                @Header("Authorization") String token,
+                @Body CheckoutRequest request
+        );
+
+        @GET("api/admin/list-product-checkout")
+        Call<OrderHistoryResponse> getOrderHistory(
                 @Header("Authorization") String token
         );
 

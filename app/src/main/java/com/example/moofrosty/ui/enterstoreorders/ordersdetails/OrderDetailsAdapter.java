@@ -58,9 +58,9 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
             tvMrp.setText(product.getRate()); // Show the rate they paid
             imgProduct.setImageResource(product.getImageResId());
 
-            String qtyString = String.format(Locale.getDefault(), "%d/%d Unit(s)",
-                    item.getQuantity(), item.getQuantity());
-            tvBilledQty.setText(qtyString);
+//            String qtyString = String.format(Locale.getDefault(), "%d/%d Unit(s)",
+//                    item.getQuantity(), item.getQuantity());
+//            tvBilledQty.setText(qtyString);
         }
     }
 }

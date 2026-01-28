@@ -4,9 +4,11 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.moofrosty.core.network.Resource;
 import com.example.moofrosty.data.model.CartItem;
 import com.example.moofrosty.data.model.CartTotals;
 import com.example.moofrosty.data.model.Order;
+import com.example.moofrosty.data.model.OrderHistoryResponse;
 import com.example.moofrosty.data.model.Product;
 import com.example.moofrosty.data.repository.CartRepository;
 
@@ -16,29 +18,175 @@ import java.util.Map;
 
 public class CartViewModel extends ViewModel {
 
+//    private final CartRepository cartRepository = CartRepository.getInstance();
+//    private final MutableLiveData<Resource<String>> checkoutResult = new MutableLiveData<>();
+//
+//    // Session Data
+//    private String token = "";
+//    private int userId = 0;
+//    private int shopId = 0;
+//
+//    public void setSessionData(String token, int userId, int shopId) {
+//        this.token = token;
+//        this.userId = userId;
+//        this.shopId = shopId;
+//    }
+//
+//    // Getters for UI
+//    public LiveData<Map<String, CartItem>> getCartMap() {
+//        return cartRepository.getCartMap();
+//    }
+//
+//    public LiveData<CartTotals> getCartTotals() {
+//        return cartRepository.getCartTotals();
+//    }
+//
+//    public LiveData<Resource<String>> getCheckoutResult() {
+//        return checkoutResult;
+//    }
+//
+//    // Checkout Action
+//    public void checkout() {
+//        if(token.isEmpty()) return;
+//        cartRepository.checkout(token, userId, shopId, checkoutResult);
+//    }
+
     private final CartRepository cartRepository = CartRepository.getInstance();
+    private final MutableLiveData<Resource<String>> checkoutResult = new MutableLiveData<>();
 
-    private final MutableLiveData<Map<String, CartItem>> _cartMap = new MutableLiveData<>(new HashMap<>());    //  interger to string
+    // Session Data needed for API
+    private String token = "";
+    private int userId = 0;
+    private int shopId = 0;
 
-    public LiveData<Map<String, CartItem>> getCartMap() {
-        return cartRepository.getCartMap();
+    // Called from Activity/Fragment to pass data
+    public void setSessionData(String token, int userId, int shopId) {
+        this.token = token;
+        this.userId = userId;
+        this.shopId = shopId;
     }
 
-    public LiveData<List<Order>> getOrders() {
-        return cartRepository.getOrders();
-    }
+    public LiveData<Map<String, CartItem>> getCartMap() { return cartRepository.getCartMap(); }
+    public LiveData<CartTotals> getCartTotals() { return cartRepository.getCartTotals(); }
+    public LiveData<Resource<String>> getCheckoutResult() { return checkoutResult; }
 
     public void checkout() {
-        cartRepository.checkout();
+        if(token.isEmpty()) return;
+        cartRepository.checkout(token, userId, shopId, checkoutResult);
+    }
+
+    // Cart Modifications
+    public void addToCart(Product product) {
+        cartRepository.addToCart(product);
+    }
+    public void incrementUnit(Product product) {
+        cartRepository.incrementUnit(product);
+    }
+    public void decrementUnit(Product product) {
+        cartRepository.decrementUnit(product);
+    }
+    public void incrementCase(Product product) {
+        cartRepository.incrementCase(product);
+    }
+    public void decrementCase(Product product) {
+        cartRepository.decrementCase(product);
+    }
+    public void removeFromCart(Product product) {
+        cartRepository.removeFromCart(product);
     }
 
 
-    // LiveData for totals, calculated from the cartMap
-    private final MutableLiveData<CartTotals> _cartTotals = new MutableLiveData<>(new CartTotals());
 
-    public LiveData<CartTotals> getCartTotals() {
-        return cartRepository.getCartTotals();
+    // order history code
+
+    private final MutableLiveData<Resource<OrderHistoryResponse>> orderHistory = new MutableLiveData<>();
+
+    public LiveData<Resource<OrderHistoryResponse>> getOrderHistory() {
+        return orderHistory;
     }
+
+    // --- API Call Trigger ---
+    public void fetchOrders() {
+        if(token.isEmpty()) return;
+        cartRepository.getOrderHistory(token, orderHistory);
+    }
+
+
+
+
+
+    // below code firt working
+
+//    private final CartRepository cartRepository = CartRepository.getInstance();
+//
+//    private final MutableLiveData<Map<String, CartItem>> _cartMap = new MutableLiveData<>(new HashMap<>());    //  interger to string
+//
+//    public LiveData<Map<String, CartItem>> getCartMap() {
+//        return cartRepository.getCartMap();
+//    }
+//
+//    public LiveData<List<Order>> getOrders() {
+//        return cartRepository.getOrders();
+//    }
+//
+////    public void checkout() {
+////        cartRepository.checkout();
+////    }
+//
+//    private final MutableLiveData<Resource<String>> checkoutResult = new MutableLiveData<>();
+//    private String token = "";
+//    private int userId = 0; // Set these from SessionManager in Activity
+//    private int shopId = 0;
+//
+//    public void setSessionData(String token, int userId, int shopId) {
+//        this.token = token;
+//        this.userId = userId;
+//        this.shopId = shopId;
+//    }
+//
+//
+//
+//    public LiveData<Resource<String>> getCheckoutResult() { return checkoutResult; }
+//
+//    public void checkout() {
+//        if(token.isEmpty()) return;
+//        cartRepository.checkout(token, userId, shopId, checkoutResult);
+//    }
+//
+//    // LiveData for totals, calculated from the cartMap
+//    private final MutableLiveData<CartTotals> _cartTotals = new MutableLiveData<>(new CartTotals());
+//
+//    public LiveData<CartTotals> getCartTotals() {
+//        return cartRepository.getCartTotals();
+//    }
+//
+//    public void addToCart(Product product) {
+//        cartRepository.addToCart(product); // Just pass the call
+//    }
+//
+//    public void incrementUnit(Product product) {
+//        cartRepository.incrementUnit(product); // Just pass the call
+//    }
+//
+//    public void decrementUnit(Product product) {
+//        cartRepository.decrementUnit(product); // Just pass the call
+//    }
+//
+//    public void incrementCase(Product product) {
+//        cartRepository.incrementCase(product); // Just pass the call
+//    }
+//
+//    public void decrementCase(Product product) {
+//        cartRepository.decrementCase(product); // Just pass the call
+//    }
+//
+//    public void removeFromCart(Product product) {
+//        cartRepository.removeFromCart(product); // Just pass the call
+//    }
+
+
+
+    //   above code
 
     // --- Public Methods to Modify Cart ---
 
@@ -261,29 +409,6 @@ public class CartViewModel extends ViewModel {
 //            this.totalUnitCount = unitCount;
 //        }
 //    }
-    public void addToCart(Product product) {
-        cartRepository.addToCart(product); // Just pass the call
-    }
-
-    public void incrementUnit(Product product) {
-        cartRepository.incrementUnit(product); // Just pass the call
-    }
-
-    public void decrementUnit(Product product) {
-        cartRepository.decrementUnit(product); // Just pass the call
-    }
-
-    public void incrementCase(Product product) {
-        cartRepository.incrementCase(product); // Just pass the call
-    }
-
-    public void decrementCase(Product product) {
-        cartRepository.decrementCase(product); // Just pass the call
-    }
-
-    public void removeFromCart(Product product) {
-        cartRepository.removeFromCart(product); // Just pass the call
-    }
 
     // 6. Delete all private helper methods
     //    (DELETED: private enum CartAction ...)

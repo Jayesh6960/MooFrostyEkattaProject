@@ -18,4 +18,6 @@ public class BatchModel {
     public int caseQty;
     @SerializedName("unit")
     public String unit;
+    @SerializedName("marginPercent")
+    public String marginPercent;
 }
