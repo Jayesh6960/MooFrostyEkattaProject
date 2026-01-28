@@ -339,7 +339,7 @@ public class StoreProfileActivity extends AppCompatActivity {
                         "Distance from Store: " + String.format("%.2f", data.distance) + "m\n\n" +
                                 "Current Lat: " + data.currentLat + "\n" +
                                 "Current Lng: " + data.currentLng + "\n\n" +
-                                "Please take order within 50m of store location."
+                                "Please take order within 100m of store location."
                 )
                 .setPositiveButton("OK", null)
                 .setIcon(R.drawable.ic_error_icon_geofensing)
