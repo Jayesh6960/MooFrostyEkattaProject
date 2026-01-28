@@ -110,17 +110,18 @@ public class SupportAttendance extends AppCompatActivity {
         });
 
         // ----- SALES CONTACT CLICK -----
-        salesContact.setOnClickListener(v -> {
-            String number = salesContact.getText().toString().trim();
-
-            if (number.isEmpty()) {
-                Toast.makeText(this, "Sales contact not available", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            Intent intent = new Intent(Intent.ACTION_DIAL);
-            intent.setData(Uri.parse("tel:" + number));
-            startActivity(intent);
-        });
+        //Not Requirement from  the client end
+//        salesContact.setOnClickListener(v -> {
+////            String number = salesContact.getText().toString().trim();
+////
+////            if (number.isEmpty()) {
+////                Toast.makeText(this, "Sales contact not available", Toast.LENGTH_SHORT).show();
+////                return;
+////            }
+////
+////            Intent intent = new Intent(Intent.ACTION_DIAL);
+////            intent.setData(Uri.parse("tel:" + number));
+////            startActivity(intent);
+////        });
     }
 }
