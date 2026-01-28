@@ -1,6 +1,7 @@
 package com.example.moofrosty.ui.enterstoreorders.ordersdetails;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,7 +84,16 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             }
 
             // 2. Status (Hardcoded or check logic)
-            tvOrderStatus.setText("Billed");
+           // tvOrderStatus.setText("Billed");
+            if (order.status == 1) {
+                tvOrderStatus.setText("Billed");
+                tvOrderStatus.setTextColor(Color.parseColor("#0D6EfD")); // Green
+                tvOrderStatus.setBackgroundResource(R.drawable.tab_unselected_bg); // Ensure you have a bg drawable or remove this line
+            } else {
+                tvOrderStatus.setText("Order Placed");
+                tvOrderStatus.setTextColor(Color.parseColor("#0D6EfD")); // Orange
+                tvOrderStatus.setBackgroundResource(R.drawable.tab_unselected_bg); // Ensure you have a bg drawable or remove this line
+            }
 
             // 3. Order Value
             tvOrderValue.setText(String.format(Locale.getDefault(), ": ₹%.2f", order.totalAmount));

@@ -34,6 +34,7 @@ public class SessionManager {
 
     // 🔹 NEW KEY (ONLY ADDITION FOR LOCATION FLOW)
     private static final String KEY_LOCATION_READY = "location_ready";
+    private static final String KEY_IS_PRESENT = "is_present";
 
 //    public SessionManager(Context context) {
 //        pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
@@ -225,6 +226,17 @@ public class SessionManager {
         // This does NOT mean real permission state
         // Only remembers that user completed permission + GPS flow once
         editor.putBoolean(KEY_LOCATION_READY, enabled);
+        editor.apply();
+    }
+
+    // --- Get Attendance Status ---
+    public boolean isAttendanceMarked() {
+        return pref.getBoolean(KEY_IS_PRESENT, false); // Default to false if not set
+    }
+
+    // --- Save Attendance Status ---
+    public void saveIsPresent(boolean isPresent) {
+        editor.putBoolean(KEY_IS_PRESENT, isPresent);
         editor.apply();
     }
 

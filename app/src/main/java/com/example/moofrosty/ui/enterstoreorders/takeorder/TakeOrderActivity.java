@@ -33,6 +33,8 @@ import com.example.moofrosty.ui.cart.CartViewModel;
 import com.example.moofrosty.ui.filter.FilterViewModel;
 import com.example.moofrosty.ui.login.LoginActivity;
 import com.example.moofrosty.ui.menu.MenuFragment;
+import com.example.moofrosty.ui.newstorecreation.NewStoreActivity;
+import com.example.moofrosty.ui.store.StoreProfileActivity;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textfield.TextInputEditText;
@@ -126,7 +128,7 @@ public class TakeOrderActivity extends AppCompatActivity {
             iconPower.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(TakeOrderActivity.this, LoginActivity.class);
+                    Intent intent = new Intent(TakeOrderActivity.this, StoreProfileActivity.class);
                     startActivity(intent);
                     finish();
                 }

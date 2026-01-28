@@ -106,6 +106,7 @@ public class DashboardActivity extends BaseActivity{
                     sessionManager.logout();
                     Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
                     startActivity(intent);
+                    finish();
                     return true;
                 }
 

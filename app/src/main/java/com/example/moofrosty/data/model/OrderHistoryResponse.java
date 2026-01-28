@@ -28,6 +28,9 @@ public class OrderHistoryResponse {
         @SerializedName("total_amount")
         public double totalAmount;
 
+        @SerializedName("status")
+        public int status;
+
         // You can parse items if needed for detail screen, but for list, this is enough
         @SerializedName("items")
         public List<ItemData> items;

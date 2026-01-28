@@ -127,8 +127,22 @@ public class CartRepository {
                         result.setValue(Resource.error(response.body().getMessage(), null));
                     }
                 } else {
-                    Log.d(TAG, "servererror" + new Gson().toJson(response.body()));
-                    result.setValue(Resource.error("Server Error: " + response.code(), null));
+                    String errorMsg = "Server Error: " + response.code();
+                    try {
+                        if (response.errorBody() != null) {
+                            String errorStr = response.errorBody().string();
+                            Log.e(TAG, "Error Body: " + errorStr);
+
+                            // Try to parse the JSON error body to get the real message
+                            GeneralResponse errorResponse = new Gson().fromJson(errorStr, GeneralResponse.class);
+                            if (errorResponse != null && errorResponse.getMessage() != null) {
+                                errorMsg = errorResponse.getMessage();
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    result.setValue(Resource.error(errorMsg, null));
                 }
             }
 
