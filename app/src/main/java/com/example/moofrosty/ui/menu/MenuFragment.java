@@ -61,16 +61,16 @@ public class MenuFragment extends Fragment implements MenuAdapters.OnItemClickLi
         // (Right-click > New > Vector Asset)
         menuOptionList = new ArrayList<>();
         menuOptionList.add(new MenuOption(R.drawable.offer, "Offers"));
-        menuOptionList.add(new MenuOption(R.drawable.ushop, "Ushop"));
-        menuOptionList.add(new MenuOption(R.drawable.merchanising, "Merchandising"));
-        menuOptionList.add(new MenuOption(R.drawable.claims, "Claims"));
+//        menuOptionList.add(new MenuOption(R.drawable.ushop, "Ushop"));
+//        menuOptionList.add(new MenuOption(R.drawable.merchanising, "Merchandising"));
+//        menuOptionList.add(new MenuOption(R.drawable.claims, "Claims"));
         menuOptionList.add(new MenuOption(R.drawable.damage, "Damage/Shortage/Expiry"));
-        menuOptionList.add(new MenuOption(R.drawable.shopkatta, "Shop Khata"));
+//        menuOptionList.add(new MenuOption(R.drawable.shopkatta, "Shop Khata"));
         menuOptionList.add(new MenuOption(R.drawable.referandearn, "Refer & Earn"));
-        menuOptionList.add(new MenuOption(R.drawable.mecorner, "ME Corner"));
-        menuOptionList.add(new MenuOption(R.drawable.changelang, "Change Language"));
-        menuOptionList.add(new MenuOption(R.drawable.customersupport, "Customer Service"));
-        menuOptionList.add(new MenuOption(R.drawable.list, "Smart List"));
+//        menuOptionList.add(new MenuOption(R.drawable.mecorner, "ME Corner"));
+//        menuOptionList.add(new MenuOption(R.drawable.changelang, "Change Language"));
+//        menuOptionList.add(new MenuOption(R.drawable.customersupport, "Customer Service"));
+//        menuOptionList.add(new MenuOption(R.drawable.list, "Smart List"));
     }
 
     @Override

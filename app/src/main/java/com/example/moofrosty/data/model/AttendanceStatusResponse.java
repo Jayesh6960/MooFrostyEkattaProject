@@ -7,7 +7,7 @@ public class AttendanceStatusResponse {
     public String status;
 
     @SerializedName("isPresent")
-    public boolean isPresent;       // True if Punched In
+    public Boolean isPresent;       // True if Punched In
 
     @SerializedName("isPresentOut")
     public boolean isPresentOut;    // True if Punched Out

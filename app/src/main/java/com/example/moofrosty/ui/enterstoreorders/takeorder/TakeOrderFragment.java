@@ -230,7 +230,9 @@ public class TakeOrderFragment extends Fragment implements FilterSelectionListen
                 apiModel.getCapacity(),
                 "0", "0", "0", 0,
                 apiModel.category != null ? apiModel.category.categoryTitle : "",
-                ""
+                "",
+                apiModel.productType,
+                apiModel.productImage
         );
         try {
             product.caseSize = Integer.parseInt(apiModel.getUnit());
