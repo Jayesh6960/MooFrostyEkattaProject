@@ -70,7 +70,7 @@
     <LinearLayout
         android:id="@+id/info_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:layout_below="@id/app_bar_layout"
         android:background="@color/Pink_color"
         android:orientation="horizontal"
@@ -79,6 +79,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:visibility="gone"
             android:text="@string/esp_0_0"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
@@ -88,6 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/ta_0_0"
+            android:visibility="gone"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
 
@@ -95,6 +97,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:visibility="gone"
             android:text="@string/tlsd_0"
             android:textColor="@android:color/white"
             android:textStyle="bold" />

@@ -288,22 +288,22 @@ public class StoreProfileActivity extends AppCompatActivity {
                     // --- CHECK DATA ---
                     // 1. Attendance Check (Ideally get this from SharedPrefs/Session)
                    //  boolean isAttendanceMarked = sessionManager.isAttendanceMarked();
-                    boolean isAttendanceMarked = true; // Hardcoded for now per your request
+          //          boolean isAttendanceMarked = true; // Hardcoded for now per your request
+                    boolean isAttendanceMarked = sessionManager.isAttendanceMarked();
                    // boolean isAttendanceMarked = attendanceStatusResponse.isPresent();
                     Log.d("ispresent","ispresent"+isAttendanceMarked);
 
- //                   if(isAttendanceMarked){
-                        // 2. Network Check
+                    if(isAttendanceMarked){
                         boolean isNetAvailable = NetworkUtil.isNetworkAvailable(StoreProfileActivity.this);
                         Log.d("ispresent","ispresent2 ");
                         // 3. Get Token
                         String token = sessionManager.getToken();
                         // --- PASS ALL TO VIEWMODEL ---
                         viewModel.onEnterStoreClicked(loc, isNetAvailable, isAttendanceMarked, token);
-//                    }else {
-//                        progressDialog.dismiss();
-//                        Toast.makeText(StoreProfileActivity.this, "User Not Marked Attendace", Toast.LENGTH_SHORT).show();
-//                    }
+                    }else {
+                        progressDialog.dismiss();
+                        Toast.makeText(StoreProfileActivity.this, "User Not Marked Attendace", Toast.LENGTH_SHORT).show();
+                    }
 
                 } else {
                     progressDialog.dismiss();

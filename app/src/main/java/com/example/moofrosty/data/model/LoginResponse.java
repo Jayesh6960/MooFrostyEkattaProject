@@ -108,4 +108,18 @@ public class LoginResponse {
         @SerializedName("IFSCCode")
         private String ifscCode;
     }
+
+    @SerializedName("attendanceStatus")
+    private AttendanceStatus attendanceStatus;
+
+    public AttendanceStatus getAttendanceStatus() { return attendanceStatus; }
+
+    public static class AttendanceStatus {
+        @SerializedName("isPresent")
+        private boolean isPresent;
+
+        public boolean isPresent() { return isPresent; }
+    }
+
+
 }
