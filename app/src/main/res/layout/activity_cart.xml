@@ -8,6 +8,10 @@
             android:background="#F5F5F5"
             tools:context=".ui.cart.CartActivity"
             >
+    <include
+        android:id="@+id/order_success_overlay"
+        layout="@layout/layout_order_success_overlay"
+        android:visibility="gone"/>
 
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/app_bar_layout"
@@ -205,6 +209,7 @@
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
                 android:textStyle="bold" />
+
         </RelativeLayout>
 
     <ProgressBar
