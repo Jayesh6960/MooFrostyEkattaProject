@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="200dp"
-    android:background="@color/Purple_Color"
+    android:background="@color/Pink_color"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:padding="16dp">
@@ -17,7 +17,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@android:drawable/sym_def_app_icon"
+            android:src="@drawable/img"
             android:scaleType="centerCrop"/>
     </androidx.cardview.widget.CardView>
 
