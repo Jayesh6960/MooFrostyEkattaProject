@@ -60,11 +60,16 @@ public class Step1OwnerFragment extends Fragment {
         btnNext.setOnClickListener(v -> {
             String name = etOwner.getText().toString();
             String email = etEmail.getText().toString();
-
+            etOwner.setError(null);
             if(name.isEmpty() ) {
+
                 etOwner.setError("OwnerFull Name Required");
                 return;
             }
+//            if(email.isEmpty() ) {
+//                etOwner.setError("OwnerFull Name Required");
+//                return;
+//            }
             viewModel.ownerName = name;
             viewModel.email = email;
             ((CreateStoreWizardActivity) requireActivity()).nextStep();

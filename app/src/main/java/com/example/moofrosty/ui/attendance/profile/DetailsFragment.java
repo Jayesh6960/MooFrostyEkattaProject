@@ -20,7 +20,7 @@ import com.example.moofrosty.data.model.UserDetailResponse;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
 
-
+//Latest Updated Date :-28-01-2026
 public class DetailsFragment extends Fragment {
 
     // Text fields
@@ -67,7 +67,7 @@ public class DetailsFragment extends Fragment {
         TextInputEditText etMiddleName = view.findViewById(R.id.etMiddleName);
         TextInputEditText etLastName = view.findViewById(R.id.etLastName);
         TextInputEditText etITeamsCode = view.findViewById(R.id.etITeamsCode);
-        TextInputEditText etAddress = view.findViewById(R.id.etAddress);
+        TextInputEditText etAddress = view.findViewById(R.id.IteamsCode);
         TextInputEditText etEmail = view.findViewById(R.id.etEmail);
         TextInputEditText etDob = view.findViewById(R.id.etDob);
         TextInputEditText etJoin = view.findViewById(R.id.dateofjoin);

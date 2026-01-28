@@ -22,6 +22,7 @@
 
         <!-- Shop Name -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_shop_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:boxStrokeColor="@color/Purple_Color"
@@ -33,10 +34,13 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_shop_name"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:required="true"/>
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- RS/SS Identifier -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_rs_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
@@ -50,14 +54,16 @@
                 android:id="@+id/sp_rs_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="none" />
+                android:inputType="none"
+                android:required="true"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-
+        <!-- Secondary Channel -->
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:id="@+id/til_secondary_channel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:hint="Secondary Channel"
             app:boxStrokeColor="@color/Purple_Color"
             app:endIconTint="@color/Purple_Color"
@@ -68,11 +74,13 @@
                 android:id="@+id/sp_secondary_channel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="none" />
+                android:inputType="none"
+                android:required="true"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Beat -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_beat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
@@ -86,10 +94,13 @@
                 android:id="@+id/sp_beat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="none" />
+                android:inputType="none"
+                android:required="true"/>
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- Outlet Type -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_outlet_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
@@ -104,15 +115,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="none"
-                />
+                android:required="true"/>
         </com.google.android.material.textfield.TextInputLayout>
-
 
         <!-- SS Name -->
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:hint="SS Name"
             android:visibility="gone"
             android:layout_marginTop="8dp">
@@ -120,19 +130,17 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_ss_name"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:required="true"/>
         </com.google.android.material.textfield.TextInputLayout>
-
-
-
-
 
         <!-- Pin Code -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_pin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:hint="Pin Code"
+            android:hint="PinCode"
             app:boxStrokeColor="@color/Purple_Color"
             app:cursorColor="@color/Purple_Color"
             app:hintTextColor="@color/Purple_Color"
@@ -142,11 +150,14 @@
                 android:id="@+id/et_pin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number" />
+                android:inputType="number"
+                android:maxLength="6"
+                android:required="true"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Address -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -159,11 +170,13 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_address"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:required="true"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Country -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_country"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
@@ -177,11 +190,12 @@
                 android:id="@+id/sp_country"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="none" />
+                android:inputType="none"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- State -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_state"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
@@ -195,11 +209,13 @@
                 android:id="@+id/sp_state"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="none" />
+                android:inputType="none"
+                android:required="true"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- District -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_district"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
@@ -213,10 +229,13 @@
                 android:id="@+id/sp_district"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="none" />
+                android:inputType="none"
+                android:required="true"/>
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- City -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_city"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
@@ -230,10 +249,11 @@
                 android:id="@+id/sp_city"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="none" />
+                android:inputType="none"
+                android:required="true"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-
+        <!-- Next Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_next"
             android:layout_width="match_parent"

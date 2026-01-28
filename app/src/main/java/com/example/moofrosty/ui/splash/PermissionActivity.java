@@ -36,7 +36,9 @@ public class PermissionActivity extends AppCompatActivity {
         btnAllow = findViewById(R.id.btnAllow);
         btnAllow.setOnClickListener(v -> startPermissionFlow());
     }
-
+//updated code  in the code  Date 26-01-2026
+    //updated changes Color Permission data
+    //Update  Request Button color(Allow and Open Permission )
     @Override
     protected void onResume() {
         super.onResume();
@@ -118,13 +120,21 @@ public class PermissionActivity extends AppCompatActivity {
     // ================= COMMON REQUEST =================
     private void requestPermission(String title, String message, String permission, int code) {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
-            new AlertDialog.Builder(this)
+
+            AlertDialog dialog = new AlertDialog.Builder(this)
                     .setTitle(title)
                     .setMessage(message)
                     .setCancelable(false)
                     .setPositiveButton("Allow", (d, w) ->
                             ActivityCompat.requestPermissions(this, new String[]{permission}, code))
-                    .show();
+                    .create();
+
+            dialog.show();
+
+            // Change the Positive ("Allow") button color AFTER dialog is shown
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                    .setTextColor(ContextCompat.getColor(this, R.color.bottom_nav_color));
+
         } else {
             ActivityCompat.requestPermissions(this, new String[]{permission}, code);
         }
@@ -142,14 +152,20 @@ public class PermissionActivity extends AppCompatActivity {
     }
 
     private void showMandatoryDialog() {
-        new AlertDialog.Builder(this)
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("Permission Required")
                 .setMessage("All permissions are mandatory to use Moofrosty.")
                 .setCancelable(false)
                 .setPositiveButton("Try Again", (d, w) -> startPermissionFlow())
-                .show();
-    }
+                .create();
 
+        dialog.show();
+
+        // Change "Try Again" button color AFTER show()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                .setTextColor(ContextCompat.getColor(this, R.color.bottom_nav_color));
+    }
     private void goNext() {
         Toast.makeText(this, "All permissions granted", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(this, LoginActivity.class));

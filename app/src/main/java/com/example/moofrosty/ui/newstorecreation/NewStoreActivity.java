@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -224,7 +225,8 @@ public class NewStoreActivity extends AppCompatActivity {
         tvReason.setText("NA");
         tvAddress.setText(item.getAddress());
         tvDate.setText(item.getCreatedAt().substring(0, 10));
-        tvBeat.setText("Waluj Pandharpur");
+        tvBeat.setText("Walunj pandharpur");
+        Log.d("showStoreDetailsPopup: ", "showStoreDetailsPopup: "+item.getBeatId());
         tvBusiness.setText(item.getShopKyc().getDocumentType());
 
         dialog.show();

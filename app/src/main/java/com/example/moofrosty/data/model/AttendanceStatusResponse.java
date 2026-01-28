@@ -15,9 +15,9 @@ public class AttendanceStatusResponse {
     @SerializedName("isAbleToPunch")
     public boolean isAbleToPunch;   // False if leave/restricted
 
+
     @SerializedName("isHoliday")
     public boolean isHoliday;
-
     @SerializedName("isBetweenTime")
     public boolean isBetweenTime;   // True if between 5 AM - 11 PM
 
