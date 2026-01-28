@@ -44,7 +44,8 @@
                     app:abbreviationsLabelsColor="@android:color/white"
                     app:eventsEnabled="true"
                     app:headerColor="#1976D2"
-                    app:selectionColor="#2196F3"/>
+                    app:selectionColor="#2196F3"
+                    app:todayLabelColor="@color/blue"/>
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"

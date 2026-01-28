@@ -3,6 +3,7 @@ package com.example.moofrosty.ui.newstorecreation;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -33,7 +34,7 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
     private SessionManager sessionManager;
 
     private TextInputEditText etMobile, etOtp;
-    private TextInputLayout layoutOtp;
+    private TextInputLayout layoutOtp,till_mob;
     private MaterialButton btnSendVerification, btnSubmitOtp;
     private TextView tvStatus;
     Toolbar toolbar ;
@@ -42,6 +43,8 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
     TextView tvTitle;
     TextView tvDate ;
     ScrollView scrollView;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +92,8 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
         btnSendVerification = findViewById(R.id.btn_send_verification);
         btnSubmitOtp = findViewById(R.id.btn_submit_otp);
         tvStatus = findViewById(R.id.tv_status);
+        till_mob=findViewById(R.id.till_mob);
+
 
         tvTitle.setText("Registration");
         btnBack.setOnClickListener(v -> finish());
@@ -97,7 +102,7 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
         btnSendVerification.setOnClickListener(v -> {
             String mobile = etMobile.getText().toString().trim();
             if (mobile.length() < 10) {
-                etMobile.setError("Enter valid mobile number");
+                till_mob.setError("Enter valid mobile number");
                 return;
             }
 
@@ -174,9 +179,16 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
     private void showRegisteredNumberBottomSheet(String storeDetails, String rsDetails) {
         BottomSheetDialog dialog = new BottomSheetDialog(this);
         dialog.setContentView(R.layout.bottomsheet_store_exits_by_mobile);
-
+        Button btnOK;
+        btnOK = dialog.findViewById(R.id.btnOK);
         TextView tvStore = dialog.findViewById(R.id.tvStoreDetails);
         TextView tvRs = dialog.findViewById(R.id.tvRSDetails);
+        btnOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 //        TextView tvBusiness = dialog.findViewById(R.id.tvverifed);
 
         if (tvStore != null)
@@ -188,7 +200,9 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
 
         dialog.setCancelable(true);
         dialog.show();
+
     }
+
 
     private void showOtpScreen() {
         btnSendVerification.setVisibility(View.GONE);

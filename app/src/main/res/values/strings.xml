@@ -35,7 +35,7 @@
 
     <!-- Call Helpline -->
     <string name="call_helpline">Call Helpline Support (Application Issues)</string>
-    <string name="helpline_number">18002102088</string>
+    <string name="helpline_number">(  18002102088  ) </string>
 
     <!-- Salary & Other Issues -->
     <string name="salary_issues">For Salary &amp; Other Issues</string>

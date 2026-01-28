@@ -66,7 +66,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_marginBottom="12dp">
+            android:layout_marginBottom="12dp"
+            android:hint="First Name (as in Govt. ID proof)*">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etFirstName"
@@ -76,10 +77,12 @@
                 android:textColor="#3E3E3E"
                 android:textStyle="bold"
                 android:enabled="false"
+                android:importantForAutofill="yes"
                 android:focusable="false"
-                android:hint="First Name (as in Govt. ID proof*"
                 android:inputType="textPersonName" />
+
         </com.google.android.material.textfield.TextInputLayout>
+
 
         <!-- Middle Name -->
         <com.google.android.material.textfield.TextInputLayout
@@ -93,10 +96,11 @@
                 android:id="@+id/etMiddleName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Middle Name (as in Govt. ID proof)*"
+                android:hint="Middle Name (as in Govt. ID proof)"
                 android:inputType="textPersonName"
                 android:textColor="#3E3E3E"
                 android:enabled="false"
+                android:importantForAutofill="yes"
                 android:textStyle="bold"
                 android:focusable="false"
                 android:cursorVisible="false"/>
@@ -117,10 +121,30 @@
                 android:hint="Last Name (as in Govt. ID proof)*"
                 android:inputType="textPersonName"
                 android:enabled="false"
+                android:importantForAutofill="yes"
                 android:textStyle="bold"
                 android:focusable="false"
                 android:cursorVisible="false"/>
         </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Iteams Code"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginBottom="12dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/IteamsCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#3E3E3E"
+                android:enabled="false"
+                android:focusable="false"
+                android:importantForAutofill="yes"
+                android:textStyle="bold"
+                android:cursorVisible="false"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <!-- iTeams Code -->
         <com.google.android.material.textfield.TextInputLayout
@@ -137,6 +161,7 @@
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:hint="VK001212"
+                android:importantForAutofill="yes"
                 android:visibility="gone"
                 android:enabled="false"
                 android:focusable="false"
@@ -144,24 +169,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Address -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Permanent / Residential Address *"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_marginBottom="12dp">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#3E3E3E"
-                android:minLines="3"
-                android:textStyle="bold"
-                android:enabled="false"
-                android:focusable="false"
-                android:cursorVisible="false"/>
-        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -178,6 +186,7 @@
                 android:textStyle="bold"
                 android:textColor="#3E3E3E"
                 android:inputType="textEmailAddress"
+                android:importantForAutofill="yes"
                 android:enabled="false"
                 android:focusable="false"
                 android:cursorVisible="false"/>
@@ -200,6 +209,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="#3E3E3E"
                 android:enabled="false"
+                android:importantForAutofill="yes"
                 android:textStyle="bold"
                 android:focusable="false"
                 android:cursorVisible="false" />
@@ -209,7 +219,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Education *"
+            android:hint="Education "
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_marginBottom="12dp"
             app:endIconMode="custom"
@@ -223,6 +233,7 @@
                 android:textColor="#3E3E3E"
                 android:textStyle="bold"
                 android:focusable="false"
+                android:importantForAutofill="yes"
                 android:cursorVisible="false"
                 app:endIconMode="custom"
                 app:endIconDrawable="@null"/>
@@ -241,6 +252,7 @@
                 android:layout_height="wrap_content"
                 android:enabled="false"
                 android:textColor="#3E3E3E"
+                android:importantForAutofill="yes"
                 android:textStyle="bold"
                 android:focusable="false"
                 android:cursorVisible="false"/>
@@ -260,6 +272,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="#3E3E3E"
                 android:textStyle="bold"
+                android:importantForAutofill="yes"
                 android:enabled="false"
                 android:focusable="false"
                 android:cursorVisible="false"/>
@@ -280,15 +293,15 @@
                 android:textColor="#3E3E3E"
                 android:enabled="false"
                 android:focusable="false"
+                android:importantForAutofill="yes"
                 android:textStyle="bold"
                 android:cursorVisible="false"/>
         </com.google.android.material.textfield.TextInputLayout>
-
         <!-- Past Experience -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Past Experience *"
+            android:hint="Past Experience"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_marginBottom="12dp">
 
@@ -299,6 +312,7 @@
                 android:minLines="3"
                 android:enabled="false"
                 android:textColor="#3E3E3E"
+                android:importantForAutofill="yes"
                 android:textStyle="bold"
                 android:focusable="false"
                 android:cursorVisible="false"/>
@@ -309,14 +323,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="2"
             android:layout_marginBottom="12dp">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Years*"
+                android:layout_marginEnd="12dp"
+                android:hint="Years"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 app:endIconMode="none">
 
@@ -335,7 +349,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Months*"
+                android:hint="Months"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 app:endIconMode="custom"
                 app:endIconDrawable="@null">
@@ -348,10 +362,9 @@
                     android:textColor="#3E3E3E"
                     android:textStyle="bold"
                     android:focusable="false"
-                    android:cursorVisible="false"
-                    app:endIconMode="custom"
-                    app:endIconDrawable="@null"/>
+                    android:cursorVisible="false"/>
             </com.google.android.material.textfield.TextInputLayout>
+
         </LinearLayout>
 
     </LinearLayout>

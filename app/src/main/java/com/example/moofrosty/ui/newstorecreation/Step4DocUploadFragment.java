@@ -3,7 +3,6 @@ package com.example.moofrosty.ui.newstorecreation;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -29,37 +28,42 @@ import com.example.moofrosty.data.local.SessionManager;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.File;
 
 public class Step4DocUploadFragment extends Fragment {
 
     private CreateStoreViewModel viewModel;
+
     private ImageView imgDoc, imgBoard, imgInside;
-    private int currentImageRequest = 0;
     private MaterialButton btnSubmit;
     private ProgressBar progressBar;
-    TextInputEditText etDocNum;
+
+    private TextInputEditText etDocNum;
+    private TextInputLayout tilDoc;
+
+    private int currentImageRequest = 0;
 
     public Step4DocUploadFragment() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_step4_doc_upload, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         viewModel = new ViewModelProvider(requireActivity()).get(CreateStoreViewModel.class);
 
+        // ---------- UI BINDING ----------
         TextView tvDocTitle = view.findViewById(R.id.tv_doc_title);
-        // Safety check for null
+
         if (viewModel.selectedDocType != null && !viewModel.selectedDocType.isEmpty()) {
             tvDocTitle.setText(viewModel.selectedDocType + " Upload");
         } else {
@@ -67,19 +71,25 @@ public class Step4DocUploadFragment extends Fragment {
         }
 
         etDocNum = view.findViewById(R.id.et_doc_number);
+        tilDoc = view.findViewById(R.id.till_doc);
+
         imgDoc = view.findViewById(R.id.img_doc);
         imgBoard = view.findViewById(R.id.img_board);
         imgInside = view.findViewById(R.id.img_inside);
+
         btnSubmit = view.findViewById(R.id.btn_submit);
         progressBar = view.findViewById(R.id.progress_bar);
 
+        // ---------- IMAGE PICKERS ----------
         imgDoc.setOnClickListener(v -> pickImage(1));
         imgBoard.setOnClickListener(v -> pickImage(2));
         imgInside.setOnClickListener(v -> pickImage(3));
 
+        // ---------- RESTORE DATA ----------
         if (viewModel.docNumber != null) {
             etDocNum.setText(viewModel.docNumber);
         }
+
         if (viewModel.docImage != null) {
             imgDoc.setImageURI(Uri.fromFile(viewModel.docImage));
         }
@@ -90,75 +100,98 @@ public class Step4DocUploadFragment extends Fragment {
             imgInside.setImageURI(Uri.fromFile(viewModel.insideImage));
         }
 
-        // --- 2. 🔥 FIX: SAVE DATA AS YOU TYPE ---
+        // ---------- SAVE AS YOU TYPE ----------
         etDocNum.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
             @Override
             public void afterTextChanged(Editable s) {
-                // Save to ViewModel immediately
                 viewModel.docNumber = s.toString();
+                tilDoc.setError(null); // clear error while typing
             }
         });
 
+        // ---------- SUBMIT ----------
         btnSubmit.setOnClickListener(v -> {
-            if (etDocNum.getText() != null) {
-                viewModel.docNumber = etDocNum.getText().toString();
-            }
 
-            // Mock Lat/Lng for now (Use FusedLocationProvider for real gps)
-           // viewModel.latLong = "19.876,75.343";
+            // Clear previous error
+            tilDoc.setError(null);
 
-            if(viewModel.docImage == null || viewModel.boardImage == null || viewModel.insideImage == null) {
-                Toast.makeText(requireContext(), "Please upload all images", Toast.LENGTH_SHORT).show();
+            // 1️⃣ Doc number validation
+            if (etDocNum.getText() == null || etDocNum.getText().toString().trim().isEmpty()) {
+                tilDoc.setError("Doc Type Required");
                 return;
             }
 
+            // Save (backend unchanged)
+            viewModel.docNumber = etDocNum.getText().toString().trim();
+
+            // 2️⃣ Image validation
+            if (viewModel.docImage == null ||
+                    viewModel.boardImage == null ||
+                    viewModel.insideImage == null) {
+
+                Toast.makeText(requireContext(),
+                        "Please upload all images",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // 3️⃣ Location validation
             if (viewModel.latLong == null || viewModel.latLong.isEmpty()) {
-                Toast.makeText(requireContext(), "Fetching location, please wait...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(),
+                        "Fetching location, please wait...",
+                        Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // 2. Check Network
+            // 4️⃣ Network check
             if (NetworkUtil.isNetworkAvailable(requireContext())) {
                 SessionManager session = new SessionManager(requireContext());
                 viewModel.submitStore(session.getToken());
             } else {
-                Toast.makeText(requireContext(), "No Internet Connection", Toast.LENGTH_LONG).show();
+                Toast.makeText(requireContext(),
+                        "No Internet Connection",
+                        Toast.LENGTH_LONG).show();
             }
         });
 
+        // ---------- OBSERVER ----------
         viewModel.submitResult.observe(getViewLifecycleOwner(), res -> {
-            if(res != null) {
-                // Use Resource.Status if Status is inner enum, or Status if standalone
-                if(res.status == Resource.Status.LOADING) {
-                    btnSubmit.setText("Submitting...");
-                    btnSubmit.setEnabled(false);
-                    progressBar.setVisibility(View.VISIBLE);
-                } else if(res.status == Resource.Status.SUCCESS) {
-                    progressBar.setVisibility(View.GONE);
-                    Toast.makeText(requireContext(), "Store Added Successfully!", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(requireActivity(),NewStoreActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    Log.d("Storadd","isaddsucesstrue");
-                    requireActivity().finish();
-                } else if(res.status == Resource.Status.ERROR) {
-                    progressBar.setVisibility(View.GONE);
-                    btnSubmit.setText("Submit");
-                    btnSubmit.setEnabled(true);
-                    Log.d("Storadd","isadd");
-                    Toast.makeText(requireContext(), res.message, Toast.LENGTH_LONG).show();
-                }
+            if (res == null) return;
+
+            if (res.status == Resource.Status.LOADING) {
+                btnSubmit.setEnabled(false);
+                btnSubmit.setText("Submitting...");
+                progressBar.setVisibility(View.VISIBLE);
+
+            } else if (res.status == Resource.Status.SUCCESS) {
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(requireContext(),
+                        "Store Added Successfully!",
+                        Toast.LENGTH_LONG).show();
+
+                Intent intent = new Intent(requireActivity(), NewStoreActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                requireActivity().finish();
+
+            } else if (res.status == Resource.Status.ERROR) {
+                progressBar.setVisibility(View.GONE);
+                btnSubmit.setEnabled(true);
+                btnSubmit.setText("Submit");
+                Toast.makeText(requireContext(),
+                        res.message,
+                        Toast.LENGTH_LONG).show();
             }
         });
     }
 
+    // ---------- IMAGE PICKER ----------
     private void pickImage(int reqCode) {
         currentImageRequest = reqCode;
         ImagePicker.with(this)
-               // .crop()
                 .compress(1024)
                 .maxResultSize(1080, 1080)
                 .start();
@@ -167,27 +200,27 @@ public class Step4DocUploadFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && data != null) {
 
+        if (resultCode == Activity.RESULT_OK && data != null) {
             Uri uri = data.getData();
             if (uri != null) {
-                // This library returns a Uri that points to a file, so getPath() is safe here
                 File file = new File(uri.getPath());
 
-                if(currentImageRequest == 1) {
+                if (currentImageRequest == 1) {
                     viewModel.docImage = file;
                     imgDoc.setImageURI(uri);
-                } else if(currentImageRequest == 2) {
+                } else if (currentImageRequest == 2) {
                     viewModel.boardImage = file;
                     imgBoard.setImageURI(uri);
-                } else if(currentImageRequest == 3) {
+                } else if (currentImageRequest == 3) {
                     viewModel.insideImage = file;
                     imgInside.setImageURI(uri);
                 }
             }
-
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
-            Toast.makeText(requireContext(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(),
+                    ImagePicker.getError(data),
+                    Toast.LENGTH_SHORT).show();
         }
     }
 }

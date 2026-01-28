@@ -24,14 +24,16 @@ import com.example.moofrosty.data.model.RssResponse;
 import com.example.moofrosty.data.model.SecondaryChannelResponse;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
-
+import com.google.android.material.textfield.TextInputLayout;
 
 public class Step2ShopFragment extends Fragment {
 
     private CreateStoreViewModel viewModel;
     private SessionManager sessionManager;
-    private AutoCompleteTextView spCountry, spState, spDist, spCity, spBeat,spRsId, spSecondaryChannel,spOutletType;
-    private TextInputEditText etShopName, etRsId, etType, etPin, etAddress,etssname,etsecondchannel;
+
+    private AutoCompleteTextView spCountry, spState, spDist, spCity, spBeat, spRsId, spSecondaryChannel, spOutletType;
+    private TextInputEditText etShopName, etPin, etAddress;
+    private TextInputLayout tilShopName, tilCountry, tilState, tilDistrict, tilCity, tilBeat, tilRsId, tilSecondaryChannel, tilOutletType, tilAddress,tilPin;
 
     public Step2ShopFragment() {
         // Required empty public constructor
@@ -48,22 +50,38 @@ public class Step2ShopFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         viewModel = new ViewModelProvider(requireActivity()).get(CreateStoreViewModel.class);
         sessionManager = new SessionManager(requireContext());
         String token = sessionManager.getToken();
 
+        // --- INITIALIZE VIEWS ---
         spCountry = view.findViewById(R.id.sp_country);
         spState = view.findViewById(R.id.sp_state);
         spDist = view.findViewById(R.id.sp_district);
         spCity = view.findViewById(R.id.sp_city);
         spBeat = view.findViewById(R.id.sp_beat);
+        spRsId = view.findViewById(R.id.sp_rs_id);
+        spSecondaryChannel = view.findViewById(R.id.sp_secondary_channel);
+        spOutletType = view.findViewById(R.id.sp_outlet_type);
+
         etShopName = view.findViewById(R.id.et_shop_name);
         spOutletType = view.findViewById(R.id.sp_outlet_type);
         etPin = view.findViewById(R.id.et_pin);
         etAddress = view.findViewById(R.id.et_address);
-        etssname = view.findViewById(R.id.et_ss_name);
-        spRsId = view.findViewById(R.id.sp_rs_id);
-        spSecondaryChannel = view.findViewById(R.id.sp_secondary_channel);
+
+        tilShopName = view.findViewById(R.id.til_shop_name);
+        tilPin = view.findViewById(R.id.til_pin);
+        tilCountry = view.findViewById(R.id.til_country);
+        tilState = view.findViewById(R.id.til_state);
+        tilDistrict = view.findViewById(R.id.til_district);
+        tilCity = view.findViewById(R.id.til_city);
+        tilBeat = view.findViewById(R.id.til_beat);
+        tilRsId = view.findViewById(R.id.til_rs_id);
+        tilSecondaryChannel = view.findViewById(R.id.til_secondary_channel);
+        tilOutletType = view.findViewById(R.id.til_outlet_type);
+        tilAddress = view.findViewById(R.id.til_address);
+
         MaterialButton btnNext = view.findViewById(R.id.btn_next);
 
         String[] outletTypes = {"COC", "ROC"};
@@ -275,24 +293,76 @@ public class Step2ShopFragment extends Fragment {
         if (viewModel.selectedBeatId != null) spBeat.setText(viewModel.selectedBeatName, false);
         if (viewModel.selectedCountryId != null) spCountry.setText(viewModel.selectedCountryName, false);
         if (viewModel.selectedStateId != null) spState.setText(viewModel.selectedStateName, false);
-        if (viewModel.selectedDistId  != null) spDist.setText(viewModel.selectedDistName, false);
-        if (viewModel.selectedCityId  != null) spState.setText(viewModel.selectedCityName, false);
+        if (viewModel.selectedDistId != null) spDist.setText(viewModel.selectedDistName, false);
+        if (viewModel.selectedCityId != null) spCity.setText(viewModel.selectedCityName, false);
 
 
         // -------- NEXT BUTTON --------
         btnNext.setOnClickListener(v -> {
+            boolean isValid = true;
 
-            if (etShopName.getText().toString().trim().isEmpty()
-                    || viewModel.selectedCountryId.isEmpty()
-                    || viewModel.selectedStateId.isEmpty()
-                    || viewModel.selectedDistId.isEmpty()
-                    || viewModel.selectedCityId.isEmpty()
-                    || viewModel.selectedBeatId.isEmpty()) {
+            // Clear previous errors
+            tilShopName.setError(null);
+            tilCountry.setError(null);
+            tilState.setError(null);
+            tilDistrict.setError(null);
+            tilCity.setError(null);
+            tilBeat.setError(null);
+            tilRsId.setError(null);
+            tilSecondaryChannel.setError(null);
+            tilOutletType.setError(null);
+            tilAddress.setError(null);
 
-                Toast.makeText(requireContext(), "Please fill all required fields", Toast.LENGTH_SHORT).show();
-                return;
+            // Individual validations
+            if (etShopName.getText().toString().trim().isEmpty()) {
+                tilShopName.setError("Shop name is required");
+                isValid = false;
+            }
+            if (etPin.getText().toString().trim().isEmpty()) {
+                tilPin.setError("Pin code is required");
+                isValid = false;
+            }
+            if (viewModel.selectedCountryId == null || viewModel.selectedCountryId.isEmpty()) {
+                tilCountry.setError("Please select country");
+                isValid = false;
+            }
+            if (viewModel.selectedStateId == null || viewModel.selectedStateId.isEmpty()) {
+                tilState.setError("Please select state");
+                isValid = false;
+            }
+            if (viewModel.selectedDistId == null || viewModel.selectedDistId.isEmpty()) {
+                tilDistrict.setError("Please select district");
+                isValid = false;
+            }
+            if (viewModel.selectedCityId == null || viewModel.selectedCityId.isEmpty()) {
+                tilCity.setError("Please select city");
+                isValid = false;
+            }
+            if (viewModel.selectedBeatId == null || viewModel.selectedBeatId.isEmpty()) {
+                tilBeat.setError("Please select beat");
+                isValid = false;
+            }
+            if (spRsId.getText().toString().trim().isEmpty()) {
+                tilRsId.setError("Please select RS/SS identifier");
+                isValid = false;
+            }
+            if (spSecondaryChannel.getText().toString().trim().isEmpty()) {
+                tilSecondaryChannel.setError("Please select Secondary channel ");
+                isValid = false;
+            }
+            if (spOutletType.getText().toString().trim().isEmpty()) {
+                tilOutletType.setError("Please select Outlet type ");
+                isValid = false;
+            }
+            if (etAddress.getText().toString().trim().isEmpty()) {
+                tilAddress.setError("Please select Address ");
+                isValid = false;
             }
 
+            // Stop if invalid
+            if (!isValid) return;
+
+            // Backend assignment (unchanged)
             viewModel.storeName = etShopName.getText().toString();
  //           viewModel.rsId = etRsId.getText().toString();
 //            viewModel.outletType = etType.getText().toString();

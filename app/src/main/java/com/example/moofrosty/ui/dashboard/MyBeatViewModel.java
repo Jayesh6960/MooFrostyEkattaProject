@@ -111,31 +111,41 @@ public class MyBeatViewModel extends AndroidViewModel {
     }
 
     // ---------------- FILTER LOGIC ----------------
-
+// Trung the
     private void applyFilters() {
+
         List<Store> temp = new ArrayList<>();
+
         int total = masterStoreList.size();
         int visited = 0;
         int orderTaken = 0;
         double value = 0.0;
 
+        // First: apply filtering
         for (Store s : masterStoreList) {
-            // Calculate Stats
-            if (s.isVisited()) visited++;
-            if (s.isOrderTaken()) {
-                orderTaken++;
-                value += s.getOrderValue();
-            }
 
-            // Filtering Logic
-            boolean matchesSearch = s.getStoreName().toLowerCase().contains(currentSearchQuery.toLowerCase());
+            boolean matchesSearch = s.getStoreName()
+                    .toLowerCase()
+                    .contains(currentSearchQuery.toLowerCase());
+
             boolean matchesTab = true;
 
             switch (currentTabFilter) {
-                case "Not Visited": matchesTab = !s.isVisited(); break;
-                case "Visited": matchesTab = s.isVisited(); break;
-                case "Order Taken": matchesTab = s.isOrderTaken(); break;
-                default: matchesTab = true; break;
+                case "Not Visited":
+                    matchesTab = !s.isVisited();
+                    break;
+
+                case "Visited":
+                    matchesTab = s.isVisited();
+                    break;
+
+                case "Order Taken":
+                    matchesTab = s.isOrderTaken();
+                    break;
+
+                default:
+                    matchesTab = true;
+                    break;
             }
 
             if (matchesSearch && matchesTab) {
@@ -143,15 +153,24 @@ public class MyBeatViewModel extends AndroidViewModel {
             }
         }
 
+        // Second: calculate stats ONLY from filtered list
+        for (Store s : temp) {
+            if (s.isVisited()) visited++;
+
+            if (s.isOrderTaken()) {
+                orderTaken++;
+                value += s.getOrderValue();
+            }
+        }
+
+        // Update LiveData (UI updates automatically)
         filteredStores.setValue(temp);
         totalOrderValue.setValue(value);
-        visitedCountText.setValue(visited + "/" + total);
-        orderTakenCountText.setValue(orderTaken + "/" + total);
-//        filteredStores.setValue(result);
-//        totalOrderValue.setValue(totalVal);
-//        visitedCountText.setValue(visited + "/" + masterStoreList.size());
-//        orderTakenCountText.setValue(ordered + "/" + masterStoreList.size());
+
+        visitedCountText.setValue(visited + "/" + temp.size());
+        orderTakenCountText.setValue(orderTaken + "/" + temp.size());
     }
+
 }
 
 //    private MyBeatRepository repository;
