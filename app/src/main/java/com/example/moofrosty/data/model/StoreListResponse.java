@@ -65,6 +65,7 @@ public class StoreListResponse {
         public int getBeatId() { return beatId; }
         public int getStatus() { return status; }
 
+
         public static class StoreKyc {
             @SerializedName("documentType")
             private String documentType;

@@ -34,7 +34,7 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
     private SessionManager sessionManager;
 
     private TextInputEditText etMobile, etOtp;
-    private TextInputLayout layoutOtp;
+    private TextInputLayout layoutOtp,till_mob;
     private MaterialButton btnSendVerification, btnSubmitOtp;
     private TextView tvStatus;
     Toolbar toolbar ;
@@ -93,6 +93,8 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
         btnSendVerification = findViewById(R.id.btn_send_verification);
         btnSubmitOtp = findViewById(R.id.btn_submit_otp);
         tvStatus = findViewById(R.id.tv_status);
+        till_mob=findViewById(R.id.till_mob);
+
 
         tvTitle.setText("Registration");
         btnBack.setOnClickListener(v -> finish());
@@ -101,7 +103,7 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
         btnSendVerification.setOnClickListener(v -> {
             String mobile = etMobile.getText().toString().trim();
             if (mobile.length() < 10) {
-                etMobile.setError("Enter valid mobile number");
+                till_mob.setError("Enter valid mobile number");
                 return;
             }
 

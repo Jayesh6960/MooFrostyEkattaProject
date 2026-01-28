@@ -20,7 +20,7 @@ import com.example.moofrosty.data.model.UserDetailResponse;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
 
-
+//Latest Updated Date :-28-01-2026
 public class DetailsFragment extends Fragment {
 
     // Text fields
@@ -67,7 +67,7 @@ public class DetailsFragment extends Fragment {
         TextInputEditText etMiddleName = view.findViewById(R.id.etMiddleName);
         TextInputEditText etLastName = view.findViewById(R.id.etLastName);
         TextInputEditText etITeamsCode = view.findViewById(R.id.etITeamsCode);
-        TextInputEditText etAddress = view.findViewById(R.id.etAddress);
+        TextInputEditText etAddress = view.findViewById(R.id.IteamsCode);
         TextInputEditText etEmail = view.findViewById(R.id.etEmail);
         TextInputEditText etDob = view.findViewById(R.id.etDob);
         TextInputEditText etJoin = view.findViewById(R.id.dateofjoin);
@@ -124,4 +124,53 @@ public class DetailsFragment extends Fragment {
         viewModel.loadUserDetail(sessionManager.getToken());
     }
 
+    //
+//    @SuppressLint("WrongViewCast")
+//    private void initViews(View view) {
+//        etFirstName = view.findViewById(R.id.etFirstName);
+//        etMiddleName = view.findViewById(R.id.etMiddleName);
+//        etLastName = view.findViewById(R.id.etLastName);
+//        etITeamsCode = view.findViewById(R.id.etITeamsCode);
+//        etAddress = view.findViewById(R.id.etAddress);
+//        etEmail = view.findViewById(R.id.etEmail);
+//        etDob = view.findViewById(R.id.etDob);
+//        etDateOfJoin = view.findViewById(R.id.dateofjoin);
+//        etMobile = view.findViewById(R.id.etMobile);
+//        etPastExperience = view.findViewById(R.id.etPastExperience);
+//
+//        spinnerGender = view.findViewById(R.id.spinnerGender);
+//        spinnerEducation = view.findViewById(R.id.SpinnerspEducation);
+//        spinnerExperienceYear = view.findViewById(R.id.spinnerExperienceYear);
+//        spinnermonths = view.findViewById(R.id.spinnermonths);
+//    }
+//
+//    private void loadUserFromSession() {
+//        User user = sessionManager.getUser();
+//
+//        if (user == null) {
+//            Toast.makeText(requireContext(), "User not logged in", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//
+//        // Debug full user JSON
+//        android.util.Log.d("USER_DATA", new Gson().toJson(user));
+//
+//        // ✅ Set UI fields
+//        etFirstName.setText(user.getFirstName());
+//        etMiddleName.setText(user.getMiddleName());
+//        etLastName.setText(user.getLastName());
+//        etITeamsCode.setText(user.getIteamsCode());
+//        etAddress.setText(user.getAddress());
+//        etEmail.setText(user.getEmail());
+//        etMobile.setText(user.getMobileNumber());
+//        etDob.setText(user.getDateofBirth());
+//        etDateOfJoin.setText(user.getDateofJoining());
+//        etPastExperience.setText("Smalll Universe Private limited"); // keeping original placeholder
+//
+//        // Dropdowns
+//        spinnerGender.setText(user.getGender(), false);
+//        spinnerEducation.setText(user.getEducation(), false);
+//        spinnerExperienceYear.setText(user.getExperienceYears(), false);
+//        spinnermonths.setText(user.getExperienceMonths(), false);
+//    }
 }
