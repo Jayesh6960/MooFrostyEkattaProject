@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignTop="@id/tv_order_date"
-            tools:text="Billed"
+            tools:text="Billed "
             android:textColor="@color/colorPrimary"
             android:background="@drawable/tab_unselected_bg"
             android:paddingStart="12dp"

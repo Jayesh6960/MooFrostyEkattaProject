@@ -16,6 +16,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.moofrosty.data.local.SessionManager;
 import com.example.moofrosty.ui.login.LoginActivity;
 import com.example.moofrosty.R;
 
@@ -151,6 +152,7 @@ public class PermissionActivity extends AppCompatActivity {
         }
     }
 
+
     private void showMandatoryDialog() {
 
         AlertDialog dialog = new AlertDialog.Builder(this)
@@ -166,9 +168,26 @@ public class PermissionActivity extends AppCompatActivity {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE)
                 .setTextColor(ContextCompat.getColor(this, R.color.bottom_nav_color));
     }
-    private void goNext() {
-        Toast.makeText(this, "All permissions granted", Toast.LENGTH_SHORT).show();
+//    private void goNext() {
+//        Toast.makeText(this, "All permissions granted", Toast.LENGTH_SHORT).show();
+//        startActivity(new Intent(this, LoginActivity.class));
+//        finish();
+//    }
+private void goNext() {
+
+    SessionManager sessionManager = new SessionManager(this);
+
+    if (sessionManager.isLocationAndPermissionsEnabled()) {
         startActivity(new Intent(this, LoginActivity.class));
         finish();
+    } else {
+        Toast.makeText(this,
+                "Please allow all permissions and enable GPS",
+                Toast.LENGTH_LONG).show();
     }
 }
+
+
+}
+
+
