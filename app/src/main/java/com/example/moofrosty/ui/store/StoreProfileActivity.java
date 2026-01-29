@@ -11,6 +11,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,11 +21,13 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.IntentSenderRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -58,11 +61,15 @@ public class StoreProfileActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private SessionManager sessionManager;
 
-    ImageView btnBack;
-    TextView tvTitle;
     TabLayout tabLayout;
     ViewPager2 viewPager;
     Button btnEnterStore;
+
+    Toolbar toolbar ;
+    ImageView btnBack;
+    ImageView btnMenu;
+    TextView tvTitle;
+    TextView tvDate ;
 
 //    // Permissions Launcher
 //    private final ActivityResultLauncher<String[]> locationPermissionRequest =
@@ -106,6 +113,35 @@ public class StoreProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         setContentView(R.layout.activity_store_profile);
+        WindowInsetsControllerCompat windowInsetsController =
+                WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+        windowInsetsController.setAppearanceLightStatusBars(true);
+
+        toolbar = findViewById(R.id.dashboard_toolbar);
+        setSupportActionBar(toolbar);
+        btnBack = findViewById(R.id.btn_back);
+        btnMenu = findViewById(R.id.btn_menu);
+        tvTitle = findViewById(R.id.tv_title);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.app_bar_layout), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(v.getPaddingLeft(), systemBars.top, v.getPaddingRight(), v.getPaddingBottom());
+            return insets;
+        });
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_container), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), systemBars.bottom);
+            return insets;
+        });
+
+        tvTitle.setText("Enter Store");
+        btnBack.setVisibility(View.VISIBLE);
+        btnMenu.setVisibility(View.GONE);
+        btnBack.setOnClickListener(v -> onBackPressed());
+
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         progressDialog = new ProgressDialog(this);
@@ -115,26 +151,23 @@ public class StoreProfileActivity extends AppCompatActivity {
             currentStore = (Store) getIntent().getSerializableExtra("STORE_DATA");
         }
 
-        // 2. Setup ViewModel
         viewModel = new ViewModelProvider(this).get(StoreProfileViewModel.class);
         if (currentStore != null) {
             viewModel.setStore(currentStore);
         }
 
         // 3. Init Views
-         btnBack = findViewById(R.id.btn_back);
-         tvTitle = findViewById(R.id.tv_toolbar_title);
+//         btnBack = findViewById(R.id.btn_back);
+//         tvTitle = findViewById(R.id.tv_toolbar_title);
          tabLayout = findViewById(R.id.tab_layout);
          viewPager = findViewById(R.id.view_pager);
          btnEnterStore = findViewById(R.id.btn_enter_store);
         sessionManager = new SessionManager(this);
 
-        // 4. Window Insets (Padding for StatusBar/NavBar)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_container), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+
+
+
+
 
 //        // 5. Setup Toolbar
 //        if (currentStore != null) {
@@ -166,17 +199,9 @@ public class StoreProfileActivity extends AppCompatActivity {
 
     private void setupViews() {
 
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_container), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
         if (currentStore != null) {
-            tvTitle.setText(currentStore.getStoreName() + " - HULI");
+            tvTitle.setText(currentStore.getStoreName());
         }
-        btnBack.setOnClickListener(v -> finish());
 
         // Setup Tabs
         StorePagerAdapter adapter = new StorePagerAdapter(this);
@@ -302,7 +327,7 @@ public class StoreProfileActivity extends AppCompatActivity {
                         viewModel.onEnterStoreClicked(loc, isNetAvailable, isAttendanceMarked, token);
                     }else {
                         progressDialog.dismiss();
-                        Toast.makeText(StoreProfileActivity.this, "User Not Marked Attendace", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(StoreProfileActivity.this, "User Not Marked Attendance", Toast.LENGTH_SHORT).show();
                     }
 
                 } else {

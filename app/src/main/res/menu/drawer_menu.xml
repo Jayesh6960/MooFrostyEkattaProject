@@ -22,10 +22,12 @@
         <item
             android:id="@+id/menu_fos"
             android:icon="@drawable/fossummary"
+            android:visible="false"
             android:title="Today's FOS Summary" />
         <item
             android:id="@+id/change_password"
             android:icon="@drawable/changepassword"
+            android:visible="false"
             android:title="Change Password" />
         <item
             android:id="@+id/helpline"

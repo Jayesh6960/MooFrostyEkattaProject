@@ -10,8 +10,11 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+//import androidx.activity.OnBackPressedCallback;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -128,8 +131,8 @@ public class TakeOrderActivity extends AppCompatActivity {
             iconPower.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(TakeOrderActivity.this, StoreProfileActivity.class);
-                    startActivity(intent);
+//                    Intent intent = new Intent(TakeOrderActivity.this, StoreProfileActivity.class);
+//                    startActivity(intent);
                     finish();
                 }
             });
@@ -157,7 +160,23 @@ public class TakeOrderActivity extends AppCompatActivity {
             }
         });
 
-        }
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // 1. Get the current selected item ID from Bottom Nav
+                int selectedItemId = bottomNav.getSelectedItemId();
+
+                // 2. Logic: If NOT on Shop Front, go there. If ON Shop Front, show Toast.
+                if (selectedItemId == R.id.nav_shop_front) {
+                    // We are on Home Tab -> Show message, do NOT exit
+                    Toast.makeText(TakeOrderActivity.this, "Please Logout If You Want to Exit from Store", Toast.LENGTH_SHORT).show();
+                } else {
+                    // We are on other tabs -> Navigate back to Shop Front
+                    bottomNav.setSelectedItemId(R.id.nav_shop_front);
+                }
+            }
+        });
+ }
             private final BottomNavigationView.OnItemSelectedListener navListener =
                 item -> {
                     Fragment selectedFragment = null;
@@ -174,7 +193,7 @@ public class TakeOrderActivity extends AppCompatActivity {
                          selectedFragment = new MissionFragment();
                     } else if (itemId == R.id.nav_menu) {
                         selectedFragment = new MenuFragment();
-                        isMenuFragment = true;
+                    //    isMenuFragment = true;
                     }
 
                     if (selectedFragment == null) {
@@ -218,21 +237,33 @@ public class TakeOrderActivity extends AppCompatActivity {
 //
 //        }
 
-    @Override
-    public void onBackPressed() {
-        // 1. Check if the fragment back stack is NOT empty
-        if (fragmentManager.getBackStackEntryCount() > 0) {
-            // 2. Pop the fragment off the stack
-            fragmentManager.popBackStack();
-            // 3. IMPORTANT: Update the BottomNavigationView immediately
-            //    (You must implement the method below)
-            updateBottomNavigationSelection();
 
-        } else {
-            // 4. If the stack is empty, perform the default back action (finish the activity)
-            super.onBackPressed();
-        }
-    }
+//    @Override
+//    public void onBackPressed() {
+//        // 1. Check if the fragment back stack is NOT empty
+//
+//        int selectedItemId = bottomNav.getSelectedItemId();
+//
+//        // 1. If currently on "Shop Front" (Home) -> Show Toast, Do NOT Exit
+//        if (selectedItemId == R.id.nav_shop_front) {
+//            Toast.makeText(this, "Please Logout If You Want to Exit from Store", Toast.LENGTH_SHORT).show();
+//        }
+//        // 2. If on any OTHER tab -> Go back to "Shop Front"
+//        else {
+//            bottomNav.setSelectedItemId(R.id.nav_shop_front);
+//        }
+////        if (fragmentManager.getBackStackEntryCount() > 0) {
+////            // 2. Pop the fragment off the stack
+////            fragmentManager.popBackStack();
+////            // 3. IMPORTANT: Update the BottomNavigationView immediately
+////            //    (You must implement the method below)
+////            updateBottomNavigationSelection();
+////
+////        } else {
+////            // 4. If the stack is empty, perform the default back action (finish the activity)
+////        //    super.onBackPressed();
+////        }
+//    }
 
     private void updateBottomNavigationSelection() {
         // 1. Get the currently visible fragment
@@ -243,8 +274,9 @@ public class TakeOrderActivity extends AppCompatActivity {
 
             // 2. Check the type of the visible fragment and select the matching Bottom Nav item
             if (currentFragment instanceof ShopFrontFragment) {
-                Intent intent = new Intent(TakeOrderActivity.this, ActionPointActivitys.class);
-                startActivity(intent);
+//                Intent intent = new Intent(TakeOrderActivity.this, ActionPointActivitys.class);
+//                startActivity(intent);
+                Toast.makeText(this, "Please Logout If Uou Want to Exit from Store", Toast.LENGTH_SHORT).show();
             } else if (currentFragment instanceof TakeOrderFragment) {
                 bottomNav.setSelectedItemId(R.id.nav_shop_front);
             }
@@ -278,7 +310,7 @@ public class TakeOrderActivity extends AppCompatActivity {
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment);
-        fragmentTransaction.addToBackStack("TakeOrderFragment");
+///       fragmentTransaction.addToBackStack("TakeOrderFragment");                              ////  for not back for now
         fragmentTransaction.commit();
     }
 

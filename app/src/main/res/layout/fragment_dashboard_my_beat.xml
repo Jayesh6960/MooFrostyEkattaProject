@@ -33,11 +33,12 @@
                 android:id="@+id/tv_beat_dropdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Beat: Select"
-                android:textSize="14sp"
+                android:text="Beat Name : Select"
+                android:textSize="16sp"
                 android:textStyle="bold"
-                android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
-                android:drawableTint="@color/black"/>
+                android:textColor="@color/black"/>
+<!--                android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"-->
+<!--                android:drawableTint="@color/black"/>-->
         </LinearLayout>
 
         <LinearLayout
@@ -147,6 +148,7 @@
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
+                android:layout_marginRight="10dp"
                 android:background="@drawable/rounded_edittext_bg"
                 android:hint="0 Store(s)"
                 android:paddingStart="12dp"
@@ -156,9 +158,10 @@
 
             <ImageView
                 android:id="@+id/btn_map_view"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginStart="8dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginRight="10dp"
                 android:src="@android:drawable/ic_dialog_map"
                 app:tint="@color/Purple_Color" />
         </LinearLayout>
@@ -181,6 +184,7 @@
             android:id="@+id/store_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            tools:listitem="@layout/item_store_list"
             android:background="#FAFAFA"/>
 
     </LinearLayout>

@@ -169,9 +169,7 @@ public class ApplyLeaveFragment extends Fragment {
                 case ERROR:
                     btnApply.setEnabled(false);
                     btnApply.setText("Apply Leave");
-                    Toast.makeText(requireContext(),
-                            resource.message,
-                            Toast.LENGTH_LONG).show();
+                    Toast.makeText(requireContext(), "Something Error", Toast.LENGTH_LONG).show();
                     break;
             }
         });
@@ -193,9 +191,7 @@ public class ApplyLeaveFragment extends Fragment {
                     btnApply.setEnabled(true);
                     btnApply.setText("Apply Leave");
 
-                    Toast.makeText(requireContext(),
-                            resource.data.getMessage(),
-                            Toast.LENGTH_LONG).show();
+                    Toast.makeText(requireContext(), resource.data.getMessage(), Toast.LENGTH_LONG).show();
 
                     // Reset form
                     etStartDate.setText("");
@@ -208,9 +204,7 @@ public class ApplyLeaveFragment extends Fragment {
                 case ERROR:
                     btnApply.setEnabled(true);
                     btnApply.setText("Apply Leave");
-                    Toast.makeText(requireContext(),
-                            resource.message,
-                            Toast.LENGTH_LONG).show();
+                    Toast.makeText(requireContext(), "Something Error", Toast.LENGTH_LONG).show();
                     break;
             }
         });
