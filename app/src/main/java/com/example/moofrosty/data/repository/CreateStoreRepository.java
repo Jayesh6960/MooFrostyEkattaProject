@@ -217,7 +217,8 @@
                                 liveData.postValue(Resource.error("Something went wrong. Please try again.", null));
                             }
                         }
-                        @Override public void onFailure(Call<GeneralResponse> call, Throwable t) {
+                        @Override
+                        public void onFailure(Call<GeneralResponse> call, Throwable t) {
                             // --- 3. LOG THE FAILURE ---
                             Log.d("addstoreaftercall", "API Failure: " + t.getMessage());
                             t.printStackTrace();

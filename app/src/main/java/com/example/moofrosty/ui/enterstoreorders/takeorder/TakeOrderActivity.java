@@ -133,6 +133,7 @@ public class TakeOrderActivity extends AppCompatActivity {
                 public void onClick(View v) {
 //                    Intent intent = new Intent(TakeOrderActivity.this, StoreProfileActivity.class);
 //                    startActivity(intent);
+                    cartViewModel.clearCart();
                     finish();
                 }
             });

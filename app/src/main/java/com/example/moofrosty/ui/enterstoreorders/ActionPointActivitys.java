@@ -77,14 +77,14 @@ public class ActionPointActivitys extends AppCompatActivity {
         initViews();
 
         ImageButton iconPower = findViewById(R.id.icon_power);
-        iconPower.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ActionPointActivitys.this, StoreProfileActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+//        iconPower.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(ActionPointActivitys.this, StoreProfileActivity.class);
+//                startActivity(intent);
+//                finish();
+//            }
+//        });
 
 //            // Get views from included layout
 //            search_bar_layout = toolbarRoot.findViewById(R.id.search_bar_layout);

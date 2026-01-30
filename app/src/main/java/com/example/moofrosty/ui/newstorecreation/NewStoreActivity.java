@@ -212,8 +212,8 @@ public class NewStoreActivity extends AppCompatActivity {
         TextView tvBeat = dialog.findViewById(R.id.tv_beat_desc);
         TextView tvBusiness = dialog.findViewById(R.id.tv_business);
 
-        tvProposalId.setText("SE_SMN0000" + item.getShopId());
-        tvStoreId.setText("HUL-I170011P44" + (item.getShopId() == 0 ? "1" : item.getShopId()));
+        tvProposalId.setText("--" + item.getShopId());
+        tvStoreId.setText(""+(item.getShopId() == 0 ? "1" : item.getShopId()));
         tvStoreName.setText(item.getStoreName());
         tvMobile.setText(item.getMobileNumber());
 
