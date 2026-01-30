@@ -111,6 +111,10 @@ public class CartViewModel extends ViewModel {
         cartRepository.getOrderHistory(token, orderHistory);
     }
 
+    public void clearCart() {
+        cartRepository.clearCart();
+    }
+
 
 
 

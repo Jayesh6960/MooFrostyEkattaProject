@@ -121,7 +121,7 @@ public class DashboardMyBeatFragment extends Fragment {
         });
 
         viewModel.getBeats().observe(getViewLifecycleOwner(), beats -> {
-            StringBuilder sb = new StringBuilder("Beat: ");
+            StringBuilder sb = new StringBuilder("Beat Name : ");
             int selectedCount = 0;
             if (beats != null) {
                 for (BeatModel b : beats) {
@@ -132,7 +132,7 @@ public class DashboardMyBeatFragment extends Fragment {
                     }
                 }
             }
-            if (selectedCount == 0) tvBeatDropdown.setText("Beat: None");
+            if (selectedCount == 0) tvBeatDropdown.setText("Beat Name : None");
             else tvBeatDropdown.setText(sb.toString());
         });
 
@@ -140,7 +140,7 @@ public class DashboardMyBeatFragment extends Fragment {
         viewModel.getVisitedCountText().observe(getViewLifecycleOwner(), txt -> tvVisitedCount.setText(txt));
         viewModel.getOrderTakenCountText().observe(getViewLifecycleOwner(), txt -> tvOrderTakenCount.setText(txt));
 
-        tvBeatDropdown.setOnClickListener(v -> showBeatSelectionDialog());
+    //    tvBeatDropdown.setOnClickListener(v -> showBeatSelectionDialog());
 
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -165,8 +165,8 @@ public class DashboardMyBeatFragment extends Fragment {
     private void setupTabs() {
         tabLayoutFilter.addTab(tabLayoutFilter.newTab().setText("All"));
         tabLayoutFilter.addTab(tabLayoutFilter.newTab().setText("Not Visited"));
-        tabLayoutFilter.addTab(tabLayoutFilter.newTab().setText("Visited"));
-        tabLayoutFilter.addTab(tabLayoutFilter.newTab().setText("Order Taken"));
+//        tabLayoutFilter.addTab(tabLayoutFilter.newTab().setText("Visited"));
+//        tabLayoutFilter.addTab(tabLayoutFilter.newTab().setText("Order Taken"));
 
         tabLayoutFilter.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override public void onTabSelected(TabLayout.Tab tab) {

@@ -121,8 +121,13 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
         // 3. Click Listener: Submit OTP
         btnSubmitOtp.setOnClickListener(v -> {
             String otp = etOtp.getText().toString().trim();
-            if (otp.length() < 4) {
-                etOtp.setError("Enter Valid OTP");
+//            if (otp.length() < 4) {
+//                etOtp.setError("Enter Valid OTP");
+//                return;
+//            }
+
+            if (!otp.equals("123456")) {
+                etOtp.setError("Invalid OTP");
                 return;
             }
 

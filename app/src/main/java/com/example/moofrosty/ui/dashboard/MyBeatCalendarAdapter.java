@@ -1,5 +1,6 @@
 package com.example.moofrosty.ui.dashboard;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,13 +37,15 @@ public class MyBeatCalendarAdapter extends RecyclerView.Adapter<MyBeatCalendarAd
         CalendarDateModel model = dates.get(position);
         holder.tvDay.setText(model.getDay());
         holder.tvDate.setText(model.getDate());
+        Context context = holder.cardView.getContext();
 
         if (model.isSelected()) {
             holder.cardView.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.Purple_Color));
             holder.tvDay.setTextColor(Color.WHITE);
             holder.tvDate.setTextColor(Color.WHITE);
         } else {
-            holder.cardView.setCardBackgroundColor(Color.WHITE);
+//            holder.cardView.setCardBackgroundColor(R.color.Purple_Color);
+            holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.grey2));
             holder.tvDay.setTextColor(Color.GRAY);
             holder.tvDate.setTextColor(Color.BLACK);
         }

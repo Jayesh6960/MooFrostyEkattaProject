@@ -1,9 +1,13 @@
 package com.example.moofrosty.ui.cart;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -149,8 +153,9 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.CartI
                         break;
                     case SUCCESS:
                         progressBar.setVisibility(View.GONE);
-                        Toast.makeText(this, "Order Placed Successfully!", Toast.LENGTH_LONG).show();
-                        finish();
+                    //    Toast.makeText(this, "Order Placed Successfully!", Toast.LENGTH_LONG).show();
+                        showSuccessDialog();
+                    //    finish();
                         break;
                     case ERROR:
                         progressBar.setVisibility(View.GONE);
@@ -199,6 +204,26 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.CartI
 //            });
 //        }
 //    }
+
+    private void showSuccessDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // Inflate the custom layout
+        View dialogView = getLayoutInflater().inflate(R.layout.layout_order_success_overlay, null);
+        builder.setView(dialogView);
+        AlertDialog dialog = builder.create();
+        // Make background transparent so CardView corners look rounded
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+        // Find button and set click listener
+        Button btnDone = dialogView.findViewById(R.id.btn_continue_shopping);
+        btnDone.setOnClickListener(v -> {
+            dialog.dismiss();
+            finish(); // Finish activity when button clicked
+        });
+        dialog.setCancelable(false); // Prevent closing by clicking outside
+        dialog.show();
+    }
 
     // Adapter Callbacks
     @Override

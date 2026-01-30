@@ -64,10 +64,10 @@ public class StoreProfileFragment extends Fragment {
         // 3. Observe Data
         viewModel.getStore().observe(getViewLifecycleOwner(), store -> {
             if (store != null) {
-                tvOwnerName.setText("Owner Name: " + store.getOwnerName());
+                tvOwnerName.setText("Owner Name  : " + store.getOwnerName());
             //    tvHulCode.setText("HUL Code: " + store.getHulCode());
-                tvHulCode.setText("HUL Code: empty" );
-                tvPartyCode.setText("Party Code: P" + store.getShopId());    //.replaceAll("[^0-9]", ""));
+                tvHulCode.setText("Moo Frosty Code : Empty" );
+                tvPartyCode.setText("Store Code  : " + store.getShopId());    //.replaceAll("[^0-9]", ""));
                 tvPhone.setText(store.getMobileNumber());
                 tvAddress.setText(store.getAddress());
 

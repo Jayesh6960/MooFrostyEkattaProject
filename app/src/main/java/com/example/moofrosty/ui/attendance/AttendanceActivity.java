@@ -12,6 +12,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -89,7 +90,7 @@ public class AttendanceActivity extends AppCompatActivity {
             v.setPadding(v.getPaddingLeft(), systemBars.top, v.getPaddingRight(), v.getPaddingBottom());
             return insets;
         });
-        ViewCompat.setOnApplyWindowInsetsListener(cardView, (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), systemBars.bottom+16);
             return insets;
@@ -126,6 +127,10 @@ public class AttendanceActivity extends AppCompatActivity {
                 case SUCCESS:
                     if (resource.data != null) {
                         updateUIBasedOnStatus(resource.data);
+                        boolean serverIsPresent = resource.data.isPresent();
+                        sessionManager.saveIsPresent(serverIsPresent);
+
+                        Log.d("AttendanceSync", "Session Updated: isPresent = " + serverIsPresent);
                     }
                     break;
                 case ERROR:
@@ -198,7 +203,7 @@ public class AttendanceActivity extends AppCompatActivity {
                 btnPunch.setText("Attendance Marked");
                 btnPunch.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
                 btnPunch.setEnabled(false);
-                tvStatusMessage.setText("In: " + data.intime + " | Out: " + data.outtime);
+                tvStatusMessage.setText("Punched In: " + data.intime + " | Punched Out: " + data.outtime);
                 break;
 
             case 4: // Sunday
