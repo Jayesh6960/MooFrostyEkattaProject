@@ -40,8 +40,8 @@ public class Step4DocUploadFragment extends Fragment {
     private MaterialButton btnSubmit;
     private ProgressBar progressBar;
 
-    private TextInputEditText etDocNum;
-    private TextInputLayout tilDoc;
+    private TextInputEditText etDocNum, etGstnNumber;
+    private TextInputLayout tilDoc, gstnNumber;
 
     private int currentImageRequest = 0;
 
@@ -73,6 +73,9 @@ public class Step4DocUploadFragment extends Fragment {
         etDocNum = view.findViewById(R.id.et_doc_number);
         tilDoc = view.findViewById(R.id.till_doc);
 
+        etGstnNumber = view.findViewById(R.id.et_gstn_number);
+        gstnNumber = view.findViewById(R.id.gstn_number);
+
         imgDoc = view.findViewById(R.id.img_doc);
         imgBoard = view.findViewById(R.id.img_board);
         imgInside = view.findViewById(R.id.img_inside);
@@ -86,6 +89,10 @@ public class Step4DocUploadFragment extends Fragment {
         imgInside.setOnClickListener(v -> pickImage(3));
 
         // ---------- RESTORE DATA ----------
+        if (viewModel.gstnnumber != null){
+            etGstnNumber.setText(viewModel.gstnnumber);
+        }
+
         if (viewModel.docNumber != null) {
             etDocNum.setText(viewModel.docNumber);
         }
@@ -100,7 +107,17 @@ public class Step4DocUploadFragment extends Fragment {
             imgInside.setImageURI(Uri.fromFile(viewModel.insideImage));
         }
 
-        // ---------- SAVE AS YOU TYPE ----------
+        etGstnNumber.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                viewModel.gstnnumber = s.toString();
+                gstnNumber.setError(null); // clear error while typing
+            }
+        });
+
         etDocNum.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
@@ -112,19 +129,27 @@ public class Step4DocUploadFragment extends Fragment {
             }
         });
 
+
         // ---------- SUBMIT ----------
         btnSubmit.setOnClickListener(v -> {
 
             // Clear previous error
             tilDoc.setError(null);
+            gstnNumber.setError(null);
 
             // 1️⃣ Doc number validation
+            if (etGstnNumber.getText() == null || etGstnNumber.getText().toString().trim().isEmpty()) {
+                gstnNumber.setError("GSTN Number Required");
+                return;
+            }
+
             if (etDocNum.getText() == null || etDocNum.getText().toString().trim().isEmpty()) {
                 tilDoc.setError("Doc Type Required");
                 return;
             }
 
             // Save (backend unchanged)
+            viewModel.gstnnumber = etGstnNumber.getText().toString().trim();
             viewModel.docNumber = etDocNum.getText().toString().trim();
 
             // 2️⃣ Image validation

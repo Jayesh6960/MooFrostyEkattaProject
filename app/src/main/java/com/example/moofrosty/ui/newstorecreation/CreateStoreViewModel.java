@@ -51,6 +51,7 @@ public class CreateStoreViewModel extends ViewModel {
     public String selectedBeatName;
 
     public String selectedDocType = "";
+    public String gstnnumber = "";
     public String docNumber = "";
     public File docImage, boardImage, insideImage;
     public String latLong = "";
@@ -119,6 +120,7 @@ public class CreateStoreViewModel extends ViewModel {
         req.beatId = selectedBeatId;
         req.documentType = selectedDocType;
         req.documentNumber = docNumber;
+        req.gstNumberModel = gstnnumber;
         req.latLong = latLong;
         req.uploadDocument = docImage;
         req.uploadShopBoardImage = boardImage;

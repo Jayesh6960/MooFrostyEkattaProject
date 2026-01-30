@@ -106,6 +106,7 @@
                 @Part("lat_long") RequestBody latLong,
                 @Part("documentType") RequestBody documentType,
                 @Part("documentNumber") RequestBody documentNumber,
+                @Part("documentNumber") RequestBody gstnNumber,
 
                 @Part("beatId") RequestBody beatId,
 
