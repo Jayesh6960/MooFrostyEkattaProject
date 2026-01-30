@@ -125,6 +125,7 @@
             Log.d("addstore", "LatLong: " + req.latLong);
             Log.d("addstore", "Doc Type: " + req.documentType);
             Log.d("addstore", "Doc Num: " + req.documentNumber);
+            Log.d("addstore", "GST Num: " + req.gstNumberModel);
             Log.d("addstore", "File Doc: " + (req.uploadDocument != null ? req.uploadDocument.getName() : "NULL"));
             Log.d("addstore", "File Board: " + (req.uploadShopBoardImage != null ? req.uploadShopBoardImage.getName() : "NULL"));
             Log.d("addstore", "File Inside: " + (req.uploadShopInsideImage != null ? req.uploadShopInsideImage.getName() : "NULL"));
@@ -146,6 +147,7 @@
             RequestBody rbBeat = createPart(req.beatId);
             RequestBody rbDocType = createPart(req.documentType);
             RequestBody rbDocNum = createPart(req.documentNumber);
+            RequestBody rbGstNum = createPart(req.gstNumberModel);
             RequestBody rbSsName = createPart(req.ssName);
             RequestBody rbSecChannel = createPart(req.secondaryChannel);
             RequestBody rbLatLong = createPart(req.latLong);
@@ -183,7 +185,7 @@
                             rbOwner, rbEmail, rbMobile, rbStore, rbRs, rbSecChannel, rbType, rbSsName,
                             rbPin, rbAddress,
                             rbCountry, rbState, rbDistrict, rbCity,
-                            rbLatLong, rbDocType, rbDocNum,
+                            rbLatLong, rbDocType, rbDocNum, rbGstNum,
                             rbBeat,
                             partDoc, partBoard, partInside)
                     .enqueue(new Callback<GeneralResponse>() {

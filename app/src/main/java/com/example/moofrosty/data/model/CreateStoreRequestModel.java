@@ -25,6 +25,7 @@ public class CreateStoreRequestModel {
     public String latLong;
     public String documentType;
     public String documentNumber;
+    public String gstNumberModel;
 
     public File uploadDocument;
     public File uploadShopBoardImage;
