@@ -2,6 +2,7 @@ package com.example.moofrosty.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class OrderHistoryResponse {
@@ -12,7 +13,7 @@ public class OrderHistoryResponse {
     @SerializedName("data")
     public List<OrderData> data;
 
-    public static class OrderData {
+    public static class OrderData implements Serializable {
         @SerializedName("invoiceId")
         public String invoiceId;
 
@@ -20,7 +21,7 @@ public class OrderHistoryResponse {
         public String checkoutDate;
 
         @SerializedName("total_quantity")
-        public int totalQuantity; // Total units
+        public int totalQuantity;
 
         @SerializedName("total_case_qty")
         public int totalCaseQty;
@@ -29,16 +30,54 @@ public class OrderHistoryResponse {
         public double totalAmount;
 
         @SerializedName("status")
-        public int status;
+        public int status; // 0 = Placed, 1 = Billed
 
-        // You can parse items if needed for detail screen, but for list, this is enough
+        @SerializedName("user")
+        public User user;
+
         @SerializedName("items")
-        public List<ItemData> items;
+        public List<Item> items;
     }
 
-    public static class ItemData {
-        // We only need this if you click to see details later
+    public static class User implements Serializable {
+        @SerializedName("firstName")
+        public String firstName;
+
+        @SerializedName("lastName")
+        public String lastName;
+
+        public String getFullName() {
+            return (firstName != null ? firstName : "") + " " + (lastName != null ? lastName : "");
+        }
+    }
+
+    public static class Item implements Serializable {
         @SerializedName("quantity")
-        public int quantity;
+        public int quantity; // Total units
+
+        @SerializedName("amount")
+        public String amount; // "54.81"
+
+        @SerializedName("product")
+        public ProductDetail product;
+
+        @SerializedName("batch")
+        public Batch batch;
+    }
+
+    public static class ProductDetail implements Serializable {
+        @SerializedName("productName")
+        public String productName;
+
+        @SerializedName("productImage")
+        public String productImage;
+    }
+
+    public static class Batch implements Serializable {
+        @SerializedName("mrp")
+        public String mrp;
+
+        @SerializedName("sellingPrice")
+        public String sellingPrice;
     }
 }

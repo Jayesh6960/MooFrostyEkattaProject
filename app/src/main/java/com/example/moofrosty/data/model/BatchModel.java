@@ -20,4 +20,6 @@ public class BatchModel {
     public String unit;
     @SerializedName("marginPercent")
     public String marginPercent;
+    @SerializedName("productType")
+    public String productType;
 }

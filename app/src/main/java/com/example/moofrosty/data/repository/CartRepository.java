@@ -205,17 +205,19 @@ public class CartRepository {
             }
         }
 
-        // Get Stock Limits
-        int stock = product.getStockInt();
-        int currentTotal = item.getTotalUnits();
+        // Get Stock Limits   for stock limit need then this need
+//        int stock = product.getStockInt();
+//        int currentTotal = item.getTotalUnits();
+
         int caseSize = product.caseSize > 0 ? product.caseSize : 1;
 
         switch (action) {
             case INC_UNIT:
                 // Only allow if we have enough stock for 1 more unit
-                if (currentTotal + 1 <= stock) {
-                    item.incrementUnit();
-                }
+//                if (currentTotal + 1 <= stock) {
+//                    item.incrementUnit();
+//                }
+                item.incrementUnit();
                 break;
 
             case DEC_UNIT:
@@ -224,9 +226,10 @@ public class CartRepository {
 
             case INC_CASE:
                 // Only allow if we have enough stock for 1 more case
-                if (currentTotal + caseSize <= stock) {
-                    item.incrementCase();
-                }
+//                if (currentTotal + caseSize <= stock) {
+//                    item.incrementCase();
+//                }
+                item.incrementCase();
                 break;
 
             case DEC_CASE:

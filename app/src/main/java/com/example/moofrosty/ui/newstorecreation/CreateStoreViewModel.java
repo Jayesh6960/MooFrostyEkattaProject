@@ -120,7 +120,7 @@ public class CreateStoreViewModel extends ViewModel {
         req.beatId = selectedBeatId;
         req.documentType = selectedDocType;
         req.documentNumber = docNumber;
-        req.gstNumberModel = gstnnumber;
+        req.gstinNumber = gstnnumber;
         req.latLong = latLong;
         req.uploadDocument = docImage;
         req.uploadShopBoardImage = boardImage;

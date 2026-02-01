@@ -177,7 +177,7 @@ public class TakeOrderActivity extends AppCompatActivity {
                 }
             }
         });
- }
+    }
             private final BottomNavigationView.OnItemSelectedListener navListener =
                 item -> {
                     Fragment selectedFragment = null;

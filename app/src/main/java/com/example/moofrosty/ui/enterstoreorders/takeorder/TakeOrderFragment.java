@@ -220,6 +220,11 @@ public class TakeOrderFragment extends Fragment implements FilterSelectionListen
 
     // --- Converter: API Model -> Cart Model ---
     private Product mapToCartProduct(ProductApiModel apiModel) {
+        String productType = "";
+
+        if (apiModel.batches != null && !apiModel.batches.isEmpty()) {
+            productType = apiModel.batches.get(0).productType;
+        }
         Product product = new Product(
                 String.valueOf(apiModel.productId),
                 apiModel.productName,
@@ -231,7 +236,8 @@ public class TakeOrderFragment extends Fragment implements FilterSelectionListen
                 "0", "0", "0", 0,
                 apiModel.category != null ? apiModel.category.categoryTitle : "",
                 "",
-                apiModel.productType,
+//                apiModel.productType,
+                productType,
                 apiModel.productImage
         );
         try {
@@ -245,7 +251,11 @@ public class TakeOrderFragment extends Fragment implements FilterSelectionListen
         Product product = mapToCartProduct(apiModel);
 
         // Logic Change: If type is "case", add 1 CASE. Else add 1 UNIT.
-        if ("case".equalsIgnoreCase(apiModel.productType)) {
+        String productType = null;
+        if (apiModel.batches != null && !apiModel.batches.isEmpty()) {
+            productType = apiModel.batches.get(0).productType;
+        }
+        if ("case".equalsIgnoreCase(productType)) {
             cartViewModel.incrementCase(product);
         } else {
             cartViewModel.addToCart(product); // This adds 1 unit (default)

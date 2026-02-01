@@ -224,8 +224,10 @@ public class NewStoreActivity extends AppCompatActivity {
 
         tvReason.setText("NA");
         tvAddress.setText(item.getAddress());
+
         tvDate.setText(item.getCreatedAt().substring(0, 10));
-        tvBeat.setText("Baba To Kranti Chowk");//current data not updated from the beakend
+//        tvBeat.setText("Baba To Kranti Chowk");//current data not updated from the beakend
+        tvBeat.setText(item.getBeat().getBeatNameFrom() + " To " + item.getBeat().getBeatNameTo());
         Log.d("showStoreDetailsPopup: ", "showStoreDetailsPopup: "+item.getBeatId());
         tvBusiness.setText(item.getShopKyc().getDocumentType());
 

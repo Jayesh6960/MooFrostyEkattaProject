@@ -57,12 +57,12 @@ public class BottomSheetSubCategeries extends BottomSheetDialogFragment implemen
 
         tabLayout.removeAllTabs();
         tabLayout.addTab(tabLayout.newTab().setText("Categories"));
-        tabLayout.addTab(tabLayout.newTab().setText("Sub-Categories"));
+//        tabLayout.addTab(tabLayout.newTab().setText("Sub-Categories"));
 
         // Load Tab 1 (Categories) by default
         tabLayout.removeAllTabs();
         tabLayout.addTab(tabLayout.newTab().setText("Categories"));
-        tabLayout.addTab(tabLayout.newTab().setText("Sub-Categories"));
+//        tabLayout.addTab(tabLayout.newTab().setText("Sub-Categories"));
 
         // Load Tab 1: Categories (pass 'this' as listener)
         replaceFragment(CategoryFragment.newInstance());
@@ -95,9 +95,11 @@ public class BottomSheetSubCategeries extends BottomSheetDialogFragment implemen
             if (parentFilterListener != null) {
                 parentFilterListener.onFilterSelected("category", category.categoryTitle);
             }
+///     Stop switch just dismiss
+//            TabLayout.Tab tab = tabLayout.getTabAt(1);
+//            if (tab != null) tab.select();
 
-            TabLayout.Tab tab = tabLayout.getTabAt(1);
-            if (tab != null) tab.select();
+            dismiss();
         }
         // --- Scenario 2: API Loads (Index 0 Default) ---
         @Override
