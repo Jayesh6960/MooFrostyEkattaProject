@@ -230,6 +230,7 @@ public class SessionManager {
     }
 
     // --- Get Attendance Status ---
+    //Need  to change in  Will have to change the boolean  Status
     public boolean isAttendanceMarked() {
         return pref.getBoolean(KEY_IS_PRESENT, false); // Default to false if not set
     }
