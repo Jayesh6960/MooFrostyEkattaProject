@@ -167,8 +167,6 @@ public class StoreProfileActivity extends AppCompatActivity {
 
 
 
-
-
 //        // 5. Setup Toolbar
 //        if (currentStore != null) {
 //            tvTitle.setText(currentStore.getStoreName() + " - HULI");
@@ -219,7 +217,7 @@ public class StoreProfileActivity extends AppCompatActivity {
                         Manifest.permission.ACCESS_COARSE_LOCATION
                 });
             } else {
-            //    fetchLocationAndProceed();
+                fetchLocationAndProceed();
                 checkGpsAndProceed();
             }
         });
@@ -239,7 +237,6 @@ public class StoreProfileActivity extends AppCompatActivity {
                 case SUCCESS:
                     progressDialog.dismiss();
                     Toast.makeText(this, resource.data, Toast.LENGTH_SHORT).show(); // "Check-in added successfully"
-
                     // Navigate to next screen
                     sessionManager.saveShopId(currentStore.getShopId());
                     Intent intent = new Intent(this, TakeOrderActivity.class); // Replace with your actual activity
@@ -289,7 +286,7 @@ public class StoreProfileActivity extends AppCompatActivity {
             }
         });
     }
-
+//Temporary  Stop due to testing on the sunday will change after the testing
     @SuppressLint("MissingPermission")
     private void fetchLocationAndProceed() {
         progressDialog.setMessage("Fetching Location...");

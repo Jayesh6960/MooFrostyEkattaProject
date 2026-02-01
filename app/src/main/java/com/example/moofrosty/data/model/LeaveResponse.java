@@ -80,6 +80,7 @@ public class LeaveResponse {
         @SerializedName("attendanceTime")
         public String time;
 
-        public String getDate() { return date; }
+        public String getDate() { return date;
+        }
     }
 }

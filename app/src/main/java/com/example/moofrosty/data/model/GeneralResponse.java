@@ -1,14 +1,25 @@
-    package com.example.moofrosty.data.model;
+package com.example.moofrosty.data.model;
 
-    import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName;
 
-    public class GeneralResponse {
-        @SerializedName("status")
-        private String status; // "success" or "error" or boolean in some cases (handle carefully)
+public class GeneralResponse {
 
-        @SerializedName("message")
-        private String message;
+    @SerializedName("status")
+    private String status;   // "success" / "error"
 
-        public String getStatus() { return status; }
-        public String getMessage() { return message; }
+    @SerializedName("message")
+    private String message;
+
+    public String getStatus() {
+        return status;
     }
+
+    public String getMessage() {
+        return message;
+    }
+
+    // ✅ helper method (important)
+    public boolean isSuccess() {
+        return status != null && status.equalsIgnoreCase("success");
+    }
+}

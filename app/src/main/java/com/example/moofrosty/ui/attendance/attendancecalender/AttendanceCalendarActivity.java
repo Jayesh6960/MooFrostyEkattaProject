@@ -275,6 +275,7 @@ public class AttendanceCalendarActivity extends AppCompatActivity {
             for (LeaveResponse.HolidayData holiday : holidayList) {
                 try {
                     Date date = sdf.parse(holiday.getDate());
+                    Log.d("date", "getHolidayEvents: "+date);
                     if (date != null) {
                         Calendar calendar = Calendar.getInstance();
                         calendar.setTime(date);
@@ -290,6 +291,7 @@ public class AttendanceCalendarActivity extends AppCompatActivity {
         private List<EventDay> getAttendanceEvents(List<LeaveResponse.AttendanceData> attendanceList) {
             List<EventDay> events = new ArrayList<>();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+            Log.d("sdf", "sdf"+sdf);
             // Set to prevent duplicate icons (since user punches IN and OUT on the same day)
             Set<String> processedDates = new HashSet<>();
 

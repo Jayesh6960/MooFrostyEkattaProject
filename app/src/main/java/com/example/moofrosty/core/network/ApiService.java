@@ -1,5 +1,7 @@
     package com.example.moofrosty.core.network;
 
+    import androidx.lifecycle.LiveData;
+
     import com.example.moofrosty.data.model.ApplyLeaveRequest;
     import com.example.moofrosty.data.model.AttendanceStatusResponse;
     import com.example.moofrosty.data.model.BeatResponse;
@@ -50,7 +52,6 @@
                 @Header("Authorization") String token,
                 @Body ApplyLeaveRequest request
         );
-
         // --- NEW: Get Leave History API ---
         @GET("api/admin/get-user-leaves")
         Call<LeaveHistoryResponse> getLeaveHistory(
@@ -156,6 +157,11 @@
                 @Header("Authorization") String token,
                 @Body CheckInRequest request
         );
+        @POST("order/missed")
+        Call<GeneralResponse> markOrderMissed(
+                @Query("order_id") String orderId,
+                @Query("reason") String reason
+        );
 
         @GET("api/admin/get-products")
         Call<ProductResponse> getProducts(
@@ -188,5 +194,7 @@
         Call<OrderHistoryResponse> getOrderHistory(
                 @Header("Authorization") String token
         );
-
+//details are used to get teh details in the code
+        //Details in the code any
+        LiveData<Resource<GeneralResponse>> getOrderMissedResult();
     }
