@@ -14,8 +14,8 @@ public class ProductApiModel {
     public String productImage;
     @SerializedName("category")
     public CategoryModel category;
-    @SerializedName("productType")
-    public String productType; // "case" or "unit" (or other)
+//    @SerializedName("productType")
+//    public String productType; // "case" or "unit" (or other)
     @SerializedName("productWeight")
     public String productWeight;
     @SerializedName("subcategory")
@@ -66,9 +66,19 @@ public class ProductApiModel {
     public String getSellingPrice() {
         return String.format(java.util.Locale.US, "%.3f", getSellingPriceDouble());
     }
+//
+//    public String getMargin() {
+//        if (batches != null && !batches.isEmpty()) return batches.get(0).marginPercent;
+//        return "0";
+//    }
 
     public String getMargin() {
-        if (batches != null && !batches.isEmpty()) return batches.get(0).marginPercent;
+        if (batches != null && !batches.isEmpty()) {
+            BatchModel batch = batches.get(0);
+            if (batch.margin != null && !batch.margin.isEmpty()) {
+                return batch.margin;
+            }
+        }
         return "0";
     }
 

@@ -125,9 +125,11 @@ public class OrdersFragment extends Fragment implements OrderAdapter.OnOrderClic
     }
 
     @Override
-    public void onOrderClick(com.example.moofrosty.data.model.OrderHistoryResponse.OrderData order) {
-        // Handle click (e.g., go to detail page)
-      //  Toast.makeText(getContext(), "Clicked Invoice: " + order.invoiceId, Toast.LENGTH_SHORT).show();
+    public void onOrderClick(OrderHistoryResponse.OrderData order) {
+        Intent intent = new Intent(getActivity(), OrderDetailsActivity.class);
+        // Pass the entire object using Serializable
+        intent.putExtra("ORDER_DATA", order);
+        startActivity(intent);
     }
 }
 

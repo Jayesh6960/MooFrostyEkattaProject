@@ -2,6 +2,7 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="8dp"
@@ -15,22 +16,29 @@
         android:layout_height="100dp"
         android:padding="12dp">
 
+        <LinearLayout
+            android:id="@+id/ll_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_call">
 
         <!-- Store Name -->
         <TextView
             android:id="@+id/tv_store_name"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-
             android:text="Shrikrishna Dudh Dairy"
             android:textColor="#333"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/btn_call"
-            app:layout_constraintEnd_toStartOf="@id/btn_call"
+            app:layout_constraintEnd_toStartOf="@+id/btn_call"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/btn_call" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Tags Row -->
         <LinearLayout
@@ -41,24 +49,22 @@
             app:layout_constraintStart_toStartOf="@+id/tv_store_name"
             app:layout_constraintTop_toBottomOf="@id/tv_store_name">
 
-            <!--            <TextView-->
-            <!--                android:id="@+id/tv_rr_value"-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:text="RR: 3.3K"-->
-            <!--                android:textSize="14sp"-->
-            <!--                android:textColor="#009688"-->
-            <!--                android:paddingStart="6dp"-->
-            <!--                android:paddingEnd="6dp"-->
-            <!--                android:paddingTop="2dp"-->
-            <!--                android:paddingBottom="2dp"/>-->
-
             <ImageView
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:visibility="gone"
+                android:layout_marginRight="15dp"
                 android:src="@drawable/cabinateicon"
                 app:tint="#F44336" />
+
+            <ImageView
+                android:id="@+id/img_status"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/locationuser"
+                android:visibility="gone"
+                app:tint="#4CAF50" />
+        </LinearLayout>
         </LinearLayout>
 
         <!-- Direction Button -->
@@ -86,15 +92,15 @@
             app:tint="@color/Purple_Color" />
 
         <!-- Status Icon -->
-        <ImageView
-            android:id="@+id/img_status"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:visibility="gone"
-            android:src="@drawable/locationuser"
-            app:tint="#4CAF50"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+<!--        <ImageView-->
+<!--            android:id="@+id/img_status"-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:visibility="gone"-->
+<!--            android:src="@drawable/locationuser"-->
+<!--            app:tint="#4CAF50"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"/>-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

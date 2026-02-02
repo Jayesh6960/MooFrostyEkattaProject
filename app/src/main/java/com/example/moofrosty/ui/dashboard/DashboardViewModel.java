@@ -43,7 +43,7 @@ public class DashboardViewModel extends ViewModel{
     public DashboardViewModel() {
         repository = new DashboardRepository();
         // IMPORTANT: Load initial data immediately so the list isn't empty!
-        loadData("MOC 01");
+        loadData("MOC 02");
     }
 
     public LiveData<List<DashboardItem>> getDashboardItems() {

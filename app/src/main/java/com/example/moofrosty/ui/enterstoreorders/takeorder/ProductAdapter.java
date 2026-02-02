@@ -136,7 +136,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             tvProductName.setText(product.productName);
             tvMrp.setText("₹" + product.getMrp()); // 3 decimal from model
             tvRate.setText("₹" + product.getSellingPrice()); // 3 decimal from model
-            tvMargin.setText(product.getMargin() + "%");
+            tvMargin.setText(product.getMargin() +"%");
             tvStock.setText(product.getStock());
             tvCapacity.setText(product.productWeight);
 
@@ -144,7 +144,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             int stockInt = product.getStockInt();
             int currentTotalUnitsInCart = (cartItem != null) ? cartItem.getTotalUnits() : 0;
 
-            if ("case".equalsIgnoreCase(product.productType)) {
+//            if ("case".equalsIgnoreCase(product.batches.productType)) {
+//                caseunitnumber.setText("1 Case = " + caseSize + " Units");
+//            } else {
+//                caseunitnumber.setText("Total Units: " + currentTotalUnitsInCart);
+//            }
+            if (product.batches != null && !product.batches.isEmpty() && "case".equalsIgnoreCase(product.batches.get(0).productType)) {
                 caseunitnumber.setText("1 Case = " + caseSize + " Units");
             } else {
                 caseunitnumber.setText("Total Units: " + currentTotalUnitsInCart);
@@ -159,15 +164,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 btnAddToCart.setVisibility(View.VISIBLE);
                 quantityControls.setVisibility(View.GONE);
 
-                if (stockInt <= 0) {
-                    btnAddToCart.setEnabled(false);
-                    btnAddToCart.setText("Out of Stock");
-                    btnAddToCart.setTextColor(ContextCompat.getColor(context, android.R.color.darker_gray));
-                } else {
-                    btnAddToCart.setEnabled(true);
-                    btnAddToCart.setText(R.string.add_to_cart);
-                    btnAddToCart.setTextColor(ContextCompat.getColor(context, R.color.infoBarBlue));
-                }
+//                if (stockInt <= 0) {
+//                    btnAddToCart.setEnabled(false);
+//                    btnAddToCart.setText("Out of Stock");
+//                    btnAddToCart.setTextColor(ContextCompat.getColor(context, android.R.color.darker_gray));
+//                } else {
+//                    btnAddToCart.setEnabled(true);
+//                    btnAddToCart.setText(R.string.add_to_cart);
+//                    btnAddToCart.setTextColor(ContextCompat.getColor(context, R.color.infoBarBlue));
+//                }
             } else {
                 // In cart
                 btnAddToCart.setVisibility(View.GONE);
@@ -182,7 +187,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             }
 
             // --- Case vs Unit Control Logic ---
-            if ("case".equalsIgnoreCase(product.productType)) {
+
+//            if ("case".equalsIgnoreCase(product.productType)) {
+                if (product.batches != null && !product.batches.isEmpty() && "case".equalsIgnoreCase(product.batches.get(0).productType)) {
+
                 // Show Case Controls, Hide Unit Controls
                 btnCasePlus.setVisibility(View.VISIBLE);
                 btnCaseMinus.setVisibility(View.VISIBLE);
@@ -193,10 +201,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 tvUnitQuantity.setVisibility(View.GONE);
 
                 // Stock Check for Case Button
-                // Can we add one more case?
-                boolean canAddCase = (currentTotalUnitsInCart + caseSize) <= stockInt;
-                btnCasePlus.setEnabled(canAddCase);
-                if (!canAddCase) btnCasePlus.setAlpha(0.5f); else btnCasePlus.setAlpha(1.0f);
+                //// Can we add one more case?   need below three line for stock limit
+//                boolean canAddCase = (currentTotalUnitsInCart + caseSize) <= stockInt;
+//                btnCasePlus.setEnabled(canAddCase);
+//                if (!canAddCase) btnCasePlus.setAlpha(0.5f); else btnCasePlus.setAlpha(1.0f);
+                btnCasePlus.setEnabled(true);
+                btnCasePlus.setAlpha(1.0f);
 
             } else {
                 // Show Unit Controls, Hide Case Controls
@@ -209,9 +219,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 tvCaseQuantity.setVisibility(View.GONE);
 
                 // Stock Check for Unit Button
-                boolean canAddUnit = (currentTotalUnitsInCart + 1) <= stockInt;
-                btnUnitPlus.setEnabled(canAddUnit);
-                if (!canAddUnit) btnUnitPlus.setAlpha(0.5f); else btnUnitPlus.setAlpha(1.0f);
+//                boolean canAddUnit = (currentTotalUnitsInCart + 1) <= stockInt;
+//                btnUnitPlus.setEnabled(canAddUnit);
+//                if (!canAddUnit) btnUnitPlus.setAlpha(0.5f); else btnUnitPlus.setAlpha(1.0f);
+                btnUnitPlus.setEnabled(true);
+                btnUnitPlus.setAlpha(1.0f);
             }
 
             // Listeners

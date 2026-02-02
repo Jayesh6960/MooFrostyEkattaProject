@@ -96,7 +96,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             }
 
             // 3. Order Value
-            tvOrderValue.setText(String.format(Locale.getDefault(), ": ₹%.2f", order.totalAmount));
+            tvOrderValue.setText(String.format(Locale.getDefault(), ": ₹%.3f", order.totalAmount));
 
             // 4. Items Billed (Using total_quantity from API)
             tvItemsBilled.setText(": " + order.totalQuantity);

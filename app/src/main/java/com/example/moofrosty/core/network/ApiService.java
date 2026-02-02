@@ -24,6 +24,7 @@
     import com.example.moofrosty.data.model.StoreExistResponse;
     import com.example.moofrosty.data.model.StoreListResponse;
     import com.example.moofrosty.data.model.StoreListResponses;
+    import com.example.moofrosty.data.model.StoreListWrapperResponse;
     import com.example.moofrosty.data.model.SubCategoryResponse;
     import com.example.moofrosty.data.model.UserDetailResponse;
 
@@ -107,7 +108,7 @@
                 @Part("lat_long") RequestBody latLong,
                 @Part("documentType") RequestBody documentType,
                 @Part("documentNumber") RequestBody documentNumber,
-                @Part("documentNumber") RequestBody gstnNumber,
+                @Part("gstinNumber") RequestBody gstnNumber,
 
                 @Part("beatId") RequestBody beatId,
 
@@ -126,13 +127,41 @@
         @GET("api/admin/get-store-list")
         Call<StoreListResponse> getStoreList(
                 @Header("Authorization") String token,
-                @Query("date") String date
+                @Query("date") String date,
+                @Query("Storelist") boolean Storelist
         );
 
         @GET("api/admin/get-store-list")
         Call<StoreListResponses> getStoreList(
                 @Header("Authorization") String token,
-                @Query("beatId") int beatId
+                @Query("beatId") int beatId,
+                @Query("Storelist") boolean storeList
+        );
+
+        @GET("api/admin/get-store-list")
+        Call<StoreListWrapperResponse> getStoreListVisited(
+                @Header("Authorization") String token,
+                @Query("logDate") String logDate,
+                @Query("visited") String visitedStatus, // "yes"
+                @Query("Storevisited") boolean storeVisited
+        );
+
+        // 3. NOT VISITED STORES (Direct List - confirmed via your JSON)
+        @GET("api/admin/get-store-list")
+        Call<StoreListResponses> getStoreListNotVisited(
+                @Header("Authorization") String token,
+                @Query("logDate") String logDate,
+                @Query("visited") String visitedStatus, // "no"
+                @Query("Storevisited") boolean storeVisited
+        );
+
+        // 4. ORDER TAKEN STORES (Direct List - confirmed via your JSON)
+        @GET("api/admin/get-store-list")
+        Call<StoreListResponses> getStoreListByOrder(
+                @Header("Authorization") String token,
+                @Query("logDate") String logDate,
+                @Query("order_taken") String orderTaken,
+                @Query("Storeorder") boolean storeOrder
         );
 
         @GET("api/admin/user-detail")
@@ -194,7 +223,5 @@
         Call<OrderHistoryResponse> getOrderHistory(
                 @Header("Authorization") String token
         );
-//details are used to get teh details in the code
-        //Details in the code any
         LiveData<Resource<GeneralResponse>> getOrderMissedResult();
     }

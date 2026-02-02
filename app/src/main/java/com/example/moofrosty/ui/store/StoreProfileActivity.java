@@ -246,7 +246,8 @@ public class StoreProfileActivity extends AppCompatActivity {
 
                 case ERROR:
                     progressDialog.dismiss();
-                    Toast.makeText(this, resource.message, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this, resource.message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Something Errror", Toast.LENGTH_SHORT).show();
                     break;
             }
         });

@@ -22,7 +22,7 @@
         <LinearLayout
             android:id="@+id/info_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:layout_below="@id/app_bar_layout"
             android:background="@drawable/btn_qps_background"
             android:orientation="horizontal"
@@ -32,6 +32,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:visibility="gone"
                 android:text="@string/esp_0_0"
                 android:textColor="@android:color/white"
                 android:textStyle="bold" />
@@ -39,6 +40,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:visibility="gone"
                 android:text="@string/ta_0_0"
                 android:textColor="@android:color/white"
                 android:textStyle="bold" />
@@ -46,6 +48,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:visibility="gone"
                 android:text="@string/tlsd_0"
                 android:textColor="@android:color/white"
                 android:textStyle="bold" />
@@ -53,6 +56,7 @@
     <FrameLayout
         android:id="@+id/confirm_return_bar"
         android:layout_width="match_parent"
+        android:visibility="gone"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@android:color/white"
@@ -94,6 +98,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <TextView
+                            android:id="@+id/tv_salesperson_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Salesperson Orders"
@@ -109,12 +114,14 @@
                     </RelativeLayout>
 
                     <TextView
+                        android:id="@+id/tv_status_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Billed"
+                        android:text="  Billed"
                         android:drawableStart="@drawable/orderprofile"
                         android:drawableTint="#4CAF50"
                         android:drawablePadding="8dp"
+                        android:textStyle="bold"
                         android:gravity="center_vertical"
                         android:layout_marginTop="8dp"/>
 
@@ -126,12 +133,13 @@
                         <TextView
                             android:layout_width="100dp"
                             android:layout_height="wrap_content"
+                            android:textStyle="bold"
                             android:text="Bill Amount"/>
                         <TextView
                             android:id="@+id/tv_bill_amount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            tools:text=": ₹7,757.55"
+                            tools:text=":  ₹7,757.55"
                             android:textColor="@android:color/black"
                             android:textStyle="bold"/>
                     </LinearLayout>
@@ -141,6 +149,7 @@
                         android:text="View Order Details"
                         android:textColor="@color/Pink_color"
                         android:textStyle="bold"
+                        android:visibility="gone"
                         android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
                         android:drawableTint="@color/Pink_color"
                         android:layout_gravity="center_horizontal"

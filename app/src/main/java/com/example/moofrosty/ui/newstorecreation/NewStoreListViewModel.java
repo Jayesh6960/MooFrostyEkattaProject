@@ -23,6 +23,8 @@ public class NewStoreListViewModel extends ViewModel {
     private MutableLiveData<String> selectedDate = new MutableLiveData<>();
     private Calendar currentCalendar = Calendar.getInstance();
     private String token = "";
+    private boolean Storelist=true;
+
 
     public NewStoreListViewModel() {
         repository = new NewStoreListRepository();
@@ -36,7 +38,7 @@ public class NewStoreListViewModel extends ViewModel {
         updateDate(currentCalendar.getTime());
     }
 
-  //  public LiveData<List<StoreCreationModel>> getStoreList() {
+//    public LiveData<List<StoreCreationModel>> getStoreList() {
 //        return storeList;
 //    }
     public LiveData<Resource<List<StoreListResponse.StoreModel>>> getStoreList() {
@@ -57,7 +59,7 @@ public class NewStoreListViewModel extends ViewModel {
         selectedDate.setValue(formattedDate);
 
         if (!token.isEmpty()) {
-            repository.fetchStoresByDate(token, formattedDate, storeList);
+            repository.fetchStoresByDate(token, formattedDate, Storelist, storeList);
         }
     }
 //    private void updateDate(Date date) {

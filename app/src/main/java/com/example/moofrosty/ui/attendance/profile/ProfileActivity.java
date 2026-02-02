@@ -118,7 +118,6 @@ import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.moofrosty.R;
-import com.example.moofrosty.ToolbarHelper;
 import com.google.android.material.tabs.TabLayout;
 
 // Code Updated date 23-01-2026 (FIXED VERSION)
