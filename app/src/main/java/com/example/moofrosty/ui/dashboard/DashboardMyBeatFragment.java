@@ -26,6 +26,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.moofrosty.data.local.SessionManager;
 import com.example.moofrosty.data.model.BeatModel;
 import com.example.moofrosty.data.model.CalendarDateModel;
 import com.example.moofrosty.R;
@@ -44,13 +45,14 @@ public class DashboardMyBeatFragment extends Fragment {
     private MyBeatStoreAdapter storeAdapter;
 
     // UI
-    private TextView tvBeatDropdown, tvOrderValue, tvVisitedCount, tvOrderTakenCount;
+    private TextView tvBeatDropdown, tvOrderValue, tvVisitedCount, tvOrderTakenCount, tvNoData;
     private EditText searchBar;
     private RecyclerView calendarRecycler, storeRecycler;
    // private ChipGroup filterChipGroup;
     private ImageView btnMap;
     private TabLayout tabLayoutFilter;
     private ProgressBar progressBar;
+    private SessionManager sessionManager;
 
 
     public DashboardMyBeatFragment() {
@@ -69,6 +71,8 @@ public class DashboardMyBeatFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // ✅ INIT VIEWMODEL (ONLY ONCE)
+        // 2. Initialize Session Manager
+        sessionManager = new SessionManager(requireContext());
         // 1. STANDARD VIEW MODEL INIT (No Factory needed because we use AndroidViewModel)
         viewModel = new ViewModelProvider(this).get(MyBeatViewModel.class);
         // Bind Views
@@ -82,6 +86,11 @@ public class DashboardMyBeatFragment extends Fragment {
         tabLayoutFilter = view.findViewById(R.id.tab_layout_filter);
         btnMap = view.findViewById(R.id.btn_map_view);
         progressBar = view.findViewById(R.id.progress_bar);
+        tvNoData = view.findViewById(R.id.tv_no_data);
+        if (tvNoData == null) {
+            // Handle case if you haven't added it to XML yet, prevents crash
+            tvNoData = new TextView(requireContext());
+        }
 
 
         // 3. Setup UI
@@ -99,16 +108,25 @@ public class DashboardMyBeatFragment extends Fragment {
                     case LOADING:
                         progressBar.setVisibility(View.VISIBLE);
                         storeRecycler.setVisibility(View.GONE);
+                        tvNoData.setVisibility(View.GONE);
                         break;
                     case SUCCESS:
                         progressBar.setVisibility(View.GONE);
                         storeRecycler.setVisibility(View.VISIBLE);
                         if (resource.data != null) {
                             viewModel.setMasterStoreList(resource.data);
+                            tvNoData.setVisibility(View.GONE);
+                        }
+                        else {
+                            // Handle empty data
+                            storeAdapter.updateList(new ArrayList<>());
+                            tvNoData.setVisibility(View.VISIBLE);
                         }
                         break;
                     case ERROR:
                         progressBar.setVisibility(View.GONE);
+                        storeRecycler.setVisibility(View.GONE);
+                        tvNoData.setVisibility(View.VISIBLE);
                         Toast.makeText(getContext(), resource.message, Toast.LENGTH_SHORT).show();
                         break;
                 }
@@ -118,7 +136,10 @@ public class DashboardMyBeatFragment extends Fragment {
         viewModel.getFilteredStores().observe(getViewLifecycleOwner(), stores -> {
             storeAdapter.updateList(stores);
             searchBar.setHint(stores.size() + " Store(s)");
+            if(stores.isEmpty()) tvNoData.setVisibility(View.VISIBLE);
+            else tvNoData.setVisibility(View.GONE);
         });
+
 
         viewModel.getBeats().observe(getViewLifecycleOwner(), beats -> {
             StringBuilder sb = new StringBuilder("Beat Name : ");
@@ -137,8 +158,11 @@ public class DashboardMyBeatFragment extends Fragment {
         });
 
         viewModel.getTotalOrderValue().observe(getViewLifecycleOwner(), val -> tvOrderValue.setText(String.valueOf(val.intValue())));
-        viewModel.getVisitedCountText().observe(getViewLifecycleOwner(), txt -> tvVisitedCount.setText(txt));
-        viewModel.getOrderTakenCountText().observe(getViewLifecycleOwner(), txt -> tvOrderTakenCount.setText(txt));
+
+        // [HIGHLIGHT] Update the counts manually here based on the raw integers
+        viewModel.getRepoTotalCount().observe(getViewLifecycleOwner(), total -> updateCountUI());
+        viewModel.getRepoVisitedCount().observe(getViewLifecycleOwner(), visited -> updateCountUI());
+        viewModel.getRepoOrderCount().observe(getViewLifecycleOwner(), ordered -> updateCountUI());
 
     //    tvBeatDropdown.setOnClickListener(v -> showBeatSelectionDialog());
 
@@ -165,16 +189,27 @@ public class DashboardMyBeatFragment extends Fragment {
     private void setupTabs() {
         tabLayoutFilter.addTab(tabLayoutFilter.newTab().setText("All"));
         tabLayoutFilter.addTab(tabLayoutFilter.newTab().setText("Not Visited"));
-//        tabLayoutFilter.addTab(tabLayoutFilter.newTab().setText("Visited"));
-//        tabLayoutFilter.addTab(tabLayoutFilter.newTab().setText("Order Taken"));
+        tabLayoutFilter.addTab(tabLayoutFilter.newTab().setText("Visited"));
+        tabLayoutFilter.addTab(tabLayoutFilter.newTab().setText("Order Taken"));
 
         tabLayoutFilter.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override public void onTabSelected(TabLayout.Tab tab) {
+                storeAdapter.updateList(new ArrayList<>());
                 viewModel.onTabFilterChanged(tab.getText().toString());
             }
             @Override public void onTabUnselected(TabLayout.Tab tab) {}
             @Override public void onTabReselected(TabLayout.Tab tab) {}
         });
+    }
+
+    // [HIGHLIGHT] Helper to format the strings
+    private void updateCountUI() {
+        int total = viewModel.getRepoTotalCount().getValue() != null ? viewModel.getRepoTotalCount().getValue() : 0;
+        int visited = viewModel.getRepoVisitedCount().getValue() != null ? viewModel.getRepoVisitedCount().getValue() : 0;
+        int ordered = viewModel.getRepoOrderCount().getValue() != null ? viewModel.getRepoOrderCount().getValue() : 0;
+
+        tvVisitedCount.setText(visited + "/" + total);
+        tvOrderTakenCount.setText(ordered + "/" + total);
     }
 
     private void setupCalendar() {

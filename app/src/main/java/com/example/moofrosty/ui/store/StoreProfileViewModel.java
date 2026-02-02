@@ -44,10 +44,10 @@ public class StoreProfileViewModel extends ViewModel {
         if (store == null) return;
 
         // 1. Validation Logic
-//        if (!isAttendanceMarked) {
-//            checkInStatus.setValue(Resource.error("Please mark your attendance first.", null));
-//            return;
-//        }
+        if (!isAttendanceMarked) {
+            checkInStatus.setValue(Resource.error("Please mark your attendance first.", null));
+            return;
+        }
 
         if (!isNetworkAvailable) {
             checkInStatus.setValue(Resource.error("No Internet Connection.", null));

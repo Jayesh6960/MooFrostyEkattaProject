@@ -246,7 +246,8 @@ public class StoreProfileActivity extends AppCompatActivity {
 
                 case ERROR:
                     progressDialog.dismiss();
-                    Toast.makeText(this, resource.message, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this, resource.message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Something Errror", Toast.LENGTH_SHORT).show();
                     break;
             }
         });
@@ -315,17 +316,17 @@ public class StoreProfileActivity extends AppCompatActivity {
                    // boolean isAttendanceMarked = attendanceStatusResponse.isPresent();
                     Log.d("ispresent","ispresent"+isAttendanceMarked);
 
-//                    if(isAttendanceMarked){
+                    if(isAttendanceMarked){
                         boolean isNetAvailable = NetworkUtil.isNetworkAvailable(StoreProfileActivity.this);
                         Log.d("ispresent","ispresent2 ");
                         // 3. Get Token
                         String token = sessionManager.getToken();
                         // --- PASS ALL TO VIEWMODEL ---
                         viewModel.onEnterStoreClicked(loc, isNetAvailable, isAttendanceMarked, token);
-//                    }else {
-//                        progressDialog.dismiss();
-//                        Toast.makeText(StoreProfileActivity.this, "User Not Marked Attendance", Toast.LENGTH_SHORT).show();
-//                    }
+                    }else {
+                        progressDialog.dismiss();
+                        Toast.makeText(StoreProfileActivity.this, "User Not Marked Attendance", Toast.LENGTH_SHORT).show();
+                    }
 
                 } else {
                     progressDialog.dismiss();

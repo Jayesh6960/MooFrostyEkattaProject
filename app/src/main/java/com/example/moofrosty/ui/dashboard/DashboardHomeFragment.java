@@ -82,9 +82,8 @@ public class DashboardHomeFragment extends Fragment {
         // 5. Dropdown Logic
         tvMocDropdown.setOnClickListener(v -> {
             PopupMenu popup = new PopupMenu(requireContext(), v);
+            popup.getMenu().add("MOC 02 (02 Fed - 28 Feb)");
             popup.getMenu().add("MOC 01 (01 Jan - 31 Jan)");
-            popup.getMenu().add("MOC 12 (01 Dec - 31 Dec)");
-            popup.getMenu().add("MOC 11 (01 Nov - 30 Nov)");
 
             popup.setOnMenuItemClickListener(menuItem -> {
                 String fullTitle = menuItem.getTitle().toString();
@@ -98,14 +97,15 @@ public class DashboardHomeFragment extends Fragment {
 
         // 6. View More Logic
         tvViewMore.setOnClickListener(v -> {
-            if (currentListForDetail == null || currentListForDetail.isEmpty()) {
-                Toast.makeText(requireContext(), "No data to show", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            Intent intent = new Intent(requireContext(), ViewMoreDetailsActivity.class);
-            intent.putExtra("DATA_LIST", (Serializable) currentListForDetail);
-            intent.putExtra("TITLE", tvMocDropdown.getText().toString());
-            startActivity(intent);
+//            if (currentListForDetail == null || currentListForDetail.isEmpty()) {
+//                Toast.makeText(requireContext(), "No data to show", Toast.LENGTH_SHORT).show();
+//                return;
+//            }
+//            Intent intent = new Intent(requireContext(), ViewMoreDetailsActivity.class);
+//            intent.putExtra("DATA_LIST", (Serializable) currentListForDetail);
+//            intent.putExtra("TITLE", tvMocDropdown.getText().toString());
+//            startActivity(intent);
+            Toast.makeText(requireContext(), "We Are Updating Soon", Toast.LENGTH_SHORT).show();
         });
     }
 }

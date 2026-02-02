@@ -27,10 +27,10 @@ public class NewStoreListRepository {
         apiService = ApiClient.getRetrofitInstance().create(ApiService.class);
     }
 
-    public void fetchStoresByDate(String token, String date, MutableLiveData<Resource<List<StoreListResponse.StoreModel>>> liveData) {
+    public void fetchStoresByDate(String token, String date, boolean Storelist, MutableLiveData<Resource<List<StoreListResponse.StoreModel>>> liveData) {
         liveData.postValue(Resource.loading(null));
 
-        apiService.getStoreList("Bearer " + token, date).enqueue(new Callback<StoreListResponse>() {
+        apiService.getStoreList("Bearer " + token, date, Storelist).enqueue(new Callback<StoreListResponse>() {
             @Override
             public void onResponse(Call<StoreListResponse> call, Response<StoreListResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {

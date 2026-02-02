@@ -14,26 +14,36 @@ public class DashboardRepository {
         List<DashboardItem> items = new ArrayList<>();
 
         // Safety check to prevent NullPointer
-        if (mocName == null) mocName = "MOC 01";
+        if (mocName == null) mocName = "MOC 02";
 
-        if (mocName.contains("MOC 01")) {
+        if (mocName.contains("MOC 02")) {
             // DECEMBER DATA
-            totalIncentives.setValue("120 / 1720");
-            items.add(new DashboardItem("MGP(Sales)", 33, "132817/400000", 400000, 132817));
-            items.add(new DashboardItem("EFOS", 65, "11/17", 17, 11));
-        } else if (mocName.contains("MOC 12")) {
+            totalIncentives.setValue("0 / 0");
+            items.add(new DashboardItem("MGP(Sales)", 0, "0/0", 0, 0));
+            items.add(new DashboardItem("EFOS", 0, "0/0", 0, 0));
+        } else if (mocName.contains("MOC 1")) {
             // NOVEMBER DATA
-            totalIncentives.setValue("850 / 1720");
-            items.add(new DashboardItem("MGP(Sales)", 60, "240000/400000", 400000, 240000));
-            items.add(new DashboardItem("EFOS", 65, "13/17", 17, 11));
-        } else {
-            // OCTOBER DATA
-            totalIncentives.setValue("1500 / 1720");
-            items.add(new DashboardItem("MGP(Sales)", 100, "400000/400000", 400000, 400000));
-            items.add(new DashboardItem("EFOS", 65, "12/17", 17, 11));
-
-
+            totalIncentives.setValue("0 / 0");
+            items.add(new DashboardItem("MGP(Sales)", 0, "0/0", 0, 0));
+            items.add(new DashboardItem("EFOS", 0, "0/0", 0, 0));
         }
+
+//        if (mocName.contains("MOC 01")) {
+//            // DECEMBER DATA
+//            totalIncentives.setValue("120 / 1720");
+//            items.add(new DashboardItem("MGP(Sales)", 33, "132817/400000", 400000, 132817));
+//            items.add(new DashboardItem("EFOS", 65, "11/17", 17, 11));
+//        } else if (mocName.contains("MOC 12")) {
+//            // NOVEMBER DATA
+//            totalIncentives.setValue("850 / 1720");
+//            items.add(new DashboardItem("MGP(Sales)", 60, "240000/400000", 400000, 240000));
+//            items.add(new DashboardItem("EFOS", 65, "13/17", 17, 11));
+//        } else {
+//            // OCTOBER DATA
+//            totalIncentives.setValue("1500 / 1720");
+//            items.add(new DashboardItem("MGP(Sales)", 100, "400000/400000", 400000, 400000));
+//            items.add(new DashboardItem("EFOS", 65, "12/17", 17, 11));
+//        }
 
         // Updates the LiveData which triggers the UI update
         dataList.setValue(items);

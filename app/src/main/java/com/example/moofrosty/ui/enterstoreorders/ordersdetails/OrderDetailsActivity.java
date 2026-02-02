@@ -77,7 +77,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
             return insets;
         });
 
-        View confirmReturnBar = findViewById(R.id.confirm_return_bar);
+        View confirmReturnBar = findViewById(R.id.recycler_order_items);
         ViewCompat.setOnApplyWindowInsetsListener(confirmReturnBar, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), systemBars.bottom);
