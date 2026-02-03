@@ -75,7 +75,6 @@ public class Step4DocUploadFragment extends Fragment {
 
         etGstnNumber = view.findViewById(R.id.et_gstn_number);
         gstnNumber = view.findViewById(R.id.gstn_number);
-
         imgDoc = view.findViewById(R.id.img_doc);
         imgBoard = view.findViewById(R.id.img_board);
         imgInside = view.findViewById(R.id.img_inside);
@@ -118,6 +117,16 @@ public class Step4DocUploadFragment extends Fragment {
             }
         });
 
+//        etDocNum.addTextChangedListener(new TextWatcher() {
+//            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+//            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                viewModel.docNumber = s.toString();
+//                tilDoc.setError(null); // clear error while typing
+//            }
+//        });
         etDocNum.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
@@ -125,34 +134,98 @@ public class Step4DocUploadFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 viewModel.docNumber = s.toString();
-                tilDoc.setError(null); // clear error while typing
+
+                if (!s.toString().trim().isEmpty()) {
+                    tilDoc.setError(null);
+                }
             }
         });
 
 
         // ---------- SUBMIT ----------
+//        btnSubmit.setOnClickListener(v -> {
+//
+//            // Clear previous error
+//            tilDoc.setError(null);
+//            gstnNumber.setError(null);
+//
+//            // 1️⃣ Doc number validation
+//            if (etGstnNumber.getText() == null || etGstnNumber.getText().toString().trim().isEmpty()) {
+//                gstnNumber.setError("GSTN Number is  Required");
+//                return;
+//            }
+//
+//            if (etDocNum.getText() == null || etDocNum.getText().toString().trim().isEmpty()) {
+//                tilDoc.setError("Doc Type  Number is Required");
+//                return;
+//            }
+//
+//            // Save (backend unchanged)
+//            viewModel.gstnnumber = etGstnNumber.getText().toString().trim();
+//            viewModel.docNumber = etDocNum.getText().toString().trim();
+//
+//            // 2️⃣ Image validation
+//            if (viewModel.docImage == null ||
+//                    viewModel.boardImage == null ||
+//                    viewModel.insideImage == null) {
+//
+//                Toast.makeText(requireContext(),
+//                        "Please upload all images",
+//                        Toast.LENGTH_SHORT).show();
+//                return;
+//            }
+//
+//            // 3️⃣ Location validation
+//            if (viewModel.latLong == null || viewModel.latLong.isEmpty()) {
+//                Toast.makeText(requireContext(),
+//                        "Fetching location, please wait...",
+//                        Toast.LENGTH_SHORT).show();
+//                return;
+//            }
+//
+//            // 4️⃣ Network check
+//            if (NetworkUtil.isNetworkAvailable(requireContext())) {
+//                SessionManager session = new SessionManager(requireContext());
+//                viewModel.submitStore(session.getToken());
+//            } else {
+//                Toast.makeText(requireContext(),
+//                        "No Internet Connection",
+//                        Toast.LENGTH_LONG).show();
+//            }
+//        });
         btnSubmit.setOnClickListener(v -> {
 
-            // Clear previous error
+            // Clear previous errors
             tilDoc.setError(null);
             gstnNumber.setError(null);
 
-            // 1️⃣ Doc number validation
-            if (etGstnNumber.getText() == null || etGstnNumber.getText().toString().trim().isEmpty()) {
-                gstnNumber.setError("GSTN Number Required");
+            // 1️⃣ GSTN number validation
+            if (etGstnNumber.getText() == null ||
+                    etGstnNumber.getText().toString().trim().isEmpty()) {
+                gstnNumber.setError("GSTN number is required");
                 return;
             }
 
-            if (etDocNum.getText() == null || etDocNum.getText().toString().trim().isEmpty()) {
-                tilDoc.setError("Doc Type Required");
+            // 2️⃣ Document number validation
+//            if (etDocNum.getText() == null ||
+//                    etDocNum.getText().toString().trim().isEmpty()) {
+//                tilDoc.setError("Document number is required");
+//                return;
+//            }
+            if (etDocNum.getText() == null ||
+                    etDocNum.getText().toString().trim().isEmpty()) {
+                tilDoc.setError("Document number is required");
+                etDocNum.requestFocus();
                 return;
             }
 
-            // Save (backend unchanged)
+//
+
+            // Save values (backend unchanged)
             viewModel.gstnnumber = etGstnNumber.getText().toString().trim();
             viewModel.docNumber = etDocNum.getText().toString().trim();
 
-            // 2️⃣ Image validation
+            // 3️⃣ Image validation
             if (viewModel.docImage == null ||
                     viewModel.boardImage == null ||
                     viewModel.insideImage == null) {
@@ -163,24 +236,25 @@ public class Step4DocUploadFragment extends Fragment {
                 return;
             }
 
-            // 3️⃣ Location validation
+            // 4️⃣ Location validation
             if (viewModel.latLong == null || viewModel.latLong.isEmpty()) {
                 Toast.makeText(requireContext(),
-                        "Fetching location, please wait...",
+                        "Fetching location, please wait",
                         Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // 4️⃣ Network check
+            // 5️⃣ Network check
             if (NetworkUtil.isNetworkAvailable(requireContext())) {
                 SessionManager session = new SessionManager(requireContext());
                 viewModel.submitStore(session.getToken());
             } else {
                 Toast.makeText(requireContext(),
-                        "No Internet Connection",
+                        "No internet connection",
                         Toast.LENGTH_LONG).show();
             }
         });
+
 
         // ---------- OBSERVER ----------
         viewModel.submitResult.observe(getViewLifecycleOwner(), res -> {
