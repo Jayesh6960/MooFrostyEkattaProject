@@ -66,14 +66,13 @@ public class DetailsFragment extends Fragment {
         TextInputEditText etFirstName = view.findViewById(R.id.etFirstName);
         TextInputEditText etMiddleName = view.findViewById(R.id.etMiddleName);
         TextInputEditText etLastName = view.findViewById(R.id.etLastName);
-        TextInputEditText etITeamsCode = view.findViewById(R.id.etITeamsCode);
-        TextInputEditText etAddress = view.findViewById(R.id.IteamsCode);
+        TextInputEditText etITeamsCode = view.findViewById(R.id.IteamsCode);
+        TextInputEditText etAddress = view.findViewById(R.id.iAddress);
         TextInputEditText etEmail = view.findViewById(R.id.etEmail);
         TextInputEditText etDob = view.findViewById(R.id.etDob);
         TextInputEditText etJoin = view.findViewById(R.id.dateofjoin);
         TextInputEditText etMobile = view.findViewById(R.id.etMobile);
         TextInputEditText etPastExp = view.findViewById(R.id.etPastExperience);
-
         MaterialAutoCompleteTextView gender = view.findViewById(R.id.spinnerGender);
         MaterialAutoCompleteTextView education = view.findViewById(R.id.SpinnerspEducation);
         MaterialAutoCompleteTextView year = view.findViewById(R.id.spinnerExperienceYear);

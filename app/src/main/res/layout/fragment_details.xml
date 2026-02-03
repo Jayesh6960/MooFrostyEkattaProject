@@ -134,7 +134,7 @@
             android:layout_marginBottom="12dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/IteamsCode"
+                android:id="@+id/iAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#3E3E3E"
@@ -148,24 +148,25 @@
 
         <!-- iTeams Code -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilliteam"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint=""
+            android:hint="Item Code"
+            app:boxStrokeColor="@color/greytexthint"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_marginBottom="12dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etITeamsCode"
+                android:id="@+id/IteamsCode"
                 android:layout_width="match_parent"
-                android:textColor="#3E3E3E"
                 android:layout_height="wrap_content"
+                android:text="VK001212"
                 android:textStyle="bold"
-                android:hint="VK001212"
-                android:importantForAutofill="yes"
-                android:visibility="gone"
+                android:textColor="@color/greytexthint"
                 android:enabled="false"
                 android:focusable="false"
-                android:cursorVisible="false"/>
+                android:cursorVisible="false"
+                android:visibility="visible"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Address -->
@@ -182,7 +183,7 @@
                 android:id="@+id/etEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Gmail"
+                android:hint="Email"
                 android:textStyle="bold"
                 android:textColor="#3E3E3E"
                 android:inputType="textEmailAddress"
@@ -301,7 +302,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Past Experience"
+            android:hint="Past Employer"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_marginBottom="12dp">
 
@@ -330,7 +331,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginEnd="12dp"
-                android:hint="Years"
+                android:hint=" Experience Years"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 app:endIconMode="none">
 
@@ -349,7 +350,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Months"
+                android:hint=" Experience Months"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 app:endIconMode="custom"
                 app:endIconDrawable="@null">

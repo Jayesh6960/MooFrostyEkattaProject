@@ -24,7 +24,6 @@ private FragmentSecondBinding binding;
       return binding.getRoot();
 
     }
-
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
