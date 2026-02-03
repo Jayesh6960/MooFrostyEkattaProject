@@ -14,12 +14,15 @@ import android.view.ViewGroup;
 import com.example.moofrosty.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 
 public class Step1OwnerFragment extends Fragment {
 
     private CreateStoreViewModel viewModel;
     private TextInputEditText etOwner, etEmail, etMobile;
+    private TextInputLayout tillowner;
+
 
     public Step1OwnerFragment() {
         // Required empty public constructor
@@ -42,6 +45,9 @@ public class Step1OwnerFragment extends Fragment {
         etEmail = view.findViewById(R.id.et_email);
         etMobile = view.findViewById(R.id.et_mobile);
         MaterialButton btnNext = view.findViewById(R.id.btn_next);
+        tillowner=view.findViewById(R.id.tillowner);
+
+
 
         // Pre-fill mobile number if passed from previous activity
 
@@ -60,10 +66,10 @@ public class Step1OwnerFragment extends Fragment {
         btnNext.setOnClickListener(v -> {
             String name = etOwner.getText().toString();
             String email = etEmail.getText().toString();
-            etOwner.setError(null);
+
             if(name.isEmpty() ) {
 
-                etOwner.setError("OwnerFull Name Required");
+                tillowner.setError("Owner full name is required");
                 return;
             }
 //            if(email.isEmpty() ) {

@@ -103,6 +103,7 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
             String mobile = etMobile.getText().toString().trim();
             if (mobile.length() < 10) {
                 till_mob.setError("Enter valid mobile number");
+
                 return;
             }
 

@@ -21,12 +21,12 @@
             android:textStyle="bold"
             android:layout_marginBottom="10dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:textSize="16dp"
-            android:text="GSTN Number" />
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:textSize="16dp"-->
+<!--            android:text="GSTN Number" />-->
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/gstn_number"
@@ -36,7 +36,8 @@
             app:hintTextColor="@color/Purple_Color"
             app:cursorColor="@color/Purple_Color"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:hint="GSTN Number">
+            android:hint="GSTN Number"
+            app:cursorErrorColor="@color/black">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_gstn_number"
@@ -44,12 +45,12 @@
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:textSize="16dp"
-            android:text="Upload Document Number" />
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:textSize="16dp"-->
+<!--            android:text="Upload Document Number" />-->
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/till_doc"
@@ -59,12 +60,14 @@
             app:hintTextColor="@color/Purple_Color"
             app:cursorColor="@color/Purple_Color"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:hint="Document Number">
+            android:hint="Document Number"
+            app:cursorErrorColor="@color/black">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_doc_number"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                app:cursorErrorColor="@color/black"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -72,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:textSize="16dp"
-            android:text="Upload Document Image" />
+            android:text="(Upload Document Image) *" />
 
         <ImageView
             android:id="@+id/img_doc"
@@ -88,7 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:textSize="16dp"
-            android:text="Upload Shop Board (Outside)" />
+            android:text="Upload Shop Board (Outside) *" />
 
         <ImageView
             android:id="@+id/img_board"
@@ -104,7 +107,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:textSize="16dp"
-            android:text="Upload Shop Image (Inside)" />
+            android:text="Upload Shop Image (Inside) *" />
 
         <ImageView
             android:id="@+id/img_inside"
