@@ -72,9 +72,9 @@ public class ApplyLeaveFragment extends Fragment {
         btnApply = view.findViewById(R.id.btn_apply);
 
         // Setup Spinner
-        String[] types = {"Casual Leave", "Medical Leave", "Loss of Pay"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, types);
-        spinnerLeaveType.setAdapter(adapter);
+//        String[] types = {"Casual Leave", "Medical Leave", "Loss of Pay"};
+//        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, types);
+//        spinnerLeaveType.setAdapter(adapter);
 
         // Date Pickers
         etStartDate.setOnClickListener(v -> showDatePicker(etStartDate));
@@ -169,7 +169,8 @@ public class ApplyLeaveFragment extends Fragment {
                 case ERROR:
                     btnApply.setEnabled(false);
                     btnApply.setText("Apply Leave");
-                    Toast.makeText(requireContext(), "Something Error", Toast.LENGTH_LONG).show();
+                    String errorMessage = resource.message != null ? resource.message : "Something Error";
+                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show();
                     break;
             }
         });
@@ -204,7 +205,8 @@ public class ApplyLeaveFragment extends Fragment {
                 case ERROR:
                     btnApply.setEnabled(true);
                     btnApply.setText("Apply Leave");
-                    Toast.makeText(requireContext(), "Something Error", Toast.LENGTH_LONG).show();
+                    String errorMessage = resource.message != null ? resource.message : "Something Error";
+                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show();
                     break;
             }
         });
