@@ -47,7 +47,7 @@ public class LeaveHistoryAdapter  extends RecyclerView.Adapter<LeaveHistoryAdapt
         if ("2".equals(item.getLeaveType())) {
             typeName = "Medical Leave";
         } else if ("3".equals(item.getLeaveType())) {
-            typeName = "Loss of Pay";
+            typeName = "Leave Without Pay";
         }
         holder.tvLeaveType.setText(typeName);
         holder.tvReason.setText(item.getReason());
