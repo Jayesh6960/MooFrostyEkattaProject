@@ -141,14 +141,13 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void handleLogin() {
-        String email = emailEditText.getText() != null ? emailEditText.getText().toString().trim() : "";            /// 2
+            String email = emailEditText.getText() != null ? emailEditText.getText().toString().trim() : "";            /// 2
         String password = passwordEditText.getText() != null ? passwordEditText.getText().toString().trim() : "";
 
         if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Please enter both Username and Password", Toast.LENGTH_SHORT).show();
             return;
         }
-
         // Network Check
         if (NetworkUtil.isNetworkAvailable(this)) {
             loginViewModel.login(email, password);
