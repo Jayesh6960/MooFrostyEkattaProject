@@ -1,5 +1,8 @@
 package com.example.moofrosty.data.repository;
 
+import android.util.Log;
+import android.widget.Toast;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.moofrosty.core.network.ApiClient;
@@ -9,6 +12,8 @@ import com.example.moofrosty.data.model.ApplyLeaveRequest;
 import com.example.moofrosty.data.model.GeneralResponse;
 import com.example.moofrosty.data.model.LeaveHistoryResponse;
 import com.example.moofrosty.data.model.LeaveTypeResponse;
+
+import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,11 +45,30 @@ public class LeaveRepository {
                         liveData.postValue(Resource.error(response.body().getMessage(), null));
                     }
                 } else {
-                    liveData.postValue(Resource.error("Error: " + response.code() + " " + response.message(), null));
+//                    liveData.postValue(Resource.error("Error: " + response.code() + " " + response.message(), null));
+                    String errorMsg = "Something went wrong";
+                    Log.d("errormassage","errorMsg check failure"+errorMsg);
+                    try {
+                        if (response.errorBody() != null) {
+                            // 1. Get raw JSON string from error body
+                            String errorStr = response.errorBody().string();
+                            Log.d("errormassage","errorMsg check failure1"+errorMsg);
+
+                            // 2. Parse it manually to get the "message" field
+                            JSONObject jsonObject = new JSONObject(errorStr);
+                            if (jsonObject.has("message")) {
+                                errorMsg = jsonObject.getString("message");
+                                Log.d("errormassage","errorMsg check failure2"+errorMsg);
+                            }
+                        }
+                    } catch (Exception e) {
+                        errorMsg = "Error " + response.code() + ": " + response.message();
+                    }
                 }
             }
             @Override
             public void onFailure(Call<GeneralResponse> call, Throwable t) {
+                Log.d("errormassage","erroe check failure"+t.getMessage());
                 liveData.postValue(Resource.error("Network Error: " + t.getMessage(), null));
             }
         });
