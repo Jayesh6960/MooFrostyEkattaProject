@@ -37,6 +37,10 @@ public class OrderHistoryResponse {
 
         @SerializedName("items")
         public List<Item> items;
+
+        public String getinvoiceId() {
+            return invoiceId;
+        }
     }
 
     public static class User implements Serializable {

@@ -1,12 +1,16 @@
     package com.example.moofrosty.ui.dashboard;
 
+    import android.app.Activity;
     import android.content.Context;
     import android.content.Intent;
+    import android.graphics.Color;
+    import android.graphics.drawable.ColorDrawable;
     import android.net.Uri;
     import android.view.LayoutInflater;
     import android.view.View;
     import android.view.ViewGroup;
     import android.widget.ImageView;
+    import android.widget.PopupWindow;
     import android.widget.TextView;
 
     import androidx.annotation.NonNull;
@@ -15,6 +19,8 @@
     import com.example.moofrosty.R;
     import com.example.moofrosty.data.model.Store;
     import com.example.moofrosty.ui.store.StoreProfileActivity;
+    import com.tomergoldst.tooltips.ToolTip;
+    import com.tomergoldst.tooltips.ToolTipsManager;
 
     import java.io.Serializable;
     import java.util.List;
@@ -23,14 +29,24 @@
 
         private List<Store> stores;
         private Context context;
+//        private PopupWindow popupWindow;
+//        private int currentTooltipPosition = -1;
+        private ToolTipsManager toolTipsManager;
+        private int currentTooltipPosition = -1;
 
         public MyBeatStoreAdapter(Context context, List<Store> stores) {
             this.context = context;
             this.stores = stores;
+
+            toolTipsManager = new ToolTipsManager((view, anchorViewId, byUser) -> {
+                currentTooltipPosition = -1;
+            });
+
         }
 
         public void updateList(List<Store> newStores) {
             this.stores = newStores;
+            toolTipsManager.dismissAll();
             notifyDataSetChanged();
         }
 
@@ -47,16 +63,34 @@
             // 1. UPDATE: Use getStoreName() instead of getName()
             holder.tvName.setText(store.getStoreName());
 
+            String tooltipText = "";
+
             // 2. Status Icons
             if (store.isOrderTaken()) {
                 holder.imgStatus.setImageResource(R.drawable.cartgreenicon);
                 holder.imgStatus.setVisibility(View.VISIBLE);
+                tooltipText = "Order Taken";
             } else if (store.isVisited()) {
                 holder.imgStatus.setImageResource(R.drawable.locationuser);
                 holder.imgStatus.setVisibility(View.VISIBLE);
+                tooltipText = "Visited";
             } else {
                 holder.imgStatus.setVisibility(View.INVISIBLE);
             }
+
+            // Tooltip click
+            String finalTooltipText = tooltipText;
+            holder.imgStatus.setOnClickListener(v -> {
+
+                if (finalTooltipText.isEmpty()) return;
+
+                if (currentTooltipPosition == position) {
+                    toolTipsManager.dismissAll();
+                    currentTooltipPosition = -1;
+                } else {
+                    showTooltip(holder.imgStatus, holder.itemView, finalTooltipText, position);
+                }
+            });
 
             // 3. UPDATE: Use getMobileNumber()
             holder.btnCall.setOnClickListener(v -> {
@@ -108,5 +142,28 @@
                 btnDirection = v.findViewById(R.id.btn_direction);
                 imgStatus = v.findViewById(R.id.img_status);
             }
+        }
+
+        private void showTooltip(View anchor,View itemView, String text, int position) {
+
+            toolTipsManager.dismissAll();
+
+            ViewGroup rootLayout = (ViewGroup) itemView;
+
+            ToolTip.Builder builder = new ToolTip.Builder(
+                    context,
+                    anchor,
+                    rootLayout,
+                    text,
+                    ToolTip.POSITION_RIGHT_TO   // BELOW with arrow
+            );
+
+            builder.setAlign(ToolTip.ALIGN_CENTER);
+            builder.setBackgroundColor(
+                    context.getResources().getColor(R.color.Purple_Color)
+            );
+
+            toolTipsManager.show(builder.build());
+            currentTooltipPosition = position;
         }
     }

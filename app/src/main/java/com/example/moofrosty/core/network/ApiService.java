@@ -223,5 +223,4 @@
         Call<OrderHistoryResponse> getOrderHistory(
                 @Header("Authorization") String token
         );
-        LiveData<Resource<GeneralResponse>> getOrderMissedResult();
     }

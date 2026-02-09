@@ -193,7 +193,8 @@ public class CartRepository {
     }
 
     private void modify(Product product, CartAction action) {
-        Map<String, CartItem> map = getSafeMap();
+//        Map<String, CartItem> map = getSafeMap();
+        Map<String, CartItem> map = new HashMap<>(getSafeMap());       // this means give extra hasmap for list handle upside is single
         CartItem item = map.get(product.getId());
 
         if (item == null) {
@@ -317,7 +318,6 @@ public class CartRepository {
                     } else {
                         Log.e(TAG, "Order List is NULL");
                     }
-
                     liveData.setValue(Resource.success(resp));
                 } else {
                     Log.e(TAG, "API Error Code: " + response.code());
