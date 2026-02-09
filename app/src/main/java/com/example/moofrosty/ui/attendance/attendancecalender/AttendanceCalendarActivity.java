@@ -180,13 +180,6 @@ public class AttendanceCalendarActivity extends AppCompatActivity {
 //                            calendarView.setEvents(allEvents);
 //                        }
 //                        break;
-
-
-
-
-
-
-
                     case SUCCESS:
                         progressBar.setVisibility(View.GONE);
 
@@ -201,7 +194,6 @@ public class AttendanceCalendarActivity extends AppCompatActivity {
                             if (resource.data.getUserAttendance() != null) {
                                 allEvents.addAll(getAttendanceEvents(resource.data.getUserAttendance()));
                             }
-
                             calendarView.setEvents(allEvents);
                         }
                         break;
@@ -250,6 +242,7 @@ public class AttendanceCalendarActivity extends AppCompatActivity {
                             }
 
                             // Add Event to List
+                            // Use your Leave icon here
                             if (iconRes != 0) {
                                 events.add(new EventDay(calendar, iconRes));
                             }
@@ -270,7 +263,7 @@ public class AttendanceCalendarActivity extends AppCompatActivity {
         // --- METHOD 2: Process Holidays ---
         private List<EventDay> getHolidayEvents(List<LeaveResponse.HolidayData> holidayList) {
             List<EventDay> events = new ArrayList<>();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);//it will store  the data in the yy-mm/dd formate
 
             for (LeaveResponse.HolidayData holiday : holidayList) {
                 try {
@@ -282,7 +275,9 @@ public class AttendanceCalendarActivity extends AppCompatActivity {
                         // Use your holiday icon here
                         events.add(new EventDay(calendar, R.drawable.holidayicon));
                     }
-                } catch (ParseException e) { e.printStackTrace(); }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
             return events;
         }
