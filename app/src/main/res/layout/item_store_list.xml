@@ -7,6 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
+    android:id="@+id/cardviewtool"
     android:layout_marginBottom="1dp"
     app:cardElevation="5dp"
     app:cardCornerRadius="5dp">
@@ -62,6 +63,8 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/locationuser"
+                android:clickable="true"
+                android:focusable="true"
                 android:visibility="gone"
                 app:tint="#4CAF50" />
         </LinearLayout>

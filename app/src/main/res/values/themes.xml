@@ -31,6 +31,12 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="TooltipTextAppearance">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 
 
     <style name="Theme.MooFrosty" parent="Base.Theme.MooFrosty" />

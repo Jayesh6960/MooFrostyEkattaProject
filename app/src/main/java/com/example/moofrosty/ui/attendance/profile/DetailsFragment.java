@@ -66,8 +66,8 @@ public class DetailsFragment extends Fragment {
         TextInputEditText etFirstName = view.findViewById(R.id.etFirstName);
         TextInputEditText etMiddleName = view.findViewById(R.id.etMiddleName);
         TextInputEditText etLastName = view.findViewById(R.id.etLastName);
-        TextInputEditText etITeamsCode = view.findViewById(R.id.IteamsCode);
-        TextInputEditText etAddress = view.findViewById(R.id.iAddress);
+        TextInputEditText etITeamsCode = view.findViewById(R.id.etITeamsCode);
+        TextInputEditText etAddress = view.findViewById(R.id.IteamsCode);
         TextInputEditText etEmail = view.findViewById(R.id.etEmail);
         TextInputEditText etDob = view.findViewById(R.id.etDob);
         TextInputEditText etJoin = view.findViewById(R.id.dateofjoin);
