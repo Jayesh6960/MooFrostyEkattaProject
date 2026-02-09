@@ -150,7 +150,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint=""
+            android:hint="Item Code"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_marginBottom="12dp">
 
@@ -160,9 +160,7 @@
                 android:textColor="#3E3E3E"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:hint="VK001212"
                 android:importantForAutofill="yes"
-                android:visibility="gone"
                 android:enabled="false"
                 android:focusable="false"
                 android:cursorVisible="false"/>

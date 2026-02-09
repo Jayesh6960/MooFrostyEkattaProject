@@ -35,8 +35,9 @@ public class OrderDetailsActivity extends AppCompatActivity {
  //   private Order order;
 
     private TextInputLayout searchBarLayout;
-    private LinearLayout toolbarLayout; // The back/title layout
-    private TextView headerTitle;
+    private LinearLayout toolbarLayout, invoicenolayout; // The back/title layout
+    private TextView headerTitle, tvbilledno;
+
     private ImageView headerBackArrow;
     private ImageButton iconScan;
     private FrameLayout cartButtonLayout; // The FrameLayout around the cart
@@ -89,6 +90,9 @@ public class OrderDetailsActivity extends AppCompatActivity {
         headerTitle.setText("Order Details");
         findViewById(R.id.header_back_arrow).setOnClickListener(v -> finish());
 
+        invoicenolayout = findViewById(R.id.invoicenolayout);
+        tvbilledno = findViewById(R.id.tv_billed_no);
+
         // Hide/Show specific icons as per requirement
         findViewById(R.id.search_bar_layout).setVisibility(View.GONE);
         findViewById(R.id.toolbarlayout).setVisibility(View.VISIBLE);
@@ -132,6 +136,9 @@ public class OrderDetailsActivity extends AppCompatActivity {
         if (currentOrder.status == 1) {
             tvStatusText.setText("Billed");
             tvStatusText.setTextColor(getColor(R.color.textGreen)); // Define green in colors.xml
+            invoicenolayout.setVisibility(View.VISIBLE);
+            tvbilledno.setText(": "+currentOrder.getinvoiceId());
+            tvStatusText.setTextColor(getColor(R.color.black));
             // Set icon tint if needed programmatically or via XML
         } else {
             tvStatusText.setText("Order Placed");

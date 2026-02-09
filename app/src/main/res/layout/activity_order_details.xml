@@ -104,6 +104,7 @@
                             android:text="Salesperson Orders"
                             android:textColor="@android:color/black"
                             android:textStyle="bold"
+                            android:textSize="17dp"
                             android:layout_alignParentStart="true"/>
                         <ImageView
                             android:layout_width="wrap_content"
@@ -124,6 +125,27 @@
                         android:textStyle="bold"
                         android:gravity="center_vertical"
                         android:layout_marginTop="8dp"/>
+
+                    <LinearLayout
+                        android:id="@+id/invoicenolayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        android:layout_marginTop="8dp">
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:text="Invoice No  "/>
+                        <TextView
+                            android:id="@+id/tv_billed_no"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text=""
+                            android:textColor="@android:color/black"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
