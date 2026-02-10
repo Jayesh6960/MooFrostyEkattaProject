@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:padding="10dp"
-    android:layout_marginLeft="10dp"
-    android:background="@drawable/tooltip_bg">
+<!--//Updated Code date 10-02-2026-->
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="right"
+    android:layout_gravity="center"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+        <TextView
+            android:id="@+id/tv_tooltip_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Visited"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:background="@drawable/tooltip_arrow_up_left"
+            android:backgroundTint="@color/Purple_Color"
+            android:textStyle="bold"
+            android:layout_marginTop="25sp"
+            android:gravity="center"
+            />
 
-    <TextView
-        android:id="@+id/tv_tooltip_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#FFFFFF"
-        android:textSize="14sp"
-        android:textStyle="bold"/>
-</LinearLayout>
+    </LinearLayout>
