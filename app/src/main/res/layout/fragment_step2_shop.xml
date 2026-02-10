@@ -31,8 +31,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:hint="Shop Name"
             app:cursorErrorColor="@color/black">
-
-
+            
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_shop_name"
                 android:layout_width="match_parent"

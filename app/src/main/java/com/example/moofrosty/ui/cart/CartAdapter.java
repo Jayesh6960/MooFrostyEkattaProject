@@ -44,7 +44,7 @@ public class CartAdapter extends ListAdapter<CartItem, CartAdapter.CartViewHolde
     public void updateList(List<CartItem> newList) {
         this.cartList = new ArrayList<>(newList); // Create a new list copy
         submitList(this.cartList);
-        notifyDataSetChanged(); // <--- CRITICAL FIX: Forces the UI to redraw numbers/savings
+//        notifyDataSetChanged(); // <--- CRITICAL FIX: Forces the UI to redraw numbers/savings
     }
 
     @NonNull
@@ -235,7 +235,8 @@ public class CartAdapter extends ListAdapter<CartItem, CartAdapter.CartViewHolde
         @Override
         public boolean areContentsTheSame(@NonNull CartItem oldItem, @NonNull CartItem newItem) {
             return oldItem.getCaseQuantity() == newItem.getCaseQuantity()
-                    && oldItem.getUnitQuantity() == newItem.getUnitQuantity();
+                    && oldItem.getUnitQuantity() == newItem.getUnitQuantity()
+                    && oldItem.getTotalUnits() == newItem.getTotalUnits();
         }
     };
 }

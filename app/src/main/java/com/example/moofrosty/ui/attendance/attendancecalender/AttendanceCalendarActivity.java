@@ -180,6 +180,9 @@ public class AttendanceCalendarActivity extends AppCompatActivity {
 //                            calendarView.setEvents(allEvents);
 //                        }
 //                        break;
+
+
+
                     case SUCCESS:
                         progressBar.setVisibility(View.GONE);
 
@@ -194,6 +197,7 @@ public class AttendanceCalendarActivity extends AppCompatActivity {
                             if (resource.data.getUserAttendance() != null) {
                                 allEvents.addAll(getAttendanceEvents(resource.data.getUserAttendance()));
                             }
+
                             calendarView.setEvents(allEvents);
                         }
                         break;
@@ -242,7 +246,6 @@ public class AttendanceCalendarActivity extends AppCompatActivity {
                             }
 
                             // Add Event to List
-                            // Use your Leave icon here
                             if (iconRes != 0) {
                                 events.add(new EventDay(calendar, iconRes));
                             }
