@@ -182,11 +182,7 @@ public class AttendanceCalendarActivity extends AppCompatActivity {
 //                        break;
 
 
-
-
-
-
-
+                    
                     case SUCCESS:
                         progressBar.setVisibility(View.GONE);
 
