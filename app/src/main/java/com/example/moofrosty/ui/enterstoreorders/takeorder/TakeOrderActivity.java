@@ -288,7 +288,6 @@
                         // Show success message from API if available, else default
                         String msg = resource.data != null ? resource.data.getMessage() : "Checked Out Successfully";
                         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-
                         performExitLogic();
                         break;
 
