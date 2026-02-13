@@ -122,7 +122,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
         TextView tvStatusText = findViewById(R.id.tv_status_text); // ID for "Billed" text
 
         // 1. Bill Amount (3 Decimals)
-        tvBillAmount.setText(String.format(Locale.US, ": ₹%.3f", currentOrder.totalAmount));
+        tvBillAmount.setText(String.format(Locale.US, ": ₹%.2f", currentOrder.totalAmount));
 
         // 2. Salesperson Name
         if (currentOrder.user != null) {
