@@ -220,11 +220,15 @@ public class TakeOrderFragment extends Fragment implements FilterSelectionListen
 
     // --- Converter: API Model -> Cart Model ---
     private Product mapToCartProduct(ProductApiModel apiModel) {
-        String productType = "";
+//        String productType = "";
+//
+//        if (apiModel.batches != null && !apiModel.batches.isEmpty()) {
+//            productType = apiModel.batches.get(0).productType;
+//        }
+        String pType = apiModel.productType != null ? apiModel.productType : "1";
 
-        if (apiModel.batches != null && !apiModel.batches.isEmpty()) {
-            productType = apiModel.batches.get(0).productType;
-        }
+        // Translating "2" to "case" and "1" to "unit" to satisfy your CartRepository logic
+        String mappedType = "2".equals(pType) ? "case" : "unit";
         Product product = new Product(
                 String.valueOf(apiModel.productId),
                 apiModel.productName,
@@ -237,30 +241,51 @@ public class TakeOrderFragment extends Fragment implements FilterSelectionListen
                 apiModel.category != null ? apiModel.category.categoryTitle : "",
                 "",
 //                apiModel.productType,
-                productType,
+//                productType,
+                mappedType,
                 apiModel.productImage
         );
         try {
-            product.caseSize = Integer.parseInt(apiModel.getUnit());
+            // [HIGHLIGHT] Use your custom getter which defaults to 1 if no case size is found
+            product.caseSize = apiModel.getCaseSizeInt();
         } catch (Exception e) { product.caseSize = 1; }
+//        try {
+//            product.caseSize = Integer.parseInt(apiModel.getUnit());
+//        } catch (Exception e) { product.caseSize = 1; }
         return product;
     }
+
+//    @Override
+//    public void onAddToCartClick(ProductApiModel apiModel) {
+//        Product product = mapToCartProduct(apiModel);
+//
+//        // Logic Change: If type is "case", add 1 CASE. Else add 1 UNIT.
+//        String productType = null;
+//        if (apiModel.batches != null && !apiModel.batches.isEmpty()) {
+//            productType = apiModel.batches.get(0).productType;
+//        }
+//        if ("case".equalsIgnoreCase(productType)) {
+//            cartViewModel.incrementCase(product);
+//        } else {
+//            cartViewModel.addToCart(product); // This adds 1 unit (default)
+//        }
+//    }
 
     @Override
     public void onAddToCartClick(ProductApiModel apiModel) {
         Product product = mapToCartProduct(apiModel);
 
-        // Logic Change: If type is "case", add 1 CASE. Else add 1 UNIT.
-        String productType = null;
-        if (apiModel.batches != null && !apiModel.batches.isEmpty()) {
-            productType = apiModel.batches.get(0).productType;
-        }
-        if ("case".equalsIgnoreCase(productType)) {
+        // [HIGHLIGHT] Fetch productType directly from the root object.
+        String productType = apiModel.productType != null ? apiModel.productType : "1";
+
+        // Match condition for case logic
+        if ("2".equals(productType) || "case".equalsIgnoreCase(productType)) {
             cartViewModel.incrementCase(product);
         } else {
             cartViewModel.addToCart(product); // This adds 1 unit (default)
         }
     }
+
 
 //    @Override public void onAddToCartClick(ProductApiModel p) { cartViewModel.addToCart(mapToCartProduct(p)); }
     @Override public void onIncrementUnit(ProductApiModel p) { cartViewModel.incrementUnit(mapToCartProduct(p)); }
