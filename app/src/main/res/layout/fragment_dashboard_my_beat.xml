@@ -151,10 +151,12 @@
                 android:layout_marginRight="10dp"
                 android:background="@drawable/rounded_edittext_bg"
                 android:hint="0 Store(s)"
+                android:singleLine="true"
+                android:drawablePadding="10dp"
                 android:paddingStart="12dp"
                 android:drawableStart="@drawable/search_icon"
                 android:drawableTint="@color/Purple_Color"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:textCursorDrawable="@drawable/cursor_purple_bold"/>
 
             <ImageView
@@ -181,6 +183,18 @@
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="4dp"/>
 
+        <TextView
+            android:id="@+id/tv_no_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="No stores available"
+            android:layout_marginTop="120dp"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/darker_gray"
+            android:visibility="visible"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/store_recycler"
             android:layout_width="match_parent"
@@ -198,16 +212,6 @@
         android:layout_gravity="center"
         android:visibility="gone"/>
 
-    <TextView
-        android:id="@+id/tv_no_data"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="No stores available"
-        android:layout_marginTop="50dp"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="@android:color/darker_gray"
-        android:visibility="visible"/>
+
 
 </FrameLayout>
