@@ -43,7 +43,13 @@ public class CartAdapter extends ListAdapter<CartItem, CartAdapter.CartViewHolde
 
     public void updateList(List<CartItem> newList) {
         this.cartList = new ArrayList<>(newList); // Create a new list copy
-        submitList(this.cartList);
+        submitList(this.cartList, new Runnable() {
+            @Override
+            public void run() {
+                notifyDataSetChanged();
+            }
+        });
+//        submitList(this.cartList);
 //        notifyDataSetChanged(); // <--- CRITICAL FIX: Forces the UI to redraw numbers/savings
     }
 
@@ -146,7 +152,6 @@ public class CartAdapter extends ListAdapter<CartItem, CartAdapter.CartViewHolde
                 int stock = p.getStockInt();
                 // If Case type, we add 'caseSize', if Unit type we add '1'
                 int incrementAmount = isCaseProduct ? p.caseSize : 1;
-
                 if (currentTotal + incrementAmount <= stock) {
                     listener.onIncrementUnit(p); // Activity decides Case/Unit logic
                 } else {
