@@ -113,9 +113,9 @@ public class CartAdapter extends ListAdapter<CartItem, CartAdapter.CartViewHolde
             tvName.setText(p.getName());
 
             // 2. Prices (3 Decimals)
-            tvRate.setText(String.format(Locale.US, "₹%.3f", p.ratePrice));
+            tvRate.setText(String.format(Locale.US, "₹%.2f", p.ratePrice));
             if (tvMrp != null) {
-                tvMrp.setText(String.format(Locale.US, "₹%.3f", p.mrpPrice));
+                tvMrp.setText(String.format(Locale.US, "₹%.2f", p.mrpPrice));
                 tvMrp.setVisibility(View.VISIBLE);
             }
 
@@ -125,7 +125,7 @@ public class CartAdapter extends ListAdapter<CartItem, CartAdapter.CartViewHolde
                 if (savings > 0) {
                     tvSavedBadge.setVisibility(View.VISIBLE);
                     // Shows e.g. "₹46.150 SAVED"
-                    tvSavedBadge.setText(String.format(Locale.US, "₹%.3f SAVED", savings));
+                    tvSavedBadge.setText(String.format(Locale.US, "₹%.2f SAVED", savings));
                 } else {
                     tvSavedBadge.setVisibility(View.GONE);
                 }

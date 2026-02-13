@@ -126,14 +126,14 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.CartI
         // B. Totals - FIXED TO SHOW 3 DECIMAL PLACES (%.3f)
         cartViewModel.getCartTotals().observe(this, totals -> {
             // Using %.3f prevents rounding (e.g., 416.650 stays 416.650)
-            tvTotalMrp.setText(String.format(Locale.US, "Total MRP : ₹%.3f", totals.totalMrp));
-            tvTotalSavings.setText(String.format(Locale.US, "Total Savings : ₹%.3f", totals.totalSavings));
-            tvTotalBill.setText(String.format(Locale.US, "Estimated Bill Value : ₹%.3f", totals.totalPrice));
+            tvTotalMrp.setText(String.format(Locale.US, "Total MRP : ₹%.2f", totals.totalMrp));
+            tvTotalSavings.setText(String.format(Locale.US, "Total Savings : ₹%.2f", totals.totalSavings));
+            tvTotalBill.setText(String.format(Locale.US, "Estimated Bill Value : ₹%.2f", totals.totalPrice));
 
             // Bottom Checkout Bar Total
-            tvCheckoutPrice.setText(String.format(Locale.US, "Total: ₹%.3f", totals.totalPrice));
+            tvCheckoutPrice.setText(String.format(Locale.US, "Total: ₹%.2f", totals.totalPrice));
 
-            tvRetailerMargin.setText(String.format(Locale.US, "Retailer Margin : ₹%.3f", totals.totalSavings));
+            tvRetailerMargin.setText(String.format(Locale.US, "Retailer Margin : ₹%.2f", totals.totalSavings));
             tvSchemeDiscount.setText("Scheme Discount : ₹0.000");
 
             if (totals.uniqueItemCount == 0) {
