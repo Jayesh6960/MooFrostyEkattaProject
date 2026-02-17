@@ -28,9 +28,12 @@ public class LeaveViewModel  extends ViewModel {
     public LeaveViewModel() {
         repository = new LeaveRepository();
     }
-
-    public LiveData<Resource<GeneralResponse>> getApplyLeaveResult() { return applyLeaveResult; }
-    public LiveData<Resource<LeaveHistoryResponse>> getHistoryResult() { return historyResult; }
+    public LiveData<Resource<GeneralResponse>> getApplyLeaveResult() {
+        return applyLeaveResult;
+    }
+    public LiveData<Resource<LeaveHistoryResponse>> getHistoryResult() {
+        return historyResult;
+    }
 
     public void applyLeave(String token, String type, String start, String end, String reason) {
         ApplyLeaveRequest request = new ApplyLeaveRequest(type, start, end, reason);

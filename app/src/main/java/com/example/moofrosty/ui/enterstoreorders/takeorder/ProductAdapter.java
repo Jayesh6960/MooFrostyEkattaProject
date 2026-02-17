@@ -144,16 +144,18 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             int stockInt = product.getStockInt();
             int currentTotalUnitsInCart = (cartItem != null) ? cartItem.getTotalUnits() : 0;
 
-//            if ("case".equalsIgnoreCase(product.batches.productType)) {
-//                caseunitnumber.setText("1 Case = " + caseSize + " Units");
-//            } else {
-//                caseunitnumber.setText("Total Units: " + currentTotalUnitsInCart);
-//            }
-            if (product.batches != null && !product.batches.isEmpty() && "case".equalsIgnoreCase(product.batches.get(0).productType)) {
+            boolean isCaseProduct = "2".equals(product.productType) || "case".equalsIgnoreCase(product.productType);
+
+            if (isCaseProduct) {
                 caseunitnumber.setText("1 Case = " + caseSize + " Units");
             } else {
                 caseunitnumber.setText("Total Units: " + currentTotalUnitsInCart);
             }
+//            if (product.batches != null && !product.batches.isEmpty() && "case".equalsIgnoreCase(product.batches.get(0).productType)) {
+//                caseunitnumber.setText("1 Case = " + caseSize + " Units");
+//            } else {
+//                caseunitnumber.setText("Total Units: " + currentTotalUnitsInCart);
+//            }
 
             String imageUrl = "https://moofrosty.ekatta.in/" + product.productImage;
             Glide.with(context).load(imageUrl).placeholder(R.drawable.icecategori).into(imgProduct);
@@ -182,16 +184,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 tvUnitQuantity.setText(String.valueOf(cartItem.getUnitQuantity()));
 
                 // 3 Decimal Formatting for Savings and Net Price
-                tvSavings.setText(String.format(Locale.US, "₹%.3f", cartItem.getTotalSavings()));
-                tvNetPrice.setText(String.format(Locale.US, "₹%.3f", cartItem.getTotalPrice()));
+                tvSavings.setText(String.format(Locale.US, "₹%.2f", cartItem.getTotalSavings()));
+                tvNetPrice.setText(String.format(Locale.US, "₹%.2f", cartItem.getTotalPrice()));
             }
 
             // --- Case vs Unit Control Logic ---
-
-//            if ("case".equalsIgnoreCase(product.productType)) {
-                if (product.batches != null && !product.batches.isEmpty() && "case".equalsIgnoreCase(product.batches.get(0).productType)) {
-
-                // Show Case Controls, Hide Unit Controls
+            if (isCaseProduct) {
                 btnCasePlus.setVisibility(View.VISIBLE);
                 btnCaseMinus.setVisibility(View.VISIBLE);
                 tvCaseQuantity.setVisibility(View.VISIBLE);
@@ -200,16 +198,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 btnUnitMinus.setVisibility(View.GONE);
                 tvUnitQuantity.setVisibility(View.GONE);
 
-                // Stock Check for Case Button
-                //// Can we add one more case?   need below three line for stock limit
-//                boolean canAddCase = (currentTotalUnitsInCart + caseSize) <= stockInt;
-//                btnCasePlus.setEnabled(canAddCase);
-//                if (!canAddCase) btnCasePlus.setAlpha(0.5f); else btnCasePlus.setAlpha(1.0f);
                 btnCasePlus.setEnabled(true);
                 btnCasePlus.setAlpha(1.0f);
-
             } else {
-                // Show Unit Controls, Hide Case Controls
                 btnUnitPlus.setVisibility(View.VISIBLE);
                 btnUnitMinus.setVisibility(View.VISIBLE);
                 tvUnitQuantity.setVisibility(View.VISIBLE);
@@ -218,13 +209,46 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 btnCaseMinus.setVisibility(View.GONE);
                 tvCaseQuantity.setVisibility(View.GONE);
 
-                // Stock Check for Unit Button
-//                boolean canAddUnit = (currentTotalUnitsInCart + 1) <= stockInt;
-//                btnUnitPlus.setEnabled(canAddUnit);
-//                if (!canAddUnit) btnUnitPlus.setAlpha(0.5f); else btnUnitPlus.setAlpha(1.0f);
                 btnUnitPlus.setEnabled(true);
                 btnUnitPlus.setAlpha(1.0f);
             }
+////            if ("case".equalsIgnoreCase(product.productType)) {    //  no use
+//                if (product.batches != null && !product.batches.isEmpty() && "case".equalsIgnoreCase(product.batches.get(0).productType)) {
+//
+//                // Show Case Controls, Hide Unit Controls
+//                btnCasePlus.setVisibility(View.VISIBLE);
+//                btnCaseMinus.setVisibility(View.VISIBLE);
+//                tvCaseQuantity.setVisibility(View.VISIBLE);
+//
+//                btnUnitPlus.setVisibility(View.GONE);
+//                btnUnitMinus.setVisibility(View.GONE);
+//                tvUnitQuantity.setVisibility(View.GONE);
+//
+//                // Stock Check for Case Button
+//                //// Can we add one more case?   need below three line for stock limit
+////                boolean canAddCase = (currentTotalUnitsInCart + caseSize) <= stockInt;
+////                btnCasePlus.setEnabled(canAddCase);
+////                if (!canAddCase) btnCasePlus.setAlpha(0.5f); else btnCasePlus.setAlpha(1.0f);
+//                btnCasePlus.setEnabled(true);
+//                btnCasePlus.setAlpha(1.0f);
+//
+//            } else {
+//                // Show Unit Controls, Hide Case Controls
+//                btnUnitPlus.setVisibility(View.VISIBLE);
+//                btnUnitMinus.setVisibility(View.VISIBLE);
+//                tvUnitQuantity.setVisibility(View.VISIBLE);
+//
+//                btnCasePlus.setVisibility(View.GONE);
+//                btnCaseMinus.setVisibility(View.GONE);
+//                tvCaseQuantity.setVisibility(View.GONE);
+//
+//                // Stock Check for Unit Button
+////                boolean canAddUnit = (currentTotalUnitsInCart + 1) <= stockInt;
+////                btnUnitPlus.setEnabled(canAddUnit);
+////                if (!canAddUnit) btnUnitPlus.setAlpha(0.5f); else btnUnitPlus.setAlpha(1.0f);
+//                btnUnitPlus.setEnabled(true);
+//                btnUnitPlus.setAlpha(1.0f);
+//            }
 
             // Listeners
             btnAddToCart.setOnClickListener(v -> listener.onAddToCartClick(currentProduct));

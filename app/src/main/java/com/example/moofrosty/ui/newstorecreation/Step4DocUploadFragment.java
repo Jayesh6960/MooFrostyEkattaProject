@@ -295,7 +295,6 @@ public class Step4DocUploadFragment extends Fragment {
                 .maxResultSize(1080, 1080)
                 .start();
     }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
