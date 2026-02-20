@@ -122,7 +122,7 @@ public class StoreProfileActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         btnBack = findViewById(R.id.btn_back);
         btnMenu = findViewById(R.id.btn_menu);
-        tvTitle = toolbar.findViewById(R.id.tv_title);
+        tvTitle = findViewById(R.id.tv_title);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
