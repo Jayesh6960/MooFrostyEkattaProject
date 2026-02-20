@@ -129,7 +129,6 @@ public class CreateStoreViewModel extends ViewModel {
         repository.submitStore(token, req, submitResult);
 
     }
-
     public void fetchRss(String token) {
         repository.getRssIdentifiers(token, rssList);
     }

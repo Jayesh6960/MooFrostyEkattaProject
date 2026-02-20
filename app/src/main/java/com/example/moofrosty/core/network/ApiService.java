@@ -1,7 +1,5 @@
     package com.example.moofrosty.core.network;
-
     import androidx.lifecycle.LiveData;
-
     import com.example.moofrosty.data.model.ApplyLeaveRequest;
     import com.example.moofrosty.data.model.AttendanceStatusResponse;
     import com.example.moofrosty.data.model.BeatResponse;
@@ -131,7 +129,6 @@
 //                @Query("Storelist") boolean Storelist
                 @Query("page") String page
         );
-
         @GET("api/admin/get-store-list")
         Call<StoreListResponses> getStoreList(
                 @Header("Authorization") String token,

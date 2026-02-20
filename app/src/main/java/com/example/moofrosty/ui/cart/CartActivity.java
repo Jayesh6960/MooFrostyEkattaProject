@@ -243,7 +243,9 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.CartI
             cartViewModel.decrementUnit(p);
         }
     }
-    @Override public void onDeleteItem(Product p) { cartViewModel.removeFromCart(p); }
+    @Override public void onDeleteItem(Product p) {
+        cartViewModel.removeFromCart(p);
+    }
 }
 
 
