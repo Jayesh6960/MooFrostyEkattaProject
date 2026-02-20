@@ -11,12 +11,10 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.example.moofrosty.R;
 import com.example.moofrosty.data.local.SessionManager;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.LocationRequest;
@@ -117,25 +115,7 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    private void showPermissionPopup() {
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle("Permissions Required")
-                .setMessage("All permissions and GPS are mandatory. Please enable them to continue using Moofrosty.")
-                .setCancelable(false)
-                .setPositiveButton("Open Permissions", (dialogInterface, which) -> {
-                    startActivity(new Intent(this, PermissionActivity.class)
-                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
-                    finish();
-                })
-                .create();
-
-        dialog.show();
-
-        // Set Positive button color AFTER show()
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-                .setTextColor(ContextCompat.getColor(this, R.color.bottom_nav_color));
-    }
-
+    // -------------------- SYSTEM GPS POPUP --------------------
 
     private void promptTurnOnGps() {
 
@@ -169,10 +149,61 @@ public class BaseActivity extends AppCompatActivity {
         });
     }
 
-    protected void onLocationReady() {
-//        sessionManager.setLocationAndPermissionsEnabled(true);
-//        // Child activity continues
-//    }
+    // -------------------- STEP 4: HANDLE GPS RESULT --------------------
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == GPS_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                // User turned ON GPS
+                onLocationReady();
+            } else {
+                Toast.makeText(this,
+                        "GPS is required to continue",
+                        Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    // -------------------- FINAL SUCCESS POINT --------------------
+
+    private void onLocationReady() {
+
+        // Mark that permission + GPS flow completed once (UX only)
+        sessionManager.setLocationAndPermissionsEnabled(true);
+
+        // Continue your normal app flow here
+        // Example:
+        // startActivity(new Intent(this, DashboardActivity.class));
+        // finish();
+    }
+
+    // -------------------- OPTIONAL: BROADCAST RECEIVER TO LISTEN GPS CHANGES --------------------
+
+    private final BroadcastReceiver gpsReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (LocationManager.PROVIDERS_CHANGED_ACTION.equals(intent.getAction())) {
+                checkGpsEnabled(); // Re-check when user toggles GPS
+            }
+        }
+    };
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        registerReceiver(gpsReceiver,
+                new IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(gpsReceiver);
+    }
+}
 //package com.example.moofrosty.ui.splash;
 //
 //import android.Manifest;
@@ -261,7 +292,6 @@ public class BaseActivity extends AppCompatActivity {
 //        }
 //    }
 //
-
 //    private void promptTurnOnGps() {
 //
 //        LocationRequest request =
@@ -311,5 +341,3 @@ public class BaseActivity extends AppCompatActivity {
 //        // Child activity continues
 //    }
 //}
-    }
-}

@@ -37,8 +37,7 @@ public class PermissionActivity extends AppCompatActivity {
         btnAllow = findViewById(R.id.btnAllow);
         btnAllow.setOnClickListener(v -> startPermissionFlow());
     }
-
-    //updated code  in the code  Date 26-01-2026
+//updated code  in the code  Date 26-01-2026
     //updated changes Color Permission data
     //Update  Request Button color(Allow and Open Permission )
     @Override
@@ -169,21 +168,26 @@ public class PermissionActivity extends AppCompatActivity {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE)
                 .setTextColor(ContextCompat.getColor(this, R.color.bottom_nav_color));
     }
+//    private void goNext() {
+//        Toast.makeText(this, "All permissions granted", Toast.LENGTH_SHORT).show();
+//        startActivity(new Intent(this, LoginActivity.class));
+//        finish();
+//    }
+private void goNext() {
 
-    private void goNext() {
+    SessionManager sessionManager = new SessionManager(this);
 
-        SessionManager sessionManager = new SessionManager(this);
-
-        if (sessionManager.isLocationAndPermissionsEnabled()) {
-
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();
-        } else {
-            Toast.makeText(this,
-                    "Please allow all permissions and enable GPS",
-                    Toast.LENGTH_LONG).show();
-        }
+    if (sessionManager.isLocationAndPermissionsEnabled()) {
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
+    } else {
+        Toast.makeText(this,
+                "Please allow all permissions and enable GPS",
+                Toast.LENGTH_LONG).show();
     }
+}
+
+
 }
 
 
