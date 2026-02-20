@@ -42,12 +42,9 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/btn_back"
-            android:layout_width="24dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_arrow_back_24"
-            app:tint="@color/white" />
+        <include
+            android:id="@+id/main_toolbar"
+            layout="@layout/toolbar_layout_drawabletab" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
