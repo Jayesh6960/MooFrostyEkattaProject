@@ -148,16 +148,17 @@ public class CartAdapter extends ListAdapter<CartItem, CartAdapter.CartViewHolde
             boolean isCaseProduct = "case".equalsIgnoreCase(p.productType);
 
             btnPlus.setOnClickListener(v -> {
-                int currentTotal = item.getTotalUnits();
-                int stock = p.getStockInt();
-                // If Case type, we add 'caseSize', if Unit type we add '1'
-                int incrementAmount = isCaseProduct ? p.caseSize : 1;
-                if (currentTotal + incrementAmount <= stock) {
-                    listener.onIncrementUnit(p); // Activity decides Case/Unit logic
-                } else {
-                    // Visual feedback for stock limit
-                    btnPlus.setAlpha(0.5f);
-                }
+                listener.onIncrementUnit(p);
+//                int currentTotal = item.getTotalUnits();
+//                int stock = p.getStockInt();
+//                // If Case type, we add 'caseSize', if Unit type we add '1'
+//                int incrementAmount = isCaseProduct ? p.caseSize : 1;
+//                if (currentTotal + incrementAmount <= stock) {
+//                    listener.onIncrementUnit(p); // Activity decides Case/Unit logic
+//                } else {
+//                    // Visual feedback for stock limit
+//                    btnPlus.setAlpha(0.5f);
+//                }
             });
 
             btnMinus.setOnClickListener(v -> listener.onDecrementUnit(p));
@@ -168,7 +169,7 @@ public class CartAdapter extends ListAdapter<CartItem, CartAdapter.CartViewHolde
             if (item.getTotalUnits() + incrementAmount <= p.getStockInt()) {
                 btnPlus.setAlpha(1.0f);
             } else {
-                btnPlus.setAlpha(0.5f);
+                btnPlus.setAlpha(1.0f);
             }
         }
     }

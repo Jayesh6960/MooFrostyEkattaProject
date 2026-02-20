@@ -24,16 +24,17 @@
             android:id="@+id/rb_udyam"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Udyam Aadhar" />
+            android:text="Udyam Aadhaar" />
 
         <RadioButton
             android:id="@+id/rb_aadhar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Aadhar Card" />
+            android:text="Aadhaar Card" />
 
         <RadioButton
             android:id="@+id/rb_gst"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="GST Certificate" />
@@ -43,6 +44,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="FSSAI License" />
+        <RadioButton
+            android:id="@+id/rb_pan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PAN Card" />
+        <RadioButton
+            android:id="@+id/rb_druglicense"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Drug License" />
     </RadioGroup>
 
     <com.google.android.material.button.MaterialButton

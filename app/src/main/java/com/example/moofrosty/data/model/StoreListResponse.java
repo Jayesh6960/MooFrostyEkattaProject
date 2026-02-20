@@ -7,7 +7,9 @@ import java.util.List;
 public class StoreListResponse {
 
     @SerializedName("status")
-    private boolean status;
+    private String status;
+//    private boolean status;
+
 
     @SerializedName("store")
     private List<StoreModel> storeList;
@@ -15,9 +17,13 @@ public class StoreListResponse {
     @SerializedName("count")
     private int count;
 
-    public boolean isStatus() {
+
+    public String getStatus() {
         return status;
     }
+//    public boolean isStatus() {
+//        return status;
+//    }
 
     public List<StoreModel> getStoreList() {
         return storeList;
