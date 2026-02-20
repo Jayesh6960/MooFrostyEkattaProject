@@ -11,7 +11,9 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.moofrosty.R;
@@ -134,7 +136,43 @@ public class BaseActivity extends AppCompatActivity {
                 .setTextColor(ContextCompat.getColor(this, R.color.bottom_nav_color));
     }
 
-}
+
+    private void promptTurnOnGps() {
+
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        LocationSettingsRequest.Builder builder =
+                new LocationSettingsRequest.Builder()
+                        .addLocationRequest(locationRequest)
+                        .setAlwaysShow(true);
+
+        SettingsClient client = LocationServices.getSettingsClient(this);
+        Task<LocationSettingsResponse> task =
+                client.checkLocationSettings(builder.build());
+
+        task.addOnSuccessListener(locationSettingsResponse -> {
+            // GPS already ON
+            onLocationReady();
+        });
+
+        task.addOnFailureListener(e -> {
+            if (e instanceof ResolvableApiException) {
+                try {
+                    // Show SYSTEM POPUP to turn ON GPS
+                    ResolvableApiException resolvable = (ResolvableApiException) e;
+                    resolvable.startResolutionForResult(this, GPS_REQUEST);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+    }
+
+    protected void onLocationReady() {
+//        sessionManager.setLocationAndPermissionsEnabled(true);
+//        // Child activity continues
+//    }
 //package com.example.moofrosty.ui.splash;
 //
 //import android.Manifest;
@@ -223,6 +261,7 @@ public class BaseActivity extends AppCompatActivity {
 //        }
 //    }
 //
+
 //    private void promptTurnOnGps() {
 //
 //        LocationRequest request =
@@ -272,3 +311,5 @@ public class BaseActivity extends AppCompatActivity {
 //        // Child activity continues
 //    }
 //}
+    }
+}

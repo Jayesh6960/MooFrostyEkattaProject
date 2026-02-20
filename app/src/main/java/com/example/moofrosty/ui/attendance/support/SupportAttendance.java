@@ -56,7 +56,7 @@ public class SupportAttendance extends AppCompatActivity {
 
         supportEmail = findViewById(R.id.support_email);
         supportContact = findViewById(R.id.support_call);
-        salesContact = findViewById(R.id.salescontact);
+//        salesContact = findViewById(R.id.salescontact);
 
         // ----- MAIL SUPPORT CLICK -----
         cardMailSupport.setOnClickListener(v -> {

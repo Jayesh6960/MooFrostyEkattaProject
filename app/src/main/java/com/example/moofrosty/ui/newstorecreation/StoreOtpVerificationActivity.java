@@ -188,7 +188,6 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
         Button btnOK;
         btnOK = dialog.findViewById(R.id.btnOK);
         TextView tvStore = dialog.findViewById(R.id.tvStoreDetails);
-        TextView tvRs = dialog.findViewById(R.id.tvRSDetails);
         btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
