@@ -27,6 +27,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -72,9 +73,9 @@ public class ApplyLeaveFragment extends Fragment {
         btnApply = view.findViewById(R.id.btn_apply);
 
         // Setup Spinner
-        String[] types = {"Casual Leave", "Medical Leave", "Loss of Pay"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, types);
-        spinnerLeaveType.setAdapter(adapter);
+//        String[] types = {"Casual Leave", "Medical Leave", "Loss of Pay"};
+//        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, types);
+//        spinnerLeaveType.setAdapter(adapter);
 
         // Date Pickers
         etStartDate.setOnClickListener(v -> showDatePicker(etStartDate));
@@ -169,9 +170,8 @@ public class ApplyLeaveFragment extends Fragment {
                 case ERROR:
                     btnApply.setEnabled(false);
                     btnApply.setText("Apply Leave");
-                    Toast.makeText(requireContext(),
-                            resource.message,
-                            Toast.LENGTH_LONG).show();
+                    String errorMessage = resource.message != null ? resource.message : "Something Error";
+                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show();
                     break;
             }
         });
@@ -193,9 +193,7 @@ public class ApplyLeaveFragment extends Fragment {
                     btnApply.setEnabled(true);
                     btnApply.setText("Apply Leave");
 
-                    Toast.makeText(requireContext(),
-                            resource.data.getMessage(),
-                            Toast.LENGTH_LONG).show();
+                    Toast.makeText(requireContext(), resource.data.getMessage(), Toast.LENGTH_LONG).show();
 
                     // Reset form
                     etStartDate.setText("");
@@ -208,9 +206,8 @@ public class ApplyLeaveFragment extends Fragment {
                 case ERROR:
                     btnApply.setEnabled(true);
                     btnApply.setText("Apply Leave");
-                    Toast.makeText(requireContext(),
-                            resource.message,
-                            Toast.LENGTH_LONG).show();
+                    String errorMessage = resource.message != null ? resource.message : "Something Error";
+                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show();
                     break;
             }
         });
@@ -226,21 +223,90 @@ public class ApplyLeaveFragment extends Fragment {
 //        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
 //    }
 
+//    private void showDatePicker(TextInputEditText editText) {
+//
+//        Calendar currentCal = Calendar.getInstance();
+//
+//        DatePickerDialog dialog = new DatePickerDialog(
+//                requireContext(),
+//                R.style.CustomDatePickerTheme,
+//                (view, year, month, day) -> {
+//                    calendar.set(year, month, day);
+//                    SimpleDateFormat sdf =
+//                            new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+//                    editText.setText(sdf.format(calendar.getTime()));
+//                },
+//                calendar.get(Calendar.YEAR),
+//                calendar.get(Calendar.MONTH),
+//                calendar.get(Calendar.DAY_OF_MONTH)
+//        );
+//        dialog.setOnShowListener(d -> {
+//            dialog.getButton(DatePickerDialog.BUTTON_POSITIVE)
+//                    .setTextColor(getResources().getColor(R.color.Purple_Color));
+//
+//            dialog.getButton(DatePickerDialog.BUTTON_NEGATIVE)
+//                    .setTextColor(getResources().getColor(R.color.Purple_Color));
+//        });
+//        dialog.show();
+//    }
+
     private void showDatePicker(TextInputEditText editText) {
+
+
+        if (editText.getId() == R.id.et_end_date) {
+            String startDateStr = etStartDate.getText().toString().trim();
+
+            // If Start Date is empty, stop and show Toast
+            if (startDateStr.isEmpty()) {
+                Toast.makeText(requireContext(), "Please select Start Date first", Toast.LENGTH_SHORT).show();
+                return; // EXIT FUNCTION HERE
+            }
+        }
+        // Use current date as default for the picker view
+        Calendar currentCal = Calendar.getInstance();
 
         DatePickerDialog dialog = new DatePickerDialog(
                 requireContext(),
                 R.style.CustomDatePickerTheme,
                 (view, year, month, day) -> {
-                    calendar.set(year, month, day);
-                    SimpleDateFormat sdf =
-                            new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-                    editText.setText(sdf.format(calendar.getTime()));
+                    // Use a local calendar instance to avoid messing up global state
+                    Calendar selectedDate = Calendar.getInstance();
+                    selectedDate.set(year, month, day);
+
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+                    editText.setText(sdf.format(selectedDate.getTime()));
                 },
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)
+                currentCal.get(Calendar.YEAR),
+                currentCal.get(Calendar.MONTH),
+                currentCal.get(Calendar.DAY_OF_MONTH)
         );
+
+        // --- LOGIC START: Restrict End Date ---
+        // If the clicked field is the END DATE, check if we have a Start Date
+        if (editText.getId() == R.id.et_end_date) {
+            String startDateStr = etStartDate.getText().toString(); // Get text from Start Date field
+
+            if (!startDateStr.isEmpty()) {
+                try {
+                    // Parse the string "yyyy-MM-dd" back to a Date object
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+                    Date date = sdf.parse(startDateStr);
+
+                    if (date != null) {
+                        // Set the Minimum Date for the picker
+                        // This disables all previous dates, allowing "Same Day" or "Future"
+                        dialog.getDatePicker().setMinDate(date.getTime());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                // Optional: If Start Date is empty, maybe restrict to today?
+                // dialog.getDatePicker().setMinDate(System.currentTimeMillis());
+            }
+        }
+        // --- LOGIC END ---
+
         dialog.setOnShowListener(d -> {
             dialog.getButton(DatePickerDialog.BUTTON_POSITIVE)
                     .setTextColor(getResources().getColor(R.color.Purple_Color));
@@ -248,6 +314,7 @@ public class ApplyLeaveFragment extends Fragment {
             dialog.getButton(DatePickerDialog.BUTTON_NEGATIVE)
                     .setTextColor(getResources().getColor(R.color.Purple_Color));
         });
+
         dialog.show();
     }
 

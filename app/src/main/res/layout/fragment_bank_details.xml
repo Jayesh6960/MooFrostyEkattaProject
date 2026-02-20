@@ -76,7 +76,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Bank Name *"
+                android:hint="Bank Name "
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_marginTop="8dp">
 
@@ -96,7 +96,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Branch Name *"
+                android:hint="Branch Name "
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_marginTop="16dp">
 
@@ -118,7 +118,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Account Number *"
+                android:hint="Account Number "
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_marginTop="16dp">
 
@@ -140,7 +140,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Confirm Account Number *"
+                android:hint="Confirm Account Number "
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_marginTop="16dp">
 
@@ -148,12 +148,12 @@
                     android:id="@+id/etConfirmAccountNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="************"
+                    android:text="123456789"
                     android:textStyle="bold"
                     android:clickable="false"
                     android:textColor="#3E3E3E"
                     android:enabled="false"
-                    android:inputType="textPassword" />
+                    android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -162,7 +162,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="IFSC Code *"
+                android:hint="IFSC Code "
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_marginTop="16dp">
 
@@ -183,7 +183,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Account Type *"
+                android:hint="Account Type "
                 android:layout_marginTop="16dp"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:endIconMode="custom"

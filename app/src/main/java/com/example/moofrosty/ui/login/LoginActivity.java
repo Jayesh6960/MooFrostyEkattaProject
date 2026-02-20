@@ -106,7 +106,15 @@ public class LoginActivity extends BaseActivity {
                             String token = resp.getToken();
                             String fullJson = new Gson().toJson(resp);
                             sessionManager.saveLoginSession(token, fullJson);
+                            sessionManager.saveUserId(resp.getUser().getId());
                             Log.d("sessonpass","checkpass"+token+" "+fullJson);
+
+                            boolean isPresent = false;
+                                isPresent = resp.getAttendanceStatus().isPresent();
+                            Log.d("isPresent","isPresent"+isPresent);
+
+                            sessionManager.saveIsPresent(isPresent);
+                       //     Log.d("sessonpassid","checkpass" + sessionManager.saveUserId(resp.getUser().getId()));
 
                             navigateToDashboard();
                         } else {
@@ -133,14 +141,13 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void handleLogin() {
-        String email = emailEditText.getText() != null ? emailEditText.getText().toString().trim() : "";            /// 2
+            String email = emailEditText.getText() != null ? emailEditText.getText().toString().trim() : "";            /// 2
         String password = passwordEditText.getText() != null ? passwordEditText.getText().toString().trim() : "";
 
         if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Please enter both Username and Password", Toast.LENGTH_SHORT).show();
             return;
         }
-
         // Network Check
         if (NetworkUtil.isNetworkAvailable(this)) {
             loginViewModel.login(email, password);

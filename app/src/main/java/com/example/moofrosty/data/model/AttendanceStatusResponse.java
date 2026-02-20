@@ -7,7 +7,7 @@ public class AttendanceStatusResponse {
     public String status;
 
     @SerializedName("isPresent")
-    public boolean isPresent;       // True if Punched In
+    public Boolean isPresent;       // True if Punched In
 
     @SerializedName("isPresentOut")
     public boolean isPresentOut;    // True if Punched Out
@@ -15,9 +15,9 @@ public class AttendanceStatusResponse {
     @SerializedName("isAbleToPunch")
     public boolean isAbleToPunch;   // False if leave/restricted
 
+
     @SerializedName("isHoliday")
     public boolean isHoliday;
-
     @SerializedName("isBetweenTime")
     public boolean isBetweenTime;   // True if between 5 AM - 11 PM
 

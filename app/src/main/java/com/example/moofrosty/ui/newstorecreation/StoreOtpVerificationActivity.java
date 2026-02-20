@@ -34,7 +34,7 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
     private SessionManager sessionManager;
 
     private TextInputEditText etMobile, etOtp;
-    private TextInputLayout layoutOtp;
+    private TextInputLayout layoutOtp,till_mob;
     private MaterialButton btnSendVerification, btnSubmitOtp;
     private TextView tvStatus;
     Toolbar toolbar ;
@@ -86,13 +86,14 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(StoreVerificationViewModel.class);
         sessionManager = new SessionManager(this);
 
-
         etMobile = findViewById(R.id.et_mobile);
         etOtp = findViewById(R.id.et_otp);
         layoutOtp = findViewById(R.id.layout_otp);
         btnSendVerification = findViewById(R.id.btn_send_verification);
         btnSubmitOtp = findViewById(R.id.btn_submit_otp);
         tvStatus = findViewById(R.id.tv_status);
+        till_mob=findViewById(R.id.till_mob);
+
 
         tvTitle.setText("Registration");
         btnBack.setOnClickListener(v -> finish());
@@ -101,7 +102,8 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
         btnSendVerification.setOnClickListener(v -> {
             String mobile = etMobile.getText().toString().trim();
             if (mobile.length() < 10) {
-                etMobile.setError("Enter valid mobile number");
+                till_mob.setError("Enter valid mobile number");
+
                 return;
             }
 
@@ -120,8 +122,13 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
         // 3. Click Listener: Submit OTP
         btnSubmitOtp.setOnClickListener(v -> {
             String otp = etOtp.getText().toString().trim();
-            if (otp.length() < 4) {
-                etOtp.setError("Enter Valid OTP");
+//            if (otp.length() < 4) {
+//                etOtp.setError("Enter Valid OTP");
+//                return;
+//            }
+
+            if (!otp.equals("123456")) {
+                etOtp.setError("Invalid OTP");
                 return;
             }
 
@@ -193,11 +200,11 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
         if (tvStore != null)
             tvStore.setText(storeDetails != null ? storeDetails : "N/A");
 
-        if (tvRs != null)
-            tvRs.setText(rsDetails != null ? rsDetails : "N/A");
+//        if (tvRs != null)
+//            tvRs.setText(rsDetails != null ? rsDetails : "N/A");
 
 
-        dialog.setCancelable(true);
+        dialog.setCancelable(false);
         dialog.show();
 
     }

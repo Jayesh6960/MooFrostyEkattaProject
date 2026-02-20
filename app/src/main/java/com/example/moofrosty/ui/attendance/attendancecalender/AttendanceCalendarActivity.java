@@ -6,13 +6,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.applandeo.materialcalendarview.CalendarView;
@@ -27,6 +31,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -39,26 +44,52 @@ public class AttendanceCalendarActivity extends AppCompatActivity {
     private CalendarView calendarView;
     private SessionManager sessionManager;
     private ProgressBar progressBar;
+    private Toolbar toolbar;
+    ImageView btnBack;
+    ImageView btnMenu;
+    TextView tvTitle;
+    TextView tvDate ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         setContentView(R.layout.activity_attendance_calendar);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        WindowInsetsControllerCompat windowInsetsController =
+                WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+        windowInsetsController.setAppearanceLightStatusBars(true);
+
+        btnBack = findViewById(R.id.btn_back);
+        toolbar = findViewById(R.id.dashboard_toolbar);
+        setSupportActionBar(toolbar);
+        btnMenu = findViewById(R.id.btn_menu);
+        tvTitle = findViewById(R.id.tv_title);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.app_bar_layout), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            v.setPadding(v.getPaddingLeft(), systemBars.top, v.getPaddingRight(), v.getPaddingBottom());
             return insets;
         });
-// 1. Init Views
-        ImageView btnBack = findViewById(R.id.btn_back);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), systemBars.bottom+16);
+            return insets;
+        });
+
+        tvTitle.setText("Attendance Calender");
+        btnBack.setVisibility(View.VISIBLE);
+        btnMenu.setVisibility(View.GONE);
+        btnBack.setOnClickListener(v -> onBackPressed());
+
         calendarView = findViewById(R.id.attendanceCalender); // The Applandeo View
         progressBar = findViewById(R.id.progressBar);
 
         sessionManager = new SessionManager(this);
         viewModel = new ViewModelProvider(this).get(AttendanceCalendarViewModel.class);
 
-        btnBack.setOnClickListener(v -> finish());
 
         // 2. Fetch Data
         String token = sessionManager.getToken();
@@ -152,10 +183,6 @@ public class AttendanceCalendarActivity extends AppCompatActivity {
 
 
 
-
-
-
-
                     case SUCCESS:
                         progressBar.setVisibility(View.GONE);
 
@@ -239,18 +266,21 @@ public class AttendanceCalendarActivity extends AppCompatActivity {
         // --- METHOD 2: Process Holidays ---
         private List<EventDay> getHolidayEvents(List<LeaveResponse.HolidayData> holidayList) {
             List<EventDay> events = new ArrayList<>();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);//it will store  the data in the yy-mm/dd formate
 
             for (LeaveResponse.HolidayData holiday : holidayList) {
                 try {
                     Date date = sdf.parse(holiday.getDate());
+                    Log.d("date", "getHolidayEvents: "+date);
                     if (date != null) {
                         Calendar calendar = Calendar.getInstance();
                         calendar.setTime(date);
                         // Use your holiday icon here
                         events.add(new EventDay(calendar, R.drawable.holidayicon));
                     }
-                } catch (ParseException e) { e.printStackTrace(); }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
             return events;
         }
@@ -259,6 +289,7 @@ public class AttendanceCalendarActivity extends AppCompatActivity {
         private List<EventDay> getAttendanceEvents(List<LeaveResponse.AttendanceData> attendanceList) {
             List<EventDay> events = new ArrayList<>();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+            Log.d("sdf", "sdf"+sdf);
             // Set to prevent duplicate icons (since user punches IN and OUT on the same day)
             Set<String> processedDates = new HashSet<>();
 

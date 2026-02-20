@@ -34,6 +34,7 @@
 
         <RadioButton
             android:id="@+id/rb_gst"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="GST Certificate" />
@@ -43,6 +44,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="FSSAI License" />
+        <RadioButton
+            android:id="@+id/rb_pan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PAN Card" />
+        <RadioButton
+            android:id="@+id/rb_druglicense"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Drug License" />
     </RadioGroup>
 
     <com.google.android.material.button.MaterialButton

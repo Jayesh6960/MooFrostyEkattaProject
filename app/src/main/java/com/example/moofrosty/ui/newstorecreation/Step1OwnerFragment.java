@@ -14,12 +14,15 @@ import android.view.ViewGroup;
 import com.example.moofrosty.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 
 public class Step1OwnerFragment extends Fragment {
 
     private CreateStoreViewModel viewModel;
     private TextInputEditText etOwner, etEmail, etMobile;
+    private TextInputLayout tillowner;
+
 
     public Step1OwnerFragment() {
         // Required empty public constructor
@@ -42,8 +45,19 @@ public class Step1OwnerFragment extends Fragment {
         etEmail = view.findViewById(R.id.et_email);
         etMobile = view.findViewById(R.id.et_mobile);
         MaterialButton btnNext = view.findViewById(R.id.btn_next);
+        tillowner=view.findViewById(R.id.tillowner);
+
+
 
         // Pre-fill mobile number if passed from previous activity
+
+        // When you come back, the ViewModel still holds the text. Put it back in the box.
+        if (viewModel.ownerName != null) {
+            etOwner.setText(viewModel.ownerName);
+        }
+        if (viewModel.email != null) {
+            etEmail.setText(viewModel.email);
+        }
         if (viewModel.mobileNumber != null) {
             etMobile.setText(viewModel.mobileNumber);
             etMobile.setEnabled(false);
@@ -53,10 +67,15 @@ public class Step1OwnerFragment extends Fragment {
             String name = etOwner.getText().toString();
             String email = etEmail.getText().toString();
 
-            if(name.isEmpty()) {
-                etOwner.setError("Required");
+            if(name.isEmpty() ) {
+
+                tillowner.setError("Owner full name is required");
                 return;
             }
+//            if(email.isEmpty() ) {
+//                etOwner.setError("OwnerFull Name Required");
+//                return;
+//            }
             viewModel.ownerName = name;
             viewModel.email = email;
             ((CreateStoreWizardActivity) requireActivity()).nextStep();

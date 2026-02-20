@@ -155,77 +155,77 @@
                 app:cardElevation="10dp"
                 >
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:orientation="vertical"-->
+<!--                    android:padding="16dp">-->
 
-                    <!-- Title -->
-                    <TextView
-                        android:text="@string/salary_issues"
-                        android:textStyle="bold"
-                        android:textColor="@color/colorPrimary"
-                        android:gravity="center"
-                        android:textSize="17sp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+<!--                    &lt;!&ndash; Title &ndash;&gt;-->
+<!--                    <TextView-->
+<!--                        android:text="@string/salary_issues"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:textColor="@color/colorPrimary"-->
+<!--                        android:gravity="center"-->
+<!--                        android:textSize="17sp"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content" />-->
 
-                    <!-- Container -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="16dp">
+<!--                    &lt;!&ndash; Container &ndash;&gt;-->
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:orientation="horizontal"-->
+<!--                        android:layout_marginTop="16dp">-->
 
-                        <!-- 3P RS Section -->
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:gravity="center"
-                            android:padding="12dp">
+<!--                        &lt;!&ndash; 3P RS Section &ndash;&gt;-->
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="0dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_weight="1"-->
+<!--                            android:orientation="vertical"-->
+<!--                            android:gravity="center"-->
+<!--                            android:padding="12dp">-->
 
-                            <TextView
-                                android:text="@string/three_p_rs"
-                                android:textStyle="bold"
-                                android:textColor="@color/black"
-                                android:textSize="15sp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
+<!--                            <TextView-->
+<!--                                android:text="@string/three_p_rs"-->
+<!--                                android:textStyle="bold"-->
+<!--                                android:textColor="@color/black"-->
+<!--                                android:textSize="15sp"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content" />-->
 
-                            <TextView
-                                android:text="@string/contact_tsf"
-                                android:textColor="@color/colorPrimary"
-                                android:layout_marginTop="6dp"
-                                android:textStyle="bold"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
+<!--                            <TextView-->
+<!--                                android:text="@string/contact_tsf"-->
+<!--                                android:textColor="@color/colorPrimary"-->
+<!--                                android:layout_marginTop="6dp"-->
+<!--                                android:textStyle="bold"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content" />-->
 
-                            <TextView
-                                android:id="@+id/salescontact"
-                                android:text="@string/tsf_number"
-                                android:textColor="@color/colorPrimary"
-                                android:textSize="14sp"
-                                android:layout_marginTop="4dp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
-                        </LinearLayout>
+<!--                            <TextView-->
+<!--                                android:id="@+id/salescontact"-->
+<!--                                android:text="@string/tsf_number"-->
+<!--                                android:textColor="@color/colorPrimary"-->
+<!--                                android:textSize="14sp"-->
+<!--                                android:layout_marginTop="4dp"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content" />-->
+<!--                        </LinearLayout>-->
 
-                        <!-- Divider -->
-                        <View
-                            android:layout_width="1dp"
-                            android:layout_height="match_parent"
-                            android:background="@color/black" />
+<!--                        &lt;!&ndash; Divider &ndash;&gt;-->
+<!--                        <View-->
+<!--                            android:layout_width="1dp"-->
+<!--                            android:layout_height="match_parent"-->
+<!--                            android:background="@color/black" />-->
 
-                        <!-- NON 3P RS Section -->
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:gravity="center_horizontal|center_vertical">
+<!--                        &lt;!&ndash; NON 3P RS Section &ndash;&gt;-->
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="0dp"-->
+<!--                            android:layout_height="match_parent"-->
+<!--                            android:layout_weight="1"-->
+<!--                            android:orientation="vertical"-->
+<!--                            android:gravity="center_horizontal|center_vertical">-->
 
                             <TextView
                                 android:id="@+id/tvNonThreePRs"
@@ -249,10 +249,10 @@
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
 
-                        </LinearLayout>
+<!--                        </LinearLayout>-->
 
-                    </LinearLayout>
-                </LinearLayout>
+<!--                    </LinearLayout>-->
+<!--                </LinearLayout>-->
             </androidx.cardview.widget.CardView>
 
         </LinearLayout>

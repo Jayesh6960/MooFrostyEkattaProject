@@ -129,11 +129,18 @@ public class AttendanceRepository {
                             Log.d(TAG, "Status: " + data.getStatus());
                             Log.d(TAG, "Message: " + data.getMessage());
                             Log.d(TAG, "Is Punch In: " + data.isIn());
+                            Log.d(TAG, "Is Punch Out: " + data.isOut());
 
                             if ("success".equalsIgnoreCase(data.getStatus())) {
-                                String msg = data.isIn()
-                                        ? "Punch In Successful"
-                                        : "Punch Out Successful";
+                                String msg;
+//                                        ? "Punch In Successful"
+//                                        : "Punch Out Successful";
+                                if (data.isOut()) {
+                                    msg = "Punch Out Successful";
+                                } else {
+                                    // If isOut is false, but success, it must be Punch In
+                                    msg = "Punch In Successful";
+                                }
 
                                 Log.d(TAG, msg);
                                 punchResult.setValue(Resource.success(msg));

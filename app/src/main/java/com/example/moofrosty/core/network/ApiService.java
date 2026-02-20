@@ -1,10 +1,11 @@
     package com.example.moofrosty.core.network;
-
+    import androidx.lifecycle.LiveData;
     import com.example.moofrosty.data.model.ApplyLeaveRequest;
     import com.example.moofrosty.data.model.AttendanceStatusResponse;
     import com.example.moofrosty.data.model.BeatResponse;
     import com.example.moofrosty.data.model.CategoryResponse;
     import com.example.moofrosty.data.model.CheckInRequest;
+    import com.example.moofrosty.data.model.CheckoutRequest;
     import com.example.moofrosty.data.model.GeneralResponse;
     import com.example.moofrosty.data.model.LeaveHistoryResponse;
     import com.example.moofrosty.data.model.LeaveResponse;
@@ -12,6 +13,7 @@
     import com.example.moofrosty.data.model.LocationResponse;
     import com.example.moofrosty.data.model.LoginRequest;
     import com.example.moofrosty.data.model.LoginResponse;
+    import com.example.moofrosty.data.model.OrderHistoryResponse;
     import com.example.moofrosty.data.model.ProductResponse;
     import com.example.moofrosty.data.model.PunchResponse;
     import com.example.moofrosty.data.model.RssResponse;
@@ -20,6 +22,7 @@
     import com.example.moofrosty.data.model.StoreExistResponse;
     import com.example.moofrosty.data.model.StoreListResponse;
     import com.example.moofrosty.data.model.StoreListResponses;
+    import com.example.moofrosty.data.model.StoreListWrapperResponse;
     import com.example.moofrosty.data.model.SubCategoryResponse;
     import com.example.moofrosty.data.model.UserDetailResponse;
 
@@ -48,7 +51,6 @@
                 @Header("Authorization") String token,
                 @Body ApplyLeaveRequest request
         );
-
         // --- NEW: Get Leave History API ---
         @GET("api/admin/get-user-leaves")
         Call<LeaveHistoryResponse> getLeaveHistory(
@@ -104,6 +106,7 @@
                 @Part("lat_long") RequestBody latLong,
                 @Part("documentType") RequestBody documentType,
                 @Part("documentNumber") RequestBody documentNumber,
+                @Part("gstinNumber") RequestBody gstnNumber,
 
                 @Part("beatId") RequestBody beatId,
 
@@ -122,14 +125,72 @@
         @GET("api/admin/get-store-list")
         Call<StoreListResponse> getStoreList(
                 @Header("Authorization") String token,
-                @Query("date") String date
+                @Query("date") String date,
+//                @Query("Storelist") boolean Storelist
+                @Query("page") String page
         );
-
         @GET("api/admin/get-store-list")
         Call<StoreListResponses> getStoreList(
                 @Header("Authorization") String token,
-                @Query("beatId") int beatId
+                @Query("beatId") int beatId,
+                @Query("page") String page // Pass "bit_wise_all" here
         );
+
+        @GET("api/admin/get-store-list")
+        Call<StoreListWrapperResponse> getStoreListVisited(
+                @Header("Authorization") String token,
+                @Query("date") String date, // Changed from logDate to date
+                @Query("page") String page  // Pass "visited_shop" here
+        );
+
+        // 3. NOT VISITED STORES
+        @GET("api/admin/get-store-list")
+        Call<StoreListResponses> getStoreListNotVisited(
+                @Header("Authorization") String token,
+                @Query("date") String date, // Changed from logDate to date
+                @Query("page") String page  // Pass "not_visited_shop" here
+        );
+
+        // 4. ORDER TAKEN STORES
+        @GET("api/admin/get-store-list")
+        Call<StoreListResponses> getStoreListByOrder(
+                @Header("Authorization") String token,
+                @Query("date") String date, // Changed from logDate to date
+                @Query("page") String page  // Pass "order_taken_shop" here
+        );
+
+//        @GET("api/admin/get-store-list")
+//        Call<StoreListResponses> getStoreList(
+//                @Header("Authorization") String token,
+//                @Query("beatId") int beatId,
+//                @Query("Storelist") boolean storeList
+//        );
+//
+//        @GET("api/admin/get-store-list")
+//        Call<StoreListWrapperResponse> getStoreListVisited(
+//                @Header("Authorization") String token,
+//                @Query("logDate") String logDate,
+//                @Query("visited") String visitedStatus, // "yes"
+//                @Query("Storevisited") boolean storeVisited
+//        );
+//
+//        // 3. NOT VISITED STORES (Direct List - confirmed via your JSON)
+//        @GET("api/admin/get-store-list")
+//        Call<StoreListResponses> getStoreListNotVisited(
+//                @Header("Authorization") String token,
+//                @Query("logDate") String logDate,
+//                @Query("visited") String visitedStatus, // "no"
+//                @Query("Storevisited") boolean storeVisited
+//        );
+//
+//        // 4. ORDER TAKEN STORES (Direct List - confirmed via your JSON)
+//        @GET("api/admin/get-store-list")
+//        Call<StoreListResponses> getStoreListByOrder(
+//                @Header("Authorization") String token,
+//                @Query("logDate") String logDate,
+//                @Query("order_taken") String orderTaken,
+//                @Query("Storeorder") boolean storeOrder
+//        );
 
         @GET("api/admin/user-detail")
         Call<UserDetailResponse> getUserDetail(@Header("Authorization") String token);
@@ -153,6 +214,11 @@
                 @Header("Authorization") String token,
                 @Body CheckInRequest request
         );
+        @POST("order/missed")
+        Call<GeneralResponse> markOrderMissed(
+                @Query("order_id") String orderId,
+                @Query("reason") String reason
+        );
 
         @GET("api/admin/get-products")
         Call<ProductResponse> getProducts(
@@ -175,4 +241,14 @@
                 @Header("Authorization") String token
         );
 
+        @POST("api/admin/product-checkout")
+        Call<GeneralResponse> checkoutCart(
+                @Header("Authorization") String token,
+                @Body CheckoutRequest request
+        );
+
+        @GET("api/admin/list-product-checkout")
+        Call<OrderHistoryResponse> getOrderHistory(
+                @Header("Authorization") String token
+        );
     }

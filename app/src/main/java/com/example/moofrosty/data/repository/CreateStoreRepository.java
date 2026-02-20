@@ -125,11 +125,12 @@
             Log.d("addstore", "LatLong: " + req.latLong);
             Log.d("addstore", "Doc Type: " + req.documentType);
             Log.d("addstore", "Doc Num: " + req.documentNumber);
+            Log.d("addstore", "GST Num: " + req.gstinNumber);
             Log.d("addstore", "File Doc: " + (req.uploadDocument != null ? req.uploadDocument.getName() : "NULL"));
             Log.d("addstore", "File Board: " + (req.uploadShopBoardImage != null ? req.uploadShopBoardImage.getName() : "NULL"));
             Log.d("addstore", "File Inside: " + (req.uploadShopInsideImage != null ? req.uploadShopInsideImage.getName() : "NULL"));
             Log.d("addstore", "---------------------------------------------");
-
+            Log.d("addstore", liveData.toString());
             // Create Text Parts safely
             RequestBody rbOwner = createPart(req.ownerFullName);
             RequestBody rbEmail = createPart(req.ownerEmail);
@@ -146,6 +147,7 @@
             RequestBody rbBeat = createPart(req.beatId);
             RequestBody rbDocType = createPart(req.documentType);
             RequestBody rbDocNum = createPart(req.documentNumber);
+            RequestBody rbGstNum = createPart(req.gstinNumber);
             RequestBody rbSsName = createPart(req.ssName);
             RequestBody rbSecChannel = createPart(req.secondaryChannel);
             RequestBody rbLatLong = createPart(req.latLong);
@@ -183,7 +185,7 @@
                             rbOwner, rbEmail, rbMobile, rbStore, rbRs, rbSecChannel, rbType, rbSsName,
                             rbPin, rbAddress,
                             rbCountry, rbState, rbDistrict, rbCity,
-                            rbLatLong, rbDocType, rbDocNum,
+                            rbLatLong, rbDocType, rbDocNum, rbGstNum,
                             rbBeat,
                             partDoc, partBoard, partInside)
                     .enqueue(new Callback<GeneralResponse>() {
@@ -196,10 +198,15 @@
                                 Log.d("addstoreaftercall", "API Success Status: " + response.body().getStatus());
                                 Log.d("addstoreaftercall", "API Message: " + response.body().getMessage());
 
-                                if("success".equalsIgnoreCase(response.body().getStatus()))
+                                if ("true".equalsIgnoreCase(response.body().getStatus())) {
+
                                     liveData.postValue(Resource.success(response.body()));
-                                else
-                                    liveData.postValue(Resource.error(response.body().getMessage(), null));
+
+                                } else {
+                                    String cleanMsg =
+                                            cleanErrorMessage(response.body().getMessage());
+                                    liveData.postValue(Resource.error(cleanMsg, null));
+                                }
                             } else {
                                 // Log raw error body if possible
                                 String errorBody = "";
@@ -208,16 +215,26 @@
                                 } catch (Exception e) { errorBody = "Unknown error"; }
 
                                 Log.e("addstoreaftercall", "API Error Body: " + errorBody);
-                                liveData.postValue(Resource.error("Error: " + response.code() + " " + response.message(), null));
+//                                liveData.postValue(Resource.error("Error: " + response.code() + " " + response.message(), null)  );
+                                liveData.postValue(Resource.error("Something went wrong. Please try again.", null));
                             }
                         }
-                        @Override public void onFailure(Call<GeneralResponse> call, Throwable t) {
+                        @Override
+                        public void onFailure(Call<GeneralResponse> call, Throwable t) {
                             // --- 3. LOG THE FAILURE ---
                             Log.d("addstoreaftercall", "API Failure: " + t.getMessage());
                             t.printStackTrace();
                             liveData.postValue(Resource.error("Network Error: " + t.getMessage(), null));
                         }
                     });
+        }
+
+        private String cleanErrorMessage(String message) {
+            if (message == null) return "Something went wrong";
+            if (message.contains(" (and")) {
+                return message.substring(0, message.indexOf(" (and")).trim();
+            }
+            return message;
         }
 
         // Helper to prevent null pointer exceptions

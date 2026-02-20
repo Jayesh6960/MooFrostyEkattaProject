@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
             app:cardCornerRadius="4dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             app:cardElevation="2dp"
             xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -36,7 +36,7 @@
                     android:text="Owner Name: Loading..."
                     android:textStyle="bold"
                     android:textColor="#000000"
-                    android:textSize="20dp"/>
+                    android:textSize="18dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -50,7 +50,7 @@
                         android:layout_height="wrap_content"
                         android:text="HUL Code: ..."
                         android:textColor="#333"
-                        android:textSize="20dp"/>
+                        android:textSize="18dp"/>
 
                     <Space android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
 
@@ -72,7 +72,7 @@
                     android:layout_height="wrap_content"
                     android:text="Party Code: ..."
                     android:textColor="#333"
-                    android:textSize="20dp"
+                    android:textSize="18dp"
                     android:layout_marginTop="2dp"/>
 
                 <!-- Phone Row -->
@@ -96,7 +96,7 @@
                         android:text="9876543210"
                         android:textStyle="bold"
                         android:textColor="#000"
-                        android:textSize="20dp"
+                        android:textSize="18dp"
                         android:layout_marginStart="8dp"/>
 
                     <TextView
@@ -141,7 +141,7 @@
                         android:text="Address loading..."
                         android:layout_marginStart="8dp"
                         android:textColor="#333"
-                        android:textSize="20dp"/>
+                        android:textSize="18dp"/>
                 </LinearLayout>
 
                 <Button

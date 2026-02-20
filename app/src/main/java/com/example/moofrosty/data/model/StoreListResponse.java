@@ -7,7 +7,9 @@ import java.util.List;
 public class StoreListResponse {
 
     @SerializedName("status")
-    private boolean status;
+    private String status;
+//    private boolean status;
+
 
     @SerializedName("store")
     private List<StoreModel> storeList;
@@ -15,9 +17,13 @@ public class StoreListResponse {
     @SerializedName("count")
     private int count;
 
-    public boolean isStatus() {
+
+    public String getStatus() {
         return status;
     }
+//    public boolean isStatus() {
+//        return status;
+//    }
 
     public List<StoreModel> getStoreList() {
         return storeList;
@@ -53,6 +59,9 @@ public class StoreListResponse {
         @SerializedName("shop_kyc")
         private StoreKyc shopKyc;
 
+        @SerializedName("beat")
+        private Beat beat;
+
         // Getter for KYC
         public StoreKyc getShopKyc() { return shopKyc; }
         // Getters
@@ -64,12 +73,38 @@ public class StoreListResponse {
         public String getCreatedAt() { return createdAt; }
         public int getBeatId() { return beatId; }
         public int getStatus() { return status; }
+        public Beat getBeat() { return beat; }
+
 
         public static class StoreKyc {
             @SerializedName("documentType")
             private String documentType;
 
             public String getDocumentType() { return documentType; }
+        }
+
+        // --- NEW Inner Class: Beat ---
+        public static class Beat {
+            @SerializedName("beatId")
+            private int beatId;
+
+            @SerializedName("beatNameFrom")
+            private String beatNameFrom;
+
+            @SerializedName("beatNameTo")
+            private String beatNameTo;
+
+            @SerializedName("city")
+            private String city;
+
+            @SerializedName("district")
+            private String district;
+
+            public int getBeatId() { return beatId; }
+            public String getBeatNameFrom() { return beatNameFrom; }
+            public String getBeatNameTo() { return beatNameTo; }
+            public String getCity() { return city; }
+            public String getDistrict() { return district; }
         }
     }
 

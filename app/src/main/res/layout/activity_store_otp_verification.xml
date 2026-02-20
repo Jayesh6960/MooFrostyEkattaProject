@@ -75,19 +75,21 @@
 
             <!-- Mobile Input -->
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/till_mob"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxStrokeColor="@color/Purple_Color"
                 app:hintTextColor="@color/Purple_Color"
-                app:cursorColor="@color/Purple_Color"
-                android:hint="Mobile Number">
+                app:cursorColor="@color/black"
+                android:hint="Mobile Number"
+                app:cursorErrorColor="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_mobile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="phone"
+                    android:inputType="number"
                     android:maxLength="10"/>
             </com.google.android.material.textfield.TextInputLayout>
 

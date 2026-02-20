@@ -19,6 +19,7 @@ import java.util.List;
 public class MyBeatViewModel extends AndroidViewModel {
 
     private final MyBeatRepository repository;
+    private boolean Storelist = true;
 
     // API Data
     private final MutableLiveData<Resource<List<Store>>> storesResource = new MutableLiveData<>();
@@ -26,134 +27,319 @@ public class MyBeatViewModel extends AndroidViewModel {
 
     // UI Data
     private final MutableLiveData<List<Store>> filteredStores = new MutableLiveData<>();
-    private List<Store> masterStoreList = new ArrayList<>();
+//    private List<Store> masterStoreList = new ArrayList<>();
+
+    // Master list holds the data from the CURRENT API Call
+    private List<Store> currentApiData = new ArrayList<>();
 
     // Summary
     private final MutableLiveData<Double> totalOrderValue = new MutableLiveData<>(0.0);
     private final MutableLiveData<String> visitedCountText = new MutableLiveData<>("0/0");
     private final MutableLiveData<String> orderTakenCountText = new MutableLiveData<>("0/0");
 
+    private final MutableLiveData<Integer> repoTotalCount = new MutableLiveData<>(0);
+    private final MutableLiveData<Integer> repoVisitedCount = new MutableLiveData<>(0);
+    private final MutableLiveData<Integer> repoOrderCount = new MutableLiveData<>(0);
     // Filters
 //    private String currentTab = "All";
 //    private String searchQuery = "";
     private String currentSearchQuery = "";
     private String currentTabFilter = "All";
 
-//    public MyBeatViewModel(MyBeatRepository repository) {
-//        this.repository = repository;
-//        loadData();
-//    }
+    private int globalTotalCount = 0;
+    private int globalVisitedCount = 0;
+    private int globalOrderCount = 0;
+    private double globalOrderValue = 0.0;
 
-    // 2. Constructor takes Application (No Factory needed now)
     public MyBeatViewModel(@NonNull Application application) {
         super(application);
-        // Initialize Repository here with Application Context
         this.repository = new MyBeatRepository(application);
-        loadData();
+        loadDataForTab("All");
+        fetchStatsFromApi();
     }
 
-    private void loadData() {
-        repository.fetchDashboardData(storesResource, beats);
+    public void onTabFilterChanged(String tabName) {
+        this.currentTabFilter = tabName;
+        loadDataForTab(tabName);
     }
 
-    // ---------------- GETTERS ----------------
-
-    public LiveData<Resource<List<Store>>> getStoresResource() {
-        return storesResource;
+    private void loadDataForTab(String tab) {
+        if (tab.equals("All")) {
+            repository.fetchDashboardData(storesResource, beats,repoTotalCount);
+        } else {
+            repository.fetchFilteredStores(tab, storesResource);
+        }
     }
 
-    public LiveData<List<BeatModel>> getBeats() {
-        return beats;
+    // [NEW]: Helper to fetch stats
+    private void fetchStatsFromApi() {
+        repository.fetchGlobalCounts(repoVisitedCount, repoOrderCount);
     }
-
-    public LiveData<List<Store>> getFilteredStores() {
-        return filteredStores;
-    }
-
-    public LiveData<Double> getTotalOrderValue() {
-        return totalOrderValue;
-    }
-
-    public LiveData<String> getVisitedCountText() {
-        return visitedCountText;
-    }
-
-    public LiveData<String> getOrderTakenCountText() {
-        return orderTakenCountText;
-    }
-
-    // ---------------- USER ACTIONS ----------------
 
     public void setMasterStoreList(List<Store> stores) {
-        masterStoreList = stores;
-        applyFilters();
+        this.currentApiData = stores;
+        applyLocalSearch();
+//        updateSummaryText(); // [NEW]: Update cards text
+    }
+
+    // [NEW]: Logic to create "X/Y" strings
+    private void updateSummaryText() {
+        int total = repoTotalCount.getValue() != null ? repoTotalCount.getValue() : 0;
+        int visited = repoVisitedCount.getValue() != null ? repoVisitedCount.getValue() : 0;
+        int ordered = repoOrderCount.getValue() != null ? repoOrderCount.getValue() : 0;
+
+        visitedCountText.setValue(visited + "/" + total);
+        orderTakenCountText.setValue(ordered + "/" + total);
     }
 
     public void onSearchQueryChanged(String query) {
         this.currentSearchQuery = query;
-        applyFilters();
+        applyLocalSearch();
     }
 
-    public void onTabFilterChanged(String filter) {
-        this.currentTabFilter = filter;
-        applyFilters();
-    }
-
-    // 🔥 THIS METHOD WAS MISSING / BROKEN
-    public void onBeatSelectionChanged(int position, boolean isSelected) {
-        List<BeatModel> beatList = beats.getValue();
-        if (beatList == null || position >= beatList.size()) return;
-
-        beatList.get(position).setSelected(isSelected);
-        beats.setValue(beatList);
-
-        applyFilters();
-    }
-
-    // ---------------- FILTER LOGIC ----------------
-
-    private void applyFilters() {
+    // Only filters the LIST, does NOT touch the Summary Cards anymore
+    private void applyLocalSearch() {
         List<Store> temp = new ArrayList<>();
-        int total = masterStoreList.size();
-        int visited = 0;
-        int orderTaken = 0;
-        double value = 0.0;
 
-        for (Store s : masterStoreList) {
-            // Calculate Stats
-            if (s.isVisited()) visited++;
-            if (s.isOrderTaken()) {
-                orderTaken++;
-                value += s.getOrderValue();
-            }
+        if (currentApiData == null) currentApiData = new ArrayList<>();
 
-            // Filtering Logic
-            boolean matchesSearch = s.getStoreName().toLowerCase().contains(currentSearchQuery.toLowerCase());
-            boolean matchesTab = true;
-
-            switch (currentTabFilter) {
-                case "Not Visited": matchesTab = !s.isVisited(); break;
-                case "Visited": matchesTab = s.isVisited(); break;
-                case "Order Taken": matchesTab = s.isOrderTaken(); break;
-                default: matchesTab = true; break;
-            }
-
-            if (matchesSearch && matchesTab) {
+        for (Store s : currentApiData) {
+            String name = s.getStoreName();
+            if (name != null && name.toLowerCase().contains(currentSearchQuery.toLowerCase())) {
+                temp.add(s);
+            } else if (name == null && currentSearchQuery.isEmpty()) {
                 temp.add(s);
             }
         }
 
         filteredStores.setValue(temp);
-        totalOrderValue.setValue(value);
-        visitedCountText.setValue(visited + "/" + total);
-        orderTakenCountText.setValue(orderTaken + "/" + total);
-//        filteredStores.setValue(result);
-//        totalOrderValue.setValue(totalVal);
-//        visitedCountText.setValue(visited + "/" + masterStoreList.size());
-//        orderTakenCountText.setValue(ordered + "/" + masterStoreList.size());
+
+        // Note: We deliberately removed the code that updates visitedCountText here.
+        // The cards now remain static based on the "All" tab data.
     }
+
+    // Getters
+    public LiveData<Resource<List<Store>>> getStoresResource() { return storesResource; }
+    public LiveData<List<BeatModel>> getBeats() { return beats; }
+    public LiveData<List<Store>> getFilteredStores() { return filteredStores; }
+    public LiveData<Double> getTotalOrderValue() { return totalOrderValue; }
+    public LiveData<String> getVisitedCountText() { return visitedCountText; }
+    public LiveData<String> getOrderTakenCountText() { return orderTakenCountText; }
+
+    // [HIGHLIGHT] Expose raw counts so Fragment can observe and format
+    public LiveData<Integer> getRepoTotalCount() { return repoTotalCount; }
+    public LiveData<Integer> getRepoVisitedCount() { return repoVisitedCount; }
+    public LiveData<Integer> getRepoOrderCount() { return repoOrderCount; }
+
+    public void onBeatSelectionChanged(int position, boolean isSelected) {
+        List<BeatModel> beatList = beats.getValue();
+        if (beatList != null && position < beatList.size()) {
+            beatList.get(position).setSelected(isSelected);
+            beats.setValue(beatList);
+        }
+    }
+
+//    public void setMasterStoreList(List<Store> stores) {
+//        this.currentApiData = stores;
+//        applyLocalSearch();
+//    }
+//
+//    public void onSearchQueryChanged(String query) {
+//        this.currentSearchQuery = query;
+//        applyLocalSearch();
+//    }
+//
+//    private void applyLocalSearch() {
+//        List<Store> temp = new ArrayList<>();
+//        int visited = 0;
+//        int orderTaken = 0;
+//        double value = 0.0;
+//
+//        if (currentApiData == null) currentApiData = new ArrayList<>();
+//
+//        for (Store s : currentApiData) {
+//            // Stats (Calculated based on flags set in Repo)
+//            if (s.isVisited()) visited++;
+//            if (s.isOrderTaken()) {
+//                orderTaken++;
+//                value += s.getOrderValue();
+//            }
+//
+//            // Name Filter (Safely handled)
+//            String name = s.getStoreName();
+//            if (name != null && name.toLowerCase().contains(currentSearchQuery.toLowerCase())) {
+//                temp.add(s);
+//            } else if (name == null && currentSearchQuery.isEmpty()) {
+//                temp.add(s); // Include nameless stores if not searching
+//            }
+//        }
+//
+//        filteredStores.setValue(temp);
+//
+//        int total = currentApiData.size();
+//        totalOrderValue.setValue(value);
+//        visitedCountText.setValue(visited + "/" + total);
+//        orderTakenCountText.setValue(orderTaken + "/" + total);
+//    }
+//
+//    public LiveData<Resource<List<Store>>> getStoresResource() { return storesResource; }
+//    public LiveData<List<BeatModel>> getBeats() { return beats; }
+//    public LiveData<List<Store>> getFilteredStores() { return filteredStores; }
+//    public LiveData<Double> getTotalOrderValue() { return totalOrderValue; }
+//    public LiveData<String> getVisitedCountText() { return visitedCountText; }
+//    public LiveData<String> getOrderTakenCountText() { return orderTakenCountText; }
+//
+//    public void onBeatSelectionChanged(int position, boolean isSelected) {
+//        List<BeatModel> beatList = beats.getValue();
+//        if (beatList != null && position < beatList.size()) {
+//            beatList.get(position).setSelected(isSelected);
+//            beats.setValue(beatList);
+//        }
+//    }
 }
 
+
+
+     ///   visited and order taken add
+//    public MyBeatViewModel(MyBeatRepository repository) {
+//        this.repository = repository;
+//        loadData();
+//    }
+
+//    // 2. Constructor takes Application (No Factory needed now)
+//    public MyBeatViewModel(@NonNull Application application) {
+//        super(application);
+//        // Initialize Repository here with Application Context
+//        this.repository = new MyBeatRepository(application);
+//        loadData();
+//    }
+//
+//    private void loadData() {
+//        repository.fetchDashboardData(storesResource, beats);
+//    }
+//
+//    // ---------------- GETTERS ----------------
+//
+//    public LiveData<Resource<List<Store>>> getStoresResource() {
+//        return storesResource;
+//    }
+//
+//    public LiveData<List<BeatModel>> getBeats() {
+//        return beats;
+//    }
+//
+//    public LiveData<List<Store>> getFilteredStores() {
+//        return filteredStores;
+//    }
+//
+//    public LiveData<Double> getTotalOrderValue() {
+//        return totalOrderValue;
+//    }
+//
+//    public LiveData<String> getVisitedCountText() {
+//        return visitedCountText;
+//    }
+//
+//    public LiveData<String> getOrderTakenCountText() {
+//        return orderTakenCountText;
+//    }
+//
+//    // ---------------- USER ACTIONS ----------------
+//
+//    public void setMasterStoreList(List<Store> stores) {
+//        masterStoreList = stores;
+//        applyFilters();
+//    }
+//
+//    public void onSearchQueryChanged(String query) {
+//        this.currentSearchQuery = query;
+//        applyFilters();
+//    }
+//
+//    public void onTabFilterChanged(String filter) {
+//        this.currentTabFilter = filter;
+//        applyFilters();
+//    }
+//
+//    // 🔥 THIS METHOD WAS MISSING / BROKEN
+//    public void onBeatSelectionChanged(int position, boolean isSelected) {
+//        List<BeatModel> beatList = beats.getValue();
+//        if (beatList == null || position >= beatList.size()) return;
+//
+//        beatList.get(position).setSelected(isSelected);
+//        beats.setValue(beatList);
+//
+//        applyFilters();
+//    }
+//
+//    // ---------------- FILTER LOGIC ----------------
+//// Trung the
+//    private void applyFilters() {
+//
+//        List<Store> temp = new ArrayList<>();
+//
+//        int total = masterStoreList.size();
+//        int visited = 0;
+//        int orderTaken = 0;
+//        double value = 0.0;
+//
+//        // First: apply filtering
+//        for (Store s : masterStoreList) {
+//
+//            boolean matchesSearch = s.getStoreName()
+//                    .toLowerCase()
+//                    .contains(currentSearchQuery.toLowerCase());
+//
+//            boolean matchesTab = true;
+//
+//            switch (currentTabFilter) {
+//                case "Not Visited":
+//                    matchesTab = !s.isVisited();
+//                    break;
+//
+//                case "Visited":
+//                    matchesTab = s.isVisited();
+//                    break;
+//
+//                case "Order Taken":
+//                    matchesTab = s.isOrderTaken();
+//                    break;
+//
+//                default:
+//                    matchesTab = true;
+//                    break;
+//            }
+//
+//            if (matchesSearch && matchesTab) {
+//                temp.add(s);
+//            }
+//        }
+//
+//        // Second: calculate stats ONLY from filtered list
+//        for (Store s : temp) {
+//            if (s.isVisited()) visited++;
+//
+//            if (s.isOrderTaken()) {
+//                orderTaken++;
+//                value += s.getOrderValue();
+//            }
+//        }
+//
+//        // Update LiveData (UI updates automatically)
+//        filteredStores.setValue(temp);
+//        totalOrderValue.setValue(value);
+//
+//        visitedCountText.setValue(visited + "/" + temp.size());
+//        orderTakenCountText.setValue(orderTaken + "/" + temp.size());
+//    }
+//
+//}
+
+
+
+
+
+///     below code statuc above code running beofe visited and order taken add
 //    private MyBeatRepository repository;
 //
 //    // Data Holders

@@ -1,5 +1,6 @@
 package com.example.moofrosty.ui.dashboard;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,7 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
@@ -106,6 +109,7 @@ public class DashboardActivity extends BaseActivity{
                     sessionManager.logout();
                     Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
                     startActivity(intent);
+                    finish();
                     return true;
                 }
 
@@ -126,6 +130,56 @@ public class DashboardActivity extends BaseActivity{
             }
             return false;
         });
+
+        setupBackPressHandler();
+    }
+
+    private void setupBackPressHandler() {
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // 1. If Drawer is Open -> Close it
+                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                    return; // Stop here
+                }
+
+                // 2. Check current Tab
+                int selectedItemId = bottomNav.getSelectedItemId();
+
+                if (selectedItemId == R.id.nav_home) {
+                    // We are on Home Tab -> Show Exit Dialog
+                    showExitDialog();
+                } else if (selectedItemId == R.id.nav_beat) {
+                    // We are on Beat Tab -> Go back to Home Tab
+                    bottomNav.setSelectedItemId(R.id.nav_home);
+                } else {
+                    // Fallback for any other future tabs -> Go Home
+                    bottomNav.setSelectedItemId(R.id.nav_home);
+                }
+            }
+        });
+    }
+
+    private void showExitDialog() {
+        // 1. Create the dialog but don't show it yet
+        AlertDialog dialog = new android.app.AlertDialog.Builder(this)
+                 .setTitle("Exit App")
+                 .setMessage("Do you want to exit?")
+                 .setPositiveButton("Yes", (d, which) -> {
+                     finish();
+                 })
+                 .setNegativeButton("No", (d, which) -> {
+                     d.dismiss();
+                 })
+                 .create();
+        dialog.setOnShowListener(d -> {
+            dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
+                    .setTextColor(ContextCompat.getColor(this, R.color.Purple_Color));
+            dialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)
+                    .setTextColor(ContextCompat.getColor(this, R.color.Purple_Color));
+        });
+        dialog.show();
     }
 
     private void updateNavHeader() {
@@ -145,14 +199,14 @@ public class DashboardActivity extends BaseActivity{
         fragmentTransaction.commit();
     }
 
-    @Override
-    public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
+//    @Override
+//    public void onBackPressed() {
+//        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+//            drawerLayout.closeDrawer(GravityCompat.START);
+//        } else {
+//            super.onBackPressed();
+//        }
+//    }
 
 }
 

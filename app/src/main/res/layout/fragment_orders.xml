@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,10 +9,11 @@
     tools:context=".ui.enterstoreorders.ordersdetails.OrdersFragment">
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/tv_header_title"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:text="Orders"
+        android:padding="10dp"
+        android:text="Total Orders"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -22,33 +23,41 @@
         android:id="@+id/tv_order_count"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="12dp"
+        android:layout_toRightOf="@id/tv_header_title"
+        android:paddingRight="16dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:background="@android:color/white"
         tools:text="Last 7 Days (3 orders)"
         android:textColor="#555555"
-        android:textSize="14sp" />
+        android:textSize="18sp" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout_orders"
         android:layout_width="match_parent"
+        android:layout_below="@id/tv_header_title"
         android:layout_height="wrap_content"
         app:tabMode="scrollable"
         app:tabGravity="fill"
         android:background="@android:color/white"
-        app:tabIndicatorColor="@color/colorPrimary"
-        app:tabSelectedTextColor="@color/colorPrimary"
+        app:tabIndicatorColor="@color/Purple_Color"
+        app:tabSelectedTextColor="@color/Purple_Color"
         app:tabTextColor="@color/grey"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_orders"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/tab_layout_orders"
         android:layout_marginTop="8dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_order"/>
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
 
-
-</LinearLayout>
+</RelativeLayout>

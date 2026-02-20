@@ -17,6 +17,7 @@ import java.io.File;
 public class CreateStoreViewModel extends ViewModel {
 
     private CreateStoreRepository repository;
+    public int currentStep = 1;
 
     // Holds all form data
     public CreateStoreRequestModel formData = new CreateStoreRequestModel();
@@ -31,13 +32,26 @@ public class CreateStoreViewModel extends ViewModel {
     public String pinCode = "";
     public String address = "";
 
-    public String selectedCountryId = "";
-    public String selectedStateId = "";
-    public String selectedDistId = "";
-    public String selectedCityId = "";
+    public String selectedrsId = "";
+    public String selectedSecondaryChannelName = "";
+
+    public String selectedCountryId  = "";
+    public String selectedStateId   = "";
+    public String selectedDistId    = "";
+    public String selectedCityId    = "";
     public String selectedBeatId = "";
 
+    // --- NAMES (For UI - Add these!) ---
+
+    public String selectedoutletType;
+    public String selectedCountryName;
+    public String selectedStateName;
+    public String selectedDistName;
+    public String selectedCityName;
+    public String selectedBeatName;
+
     public String selectedDocType = "";
+    public String gstnnumber = "";
     public String docNumber = "";
     public File docImage, boardImage, insideImage;
     public String latLong = "";
@@ -106,6 +120,7 @@ public class CreateStoreViewModel extends ViewModel {
         req.beatId = selectedBeatId;
         req.documentType = selectedDocType;
         req.documentNumber = docNumber;
+        req.gstinNumber = gstnnumber;
         req.latLong = latLong;
         req.uploadDocument = docImage;
         req.uploadShopBoardImage = boardImage;
@@ -114,7 +129,6 @@ public class CreateStoreViewModel extends ViewModel {
         repository.submitStore(token, req, submitResult);
 
     }
-
     public void fetchRss(String token) {
         repository.getRssIdentifiers(token, rssList);
     }

@@ -22,6 +22,8 @@ public class SessionManager {
     private static final String KEY_USER_DETAILS = "user_details";
     private static final String KEY_USER_JSON = "user_json";
 
+    private static final String KEY_USER_ID = "user_id";
+
     // NEW keys (Beat)
     private static final String KEY_BEAT_ID = "beat_id";
     private static final String KEY_BEAT_NAME = "beat_name";
@@ -29,6 +31,10 @@ public class SessionManager {
     private SharedPreferences.Editor editor;
     private Context context;
     private Gson gson;
+
+    // 🔹 NEW KEY (ONLY ADDITION FOR LOCATION FLOW)
+    private static final String KEY_LOCATION_READY = "location_ready";
+    private static final String KEY_IS_PRESENT = "is_present";
 
 //    public SessionManager(Context context) {
 //        pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
@@ -62,6 +68,30 @@ public class SessionManager {
     public void logout() {
         editor.clear();
         editor.apply();
+    }
+
+    public void saveUserId(int userId) {
+        editor.putInt(KEY_USER_ID, userId);
+        editor.apply();
+    }
+
+    public int getUserId() {
+        return pref.getInt(KEY_USER_ID, 0); // 0 = not logged in / invalid
+    }
+
+    public void saveShopId(int shopId) {
+        editor.putInt("shop_id", shopId);
+        editor.apply();
+    }
+
+    // GET
+    public int getShopId() {
+        return pref.getInt("shop_id", 0);
+    }
+
+    // OPTIONAL (on checkout complete)
+    public void clearShopId() {
+        editor.remove("shop_id").apply();
     }
 
 //    public UserDetail getUserDetail() {
@@ -142,25 +172,43 @@ public class SessionManager {
         }
         return "";
     }
+
+    // 🔹 REAL SYSTEM CHECK (UNCHANGED – PERFECT)
     public boolean isLocationAndPermissionsEnabled() {
-        // Check runtime permissions
-        boolean fineLocation = ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED;
-        boolean backgroundLocation = true;
+
+        boolean fineLocation =
+                ContextCompat.checkSelfPermission(context,
+                        android.Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED;
+
+        boolean backgroundLocationGranted = true;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            backgroundLocation = ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_BACKGROUND_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED;
+            backgroundLocationGranted =
+                    ContextCompat.checkSelfPermission(context,
+                            android.Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+                            == PackageManager.PERMISSION_GRANTED;
         }
-        boolean cameraGranted = ContextCompat.checkSelfPermission(context, android.Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_GRANTED;
-        boolean contactsGranted = ContextCompat.checkSelfPermission(context, android.Manifest.permission.READ_CONTACTS)
-                == PackageManager.PERMISSION_GRANTED;
 
-        boolean allPermissionsGranted = fineLocation && backgroundLocation && cameraGranted && contactsGranted;
+        boolean cameraGranted =
+                ContextCompat.checkSelfPermission(context,
+                        android.Manifest.permission.CAMERA)
+                        == PackageManager.PERMISSION_GRANTED;
 
-        // Check GPS status
-        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        boolean gpsEnabled = locationManager != null && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        boolean contactsGranted =
+                ContextCompat.checkSelfPermission(context,
+                        android.Manifest.permission.READ_CONTACTS)
+                        == PackageManager.PERMISSION_GRANTED;
+
+        boolean allPermissionsGranted =
+                fineLocation && backgroundLocationGranted && cameraGranted && contactsGranted;
+
+        LocationManager locationManager =
+                (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+
+        boolean gpsEnabled = false;
+        if (locationManager != null) {
+            gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        }
 
         return allPermissionsGranted && gpsEnabled;
     }
@@ -171,5 +219,29 @@ public class SessionManager {
 
     public String getBeatName() {
         return pref.getString(KEY_BEAT_NAME, "");
+    }
+
+    // 🔹 ONLY UPDATED PART (REQUIRED)
+    public void setLocationAndPermissionsEnabled(boolean enabled) {
+        // This does NOT mean real permission state
+        // Only remembers that user completed permission + GPS flow once
+        editor.putBoolean(KEY_LOCATION_READY, enabled);
+        editor.apply();
+    }
+
+    // --- Get Attendance Status ---
+    //Need  to change in  Will have to change the boolean  Status
+    public boolean isAttendanceMarked() {
+        return pref.getBoolean(KEY_IS_PRESENT, false); // Default to false if not set
+    }
+
+    // --- Save Attendance Status ---
+    public void saveIsPresent(boolean isPresent) {
+        editor.putBoolean(KEY_IS_PRESENT, isPresent);
+        editor.apply();
+    }
+
+    public boolean wasLocationFlowCompleted() {
+        return pref.getBoolean(KEY_LOCATION_READY, false);
     }
 }

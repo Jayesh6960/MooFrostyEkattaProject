@@ -25,6 +25,7 @@ import com.example.moofrosty.R;
 import com.example.moofrosty.ui.cart.CartActivity;
 import com.example.moofrosty.ui.login.LoginActivity;
 import com.example.moofrosty.ui.enterstoreorders.takeorder.TakeOrderActivity;
+import com.example.moofrosty.ui.store.StoreProfileActivity;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -76,14 +77,14 @@ public class ActionPointActivitys extends AppCompatActivity {
         initViews();
 
         ImageButton iconPower = findViewById(R.id.icon_power);
-        iconPower.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ActionPointActivitys.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+//        iconPower.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(ActionPointActivitys.this, StoreProfileActivity.class);
+//                startActivity(intent);
+//                finish();
+//            }
+//        });
 
 //            // Get views from included layout
 //            search_bar_layout = toolbarRoot.findViewById(R.id.search_bar_layout);

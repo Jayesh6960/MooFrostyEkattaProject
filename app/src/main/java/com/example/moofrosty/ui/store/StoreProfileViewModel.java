@@ -69,7 +69,7 @@ public class StoreProfileViewModel extends ViewModel {
         float distanceInMeters = results[0];
 
         // 3. Geofence Check (50 Meters)
-        if (distanceInMeters > 50) {
+        if (distanceInMeters >= 100) {
             // Send Data to View to show Popup
             GeofenceData data = new GeofenceData(distanceInMeters, currentLocation.getLatitude(), currentLocation.getLongitude());
             geofenceAlert.setValue(data);

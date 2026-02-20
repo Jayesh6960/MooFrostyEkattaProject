@@ -16,6 +16,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.moofrosty.data.local.SessionManager;
 import com.example.moofrosty.ui.login.LoginActivity;
 import com.example.moofrosty.R;
 
@@ -151,6 +152,7 @@ public class PermissionActivity extends AppCompatActivity {
         }
     }
 
+
     private void showMandatoryDialog() {
 
         AlertDialog dialog = new AlertDialog.Builder(this)
@@ -170,5 +172,14 @@ public class PermissionActivity extends AppCompatActivity {
         Toast.makeText(this, "All permissions granted", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(this, LoginActivity.class));
         finish();
+    } else {
+        Toast.makeText(this,
+                "Please allow all permissions and enable GPS",
+                Toast.LENGTH_LONG).show();
     }
 }
+
+
+}
+
+
