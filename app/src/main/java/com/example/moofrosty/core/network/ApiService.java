@@ -128,41 +128,72 @@
         Call<StoreListResponse> getStoreList(
                 @Header("Authorization") String token,
                 @Query("date") String date,
-                @Query("Storelist") boolean Storelist
+//                @Query("Storelist") boolean Storelist
+                @Query("page") String page
         );
 
         @GET("api/admin/get-store-list")
         Call<StoreListResponses> getStoreList(
                 @Header("Authorization") String token,
                 @Query("beatId") int beatId,
-                @Query("Storelist") boolean storeList
+                @Query("page") String page // Pass "bit_wise_all" here
         );
 
         @GET("api/admin/get-store-list")
         Call<StoreListWrapperResponse> getStoreListVisited(
                 @Header("Authorization") String token,
-                @Query("logDate") String logDate,
-                @Query("visited") String visitedStatus, // "yes"
-                @Query("Storevisited") boolean storeVisited
+                @Query("date") String date, // Changed from logDate to date
+                @Query("page") String page  // Pass "visited_shop" here
         );
 
-        // 3. NOT VISITED STORES (Direct List - confirmed via your JSON)
+        // 3. NOT VISITED STORES
         @GET("api/admin/get-store-list")
         Call<StoreListResponses> getStoreListNotVisited(
                 @Header("Authorization") String token,
-                @Query("logDate") String logDate,
-                @Query("visited") String visitedStatus, // "no"
-                @Query("Storevisited") boolean storeVisited
+                @Query("date") String date, // Changed from logDate to date
+                @Query("page") String page  // Pass "not_visited_shop" here
         );
 
-        // 4. ORDER TAKEN STORES (Direct List - confirmed via your JSON)
+        // 4. ORDER TAKEN STORES
         @GET("api/admin/get-store-list")
         Call<StoreListResponses> getStoreListByOrder(
                 @Header("Authorization") String token,
-                @Query("logDate") String logDate,
-                @Query("order_taken") String orderTaken,
-                @Query("Storeorder") boolean storeOrder
+                @Query("date") String date, // Changed from logDate to date
+                @Query("page") String page  // Pass "order_taken_shop" here
         );
+
+//        @GET("api/admin/get-store-list")
+//        Call<StoreListResponses> getStoreList(
+//                @Header("Authorization") String token,
+//                @Query("beatId") int beatId,
+//                @Query("Storelist") boolean storeList
+//        );
+//
+//        @GET("api/admin/get-store-list")
+//        Call<StoreListWrapperResponse> getStoreListVisited(
+//                @Header("Authorization") String token,
+//                @Query("logDate") String logDate,
+//                @Query("visited") String visitedStatus, // "yes"
+//                @Query("Storevisited") boolean storeVisited
+//        );
+//
+//        // 3. NOT VISITED STORES (Direct List - confirmed via your JSON)
+//        @GET("api/admin/get-store-list")
+//        Call<StoreListResponses> getStoreListNotVisited(
+//                @Header("Authorization") String token,
+//                @Query("logDate") String logDate,
+//                @Query("visited") String visitedStatus, // "no"
+//                @Query("Storevisited") boolean storeVisited
+//        );
+//
+//        // 4. ORDER TAKEN STORES (Direct List - confirmed via your JSON)
+//        @GET("api/admin/get-store-list")
+//        Call<StoreListResponses> getStoreListByOrder(
+//                @Header("Authorization") String token,
+//                @Query("logDate") String logDate,
+//                @Query("order_taken") String orderTaken,
+//                @Query("Storeorder") boolean storeOrder
+//        );
 
         @GET("api/admin/user-detail")
         Call<UserDetailResponse> getUserDetail(@Header("Authorization") String token);

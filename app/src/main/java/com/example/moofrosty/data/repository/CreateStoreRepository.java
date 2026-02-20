@@ -130,7 +130,7 @@
             Log.d("addstore", "File Board: " + (req.uploadShopBoardImage != null ? req.uploadShopBoardImage.getName() : "NULL"));
             Log.d("addstore", "File Inside: " + (req.uploadShopInsideImage != null ? req.uploadShopInsideImage.getName() : "NULL"));
             Log.d("addstore", "---------------------------------------------");
-
+            Log.d("addstore", liveData.toString());
             // Create Text Parts safely
             RequestBody rbOwner = createPart(req.ownerFullName);
             RequestBody rbEmail = createPart(req.ownerEmail);

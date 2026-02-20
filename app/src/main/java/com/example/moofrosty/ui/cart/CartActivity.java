@@ -160,7 +160,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.CartI
                     case ERROR:
                         progressBar.setVisibility(View.GONE);
                         btnCheckout.setEnabled(true);
-                        Toast.makeText(this, resource.message, Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, "Something Error", Toast.LENGTH_LONG).show();
                         break;
                 }
             }

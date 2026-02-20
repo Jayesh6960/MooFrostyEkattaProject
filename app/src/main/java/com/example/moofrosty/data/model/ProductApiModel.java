@@ -116,11 +116,11 @@ public class ProductApiModel {
 
     // --- String Getters for UI (3 Decimals) ---
     public String getMrp() {
-        return String.format(java.util.Locale.US, "%.3f", getMrpDouble());
+        return String.format(java.util.Locale.US, "%.2f", getMrpDouble());
     }
 
     public String getSellingPrice() {
-        return String.format(java.util.Locale.US, "%.3f", getSellingPriceDouble());
+        return String.format(java.util.Locale.US, "%.2f", getSellingPriceDouble());
     }
 
     public String getMargin() {
@@ -140,7 +140,7 @@ public class ProductApiModel {
     }
 
     public String getCapacity() {
-        // Now maps to the root "productWeight"
+        // Now maps to the root "productWeight".................2
         return productWeight != null ? productWeight : "";
     }
 
