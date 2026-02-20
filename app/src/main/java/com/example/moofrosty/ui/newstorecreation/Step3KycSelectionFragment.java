@@ -47,6 +47,8 @@ public class Step3KycSelectionFragment extends Fragment {
             else if (type.equals("Aadhar Card")) radioGroup.check(R.id.rb_aadhar);
             else if (type.equals("GST Certificate")) radioGroup.check(R.id.rb_gst);
             else if (type.equals("FSSAI License")) radioGroup.check(R.id.rb_fssai);
+            else if (type.equals("PAN Card")) radioGroup.check(R.id.rb_pan);
+            else if (type.equals("Drug License")) radioGroup.check(R.id.rb_druglicense);
         }
 
 

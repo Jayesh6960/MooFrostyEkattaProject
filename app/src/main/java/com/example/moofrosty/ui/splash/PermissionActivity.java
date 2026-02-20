@@ -168,16 +168,8 @@ public class PermissionActivity extends AppCompatActivity {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE)
                 .setTextColor(ContextCompat.getColor(this, R.color.bottom_nav_color));
     }
-//    private void goNext() {
-//        Toast.makeText(this, "All permissions granted", Toast.LENGTH_SHORT).show();
-//        startActivity(new Intent(this, LoginActivity.class));
-//        finish();
-//    }
-private void goNext() {
-
-    SessionManager sessionManager = new SessionManager(this);
-
-    if (sessionManager.isLocationAndPermissionsEnabled()) {
+    private void goNext() {
+        Toast.makeText(this, "All permissions granted", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(this, LoginActivity.class));
         finish();
     } else {
