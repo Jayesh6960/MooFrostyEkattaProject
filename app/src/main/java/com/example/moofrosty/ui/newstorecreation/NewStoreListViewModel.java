@@ -24,6 +24,7 @@ public class NewStoreListViewModel extends ViewModel {
     private Calendar currentCalendar = Calendar.getInstance();
     private String token = "";
     private boolean Storelist=true;
+    private String page = "own_added";
 
 
     public NewStoreListViewModel() {
@@ -59,7 +60,7 @@ public class NewStoreListViewModel extends ViewModel {
         selectedDate.setValue(formattedDate);
 
         if (!token.isEmpty()) {
-            repository.fetchStoresByDate(token, formattedDate, Storelist, storeList);
+            repository.fetchStoresByDate(token, formattedDate, page, storeList);
         }
     }
 //    private void updateDate(Date date) {
