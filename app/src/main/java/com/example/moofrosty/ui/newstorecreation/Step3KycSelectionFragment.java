@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.example.moofrosty.R;
 import com.google.android.material.button.MaterialButton;
-
+//Latest Date changes 21-02-2026
 public class Step3KycSelectionFragment extends Fragment {
 
     private CreateStoreViewModel viewModel;
@@ -46,7 +46,7 @@ public class Step3KycSelectionFragment extends Fragment {
             String type = viewModel.selectedDocType;
             Log.d("Selectedtypes", "selctedtypes"+type);
             if (type.equals("Udyam Aadhaar")) radioGroup.check(R.id.rb_udyam);
-            else if (type.equals("Aadhaar  Card")) radioGroup.check(R.id.rb_aadhar);
+            else if (type.equals("Aadhaar Card")) radioGroup.check(R.id.rb_aadhar);
 //            else if (type.equals("GST  ")) radioGroup.check(R.id.rb_gst);
             else if (type.equals("FSSAI License")) radioGroup.check(R.id.rb_fssai);
             else if (type.equals("PAN Card")) radioGroup.check(R.id.rb_pan);
