@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,7 @@ public class Step3KycSelectionFragment extends Fragment {
         // --- 🔥 FIX: RESTORE SELECTION ---
         if (viewModel.selectedDocType != null) {
             String type = viewModel.selectedDocType;
+            Log.d("Selectedtypes", "selctedtypes"+type);
             if (type.equals("Udyam Aadhaar")) radioGroup.check(R.id.rb_udyam);
             else if (type.equals("Aadhaar Card")) radioGroup.check(R.id.rb_aadhar);
 //            else if (type.equals("GST  ")) radioGroup.check(R.id.rb_gst);
@@ -59,6 +61,7 @@ public class Step3KycSelectionFragment extends Fragment {
             }
             RadioButton rb = view.findViewById(selectedId);
             viewModel.selectedDocType = rb.getText().toString();
+            Log.d("selectedDocType", "onViewCreated: "+viewModel.selectedDocType);
             ((CreateStoreWizardActivity) requireActivity()).nextStep();
         });
     }
