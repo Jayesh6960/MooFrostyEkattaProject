@@ -71,7 +71,7 @@ public class StoreProfileActivity extends AppCompatActivity {
     TextView tvTitle;
     TextView tvDate ;
 
-//    // Permissions Launcher
+    //    // Permissions Launcher
 //    private final ActivityResultLauncher<String[]> locationPermissionRequest =
 //            registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result -> {
 //                Boolean fineLocationGranted = result.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false);
@@ -82,32 +82,33 @@ public class StoreProfileActivity extends AppCompatActivity {
 //                    Toast.makeText(this, "Location permission is required to enter store", Toast.LENGTH_SHORT).show();
 //                }
 //            });
-            // 1. Permission Launcher
-            private final ActivityResultLauncher<String[]> locationPermissionRequest =
-                    registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result -> {
-                        Boolean fineLocationGranted = result.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false);
-                        Boolean coarseLocationGranted = result.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false);
+    // 1. Permission Launcher
+    private final ActivityResultLauncher<String[]> locationPermissionRequest =
+            registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result -> {
+                Boolean fineLocationGranted = result.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false);
+                Boolean coarseLocationGranted = result.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false);
 
-                        if (fineLocationGranted != null && fineLocationGranted) {
-                            // Permission Granted, NOW check GPS
-                            checkGpsAndProceed();
-                        } else {
-                            Toast.makeText(this, "Location permission is required to enter store", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                if (fineLocationGranted != null && fineLocationGranted) {
+                    // Permission Granted, NOW check GPS
+                    checkGpsAndProceed();
+                } else {
+                    Toast.makeText(this, "Location permission is required to enter store", Toast.LENGTH_SHORT).show();
+                }
+            });
 
-                // 2. GPS Resolution Launcher (Handles the "Turn on Location" popup result)
-                private final ActivityResultLauncher<IntentSenderRequest> gpsResolutionLauncher =
-                        registerForActivityResult(new ActivityResultContracts.StartIntentSenderForResult(), result -> {
-                            if (result.getResultCode() == RESULT_OK) {
-                                // User clicked "OK" to turn on GPS
-                                fetchLocationAndProceed();
-                            } else {
-                                // User clicked "No Thanks"
-                                Toast.makeText(this, "GPS is required to check-in.", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+    // 2. GPS Resolution Launcher (Handles the "Turn on Location" popup result)
+    private final ActivityResultLauncher<IntentSenderRequest> gpsResolutionLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartIntentSenderForResult(), result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    // User clicked "OK" to turn on GPS
+                    fetchLocationAndProceed();
+                } else {
+                    // User clicked "No Thanks"
+                    Toast.makeText(this, "GPS is required to check-in.", Toast.LENGTH_SHORT).show();
+                }
+            });
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -159,34 +160,34 @@ public class StoreProfileActivity extends AppCompatActivity {
         // 3. Init Views
 //         btnBack = findViewById(R.id.btn_back);
 //         tvTitle = findViewById(R.id.tv_toolbar_title);
-         tabLayout = findViewById(R.id.tab_layout);
-         viewPager = findViewById(R.id.view_pager);
-         btnEnterStore = findViewById(R.id.btn_enter_store);
+        tabLayout = findViewById(R.id.tab_layout);
+        viewPager = findViewById(R.id.view_pager);
+        btnEnterStore = findViewById(R.id.btn_enter_store);
         sessionManager = new SessionManager(this);
 
 
 
 
-//        // 5. Setup Toolbar
-//        if (currentStore != null) {
-//            tvTitle.setText(currentStore.getStoreName() + " - HULI");
-//        }
-//        btnBack.setOnClickListener(v -> finish());
-//
-//        // 6. Setup Tabs & ViewPager
-//        StorePagerAdapter adapter = new StorePagerAdapter(this);
-//        viewPager.setAdapter(adapter);
-//
-//        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
-//            if (position == 0) tab.setText("Store Profile");
-//            else tab.setText("Order History");
-//        }).attach();
-//
-//            // 7. Enter Store Button Logic
-//            btnEnterStore.setOnClickListener(v -> {
-//                Toast.makeText(this, "Entering Store: " + currentStore.getStoreName(), Toast.LENGTH_SHORT).show();
-//                // Navigate to Order Taking screen or similar
-//            });
+        // 5. Setup Toolbar
+        if (currentStore != null) {
+            tvTitle.setText(currentStore.getStoreName() + " - HULI");
+        }
+        btnBack.setOnClickListener(v -> finish());
+
+        // 6. Setup Tabs & ViewPager
+        StorePagerAdapter adapter = new StorePagerAdapter(this);
+        viewPager.setAdapter(adapter);
+
+        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+            if (position == 0) tab.setText("Store Profile");
+            else tab.setText("Order History");
+        }).attach();
+
+            // 7. Enter Store Button Logic
+            btnEnterStore.setOnClickListener(v -> {
+                Toast.makeText(this, "Entering Store: " + currentStore.getStoreName(), Toast.LENGTH_SHORT).show();
+                // Navigate to Order Taking screen or similar
+            });
 
         // 3. Init Views
         setupViews();
@@ -287,7 +288,7 @@ public class StoreProfileActivity extends AppCompatActivity {
             }
         });
     }
-//Temporary  Stop due to testing on the sunday will change after the testing
+    //Temporary  Stop due to testing on the sunday will change after the testing
     @SuppressLint("MissingPermission")
     private void fetchLocationAndProceed() {
         progressDialog.setMessage("Fetching Location...");
@@ -310,10 +311,10 @@ public class StoreProfileActivity extends AppCompatActivity {
                     Location loc = locationResult.getLastLocation();
                     // --- CHECK DATA ---
                     // 1. Attendance Check (Ideally get this from SharedPrefs/Session)
-                   //  boolean isAttendanceMarked = sessionManager.isAttendanceMarked();
-          //          boolean isAttendanceMarked = true; // Hardcoded for now per your request
+                    //  boolean isAttendanceMarked = sessionManager.isAttendanceMarked();
+                    //          boolean isAttendanceMarked = true; // Hardcoded for now per your request
                     boolean isAttendanceMarked = sessionManager.isAttendanceMarked();
-                   // boolean isAttendanceMarked = attendanceStatusResponse.isPresent();
+                    // boolean isAttendanceMarked = attendanceStatusResponse.isPresent();
                     Log.d("ispresent","ispresent"+isAttendanceMarked);
 
                     if(isAttendanceMarked){

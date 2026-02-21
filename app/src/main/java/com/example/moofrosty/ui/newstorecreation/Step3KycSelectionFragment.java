@@ -44,13 +44,12 @@ public class Step3KycSelectionFragment extends Fragment {
         if (viewModel.selectedDocType != null) {
             String type = viewModel.selectedDocType;
             if (type.equals("Udyam Aadhar")) radioGroup.check(R.id.rb_udyam);
-            else if (type.equals("Aadhar Card")) radioGroup.check(R.id.rb_aadhar);
-            else if (type.equals("GST Certificate")) radioGroup.check(R.id.rb_gst);
+            else if (type.equals(" Personal Aadhaar ")) radioGroup.check(R.id.rb_aadhar);
+            else if (type.equals("GST  ")) radioGroup.check(R.id.rb_gst);
             else if (type.equals("FSSAI License")) radioGroup.check(R.id.rb_fssai);
             else if (type.equals("PAN Card")) radioGroup.check(R.id.rb_pan);
             else if (type.equals("Drug License")) radioGroup.check(R.id.rb_druglicense);
         }
-
 
         btnNext.setOnClickListener(v -> {
             int selectedId = radioGroup.getCheckedRadioButtonId();
