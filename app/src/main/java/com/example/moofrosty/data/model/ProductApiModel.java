@@ -45,6 +45,30 @@ public class ProductApiModel {
     @SerializedName("productType")
     public String productType;
 
+    @SerializedName("gstPercent")
+    public String gstPercent;
+
+    @SerializedName("cgst")
+    public String cgst;
+
+    @SerializedName("sgst")
+    public String sgst;
+
+    @SerializedName("basicAmount")
+    public String basicAmount;
+
+    @SerializedName("hsn")
+    public String hsn;
+
+    @SerializedName("caseQty")
+    public String caseQty;
+
+    @SerializedName("unit")
+    public String unit;
+
+    @SerializedName("quantity")
+    public String quantity;
+
     @SerializedName("status")
     public String status;
 
@@ -103,15 +127,25 @@ public class ProductApiModel {
         return totalRemainingQuantity;
     }
 
+//    public int getCaseSizeInt() {
+//        if (batches != null && !batches.isEmpty()) {
+//            try {
+//                String unitStr = batches.get(0).unit != null ? batches.get(0).unit.replaceAll("[^0-9]", "") : "1";
+//                if (unitStr.isEmpty()) return 1;
+//                return Integer.parseInt(unitStr);
+//            } catch (Exception e) { return 1; }
+//        }
+//        return 1;
+//    }
+
     public int getCaseSizeInt() {
-        if (batches != null && !batches.isEmpty()) {
-            try {
-                String unitStr = batches.get(0).unit != null ? batches.get(0).unit.replaceAll("[^0-9]", "") : "1";
-                if (unitStr.isEmpty()) return 1;
-                return Integer.parseInt(unitStr);
-            } catch (Exception e) { return 1; }
+        try {
+            String unitStr = unit != null ? unit.replaceAll("[^0-9]", "") : "1";
+            if (unitStr.isEmpty()) return 1;
+            return Integer.parseInt(unitStr);
+        } catch (Exception e) {
+            return 1;
         }
-        return 1;
     }
 
     // --- String Getters for UI (3 Decimals) ---
@@ -130,6 +164,10 @@ public class ProductApiModel {
 
     public String getStock() {
         return String.valueOf(getStockInt());
+    }
+
+    public String getRemainStockStock() {
+        return String.valueOf(totalRemainingQuantity);
     }
 
     public String getUnit() {
