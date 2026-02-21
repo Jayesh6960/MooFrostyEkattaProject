@@ -80,7 +80,8 @@ public class CartRepository {
             //    int qty = item.getTotalUnits();
                 if ("case".equalsIgnoreCase(item.getProduct().productType)) {
                     // If Product Type is "case", send the number of CASES
-                    qty = item.getCaseQuantity();
+//                    qty = item.getCaseQuantity();
+                    qty = item.getTotalUnits();
                 } else {
                     // If Product Type is "unit" (or others), send the TOTAL STOCK UNITS
                     // (This covers unitQuantity + any converted cases if applicable)

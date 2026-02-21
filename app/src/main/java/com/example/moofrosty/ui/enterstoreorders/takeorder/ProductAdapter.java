@@ -137,7 +137,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             tvMrp.setText("₹" + product.getMrp()); // 3 decimal from model
             tvRate.setText("₹" + product.getSellingPrice()); // 3 decimal from model
             tvMargin.setText(product.getMargin() +"%");
-            tvStock.setText(product.getStock());
+            tvStock.setText(product.getRemainStockStock());
             tvCapacity.setText(product.productWeight);
 
             int caseSize = product.getCaseSizeInt();
