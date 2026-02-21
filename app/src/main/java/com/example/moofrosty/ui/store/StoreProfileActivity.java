@@ -168,26 +168,26 @@ public class StoreProfileActivity extends AppCompatActivity {
 
 
 
-        // 5. Setup Toolbar
-        if (currentStore != null) {
-            tvTitle.setText(currentStore.getStoreName() + " - HULI");
-        }
-        btnBack.setOnClickListener(v -> finish());
-
-        // 6. Setup Tabs & ViewPager
-        StorePagerAdapter adapter = new StorePagerAdapter(this);
-        viewPager.setAdapter(adapter);
-
-        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
-            if (position == 0) tab.setText("Store Profile");
-            else tab.setText("Order History");
-        }).attach();
-
-            // 7. Enter Store Button Logic
-            btnEnterStore.setOnClickListener(v -> {
-                Toast.makeText(this, "Entering Store: " + currentStore.getStoreName(), Toast.LENGTH_SHORT).show();
-                // Navigate to Order Taking screen or similar
-            });
+//        // 5. Setup Toolbar
+//        if (currentStore != null) {
+//            tvTitle.setText(currentStore.getStoreName() + " - HULI");
+//        }
+//        btnBack.setOnClickListener(v -> finish());
+//
+//        // 6. Setup Tabs & ViewPager
+//        StorePagerAdapter adapter = new StorePagerAdapter(this);
+//        viewPager.setAdapter(adapter);
+//
+//        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+//            if (position == 0) tab.setText("Store Profile");
+//            else tab.setText("Order History");
+//        }).attach();
+//
+//            // 7. Enter Store Button Logic
+//            btnEnterStore.setOnClickListener(v -> {
+//                Toast.makeText(this, "Entering Store: " + currentStore.getStoreName(), Toast.LENGTH_SHORT).show();
+//                // Navigate to Order Taking screen or similar
+//            });
 
         // 3. Init Views
         setupViews();
