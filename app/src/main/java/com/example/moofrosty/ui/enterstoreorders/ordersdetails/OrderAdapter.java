@@ -69,13 +69,11 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
         @SuppressLint("SetTextI18n")
         public void bind(OrderHistoryResponse.OrderData order) {
-            // 1. Date (Parse 2026-01-27T00...)
+            // 1. Date
             String dateStr = order.checkoutDate;
             try {
                 if(dateStr != null && dateStr.length() >= 10) {
-                    // Take first 10 chars: "2026-01-27"
-                    String shortDate = dateStr.substring(0, 10);
-                    tvOrderDate.setText(shortDate);
+                    tvOrderDate.setText(dateStr.substring(0, 10));
                 } else {
                     tvOrderDate.setText(dateStr);
                 }
@@ -83,25 +81,63 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                 tvOrderDate.setText(dateStr);
             }
 
-            // 2. Status (Hardcoded or check logic)
-           // tvOrderStatus.setText("Billed");
+            // 2. Status
             if (order.status == 1) {
                 tvOrderStatus.setText("Billed");
-                tvOrderStatus.setTextColor(Color.parseColor("#0D6EfD")); // Green
-                tvOrderStatus.setBackgroundResource(R.drawable.tab_unselected_bg); // Ensure you have a bg drawable or remove this line
+                tvOrderStatus.setTextColor(Color.parseColor("#0D6EfD"));
+                tvOrderStatus.setBackgroundResource(R.drawable.tab_unselected_bg);
             } else {
                 tvOrderStatus.setText("Order Placed");
-                tvOrderStatus.setTextColor(Color.parseColor("#0D6EfD")); // Orange
-                tvOrderStatus.setBackgroundResource(R.drawable.tab_unselected_bg); // Ensure you have a bg drawable or remove this line
+                tvOrderStatus.setTextColor(Color.parseColor("#0D6EfD"));
+                tvOrderStatus.setBackgroundResource(R.drawable.tab_unselected_bg);
             }
 
-            // 3. Order Value
-            tvOrderValue.setText(String.format(Locale.getDefault(), ": ₹%.2f", order.totalAmount));
-
-            // 4. Items Billed (Using total_quantity from API)
-            tvItemsBilled.setText(": " + order.totalQuantity);
+            // [HIGHLIGHT] 3. Order Value & Items Billed Using OrderSummary
+            if (order.orderSummary != null) {
+                tvOrderValue.setText(String.format(Locale.getDefault(), ": ₹%.2f", order.orderSummary.totalFinalAmount));
+                tvItemsBilled.setText(": " + order.orderSummary.totalUnits);
+            } else {
+                tvOrderValue.setText(": ₹0.00");
+                tvItemsBilled.setText(": 0");
+            }
         }
     }
+
+//        @SuppressLint("SetTextI18n")
+//        public void bind(OrderHistoryResponse.OrderData order) {
+//            // 1. Date (Parse 2026-01-27T00...)
+//            String dateStr = order.checkoutDate;
+//            try {
+//                if(dateStr != null && dateStr.length() >= 10) {
+//                    // Take first 10 chars: "2026-01-27"
+//                    String shortDate = dateStr.substring(0, 10);
+//                    tvOrderDate.setText(shortDate);
+//                } else {
+//                    tvOrderDate.setText(dateStr);
+//                }
+//            } catch (Exception e) {
+//                tvOrderDate.setText(dateStr);
+//            }
+//
+//            // 2. Status (Hardcoded or check logic)
+//           // tvOrderStatus.setText("Billed");
+//            if (order.status == 1) {
+//                tvOrderStatus.setText("Billed");
+//                tvOrderStatus.setTextColor(Color.parseColor("#0D6EfD")); // Green
+//                tvOrderStatus.setBackgroundResource(R.drawable.tab_unselected_bg); // Ensure you have a bg drawable or remove this line
+//            } else {
+//                tvOrderStatus.setText("Order Placed");
+//                tvOrderStatus.setTextColor(Color.parseColor("#0D6EfD")); // Orange
+//                tvOrderStatus.setBackgroundResource(R.drawable.tab_unselected_bg); // Ensure you have a bg drawable or remove this line
+//            }
+//
+//            // 3. Order Value
+//            tvOrderValue.setText(String.format(Locale.getDefault(), ": ₹%.2f", order.totalAmount));
+//
+//            // 4. Items Billed (Using total_quantity from API)
+//            tvItemsBilled.setText(": " + order.totalQuantity);
+//        }
+//    }
 
 }
 

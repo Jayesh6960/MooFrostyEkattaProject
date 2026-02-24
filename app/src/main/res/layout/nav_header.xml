@@ -42,14 +42,15 @@
             android:layout_height="wrap_content"
             android:text="800049733"
             android:textColor="@color/white"
-            android:layout_marginTop="4dp"/>
+            android:layout_marginTop="8dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Marketing Executive"
+            android:text="SalesPerson Executive"
+            android:layout_marginTop="8dp"
             android:textColor="@color/white"
-            android:textSize="12sp"/>
+            android:textSize="14sp"/>
     </LinearLayout>
 
 </LinearLayout>
