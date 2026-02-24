@@ -25,13 +25,15 @@ import com.example.moofrosty.R;
 import com.example.moofrosty.core.network.Resource;
 import com.example.moofrosty.core.utils.NetworkUtil;
 import com.example.moofrosty.data.local.SessionManager;
+import com.example.moofrosty.databinding.DialogStoreDetailsBinding;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.File;
-
+//Latest Changes Date 24_02_2026
+// GST  nonMandatory
 public class Step4DocUploadFragment extends Fragment {
 
     private CreateStoreViewModel viewModel;
@@ -90,6 +92,7 @@ public class Step4DocUploadFragment extends Fragment {
         // ---------- RESTORE DATA ----------
         if (viewModel.gstnnumber != null){
             etGstnNumber.setText(viewModel.gstnnumber);
+
         }
 
         if (viewModel.docNumber != null) {
@@ -106,16 +109,7 @@ public class Step4DocUploadFragment extends Fragment {
             imgInside.setImageURI(Uri.fromFile(viewModel.insideImage));
         }
 
-        etGstnNumber.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                viewModel.gstnnumber = s.toString();
-                gstnNumber.setError(null); // clear error while typing
-            }
-        });
 
 //        etDocNum.addTextChangedListener(new TextWatcher() {
 //            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -141,6 +135,7 @@ public class Step4DocUploadFragment extends Fragment {
             }
         });
 
+        Log.d("viewModel.gstnnumber", "onViewCreated: "+viewModel.gstnnumber);
 
         // ---------- SUBMIT ----------
 //        btnSubmit.setOnClickListener(v -> {
@@ -197,14 +192,7 @@ public class Step4DocUploadFragment extends Fragment {
 
             // Clear previous errors
             tilDoc.setError(null);
-            gstnNumber.setError(null);
 
-            // 1️⃣ GSTN number validation
-            if (etGstnNumber.getText() == null ||
-                    etGstnNumber.getText().toString().trim().isEmpty()) {
-                gstnNumber.setError("GSTN number is required");
-                return;
-            }
 
             // 2️⃣ Document number validation
 //            if (etDocNum.getText() == null ||
@@ -223,6 +211,7 @@ public class Step4DocUploadFragment extends Fragment {
 
             // Save values (backend unchanged)
             viewModel.gstnnumber = etGstnNumber.getText().toString().trim();
+            Log.d("Viewmodle.gst", "Viewmodle.gst"+viewModel.gstnnumber);
             viewModel.docNumber = etDocNum.getText().toString().trim();
 
             // 3️⃣ Image validation
