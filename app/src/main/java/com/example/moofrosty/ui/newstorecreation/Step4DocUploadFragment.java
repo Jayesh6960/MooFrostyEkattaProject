@@ -34,6 +34,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.io.File;
 //Latest Changes Date 24_02_2026
 // GST  nonMandatory
+// gst change add
 public class Step4DocUploadFragment extends Fragment {
 
     private CreateStoreViewModel viewModel;
