@@ -118,33 +118,62 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
     private void setupOrderInfo() {
         TextView tvBillAmount = findViewById(R.id.tv_bill_amount);
-        TextView tvSalespersonTitle = findViewById(R.id.tv_salesperson_title); // ID for "Salesperson Orders"
-        TextView tvStatusText = findViewById(R.id.tv_status_text); // ID for "Billed" text
+        TextView tvSalespersonTitle = findViewById(R.id.tv_salesperson_title);
+        TextView tvStatusText = findViewById(R.id.tv_status_text);
 
-        // 1. Bill Amount (3 Decimals)
-        tvBillAmount.setText(String.format(Locale.US, ": ₹%.2f", currentOrder.totalAmount));
+        // [HIGHLIGHT] Fetch total amount safely from orderSummary
+        if(currentOrder.orderSummary != null) {
+            tvBillAmount.setText(String.format(Locale.US, ": ₹%.2f", currentOrder.orderSummary.totalFinalAmount));
+        }
 
-        // 2. Salesperson Name
-        if (currentOrder.user != null) {
-            // Example: "Rahul Sharma Orders"
-            String title = "Salesperson "+currentOrder.user.getFullName() + " Orders";
-            // Assuming you have a TextView for the title in your layout
+        // [HIGHLIGHT] JSON replaced user with shop logic
+        if (currentOrder.shop != null) {
+//            String title = currentOrder.shop.getOwnerName() + " Orders";
+            String title = "SalesPerson Orders";
             tvSalespersonTitle.setText(title);
         }
 
-        // 3. Status Logic (0=Placed, 1=Billed)
+        // Status Logic
         if (currentOrder.status == 1) {
             tvStatusText.setText("Billed");
-            tvStatusText.setTextColor(getColor(R.color.textGreen)); // Define green in colors.xml
-            invoicenolayout.setVisibility(View.VISIBLE);
-            tvbilledno.setText(": "+currentOrder.getinvoiceId());
             tvStatusText.setTextColor(getColor(R.color.black));
-            // Set icon tint if needed programmatically or via XML
+            invoicenolayout.setVisibility(View.VISIBLE);
+            tvbilledno.setText(": " + currentOrder.getinvoiceId());
         } else {
             tvStatusText.setText("Order Placed");
-            tvStatusText.setTextColor(getColor(R.color.infoBarBlue)); // Define blue/orange
+            tvStatusText.setTextColor(getColor(R.color.infoBarBlue));
         }
     }
+
+//    private void setupOrderInfo() {
+//        TextView tvBillAmount = findViewById(R.id.tv_bill_amount);
+//        TextView tvSalespersonTitle = findViewById(R.id.tv_salesperson_title); // ID for "Salesperson Orders"
+//        TextView tvStatusText = findViewById(R.id.tv_status_text); // ID for "Billed" text
+//
+//        // 1. Bill Amount (3 Decimals)
+//        tvBillAmount.setText(String.format(Locale.US, ": ₹%.2f", currentOrder.totalAmount));
+//
+//        // 2. Salesperson Name
+//        if (currentOrder.user != null) {
+//            // Example: "Rahul Sharma Orders"
+//            String title = "Salesperson "+currentOrder.user.getFullName() + " Orders";
+//            // Assuming you have a TextView for the title in your layout
+//            tvSalespersonTitle.setText(title);
+//        }
+//
+//        // 3. Status Logic (0=Placed, 1=Billed)
+//        if (currentOrder.status == 1) {
+//            tvStatusText.setText("Billed");
+//            tvStatusText.setTextColor(getColor(R.color.textGreen)); // Define green in colors.xml
+//            invoicenolayout.setVisibility(View.VISIBLE);
+//            tvbilledno.setText(": "+currentOrder.getinvoiceId());
+//            tvStatusText.setTextColor(getColor(R.color.black));
+//            // Set icon tint if needed programmatically or via XML
+//        } else {
+//            tvStatusText.setText("Order Placed");
+//            tvStatusText.setTextColor(getColor(R.color.infoBarBlue)); // Define blue/orange
+//        }
+//    }
 }
 
 

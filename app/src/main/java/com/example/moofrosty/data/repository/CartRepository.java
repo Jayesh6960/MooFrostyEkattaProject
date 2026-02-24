@@ -300,39 +300,65 @@ public class CartRepository {
     // order list in order frag that code here
 
     // --- FETCH ORDER HISTORY ---
-    public void getOrderHistory(String token, MutableLiveData<Resource<OrderHistoryResponse>> liveData) {
+
+    public void getOrderHistory(String token, int shopId, MutableLiveData<Resource<OrderHistoryResponse>> liveData) {
         liveData.setValue(Resource.loading(null));
 
         String authToken = token.startsWith("Bearer ") ? token : "Bearer " + token;
 
-        Log.d(TAG, "Fetching Orders with Token: " + authToken); // LOG 1
+        Log.d(TAG, "Fetching Orders with Token: " + authToken + " and ShopId: " + shopId);
 
-        apiService.getOrderHistory(authToken).enqueue(new Callback<OrderHistoryResponse>() {
+        // [HIGHLIGHT] Pass shopId to apiService
+        apiService.getOrderHistory(authToken, shopId).enqueue(new Callback<OrderHistoryResponse>() {
             @Override
             public void onResponse(Call<OrderHistoryResponse> call, Response<OrderHistoryResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     OrderHistoryResponse resp = response.body();
-
-                    // LOG 2: Check data size
-                    if(resp.data != null) {
-                        Log.d(TAG, "Order List Size: " + resp.data.size());
-                    } else {
-                        Log.e(TAG, "Order List is NULL");
-                    }
                     liveData.setValue(Resource.success(resp));
                 } else {
-                    Log.e(TAG, "API Error Code: " + response.code());
                     liveData.setValue(Resource.error("Error: " + response.code(), null));
                 }
             }
 
             @Override
             public void onFailure(Call<OrderHistoryResponse> call, Throwable t) {
-                Log.e(TAG, "Network Failure: " + t.getMessage());
                 liveData.setValue(Resource.error("Network Error: " + t.getMessage(), null));
             }
         });
     }
+//    public void getOrderHistory(String token, MutableLiveData<Resource<OrderHistoryResponse>> liveData) {
+//        liveData.setValue(Resource.loading(null));
+//
+//        String authToken = token.startsWith("Bearer ") ? token : "Bearer " + token;
+//
+//        Log.d(TAG, "Fetching Orders with Token: " + authToken); // LOG 1
+//
+//        apiService.getOrderHistory(authToken).enqueue(new Callback<OrderHistoryResponse>() {
+//            @Override
+//            public void onResponse(Call<OrderHistoryResponse> call, Response<OrderHistoryResponse> response) {
+//                if (response.isSuccessful() && response.body() != null) {
+//                    OrderHistoryResponse resp = response.body();
+//
+//                    // LOG 2: Check data size
+//                    if(resp.data != null) {
+//                        Log.d(TAG, "Order List Size: " + resp.data.size());
+//                    } else {
+//                        Log.e(TAG, "Order List is NULL");
+//                    }
+//                    liveData.setValue(Resource.success(resp));
+//                } else {
+//                    Log.e(TAG, "API Error Code: " + response.code());
+//                    liveData.setValue(Resource.error("Error: " + response.code(), null));
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<OrderHistoryResponse> call, Throwable t) {
+//                Log.e(TAG, "Network Failure: " + t.getMessage());
+//                liveData.setValue(Resource.error("Network Error: " + t.getMessage(), null));
+//            }
+//        });
+//    }
 
 
 }

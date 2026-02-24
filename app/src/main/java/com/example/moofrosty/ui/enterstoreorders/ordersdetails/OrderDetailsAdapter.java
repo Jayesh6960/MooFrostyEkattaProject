@@ -60,36 +60,67 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
 
         @SuppressLint("SetTextI18n")
         public void bind(OrderHistoryResponse.Item item) {
-            // 1. Product Name & Image
-            if (item.product != null) {
-                tvProductName.setText(item.product.productName);
 
-                String imgUrl = "https://moofrosty.ekatta.in/" + item.product.productImage;
+            // [HIGHLIGHT] Fetching Flat Product Name
+            tvProductName.setText(item.productName != null ? item.productName : "Unknown Product");
+
+            // Getting Image from nested object
+            if (item.productDetails != null && item.productDetails.productImage != null) {
+                String imgUrl = "https://moofrosty.ekatta.in/" + item.productDetails.productImage;
                 Glide.with(itemView.getContext())
                         .load(imgUrl)
                         .placeholder(R.drawable.icecategori)
                         .into(imgProduct);
             }
 
-            // 2. Pricing from Batch
-            if (item.batch != null) {
-                // Showing MRP. You can show Selling Price if preferred.
-                tvMrp.setText("MRP : ₹" + item.batch.mrp);
+            // [HIGHLIGHT] Getting MRP directly from flat mapping
+            if (item.productMrp != null) {
+                tvMrp.setText("MRP : ₹" + item.productMrp);
             }
 
-            // 3. Quantity
-            // Display: "180/180 Unit(s)" logic based on your requirement
-            // Assuming item.quantity is the total billed quantity
-            tvBilledQty.setText(item.quantity + " Unit(s)");
+            // [HIGHLIGHT] Getting Units
+            if (item.units != null) {
+                tvBilledQty.setText(item.units + " Unit(s)");
+            }
 
-            // 4. Amount (Item Total)
-            // JSON provides "amount": "54.81"
-            if (tvAmount != null && item.amount != null) {
-                tvAmount.setText("Selling Price : ₹" + item.amount);
+            // [HIGHLIGHT] Final Amount mapping (Selling Total)
+            if (tvAmount != null && item.finalAmount != null) {
+                tvAmount.setText("₹" + item.finalAmount);
                 tvAmount.setVisibility(View.VISIBLE);
             }
         }
     }
+
+//        @SuppressLint("SetTextI18n")
+//        public void bind(OrderHistoryResponse.Item item) {
+//            // 1. Product Name & Image
+//            if (item.product != null) {
+//                tvProductName.setText(item.product.productName);
+//
+//                String imgUrl = "https://moofrosty.ekatta.in/" + item.product.productImage;
+//                Glide.with(itemView.getContext())
+//                        .load(imgUrl)
+//                        .placeholder(R.drawable.icecategori)
+//                        .into(imgProduct);
+//            }
+//            // 2. Pricing from Batch
+//            if (item.batch != null) {
+//                // Showing MRP. You can show Selling Price if preferred.
+//                tvMrp.setText("MRP : ₹" + item.batch.mrp);
+//            }
+//            // 3. Quantity
+//            // Display: "180/180 Unit(s)" logic based on your requirement
+//            // Assuming item.quantity is the total billed quantity
+//            tvBilledQty.setText(item.quantity + " Unit(s)");
+//            // 4. Amount (Item Total)
+//            // JSON provides "amount": "54.81"
+//            if (tvAmount != null && item.amount != null) {
+//                tvAmount.setText("Selling Price : ₹" + item.amount);
+//                tvAmount.setVisibility(View.VISIBLE);
+//            }
+//        }
+//    }
+
 }
 
 //    private final List<CartItem> itemList;

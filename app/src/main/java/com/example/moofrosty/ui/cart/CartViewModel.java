@@ -106,9 +106,16 @@ public class CartViewModel extends ViewModel {
     }
 
     // --- API Call Trigger ---
+//    public void fetchOrders() {
+//        if(token.isEmpty()) return;
+//        cartRepository.getOrderHistory(token, orderHistory);
+//    }
+
     public void fetchOrders() {
-        if(token.isEmpty()) return;
-        cartRepository.getOrderHistory(token, orderHistory);
+        if(token.isEmpty() || shopId == 0) return; // [HIGHLIGHT] Added shopId check
+
+        // [HIGHLIGHT] Passing shopId to repository
+        cartRepository.getOrderHistory(token, shopId, orderHistory);
     }
 
     public void clearCart() {
