@@ -2,6 +2,7 @@ package com.example.moofrosty.ui.enterstoreorders.takeorder;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -141,6 +142,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             tvCapacity.setText(product.productWeight);
 
             int caseSize = product.getCaseSizeInt();
+            Log.d("casesize", "casesize"+caseSize);
             int stockInt = product.getStockInt();
             int currentTotalUnitsInCart = (cartItem != null) ? cartItem.getTotalUnits() : 0;
 
