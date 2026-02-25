@@ -246,8 +246,14 @@
                 @Body CheckoutRequest request
         );
 
+//        @GET("api/admin/list-product-checkout")
+//        Call<OrderHistoryResponse> getOrderHistory(
+//                @Header("Authorization") String token
+//        );
+
         @GET("api/admin/list-product-checkout")
         Call<OrderHistoryResponse> getOrderHistory(
-                @Header("Authorization") String token
+                @Header("Authorization") String token,
+                @Query("shop_id") int shopId // [HIGHLIGHT] Added shop_id query parameter
         );
     }

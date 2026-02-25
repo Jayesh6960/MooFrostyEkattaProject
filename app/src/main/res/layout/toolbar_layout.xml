@@ -26,7 +26,7 @@
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
             app:endIconMode="custom"
-
+            app:cursorColor="@color/Purple_Color"
             app:endIconTint="@color/black"
             app:hintEnabled="false"
             app:startIconDrawable="@drawable/ic_baseline_search_24"

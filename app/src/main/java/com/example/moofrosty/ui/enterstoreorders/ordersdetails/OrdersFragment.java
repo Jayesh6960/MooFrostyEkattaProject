@@ -60,7 +60,10 @@ public class OrdersFragment extends Fragment implements OrderAdapter.OnOrderClic
         cartViewModel = new ViewModelProvider(requireActivity()).get(CartViewModel.class);
 
         // Pass token to ViewModel so it can make the call
-        cartViewModel.setSessionData(sessionManager.getToken(), 0, 0);
+        // Pass token and SHOP ID to ViewModel
+        int shopId = sessionManager.getShopId(); // [HIGHLIGHT] Getting shop id dynamically
+        cartViewModel.setSessionData(sessionManager.getToken(), sessionManager.getUserId(), shopId);
+//        cartViewModel.setSessionData(sessionManager.getToken(), 0, 0);
 
         // 2. Init Views
         tvOrderCount = view.findViewById(R.id.tv_order_count);
@@ -93,36 +96,62 @@ public class OrdersFragment extends Fragment implements OrderAdapter.OnOrderClic
     }
 
     private void setupObservers() {
-
         cartViewModel.getOrderHistory().observe(getViewLifecycleOwner(), resource -> {
             if (resource != null) {
                 switch (resource.status) {
                     case LOADING:
-                        // Show progress if needed
                         progressBar.setVisibility(View.VISIBLE);
-                        Log.d("OrdersFragment", "Loading...");
                         break;
 
                     case SUCCESS:
                         progressBar.setVisibility(View.GONE);
                         if (resource.data != null && resource.data.data != null) {
-                            Log.d("OrdersFragment", "Success! Items: " + resource.data.data.size());
                             adapter.updateList(resource.data.data);
-                            tvOrderCount.setText(String.format(Locale.getDefault(), ": (%d)", resource.data.data.size()));
-                        } else {
-                            Log.e("OrdersFragment", "Success but data is NULL");
+                            // [HIGHLIGHT] Setting count properly dynamically
+                            tvOrderCount.setText(" : "+resource.data.data.size() + " orders");
                         }
                         break;
 
                     case ERROR:
                         progressBar.setVisibility(View.GONE);
-                        Log.e("OrdersFragment", "Error: " + resource.message);
                         Toast.makeText(getContext(), "Something wrong", Toast.LENGTH_SHORT).show();
                         break;
                 }
             }
         });
     }
+
+//    private void setupObservers() {
+//
+//        cartViewModel.getOrderHistory().observe(getViewLifecycleOwner(), resource -> {
+//            if (resource != null) {
+//                switch (resource.status) {
+//                    case LOADING:
+//                        // Show progress if needed
+//                        progressBar.setVisibility(View.VISIBLE);
+//                        Log.d("OrdersFragment", "Loading...");
+//                        break;
+//
+//                    case SUCCESS:
+//                        progressBar.setVisibility(View.GONE);
+//                        if (resource.data != null && resource.data.data != null) {
+//                            Log.d("OrdersFragment", "Success! Items: " + resource.data.data.size());
+//                            adapter.updateList(resource.data.data);
+//                            tvOrderCount.setText(String.format(Locale.getDefault(), ": (%d)", resource.data.data.size()));
+//                        } else {
+//                            Log.e("OrdersFragment", "Success but data is NULL");
+//                        }
+//                        break;
+//
+//                    case ERROR:
+//                        progressBar.setVisibility(View.GONE);
+//                        Log.e("OrdersFragment", "Error: " + resource.message);
+//                        Toast.makeText(getContext(), "Something wrong", Toast.LENGTH_SHORT).show();
+//                        break;
+//                }
+//            }
+//        });
+//    }
 
     @Override
     public void onOrderClick(OrderHistoryResponse.OrderData order) {

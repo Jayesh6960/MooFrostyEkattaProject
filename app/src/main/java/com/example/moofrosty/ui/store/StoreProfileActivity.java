@@ -51,7 +51,7 @@ import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-//changes date  21-02-2026
+
 public class StoreProfileActivity extends AppCompatActivity {
 
 
