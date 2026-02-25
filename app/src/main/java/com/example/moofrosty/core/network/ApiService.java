@@ -56,7 +56,6 @@
         Call<LeaveHistoryResponse> getLeaveHistory(
                 @Header("Authorization") String token
         );
-
         @GET("api/admin/get-user-leaves")
         Call<LeaveResponse> getUserLeaves(@Header("Authorization") String token);
 

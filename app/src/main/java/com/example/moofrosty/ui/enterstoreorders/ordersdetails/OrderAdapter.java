@@ -2,6 +2,7 @@ package com.example.moofrosty.ui.enterstoreorders.ordersdetails;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,6 +98,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
             // 3. Order Value
             tvOrderValue.setText(String.format(Locale.getDefault(), ": ₹%.2f", order.totalAmount));
+            Log.d("totalamount", "totalamount "+order.totalAmount);
 
             // 4. Items Billed (Using total_quantity from API)
             tvItemsBilled.setText(": " + order.totalQuantity);
