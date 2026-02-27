@@ -1,6 +1,7 @@
 package com.example.moofrosty.ui.enterstoreorders.ordersdetails;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,6 +89,7 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
                 tvAmount.setText("₹" + item.finalAmount);
                 tvAmount.setVisibility(View.VISIBLE);
             }
+            Log.d("tvamount", "tvamount :-"+item.finalAmount);
         }
     }
 

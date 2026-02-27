@@ -140,6 +140,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             tvMargin.setText(product.getMargin() +"%");
             tvStock.setText(product.getRemainStockStock());
             tvCapacity.setText(product.productWeight);
+            Log.d("Selling Price: ", "Selling Price" + product.getSellingPrice() );
 
             int caseSize = product.getCaseSizeInt();
             Log.d("casesize", "casesize"+caseSize);
