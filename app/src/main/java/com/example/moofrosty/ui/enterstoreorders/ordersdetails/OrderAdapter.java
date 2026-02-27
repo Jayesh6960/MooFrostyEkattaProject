@@ -2,6 +2,7 @@ package com.example.moofrosty.ui.enterstoreorders.ordersdetails;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,6 +72,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         public void bind(OrderHistoryResponse.OrderData order) {
             // 1. Date
             String dateStr = order.checkoutDate;
+            Log.d("OrderDate", "OrderDate : "+dateStr);
             try {
                 if(dateStr != null && dateStr.length() >= 10) {
                     tvOrderDate.setText(dateStr.substring(0, 10));
@@ -100,8 +102,11 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                 tvOrderValue.setText(": ₹0.00");
                 tvItemsBilled.setText(": 0");
             }
+            Log.d("order.orderSummary.totalFinalAmount", "order.orderSummary.totalFinalAmount"+order.orderSummary.totalFinalAmount);
         }
+
     }
+
 
 //        @SuppressLint("SetTextI18n")
 //        public void bind(OrderHistoryResponse.OrderData order) {
