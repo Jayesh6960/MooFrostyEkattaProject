@@ -29,8 +29,18 @@ public class OrderHistoryResponse {
         @SerializedName("status")
         public int status; // 0 = Placed, 1 = Billed
 
+        @SerializedName("current_unit")
+        public String currentUnit;
+
+        @SerializedName("order_time_unit")
+        public String orderTimeUnit;
+
         @SerializedName("order_summary")
         public OrderSummary orderSummary;
+
+        @SerializedName("useDetails")
+        public UserDetails useDetails;
+
 
         @SerializedName("items")
         public List<Item> items;
@@ -55,6 +65,24 @@ public class OrderHistoryResponse {
         }
     }
 
+    // [HIGHLIGHT] Added UserDetails Class
+    public static class UserDetails implements Serializable {
+        @SerializedName("id")
+        public int id;
+
+        @SerializedName("firstName")
+        public String firstName;
+
+        @SerializedName("lastName")
+        public String lastName;
+
+        public String getFullName() {
+            String fName = firstName != null ? firstName : "";
+            String lName = lastName != null ? lastName : "";
+            return (fName + " " + lName).trim();
+        }
+    }
+
     public static class OrderSummary implements Serializable {
         @SerializedName("total_units")
         public int totalUnits;
@@ -70,6 +98,12 @@ public class OrderHistoryResponse {
 
         @SerializedName("total_final_amount")
         public double totalFinalAmount;
+
+        @SerializedName("order_value")
+        public double orderValue;
+
+        @SerializedName("bill_value")
+        public double billValue;
     }
 
     public static class Item implements Serializable {
@@ -93,6 +127,9 @@ public class OrderHistoryResponse {
 
         @SerializedName("discount_amount")
         public String discountAmount;
+
+        @SerializedName("discount_percent")
+        public String discountPercent;
     }
 
     public static class ProductDetail implements Serializable {

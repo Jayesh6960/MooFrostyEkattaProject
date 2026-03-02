@@ -30,6 +30,8 @@
 
     <color name="red">#E06446</color>
     <color name="green">#48A34D</color>
+    <color name="greenstatus">#4CAF50</color>
+
     <color name="yellow">#E7C436</color>
 
     <color name="parrot_green">#18EB23</color>

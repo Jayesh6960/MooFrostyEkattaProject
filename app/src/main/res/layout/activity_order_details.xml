@@ -110,21 +110,56 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/orderprofile"
-                            app:tint="@color/grey"
+                            app:tint="#4CAF50"
                             android:layout_alignParentEnd="true"/>
                     </RelativeLayout>
 
                     <TextView
                         android:id="@+id/tv_status_text"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="  Billed"
-                        android:drawableStart="@drawable/orderprofile"
                         android:drawableTint="#4CAF50"
                         android:drawablePadding="8dp"
+                        android:textColor="#4CAF50"
+                        android:textSize="18dp"
                         android:textStyle="bold"
-                        android:gravity="center_vertical"
+                        android:gravity="end"
                         android:layout_marginTop="8dp"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#E0E0E0"
+                        android:layout_marginTop="8dp"
+                        />
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+                        <TextView
+                            android:layout_width="130dp"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textSize="16dp"
+                            android:text="Order Amount"/>
+                        <TextView
+                            android:id="@+id/tv_bill_amount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text=":  ₹7,757.55"
+                            android:textSize="16dp"
+                            android:textColor="@android:color/black"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#E0E0E0"
+                        android:layout_marginTop="8dp" />
 
                     <LinearLayout
                         android:id="@+id/invoicenolayout"
@@ -137,34 +172,19 @@
                             android:layout_width="100dp"
                             android:layout_height="wrap_content"
                             android:textStyle="bold"
+                            android:textSize="16dp"
                             android:text="Invoice No  "/>
                         <TextView
                             android:id="@+id/tv_billed_no"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textSize="16dp"
                             tools:text=""
                             android:textColor="@android:color/black"
                             android:textStyle="bold"/>
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="8dp">
-                        <TextView
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:textStyle="bold"
-                            android:text="Bill Amount"/>
-                        <TextView
-                            android:id="@+id/tv_bill_amount"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            tools:text=":  ₹7,757.55"
-                            android:textColor="@android:color/black"
-                            android:textStyle="bold"/>
-                    </LinearLayout>
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

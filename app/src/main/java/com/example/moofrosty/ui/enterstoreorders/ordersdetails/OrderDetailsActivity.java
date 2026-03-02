@@ -111,7 +111,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
         // Use empty list if items is null
         adapter = new OrderDetailsAdapter(
-                currentOrder.items != null ? currentOrder.items : new ArrayList<>()
+                currentOrder.items != null ? currentOrder.items : new ArrayList<>(),
+                currentOrder.status
         );
         recyclerView.setAdapter(adapter);
     }
@@ -123,20 +124,22 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
         // [HIGHLIGHT] Fetch total amount safely from orderSummary
         if(currentOrder.orderSummary != null) {
-            tvBillAmount.setText(String.format(Locale.US, ": ₹%.2f", currentOrder.orderSummary.totalFinalAmount));
+            tvBillAmount.setText(String.format(Locale.US, ": ₹%.2f", currentOrder.orderSummary.orderValue));
         }
 
         // [HIGHLIGHT] JSON replaced user with shop logic
-        if (currentOrder.shop != null) {
-//            String title = currentOrder.shop.getOwnerName() + " Orders";
-            String title = "SalesPerson Orders";
+        if (currentOrder.useDetails != null) {
+            String name = currentOrder.useDetails.getFullName();
+            String title = "Salesperson " + name + " Orders";
             tvSalespersonTitle.setText(title);
+        } else {
+            tvSalespersonTitle.setText("Salesperson Orders");
         }
 
         // Status Logic
         if (currentOrder.status == 1) {
             tvStatusText.setText("Billed");
-            tvStatusText.setTextColor(getColor(R.color.black));
+            tvStatusText.setTextColor(getColor(R.color.green));
             invoicenolayout.setVisibility(View.VISIBLE);
             tvbilledno.setText(": " + currentOrder.getinvoiceId());
         } else {

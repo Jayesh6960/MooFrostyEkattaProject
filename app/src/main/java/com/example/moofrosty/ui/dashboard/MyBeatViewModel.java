@@ -65,7 +65,7 @@ public class MyBeatViewModel extends AndroidViewModel {
 
     private void loadDataForTab(String tab) {
         if (tab.equals("All")) {
-            repository.fetchDashboardData(storesResource, beats,repoTotalCount);
+            repository.fetchDashboardData(storesResource, beats,repoTotalCount,totalOrderValue);
         } else {
             repository.fetchFilteredStores(tab, storesResource);
         }

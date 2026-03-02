@@ -42,7 +42,7 @@ public class MyBeatRepository {
     }
 
     public void fetchDashboardData(MutableLiveData<Resource<List<Store>>> storesLiveData,
-                                   MutableLiveData<List<BeatModel>> beatsLiveData, MutableLiveData<Integer> totalCountData) {
+                                   MutableLiveData<List<BeatModel>> beatsLiveData, MutableLiveData<Integer> totalCountData,MutableLiveData<Double> totalOrderValue) {
 
         storesLiveData.setValue(Resource.loading(null));
 
@@ -74,7 +74,7 @@ public class MyBeatRepository {
                         beatsLiveData.postValue(beatList);
 
                         // STEP 2: Now call Store List API with this ID
-                        fetchStores(token, beatId, myBeat, beatList, beatsLiveData, storesLiveData,totalCountData);
+                        fetchStores(token, beatId, myBeat, beatList, beatsLiveData, storesLiveData,totalCountData,totalOrderValue);
 
                     } else {
                         storesLiveData.setValue(Resource.error("User has no assigned Beat", null));
@@ -93,7 +93,7 @@ public class MyBeatRepository {
 
     private void fetchStores(String token, int beatId, BeatModel myBeat, List<BeatModel> beatList,
                              MutableLiveData<List<BeatModel>> beatsLiveData,
-                             MutableLiveData<Resource<List<Store>>> storesLiveData,MutableLiveData<Integer> totalCountData) {
+                             MutableLiveData<Resource<List<Store>>> storesLiveData,MutableLiveData<Integer> totalCountData,MutableLiveData<Double> totalOrderValue) {
 
         apiService.getStoreList(token, beatId,"bit_wise_all").enqueue(new Callback<StoreListResponses>() {
             @Override
@@ -105,6 +105,11 @@ public class MyBeatRepository {
                         myBeat.setTotalStores(count);
                         beatsLiveData.postValue(beatList); // Update dropdown text
                         totalCountData.postValue(count);
+
+                        // [HIGHLIGHT] Update UI: Order Value (Total Bill)
+                        if (totalOrderValue != null) {
+                            totalOrderValue.postValue(response.body().getTotalBill());
+                        }
                         // Update UI: Store List
                         List<Store> list = response.body().getStoreList();
                         if (list == null) list = new ArrayList<>();
