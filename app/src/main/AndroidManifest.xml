@@ -21,6 +21,9 @@
         android:maxSdkVersion="28" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" /> <!-- Queries for Google Maps -->
     <queries>
+        <intent>
+            <action android:name="android.media.action.IMAGE_CAPTURE" />
+        </intent>
         <package android:name="com.google.android.apps.maps" />
 
         <intent>
@@ -45,6 +48,15 @@
 <!--            android:name=".ui.attendance.Toolbarhelper"-->
 <!--            android:exported="false" />-->
         <!-- Store Creation -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
         <activity
             android:name=".ui.newstorecreation.CreateStoreWizardActivity"
             android:exported="false" />
