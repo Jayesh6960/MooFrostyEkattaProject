@@ -20,7 +20,6 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.example.moofrosty.R;
-
 public class SupportAttendance extends AppCompatActivity {
 
     private TextView supportEmail, supportContact, salesContact;
