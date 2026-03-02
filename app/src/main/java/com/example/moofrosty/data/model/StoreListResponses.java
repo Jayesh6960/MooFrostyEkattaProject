@@ -14,6 +14,12 @@
         @SerializedName("count")
         private int count;
 
+        @SerializedName("totalBill")
+        private double totalBill;
+
+        @SerializedName("finalAmount")
+        private double finalAmount;
+
         @SerializedName("store")
         private List<Store> storeList;
 
@@ -21,4 +27,11 @@
         public boolean isStatus() { return "success".equalsIgnoreCase(status); }
         public int getCount() { return count; }
         public List<Store> getStoreList() { return storeList; }
+
+        public double getTotalBill() {
+            return totalBill;
+        }
+        public double getFinalAmount() {
+            return finalAmount;
+        }
     }

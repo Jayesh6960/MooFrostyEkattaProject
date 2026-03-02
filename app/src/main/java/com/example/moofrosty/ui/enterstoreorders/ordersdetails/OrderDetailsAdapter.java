@@ -1,7 +1,6 @@
 package com.example.moofrosty.ui.enterstoreorders.ordersdetails;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +22,11 @@ import java.util.Locale;
 public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapter.ViewHolder>{
 
     private final List<OrderHistoryResponse.Item> itemList;
+    private final int orderStatus;
 
-    public OrderDetailsAdapter(List<OrderHistoryResponse.Item> itemList) {
+    public OrderDetailsAdapter(List<OrderHistoryResponse.Item> itemList, int orderStatus) {
         this.itemList = itemList;
+        this.orderStatus = orderStatus;
     }
 
     @NonNull
@@ -37,7 +38,7 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bind(itemList.get(position));
+        holder.bind(itemList.get(position),orderStatus);
     }
 
     @Override
@@ -47,7 +48,7 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imgProduct;
-        TextView tvProductName, tvMrp, tvBilledQty, tvAmount;
+        TextView tvProductName, tvMrp, tvBilledQty, tvAmount, tvDiscountPercent;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -57,10 +58,13 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
             tvBilledQty = itemView.findViewById(R.id.tv_billed_qty);
             // Assuming you have a TextView for the item amount, if not, add one to XML
             tvAmount = itemView.findViewById(R.id.tv_item_amount);
+            // [HIGHLIGHT] Find Discount ID
+            tvDiscountPercent = itemView.findViewById(R.id.tv_discount_amount);
+
         }
 
         @SuppressLint("SetTextI18n")
-        public void bind(OrderHistoryResponse.Item item) {
+        public void bind(OrderHistoryResponse.Item item, int orderStatus) {
 
             // [HIGHLIGHT] Fetching Flat Product Name
             tvProductName.setText(item.productName != null ? item.productName : "Unknown Product");
@@ -76,20 +80,38 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
 
             // [HIGHLIGHT] Getting MRP directly from flat mapping
             if (item.productMrp != null) {
-                tvMrp.setText("MRP : ₹" + item.productMrp);
+                tvMrp.setText("MRP               : ₹" + item.productMrp);
             }
 
             // [HIGHLIGHT] Getting Units
-            if (item.units != null) {
-                tvBilledQty.setText(item.units + " Unit(s)");
-            }
+
 
             // [HIGHLIGHT] Final Amount mapping (Selling Total)
-            if (tvAmount != null && item.finalAmount != null) {
-                tvAmount.setText("₹" + item.finalAmount);
+            if (tvAmount != null && item.finalAmount != null && item.productSellingPrice!=null) {
+                tvAmount.setText("RATE              : ₹" + item.productSellingPrice);
                 tvAmount.setVisibility(View.VISIBLE);
             }
-            Log.d("tvamount", "tvamount :-"+item.finalAmount);
+
+            // [HIGHLIGHT] 6. Discount & Status Logic
+            // Only show discount if Order Status is 1 (Billed)
+            if (orderStatus == 1) {
+                if (item.discountPercent != null && !item.discountPercent.equals("0") && !item.discountPercent.isEmpty()) {
+                    tvDiscountPercent.setVisibility(View.VISIBLE);
+                    tvDiscountPercent.setText("DISCOUNT     : " + item.discountPercent + "%");
+                } else {
+                    tvDiscountPercent.setVisibility(View.GONE);
+                }
+                if (item.units != null) {
+                    tvBilledQty.setVisibility(View.VISIBLE);
+                    tvBilledQty.setText("BiLL QTY        : "+item.units + " Unit(s)");
+                }else {
+                    tvBilledQty.setVisibility(View.GONE);
+                }
+            } else {
+                tvDiscountPercent.setVisibility(View.GONE);
+                tvBilledQty.setVisibility(View.GONE);
+            }
+
         }
     }
 

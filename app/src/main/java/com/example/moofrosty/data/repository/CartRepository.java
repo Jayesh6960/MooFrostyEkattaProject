@@ -300,29 +300,80 @@ public class CartRepository {
     // order list in order frag that code here
 
     // --- FETCH ORDER HISTORY ---
+//
+//    public void getOrderHistory(String token, int shopId, MutableLiveData<Resource<OrderHistoryResponse>> liveData) {
+//        liveData.setValue(Resource.loading(null));
+//
+//        String authToken = token.startsWith("Bearer ") ? token : "Bearer " + token;
+//
+//        Log.d(TAG, "Fetching Orders with Token: " + authToken + " and ShopId: " + shopId);
+//
+//        // [HIGHLIGHT] Pass shopId to apiService
+//        apiService.getOrderHistory(authToken, shopId).enqueue(new Callback<OrderHistoryResponse>() {
+//            @Override
+//            public void onResponse(Call<OrderHistoryResponse> call, Response<OrderHistoryResponse> response) {
+//                if (response.isSuccessful() && response.body() != null) {
+//                    OrderHistoryResponse resp = response.body();
+//                    liveData.setValue(Resource.success(resp));
+//                } else {
+//                    liveData.setValue(Resource.error("Error: " + response.code(), null));
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<OrderHistoryResponse> call, Throwable t) {
+//                liveData.setValue(Resource.error("Network Error: " + t.getMessage(), null));
+//            }
+//        });
+//    }
 
     public void getOrderHistory(String token, int shopId, MutableLiveData<Resource<OrderHistoryResponse>> liveData) {
         liveData.setValue(Resource.loading(null));
-
         String authToken = token.startsWith("Bearer ") ? token : "Bearer " + token;
-
-        Log.d(TAG, "Fetching Orders with Token: " + authToken + " and ShopId: " + shopId);
-
-        // [HIGHLIGHT] Pass shopId to apiService
+        Log.d("orderdetails", "Fetching Orders with Token: " + authToken + " and ShopId: " + shopId);
         apiService.getOrderHistory(authToken, shopId).enqueue(new Callback<OrderHistoryResponse>() {
             @Override
             public void onResponse(Call<OrderHistoryResponse> call, Response<OrderHistoryResponse> response) {
+                // [HIGHLIGHT] 1. Log the EXACT URL that Retrofit generated and called
+                Log.d("orderdetails", "API URL Called: " + call.request().url().toString());
+                // [HIGHL"orderdetails"G, "API Response Code: " + response.code());
+
                 if (response.isSuccessful() && response.body() != null) {
                     OrderHistoryResponse resp = response.body();
+                    // [HIGHLIGHT] 3. Log success details
+                    Log.d("orderdetails", "API Success! Status: " + resp.status);
+                    if (resp.data != null) {
+                        Log.d("orderdetails", "Order List Size: " + resp.data.size());
+                    } else {
+                        Log.e("orderdetails", "WARNING: API returned success, but 'data' array is NULL!");
+                    }
                     liveData.setValue(Resource.success(resp));
                 } else {
-                    liveData.setValue(Resource.error("Error: " + response.code(), null));
+                    // [HIGHLIGHT] 4. Log the EXACT ERROR message returned by the server
+                    String errorMsg = "Error: " + response.code();
+                    try {
+                        if (response.errorBody() != null) {
+                            String rawErrorBody = response.errorBody().string();
+                            Log.e("orderdetails", "Server Error Body: " + rawErrorBody);
+                            errorMsg += " -> " + rawErrorBody;
+                        } else {
+                            Log.e("orderdetails", "Server Error Body is NULL");
+                        }
+                    } catch (Exception e) {
+                        Log.e("orderdetails", "Failed to parse error body", e);
+                    }
+
+                    liveData.setValue(Resource.error(errorMsg, null));
                 }
             }
 
             @Override
             public void onFailure(Call<OrderHistoryResponse> call, Throwable t) {
-                liveData.setValue(Resource.error("Network Error: " + t.getMessage(), null));
+                // [HIGHLIGHT] 5. Log the EXACT reason it failed (e.g., Timeout, No Internet, JSON Parsing Crash)
+                Log.e("orderdetails", "API Call FAILED completely! URL: " + call.request().url().toString(), t);
+                Log.e("orderdetails", "Failure Message: " + t.getMessage());
+
+                liveData.setValue(Resource.error("Network/Parsing Error: " + t.getMessage(), null));
             }
         });
     }

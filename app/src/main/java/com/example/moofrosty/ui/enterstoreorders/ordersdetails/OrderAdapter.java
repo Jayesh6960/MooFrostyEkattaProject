@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -58,7 +59,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     }
 
     static class OrderViewHolder extends RecyclerView.ViewHolder {
-        TextView tvOrderDate, tvOrderStatus, tvOrderValue, tvItemsBilled;
+        TextView tvOrderDate, tvOrderStatus, tvOrderValue, tvBillValue, tvItemsBilled;
+        LinearLayout llBillValueRow;
 
         public OrderViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -66,6 +68,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             tvOrderStatus = itemView.findViewById(R.id.tv_order_status);
             tvOrderValue = itemView.findViewById(R.id.tv_order_value);
             tvItemsBilled = itemView.findViewById(R.id.tv_items_billed);
+
+            tvBillValue = itemView.findViewById(R.id.tv_bill_value);
+            llBillValueRow = itemView.findViewById(R.id.ll_bill_value_row);
         }
 
         @SuppressLint("SetTextI18n")
@@ -88,19 +93,29 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                 tvOrderStatus.setText("Billed");
                 tvOrderStatus.setTextColor(Color.parseColor("#0D6EfD"));
                 tvOrderStatus.setBackgroundResource(R.drawable.tab_unselected_bg);
+                // [HIGHLIGHT] Show Bill Value Row only if Billed
+                llBillValueRow.setVisibility(View.VISIBLE);
             } else {
                 tvOrderStatus.setText("Order Placed");
                 tvOrderStatus.setTextColor(Color.parseColor("#0D6EfD"));
                 tvOrderStatus.setBackgroundResource(R.drawable.tab_unselected_bg);
+                // [HIGHLIGHT] Hide Bill Value Row
+                llBillValueRow.setVisibility(View.GONE);
             }
+
+            String currentUnit = (order.currentUnit != null && !order.currentUnit.isEmpty()) ? order.currentUnit : "0";
+            String orderTimeUnit = (order.orderTimeUnit != null && !order.orderTimeUnit.isEmpty()) ? order.orderTimeUnit : "0";
 
             // [HIGHLIGHT] 3. Order Value & Items Billed Using OrderSummary
             if (order.orderSummary != null) {
-                tvOrderValue.setText(String.format(Locale.getDefault(), ": ₹%.2f", order.orderSummary.totalFinalAmount));
-                tvItemsBilled.setText(": " + order.orderSummary.totalUnits);
+                tvOrderValue.setText(String.format(Locale.getDefault(), ": ₹%.2f", order.orderSummary.orderValue));
+                // [HIGHLIGHT] Show Bill Value
+                tvBillValue.setText(String.format(Locale.getDefault(), ": ₹%.2f", order.orderSummary.billValue));
+//                tvItemsBilled.setText(": " + order.orderSummary.totalUnits);
+                tvItemsBilled.setText(": " + currentUnit + "/" + orderTimeUnit);
             } else {
                 tvOrderValue.setText(": ₹0.00");
-                tvItemsBilled.setText(": 0");
+                    tvItemsBilled.setText(": 0/0");
             }
             Log.d("order.orderSummary.totalFinalAmount", "order.orderSummary.totalFinalAmount"+order.orderSummary.totalFinalAmount);
         }

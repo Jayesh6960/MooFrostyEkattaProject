@@ -62,6 +62,7 @@ public class DashboardMyBeatFragment extends Fragment {
     }
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -160,8 +161,13 @@ public class DashboardMyBeatFragment extends Fragment {
             else tvBeatDropdown.setText(sb.toString());
         });
 
-        viewModel.getTotalOrderValue().observe(getViewLifecycleOwner(), val -> tvOrderValue.setText(String.valueOf(val.intValue())));
-
+//        viewModel.getTotalOrderValue().observe(getViewLifecycleOwner(), val -> tvOrderValue.setText(String.valueOf(val.intValue())));
+        viewModel.getTotalOrderValue().observe(getViewLifecycleOwner(), val -> {
+            if (val != null) {
+                // Formatting as an integer with the ₹ symbol for a clean UI
+                tvOrderValue.setText("₹ " + val.intValue());
+            }
+        });
         // [HIGHLIGHT] Update the counts manually here based on the raw integers
         viewModel.getRepoTotalCount().observe(getViewLifecycleOwner(), total -> updateCountUI());
         viewModel.getRepoVisitedCount().observe(getViewLifecycleOwner(), visited -> updateCountUI());
