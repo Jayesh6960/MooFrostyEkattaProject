@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.moofrosty.core.network.Resource;
+import com.example.moofrosty.data.local.SessionManager;
 import com.example.moofrosty.data.model.BeatModel;
 import com.example.moofrosty.data.model.Store;
 import com.example.moofrosty.data.repository.MyBeatRepository;
@@ -19,77 +20,117 @@ import java.util.List;
 public class MyBeatViewModel extends AndroidViewModel {
 
     private final MyBeatRepository repository;
-    private boolean Storelist = true;
+    private final SessionManager sessionManager;
 
-    // API Data
     private final MutableLiveData<Resource<List<Store>>> storesResource = new MutableLiveData<>();
     private final MutableLiveData<List<BeatModel>> beats = new MutableLiveData<>();
-
-    // UI Data
     private final MutableLiveData<List<Store>> filteredStores = new MutableLiveData<>();
-//    private List<Store> masterStoreList = new ArrayList<>();
-
-    // Master list holds the data from the CURRENT API Call
     private List<Store> currentApiData = new ArrayList<>();
 
-    // Summary
     private final MutableLiveData<Double> totalOrderValue = new MutableLiveData<>(0.0);
-    private final MutableLiveData<String> visitedCountText = new MutableLiveData<>("0/0");
-    private final MutableLiveData<String> orderTakenCountText = new MutableLiveData<>("0/0");
-
     private final MutableLiveData<Integer> repoTotalCount = new MutableLiveData<>(0);
     private final MutableLiveData<Integer> repoVisitedCount = new MutableLiveData<>(0);
     private final MutableLiveData<Integer> repoOrderCount = new MutableLiveData<>(0);
-    // Filters
-//    private String currentTab = "All";
-//    private String searchQuery = "";
+
+    // UI string for Dropdown Box
+    private final MutableLiveData<String> beatDropdownText = new MutableLiveData<>("Beat Name : Select");
+
     private String currentSearchQuery = "";
     private String currentTabFilter = "All";
-
-    private int globalTotalCount = 0;
-    private int globalVisitedCount = 0;
-    private int globalOrderCount = 0;
-    private double globalOrderValue = 0.0;
 
     public MyBeatViewModel(@NonNull Application application) {
         super(application);
         this.repository = new MyBeatRepository(application);
-        loadDataForTab("All");
-        fetchStatsFromApi();
+        this.sessionManager = new SessionManager(application);
+
+        // 1. App starts -> Initialize data
+        repository.fetchInitialDashboardData(storesResource, beats, repoTotalCount, totalOrderValue, repoVisitedCount, repoOrderCount);
     }
 
     public void onTabFilterChanged(String tabName) {
         this.currentTabFilter = tabName;
-        loadDataForTab(tabName);
+        refreshDataFromApi();
     }
 
-    private void loadDataForTab(String tab) {
-        if (tab.equals("All")) {
-            repository.fetchDashboardData(storesResource, beats,repoTotalCount,totalOrderValue);
-        } else {
-            repository.fetchFilteredStores(tab, storesResource);
+    // Records the checkbox changes without calling API
+    public void onBeatSelectionChanged(int position, boolean isSelected) {
+        List<BeatModel> beatList = beats.getValue();
+        if (beatList != null && position < beatList.size()) {
+            beatList.get(position).setSelected(isSelected);
+            beats.setValue(beatList);
         }
     }
 
-    // [NEW]: Helper to fetch stats
-    private void fetchStatsFromApi() {
-        repository.fetchGlobalCounts(repoVisitedCount, repoOrderCount);
+    // Called when user clicks "OK" in dialog
+    public void confirmBeatSelection() {
+        updateBeatDropdownText();
+        refreshDataFromApi();
+    }
+
+    // Central function to call APIs based on currently selected Beats + Tab
+    private void refreshDataFromApi() {
+        String beatIds = getSelectedBeatIds();
+        String token = "Bearer " + sessionManager.getToken();
+
+        if (beatIds.isEmpty()) {
+            // Nothing selected, clear everything
+            storesResource.setValue(Resource.success(new ArrayList<>()));
+            repoTotalCount.setValue(0);
+            totalOrderValue.setValue(0.0);
+            repoVisitedCount.setValue(0);
+            repoOrderCount.setValue(0);
+            return;
+        }
+
+        // Call the specific list and the counts
+        repository.fetchStoresForTab(token, beatIds, currentTabFilter, storesResource, repoTotalCount, totalOrderValue);
+        repository.fetchGlobalCounts(token, beatIds, repoVisitedCount, repoOrderCount);
+    }
+
+    private String getSelectedBeatIds() {
+        List<BeatModel> beatList = beats.getValue();
+        if (beatList == null) return "";
+        StringBuilder sb = new StringBuilder();
+        for (BeatModel b : beatList) {
+            if (b.isSelected()) {
+                if (sb.length() > 0) sb.append(",");
+                sb.append(b.getId());
+            }
+        }
+        return sb.toString();
+    }
+
+    public void updateBeatDropdownText() {
+        List<BeatModel> beatList = beats.getValue();
+        if (beatList == null || beatList.isEmpty()) {
+            beatDropdownText.setValue("Beat Name : None");
+            return;
+        }
+
+        int selectedCount = 0;
+        String firstName = "";
+
+        for (BeatModel b : beatList) {
+            if (b.isSelected()) {
+                selectedCount++;
+                if (firstName.isEmpty()) firstName = b.getName();
+            }
+        }
+
+        if (selectedCount == 0) {
+            beatDropdownText.setValue("Beat Name : None");
+        } else if (selectedCount == beatList.size()) {
+            beatDropdownText.setValue("Beat Name : All Selected");
+        } else if (selectedCount == 1) {
+            beatDropdownText.setValue("Beat Name : " + firstName);
+        } else {
+            beatDropdownText.setValue("Beat Name : " + firstName + " +" + (selectedCount - 1) + " more");
+        }
     }
 
     public void setMasterStoreList(List<Store> stores) {
         this.currentApiData = stores;
         applyLocalSearch();
-//        updateSummaryText(); // [NEW]: Update cards text
-    }
-
-    // [NEW]: Logic to create "X/Y" strings
-    private void updateSummaryText() {
-        int total = repoTotalCount.getValue() != null ? repoTotalCount.getValue() : 0;
-        int visited = repoVisitedCount.getValue() != null ? repoVisitedCount.getValue() : 0;
-        int ordered = repoOrderCount.getValue() != null ? repoOrderCount.getValue() : 0;
-
-        visitedCountText.setValue(visited + "/" + total);
-        orderTakenCountText.setValue(ordered + "/" + total);
     }
 
     public void onSearchQueryChanged(String query) {
@@ -97,10 +138,8 @@ public class MyBeatViewModel extends AndroidViewModel {
         applyLocalSearch();
     }
 
-    // Only filters the LIST, does NOT touch the Summary Cards anymore
     private void applyLocalSearch() {
         List<Store> temp = new ArrayList<>();
-
         if (currentApiData == null) currentApiData = new ArrayList<>();
 
         for (Store s : currentApiData) {
@@ -111,11 +150,7 @@ public class MyBeatViewModel extends AndroidViewModel {
                 temp.add(s);
             }
         }
-
         filteredStores.setValue(temp);
-
-        // Note: We deliberately removed the code that updates visitedCountText here.
-        // The cards now remain static based on the "All" tab data.
     }
 
     // Getters
@@ -123,21 +158,160 @@ public class MyBeatViewModel extends AndroidViewModel {
     public LiveData<List<BeatModel>> getBeats() { return beats; }
     public LiveData<List<Store>> getFilteredStores() { return filteredStores; }
     public LiveData<Double> getTotalOrderValue() { return totalOrderValue; }
-    public LiveData<String> getVisitedCountText() { return visitedCountText; }
-    public LiveData<String> getOrderTakenCountText() { return orderTakenCountText; }
-
-    // [HIGHLIGHT] Expose raw counts so Fragment can observe and format
     public LiveData<Integer> getRepoTotalCount() { return repoTotalCount; }
     public LiveData<Integer> getRepoVisitedCount() { return repoVisitedCount; }
     public LiveData<Integer> getRepoOrderCount() { return repoOrderCount; }
+    public LiveData<String> getBeatDropdownText() { return beatDropdownText; }
 
-    public void onBeatSelectionChanged(int position, boolean isSelected) {
-        List<BeatModel> beatList = beats.getValue();
-        if (beatList != null && position < beatList.size()) {
-            beatList.get(position).setSelected(isSelected);
-            beats.setValue(beatList);
-        }
-    }
+//    private final MyBeatRepository repository;
+//    private boolean Storelist = true;
+//
+//    // API Data
+//    private final MutableLiveData<Resource<List<Store>>> storesResource = new MutableLiveData<>();
+//    private final MutableLiveData<List<BeatModel>> beats = new MutableLiveData<>();
+//
+//    // UI Data
+//    private final MutableLiveData<List<Store>> filteredStores = new MutableLiveData<>();
+////    private List<Store> masterStoreList = new ArrayList<>();
+//
+//    // Master list holds the data from the CURRENT API Call
+//    private List<Store> currentApiData = new ArrayList<>();
+//
+//    // [HIGHLIGHT] UI string for Dropdown Box
+//    private final MutableLiveData<String> beatDropdownText = new MutableLiveData<>("Beat Name : Select");
+//
+//    // Summary
+//    private final MutableLiveData<Double> totalOrderValue = new MutableLiveData<>(0.0);
+//    private final MutableLiveData<String> visitedCountText = new MutableLiveData<>("0/0");
+//    private final MutableLiveData<String> orderTakenCountText = new MutableLiveData<>("0/0");
+//
+//    private final MutableLiveData<Integer> repoTotalCount = new MutableLiveData<>(0);
+//    private final MutableLiveData<Integer> repoVisitedCount = new MutableLiveData<>(0);
+//    private final MutableLiveData<Integer> repoOrderCount = new MutableLiveData<>(0);
+//    // Filters
+////    private String currentTab = "All";
+////    private String searchQuery = "";
+//    private String currentSearchQuery = "";
+//    private String currentTabFilter = "All";
+//
+//    private int globalTotalCount = 0;
+//    private int globalVisitedCount = 0;
+//    private int globalOrderCount = 0;
+//    private double globalOrderValue = 0.0;
+//
+//    public MyBeatViewModel(@NonNull Application application) {
+//        super(application);
+//        this.repository = new MyBeatRepository(application);
+//        loadDataForTab("All");
+//        fetchStatsFromApi();
+//    }
+//
+//    public void onTabFilterChanged(String tabName) {
+//        this.currentTabFilter = tabName;
+//        loadDataForTab(tabName);
+//    }
+//
+//    private void loadDataForTab(String tab) {
+//        if (tab.equals("All")) {
+//            repository.fetchDashboardData(storesResource, beats,repoTotalCount,totalOrderValue);
+//        } else {
+//            repository.fetchFilteredStores(tab, storesResource);
+//        }
+//    }
+//
+//    // [NEW]: Helper to fetch stats
+//    private void fetchStatsFromApi() {
+//        repository.fetchGlobalCounts(repoVisitedCount, repoOrderCount);
+//    }
+//
+//    public void setMasterStoreList(List<Store> stores) {
+//        this.currentApiData = stores;
+//        applyLocalSearch();
+////        updateSummaryText(); // [NEW]: Update cards text
+//    }
+//
+//    // [NEW]: Logic to create "X/Y" strings
+//    private void updateSummaryText() {
+//        int total = repoTotalCount.getValue() != null ? repoTotalCount.getValue() : 0;
+//        int visited = repoVisitedCount.getValue() != null ? repoVisitedCount.getValue() : 0;
+//        int ordered = repoOrderCount.getValue() != null ? repoOrderCount.getValue() : 0;
+//
+//        visitedCountText.setValue(visited + "/" + total);
+//        orderTakenCountText.setValue(ordered + "/" + total);
+//    }
+//
+//    public void onSearchQueryChanged(String query) {
+//        this.currentSearchQuery = query;
+//        applyLocalSearch();
+//    }
+//
+//    // Only filters the LIST, does NOT touch the Summary Cards anymore
+//    private void applyLocalSearch() {
+//        List<Store> temp = new ArrayList<>();
+//
+//        if (currentApiData == null) currentApiData = new ArrayList<>();
+//
+//        for (Store s : currentApiData) {
+//            String name = s.getStoreName();
+//            if (name != null && name.toLowerCase().contains(currentSearchQuery.toLowerCase())) {
+//                temp.add(s);
+//            } else if (name == null && currentSearchQuery.isEmpty()) {
+//                temp.add(s);
+//            }
+//        }
+//
+//        filteredStores.setValue(temp);
+//
+//        // Note: We deliberately removed the code that updates visitedCountText here.
+//        // The cards now remain static based on the "All" tab data.
+//    }
+//
+//    // Getters
+//    public LiveData<Resource<List<Store>>> getStoresResource() { return storesResource; }
+//    public LiveData<List<BeatModel>> getBeats() { return beats; }
+//    public LiveData<List<Store>> getFilteredStores() { return filteredStores; }
+//    public LiveData<Double> getTotalOrderValue() { return totalOrderValue; }
+//    public LiveData<String> getVisitedCountText() { return visitedCountText; }
+//    public LiveData<String> getOrderTakenCountText() { return orderTakenCountText; }
+//
+//    // [HIGHLIGHT] Expose raw counts so Fragment can observe and format
+//    public LiveData<Integer> getRepoTotalCount() { return repoTotalCount; }
+//    public LiveData<Integer> getRepoVisitedCount() { return repoVisitedCount; }
+//    public LiveData<Integer> getRepoOrderCount() { return repoOrderCount; }
+//
+//    public void onBeatSelectionChanged(int position, boolean isSelected) {
+//        List<BeatModel> beatList = beats.getValue();
+//        if (beatList != null && position < beatList.size()) {
+//            beatList.get(position).setSelected(isSelected);
+//            beats.setValue(beatList);
+//        }
+//    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //    public void setMasterStoreList(List<Store> stores) {
 //        this.currentApiData = stores;

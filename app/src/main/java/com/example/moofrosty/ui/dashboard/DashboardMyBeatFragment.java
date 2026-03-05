@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -145,21 +146,21 @@ public class DashboardMyBeatFragment extends Fragment {
         });
 
 
-        viewModel.getBeats().observe(getViewLifecycleOwner(), beats -> {
-            StringBuilder sb = new StringBuilder("Beat Name : ");
-            int selectedCount = 0;
-            if (beats != null) {
-                for (BeatModel b : beats) {
-                    if (b.isSelected()) {
-                        if (selectedCount > 0) sb.append(", ");
-                        sb.append(b.getName());
-                        selectedCount++;
-                    }
-                }
-            }
-            if (selectedCount == 0) tvBeatDropdown.setText("Beat Name : None");
-            else tvBeatDropdown.setText(sb.toString());
-        });
+//        viewModel.getBeats().observe(getViewLifecycleOwner(), beats -> {
+//            StringBuilder sb = new StringBuilder("Beat Name : ");
+//            int selectedCount = 0;
+//            if (beats != null) {
+//                for (BeatModel b : beats) {
+//                    if (b.isSelected()) {
+//                        if (selectedCount > 0) sb.append(", ");
+//                        sb.append(b.getName());
+//                        selectedCount++;
+//                    }
+//                }
+//            }
+//            if (selectedCount == 0) tvBeatDropdown.setText("Beat Name : None");
+//            else tvBeatDropdown.setText(sb.toString());
+//        });
 
 //        viewModel.getTotalOrderValue().observe(getViewLifecycleOwner(), val -> tvOrderValue.setText(String.valueOf(val.intValue())));
         viewModel.getTotalOrderValue().observe(getViewLifecycleOwner(), val -> {
@@ -173,7 +174,23 @@ public class DashboardMyBeatFragment extends Fragment {
         viewModel.getRepoVisitedCount().observe(getViewLifecycleOwner(), visited -> updateCountUI());
         viewModel.getRepoOrderCount().observe(getViewLifecycleOwner(), ordered -> updateCountUI());
 
-    //    tvBeatDropdown.setOnClickListener(v -> showBeatSelectionDialog());
+        // add this 02-03-2026  for mutlibeat
+        viewModel.getBeatDropdownText().observe(getViewLifecycleOwner(), text -> {
+            tvBeatDropdown.setText(text);
+        });
+
+        viewModel.getBeats().observe(getViewLifecycleOwner(), beats -> {
+            viewModel.updateBeatDropdownText();
+        });
+
+        // [HIGHLIGHT] Setup Click Listener for Dropdown
+        LinearLayout llBeatDropdown = view.findViewById(R.id.ll_beat_dropdown_container);
+        if (llBeatDropdown != null) {
+            llBeatDropdown.setOnClickListener(v -> {
+                Log.d("DashboardFragment", "Dropdown Clicked!");
+                showBeatSelectionDialog();
+            });
+        }
 
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -238,29 +255,66 @@ public class DashboardMyBeatFragment extends Fragment {
         calendarRecycler.scrollToPosition(1);
     }
 
+    // [HIGHLIGHT] Dialog Logic
     private void showBeatSelectionDialog() {
         List<BeatModel> beats = viewModel.getBeats().getValue();
-        if (beats == null) return;
+
+        // Let the user know if beats haven't loaded yet!
+        if (beats == null || beats.isEmpty()) {
+            Toast.makeText(requireContext(), "Fetching Beats... Please wait.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         String[] names = new String[beats.size()];
         boolean[] checked = new boolean[beats.size()];
 
         for (int i = 0; i < beats.size(); i++) {
             BeatModel b = beats.get(i);
-            names[i] = b.getName() + " (" + b.getTotalStores() + " Stores)";
+            names[i] = b.getName();
             checked[i] = b.isSelected();
         }
 
         AlertDialog dialog = new AlertDialog.Builder(requireContext())
-                .setTitle("Select Beat")
+                .setTitle("Select Beat(s)")
                 .setMultiChoiceItems(names, checked,
                         (d, which, isChecked) -> viewModel.onBeatSelectionChanged(which, isChecked))
-                .setPositiveButton("OK", null)
+                .setPositiveButton("OK", (d, which) -> {
+                    // Triggers API Call in ViewModel
+                    viewModel.confirmBeatSelection();
+                })
+//                .setNegativeButton("Cancel", null)
                 .show();
 
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-                .setTextColor(ContextCompat.getColor(requireContext(), R.color.Purple_Color));
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(requireContext(), R.color.Purple_Color));
+//        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(requireContext(), R.color.Purple_Color));
     }
+
+//    private void showBeatSelectionDialog() {
+//        List<BeatModel> beats = viewModel.getBeats().getValue();
+//        if (beats == null) return;
+//
+//        String[] names = new String[beats.size()];
+//        boolean[] checked = new boolean[beats.size()];
+//
+//        for (int i = 0; i < beats.size(); i++) {
+//            BeatModel b = beats.get(i);
+//            names[i] = b.getName() + " (" + b.getTotalStores() + " Stores)";
+//            checked[i] = b.isSelected();
+//        }
+//
+//        AlertDialog dialog = new AlertDialog.Builder(requireContext())
+//                .setTitle("Select Beat")
+//                .setMultiChoiceItems(names, checked,
+//                        (d, which, isChecked) -> viewModel.onBeatSelectionChanged(which, isChecked))
+//                .setPositiveButton("OK", null)
+//                .show();
+//
+//        dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+//                .setTextColor(ContextCompat.getColor(requireContext(), R.color.Purple_Color));
+//    }
+
+
+
 }
 
 //        tvBeatDropdown = view.findViewById(R.id.tv_beat_dropdown);

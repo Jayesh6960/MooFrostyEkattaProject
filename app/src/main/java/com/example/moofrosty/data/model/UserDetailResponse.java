@@ -2,6 +2,8 @@ package com.example.moofrosty.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class UserDetailResponse {
     // Note: JSON shows "status": "success", so we use String here
 
@@ -70,8 +72,8 @@ public class UserDetailResponse {
         @SerializedName("pastEmployer")
         private String pastEmployer;
 
-        @SerializedName("beat")
-        private Beat beat;
+        @SerializedName("beats")
+        private List<Beat> beats;
 
         @SerializedName("bank_detail")
         private BankDetail bankDetail;
@@ -92,7 +94,7 @@ public class UserDetailResponse {
         public String getExperienceMonths() { return experienceMonths; }
         public String getPastEmployer() { return pastEmployer; }
 
-        public Beat getBeat() { return beat; }
+        public List<Beat> getBeats() { return beats; }
         public BankDetail getBankDetail() { return bankDetail; }
 
         // ================= BEAT =================
@@ -107,26 +109,23 @@ public class UserDetailResponse {
             @SerializedName("beatNameTo")
             private String beatNameTo;
 
+            // [HIGHLIGHT] Added beat_range
+            @SerializedName("beat_range")
+            private String beatRange;
+
             public int getBeatId() {
                 return beatId;
             }
 
-            public String getBeatNameFrom() {
-                return beatNameFrom;
-            }
-
-            public String getBeatNameTo() {
-                return beatNameTo;
+            public String getBeatRange() {
+                return beatRange;
             }
 
             public String getFullBeatName() {
-                String from = beatNameFrom != null ? beatNameFrom : "";
-                String to = beatNameTo != null ? beatNameTo : "";
-
-                if (!from.isEmpty() && !to.isEmpty()) {
-                    return from + " - " + to;
+                if (beatRange != null && !beatRange.isEmpty()) {
+                    return beatRange;
                 }
-                return from + to;
+                return (beatNameFrom != null ? beatNameFrom : "") + " - " + (beatNameTo != null ? beatNameTo : "");
             }
         }
 
