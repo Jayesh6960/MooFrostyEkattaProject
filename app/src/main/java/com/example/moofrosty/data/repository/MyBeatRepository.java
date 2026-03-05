@@ -41,8 +41,14 @@ public class MyBeatRepository {
         this.sessionManager = new SessionManager(this.context);
     }
 
-    public void fetchDashboardData(MutableLiveData<Resource<List<Store>>> storesLiveData,
-                                   MutableLiveData<List<BeatModel>> beatsLiveData, MutableLiveData<Integer> totalCountData,MutableLiveData<Double> totalOrderValue) {
+
+    // --- 1. INITIAL FETCH (Gets User Beats, then triggers the first store fetch) ---
+    public void fetchInitialDashboardData(MutableLiveData<Resource<List<Store>>> storesLiveData,
+                                          MutableLiveData<List<BeatModel>> beatsLiveData,
+                                          MutableLiveData<Integer> totalCountData,
+                                          MutableLiveData<Double> totalOrderValue,
+                                          MutableLiveData<Integer> visitedCount,
+                                          MutableLiveData<Integer> orderCount) {
 
         storesLiveData.setValue(Resource.loading(null));
 
@@ -52,200 +58,448 @@ public class MyBeatRepository {
         }
 
         String token = "Bearer " + sessionManager.getToken();
+        Log.d(TAG, "API REQUEST: getUserDetail");
 
-        // STEP 1: Call User Detail API first to get correct Beat ID
         apiService.getUserDetail(token).enqueue(new Callback<UserDetailResponse>() {
             @Override
             public void onResponse(Call<UserDetailResponse> call, Response<UserDetailResponse> response) {
-                if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
+                Log.d(TAG, "API RESPONSE: getUserDetail | Code: " + response.code());
 
+                if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
                     UserDetailResponse.Data data = response.body().getData();
 
-                    if (data != null && data.getBeat() != null) {
-                        int beatId = data.getBeat().getBeatId();
-                        String beatName = data.getBeat().getFullBeatName();
-
-                        Log.d(TAG, "UserDetail API Success. BeatID: " + beatId + ", Name: " + beatName);
-
-                        // Create Beat Model for UI (Count will be 0 initially)
+                    if (data != null && data.getBeats() != null && !data.getBeats().isEmpty()) {
                         List<BeatModel> beatList = new ArrayList<>();
-                        BeatModel myBeat = new BeatModel(String.valueOf(beatId), beatName, 0, true);
-                        beatList.add(myBeat);
-                        beatsLiveData.postValue(beatList);
+                        StringBuilder beatIdsBuilder = new StringBuilder();
 
-                        // STEP 2: Now call Store List API with this ID
-                        fetchStores(token, beatId, myBeat, beatList, beatsLiveData, storesLiveData,totalCountData,totalOrderValue);
+                        for (UserDetailResponse.Data.Beat b : data.getBeats()) {
+                            beatList.add(new BeatModel(String.valueOf(b.getBeatId()), b.getFullBeatName(), 0, true));
+                            if (beatIdsBuilder.length() > 0) beatIdsBuilder.append(",");
+                            beatIdsBuilder.append(b.getBeatId());
+                        }
+
+                        beatsLiveData.postValue(beatList);
+                        String selectedBeatIds = beatIdsBuilder.toString();
+
+                        Log.d(TAG, "Extracted Beat IDs: " + selectedBeatIds);
+
+                        // Trigger the API Calls for Stores & Counts
+                        fetchStoresForTab(token, selectedBeatIds, "All", storesLiveData, totalCountData, totalOrderValue);
+                        fetchGlobalCounts(token, selectedBeatIds, visitedCount, orderCount);
 
                     } else {
-                        storesLiveData.setValue(Resource.error("User has no assigned Beat", null));
+                        Log.e(TAG, "User has no assigned Beats");
+                        storesLiveData.setValue(Resource.error("User has no assigned Beats", null));
                     }
                 } else {
-                    storesLiveData.setValue(Resource.error("Failed to fetch User Details: " + response.code(), null));
+                    Log.e(TAG, "Failed to fetch User Details");
+                    storesLiveData.setValue(Resource.error("Failed to fetch User Details", null));
                 }
             }
 
             @Override
             public void onFailure(Call<UserDetailResponse> call, Throwable t) {
-                storesLiveData.setValue(Resource.error("Network Error (User API): " + t.getMessage(), null));
+                Log.e(TAG, "API FAILURE: getUserDetail | Error: " + t.getMessage());
+                storesLiveData.setValue(Resource.error("Network Error: " + t.getMessage(), null));
             }
         });
     }
 
-    private void fetchStores(String token, int beatId, BeatModel myBeat, List<BeatModel> beatList,
-                             MutableLiveData<List<BeatModel>> beatsLiveData,
-                             MutableLiveData<Resource<List<Store>>> storesLiveData,MutableLiveData<Integer> totalCountData,MutableLiveData<Double> totalOrderValue) {
+    // --- 2. DYNAMIC ROUTER FOR TABS ---
+    public void fetchStoresForTab(String token, String beatIds, String filterType,
+                                  MutableLiveData<Resource<List<Store>>> storesLiveData,
+                                  MutableLiveData<Integer> totalCountData,
+                                  MutableLiveData<Double> totalOrderValue) {
 
-        apiService.getStoreList(token, beatId,"bit_wise_all").enqueue(new Callback<StoreListResponses>() {
+        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+
+        if (filterType.equals("All")) {
+            fetchAllStores(token, beatIds, date, storesLiveData, totalCountData, totalOrderValue);
+        } else if (filterType.equals("Visited")) {
+            fetchVisitedStores(token, beatIds, date, storesLiveData);
+        } else {
+            fetchDirectFilteredStores(token, beatIds, date, filterType, storesLiveData);
+        }
+    }
+
+    // --- A. FETCH ALL (bit_wise_all) ---
+    private void fetchAllStores(String token, String beatIds, String date,
+                                MutableLiveData<Resource<List<Store>>> storesLiveData,
+                                MutableLiveData<Integer> totalCountData,
+                                MutableLiveData<Double> totalOrderValue) {
+
+        Log.d(TAG, "API REQUEST: getStoreList (ALL) | BeatIds: " + beatIds + " | Date: " + date);
+
+        apiService.getStoreList(token, beatIds, date, "bit_wise_all").enqueue(new Callback<StoreListResponses>() {
             @Override
             public void onResponse(Call<StoreListResponses> call, Response<StoreListResponses> response) {
+                Log.d(TAG, "API RESPONSE: getStoreList (ALL) | Code: " + response.code());
+
                 if (response.isSuccessful() && response.body() != null) {
                     if (response.body().isStatus()) {
-                        // Update UI: Beat Count
-                        int count = response.body().getCount();
-                        myBeat.setTotalStores(count);
-                        beatsLiveData.postValue(beatList); // Update dropdown text
-                        totalCountData.postValue(count);
+                        if (totalCountData != null) totalCountData.postValue(response.body().getCount());
+                        if (totalOrderValue != null) totalOrderValue.postValue(response.body().getTotalBill());
 
-                        // [HIGHLIGHT] Update UI: Order Value (Total Bill)
-                        if (totalOrderValue != null) {
-                            totalOrderValue.postValue(response.body().getTotalBill());
-                        }
-                        // Update UI: Store List
                         List<Store> list = response.body().getStoreList();
                         if (list == null) list = new ArrayList<>();
+
+                        Log.d(TAG, "API SUCCESS: Fetched " + list.size() + " stores.");
                         storesLiveData.setValue(Resource.success(list));
                     } else {
-                        storesLiveData.setValue(Resource.error("No stores found in this beat", null));
+                        storesLiveData.setValue(Resource.error("No stores found", null));
                     }
                 } else {
-                    storesLiveData.setValue(Resource.error("Store API Error: " + response.code(), null));
+                    storesLiveData.setValue(Resource.error("API Error: " + response.code(), null));
                 }
             }
-
             @Override
             public void onFailure(Call<StoreListResponses> call, Throwable t) {
-                storesLiveData.setValue(Resource.error("Network Error (Store API): " + t.getMessage(), null));
+                Log.e(TAG, "API FAILURE: getStoreList (ALL) | Error: " + t.getMessage());
+                storesLiveData.setValue(Resource.error("Network Error: " + t.getMessage(), null));
             }
         });
     }
 
-    // --- 2. FILTERED FETCH ROUTER ---
-    public void fetchFilteredStores(String filterType, MutableLiveData<Resource<List<Store>>> storesLiveData) {
-        storesLiveData.setValue(Resource.loading(null));
+    // --- B. FETCH VISITED ---
+    private void fetchVisitedStores(String token, String beatIds, String date, MutableLiveData<Resource<List<Store>>> storesLiveData) {
+        Log.d(TAG, "API REQUEST: getStoreListVisited | BeatIds: " + beatIds + " | Date: " + date);
 
-        if (!NetworkUtil.isNetworkAvailable(context)) {
-            storesLiveData.setValue(Resource.error("No Internet Connection", null));
-            return;
-        }
-
-        String token = "Bearer " + sessionManager.getToken();
-        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-
-        if (filterType.equals("Visited")) {
-            // SPECIAL CASE: Nested Wrapper
-            fetchVisitedStores(token, date, storesLiveData);
-        } else {
-            // DIRECT LIST: Not Visited OR Order Taken
-            fetchDirectFilteredStores(token, date, filterType, storesLiveData);
-        }
-    }
-
-    // --- [NEW SECTION]: GLOBAL COUNTS FETCH ---
-    // This fetches the specific counts for the top cards without affecting the list
-    public void fetchGlobalCounts(MutableLiveData<Integer> visitedCount, MutableLiveData<Integer> orderCount) {
-        if (!NetworkUtil.isNetworkAvailable(context)) return;
-
-        String token = "Bearer " + sessionManager.getToken();
-        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-
-        // A. Get Visited Count
-        apiService.getStoreListVisited(token, date, "visited_shop").enqueue(new Callback<StoreListWrapperResponse>() {
+        apiService.getStoreListVisited(token, beatIds, date, "visited_shop").enqueue(new Callback<StoreListWrapperResponse>() {
             @Override
             public void onResponse(Call<StoreListWrapperResponse> call, Response<StoreListWrapperResponse> response) {
-                if(response.isSuccessful() && response.body() != null) {
-                    visitedCount.postValue(response.body().getCount());
-                }
-            }
-            @Override
-            public void onFailure(Call<StoreListWrapperResponse> call, Throwable t) {}
-        });
+                Log.d(TAG, "API RESPONSE: getStoreListVisited | Code: " + response.code());
 
-        // B. Get Order Count
-        apiService.getStoreListByOrder(token, date, "order_taken_shop").enqueue(new Callback<StoreListResponses>() {
-            @Override
-            public void onResponse(Call<StoreListResponses> call, Response<StoreListResponses> response) {
-                if(response.isSuccessful() && response.body() != null) {
-                    orderCount.postValue(response.body().getCount());
-                }
-            }
-            @Override
-            public void onFailure(Call<StoreListResponses> call, Throwable t) {}
-        });
-    }
-
-    // A. For "Visited" (Nested Structure)
-    private void fetchVisitedStores(String token, String date, MutableLiveData<Resource<List<Store>>> storesLiveData) {
-        apiService.getStoreListVisited(token, date, "visited_shop").enqueue(new Callback<StoreListWrapperResponse>() {
-            @Override
-            public void onResponse(Call<StoreListWrapperResponse> call, Response<StoreListWrapperResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<Store> extractedList = new ArrayList<>();
                     if (response.body().getWrappers() != null) {
                         for (StoreListWrapperResponse.StoreWrapper w : response.body().getWrappers()) {
                             if (w.getStore() != null) {
                                 Store s = w.getStore();
-                                s.setVisited(true); // Manually Flag for Icon
+                                s.setVisited(true);
                                 extractedList.add(s);
                             }
                         }
                     }
+                    Log.d(TAG, "API SUCCESS: Fetched " + extractedList.size() + " VISITED stores.");
                     storesLiveData.setValue(Resource.success(extractedList));
                 } else {
-                    storesLiveData.setValue(Resource.error("Server Error: " + response.code(), null));
+                    storesLiveData.setValue(Resource.error("Server Error", null));
                 }
             }
             @Override
             public void onFailure(Call<StoreListWrapperResponse> call, Throwable t) {
-                storesLiveData.setValue(Resource.error("Network Error: " + t.getMessage(), null));
+                Log.e(TAG, "API FAILURE: getStoreListVisited | Error: " + t.getMessage());
+                storesLiveData.setValue(Resource.error(t.getMessage(), null));
             }
         });
     }
 
-    // B. For "Not Visited" & "Order Taken" (Direct Structure)
-    private void fetchDirectFilteredStores(String token, String date, String filterType, MutableLiveData<Resource<List<Store>>> storesLiveData) {
+    // --- C. FETCH NOT VISITED OR ORDER TAKEN ---
+    private void fetchDirectFilteredStores(String token, String beatIds, String date, String filterType, MutableLiveData<Resource<List<Store>>> storesLiveData) {
         Call<StoreListResponses> call;
 
+        Log.d(TAG, "API REQUEST: getStoreList (" + filterType + ") | BeatIds: " + beatIds + " | Date: " + date);
+
         if (filterType.equals("Not Visited")) {
-            call = apiService.getStoreListNotVisited(token, date, "not_visited_shop");
+            call = apiService.getStoreListNotVisited(token, beatIds, date, "not_visited_shop");
         } else {
-            // Order Taken
-            call = apiService.getStoreListByOrder(token, date, "order_taken_shop");
+            call = apiService.getStoreListByOrder(token, beatIds, date, "order_taken_shop");
         }
 
         call.enqueue(new Callback<StoreListResponses>() {
             @Override
             public void onResponse(Call<StoreListResponses> call, Response<StoreListResponses> response) {
+                Log.d(TAG, "API RESPONSE: getStoreList (" + filterType + ") | Code: " + response.code());
+
                 if (response.isSuccessful() && response.body() != null) {
                     List<Store> list = response.body().getStoreList();
                     if (list == null) list = new ArrayList<>();
 
-                    // Manually set OrderTaken flag for Order tab so Icon shows
-                    if(filterType.equals("Order Taken")) {
-                        for(Store s : list) s.setOrderTaken(true);
+                    // Set local UI flags based on the tab chosen
+                    for(Store s : list) {
+                        if(filterType.equals("Order Taken")) {
+                            s.setOrderTaken(true);
+                            s.setVisited(true);
+                        } else if (filterType.equals("Not Visited")) {
+                            s.setVisited(false);
+                            s.setOrderTaken(false);
+                        }
                     }
-
+                    Log.d(TAG, "API SUCCESS: Fetched " + list.size() + " " + filterType + " stores.");
                     storesLiveData.setValue(Resource.success(list));
                 } else {
-                    storesLiveData.setValue(Resource.error("Server Error: " + response.code(), null));
+                    storesLiveData.setValue(Resource.error("Server Error", null));
                 }
             }
             @Override
             public void onFailure(Call<StoreListResponses> call, Throwable t) {
-                storesLiveData.setValue(Resource.error("Network Error: " + t.getMessage(), null));
+                Log.e(TAG, "API FAILURE: getStoreList (" + filterType + ") | Error: " + t.getMessage());
+                storesLiveData.setValue(Resource.error(t.getMessage(), null));
             }
         });
     }
+
+    // --- 3. FETCH GLOBAL COUNTS ---
+    public void fetchGlobalCounts(String token, String beatIds, MutableLiveData<Integer> visitedCount, MutableLiveData<Integer> orderCount) {
+        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+
+        Log.d(TAG, "API REQUEST: fetchGlobalCounts | BeatIds: " + beatIds + " | Date: " + date);
+
+        apiService.getStoreListVisited(token, beatIds, date, "visited_shop").enqueue(new Callback<StoreListWrapperResponse>() {
+            @Override
+            public void onResponse(Call<StoreListWrapperResponse> call, Response<StoreListWrapperResponse> response) {
+                if(response.isSuccessful() && response.body() != null) {
+                    Log.d(TAG, "GLOBAL COUNT (Visited): " + response.body().getCount());
+                    visitedCount.postValue(response.body().getCount());
+                }
+            }
+            @Override public void onFailure(Call<StoreListWrapperResponse> call, Throwable t) {}
+        });
+
+        apiService.getStoreListByOrder(token, beatIds, date, "order_taken_shop").enqueue(new Callback<StoreListResponses>() {
+            @Override
+            public void onResponse(Call<StoreListResponses> call, Response<StoreListResponses> response) {
+                if(response.isSuccessful() && response.body() != null) {
+                    Log.d(TAG, "GLOBAL COUNT (Order): " + response.body().getCount());
+                    orderCount.postValue(response.body().getCount());
+                }
+            }
+            @Override public void onFailure(Call<StoreListResponses> call, Throwable t) {}
+        });
+    }
+
+//    public void fetchDashboardData(MutableLiveData<Resource<List<Store>>> storesLiveData,
+//                                   MutableLiveData<List<BeatModel>> beatsLiveData, MutableLiveData<Integer> totalCountData,MutableLiveData<Double> totalOrderValue) {
+//
+//        storesLiveData.setValue(Resource.loading(null));
+//
+//        if (!NetworkUtil.isNetworkAvailable(context)) {
+//            storesLiveData.setValue(Resource.error("No Internet Connection", null));
+//            return;
+//        }
+//
+//        String token = "Bearer " + sessionManager.getToken();
+//
+//        // STEP 1: Call User Detail API first to get correct Beat ID
+//        apiService.getUserDetail(token).enqueue(new Callback<UserDetailResponse>() {
+//            @Override
+//            public void onResponse(Call<UserDetailResponse> call, Response<UserDetailResponse> response) {
+//                if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
+//
+//                    UserDetailResponse.Data data = response.body().getData();
+//
+//                    if (data != null && data.getBeat() != null) {
+//                        int beatId = data.getBeat().getBeatId();
+//                        String beatName = data.getBeat().getFullBeatName();
+//
+//                        Log.d(TAG, "UserDetail API Success. BeatID: " + beatId + ", Name: " + beatName);
+//
+//                        // Create Beat Model for UI (Count will be 0 initially)
+//                        List<BeatModel> beatList = new ArrayList<>();
+//                        BeatModel myBeat = new BeatModel(String.valueOf(beatId), beatName, 0, true);
+//                        beatList.add(myBeat);
+//                        beatsLiveData.postValue(beatList);
+//
+//                        // STEP 2: Now call Store List API with this ID
+//                        fetchStores(token, beatId, myBeat, beatList, beatsLiveData, storesLiveData,totalCountData,totalOrderValue);
+//
+//                    } else {
+//                        storesLiveData.setValue(Resource.error("User has no assigned Beat", null));
+//                    }
+//                } else {
+//                    storesLiveData.setValue(Resource.error("Failed to fetch User Details: " + response.code(), null));
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<UserDetailResponse> call, Throwable t) {
+//                storesLiveData.setValue(Resource.error("Network Error (User API): " + t.getMessage(), null));
+//            }
+//        });
+//    }
+//
+//    private void fetchStores(String token, int beatId, BeatModel myBeat, List<BeatModel> beatList,
+//                             MutableLiveData<List<BeatModel>> beatsLiveData,
+//                             MutableLiveData<Resource<List<Store>>> storesLiveData,MutableLiveData<Integer> totalCountData,MutableLiveData<Double> totalOrderValue) {
+//
+//        apiService.getStoreList(token, beatId,"bit_wise_all").enqueue(new Callback<StoreListResponses>() {
+//            @Override
+//            public void onResponse(Call<StoreListResponses> call, Response<StoreListResponses> response) {
+//                if (response.isSuccessful() && response.body() != null) {
+//                    if (response.body().isStatus()) {
+//                        // Update UI: Beat Count
+//                        int count = response.body().getCount();
+//                        myBeat.setTotalStores(count);
+//                        beatsLiveData.postValue(beatList); // Update dropdown text
+//                        totalCountData.postValue(count);
+//
+//                        // [HIGHLIGHT] Update UI: Order Value (Total Bill)
+//                        if (totalOrderValue != null) {
+//                            totalOrderValue.postValue(response.body().getTotalBill());
+//                        }
+//                        // Update UI: Store List
+//                        List<Store> list = response.body().getStoreList();
+//                        if (list == null) list = new ArrayList<>();
+//                        storesLiveData.setValue(Resource.success(list));
+//                    } else {
+//                        storesLiveData.setValue(Resource.error("No stores found in this beat", null));
+//                    }
+//                } else {
+//                    storesLiveData.setValue(Resource.error("Store API Error: " + response.code(), null));
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<StoreListResponses> call, Throwable t) {
+//                storesLiveData.setValue(Resource.error("Network Error (Store API): " + t.getMessage(), null));
+//            }
+//        });
+//    }
+//
+//    // --- 2. FILTERED FETCH ROUTER ---
+//    public void fetchFilteredStores(String filterType, MutableLiveData<Resource<List<Store>>> storesLiveData) {
+//        storesLiveData.setValue(Resource.loading(null));
+//
+//        if (!NetworkUtil.isNetworkAvailable(context)) {
+//            storesLiveData.setValue(Resource.error("No Internet Connection", null));
+//            return;
+//        }
+//
+//        String token = "Bearer " + sessionManager.getToken();
+//        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+//
+//        if (filterType.equals("Visited")) {
+//            // SPECIAL CASE: Nested Wrapper
+//            fetchVisitedStores(token, date, storesLiveData);
+//        } else {
+//            // DIRECT LIST: Not Visited OR Order Taken
+//            fetchDirectFilteredStores(token, date, filterType, storesLiveData);
+//        }
+//    }
+//
+//    // --- [NEW SECTION]: GLOBAL COUNTS FETCH ---
+//    // This fetches the specific counts for the top cards without affecting the list
+//    public void fetchGlobalCounts(MutableLiveData<Integer> visitedCount, MutableLiveData<Integer> orderCount) {
+//        if (!NetworkUtil.isNetworkAvailable(context)) return;
+//
+//        String token = "Bearer " + sessionManager.getToken();
+//        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+//
+//        // A. Get Visited Count
+//        apiService.getStoreListVisited(token, date, "visited_shop").enqueue(new Callback<StoreListWrapperResponse>() {
+//            @Override
+//            public void onResponse(Call<StoreListWrapperResponse> call, Response<StoreListWrapperResponse> response) {
+//                if(response.isSuccessful() && response.body() != null) {
+//                    visitedCount.postValue(response.body().getCount());
+//                }
+//            }
+//            @Override
+//            public void onFailure(Call<StoreListWrapperResponse> call, Throwable t) {}
+//        });
+//
+//        // B. Get Order Count
+//        apiService.getStoreListByOrder(token, date, "order_taken_shop").enqueue(new Callback<StoreListResponses>() {
+//            @Override
+//            public void onResponse(Call<StoreListResponses> call, Response<StoreListResponses> response) {
+//                if(response.isSuccessful() && response.body() != null) {
+//                    orderCount.postValue(response.body().getCount());
+//                }
+//            }
+//            @Override
+//            public void onFailure(Call<StoreListResponses> call, Throwable t) {}
+//        });
+//    }
+//
+//    // A. For "Visited" (Nested Structure)
+//    private void fetchVisitedStores(String token, String date, MutableLiveData<Resource<List<Store>>> storesLiveData) {
+//        apiService.getStoreListVisited(token, date, "visited_shop").enqueue(new Callback<StoreListWrapperResponse>() {
+//            @Override
+//            public void onResponse(Call<StoreListWrapperResponse> call, Response<StoreListWrapperResponse> response) {
+//                if (response.isSuccessful() && response.body() != null) {
+//                    List<Store> extractedList = new ArrayList<>();
+//                    if (response.body().getWrappers() != null) {
+//                        for (StoreListWrapperResponse.StoreWrapper w : response.body().getWrappers()) {
+//                            if (w.getStore() != null) {
+//                                Store s = w.getStore();
+//                                s.setVisited(true); // Manually Flag for Icon
+//                                extractedList.add(s);
+//                            }
+//                        }
+//                    }
+//                    storesLiveData.setValue(Resource.success(extractedList));
+//                } else {
+//                    storesLiveData.setValue(Resource.error("Server Error: " + response.code(), null));
+//                }
+//            }
+//            @Override
+//            public void onFailure(Call<StoreListWrapperResponse> call, Throwable t) {
+//                storesLiveData.setValue(Resource.error("Network Error: " + t.getMessage(), null));
+//            }
+//        });
+//    }
+//
+//    // B. For "Not Visited" & "Order Taken" (Direct Structure)
+//    private void fetchDirectFilteredStores(String token, String date, String filterType, MutableLiveData<Resource<List<Store>>> storesLiveData) {
+//        Call<StoreListResponses> call;
+//
+//        if (filterType.equals("Not Visited")) {
+//            call = apiService.getStoreListNotVisited(token, date, "not_visited_shop");
+//        } else {
+//            // Order Taken
+//            call = apiService.getStoreListByOrder(token, date, "order_taken_shop");
+//        }
+//
+//        call.enqueue(new Callback<StoreListResponses>() {
+//            @Override
+//            public void onResponse(Call<StoreListResponses> call, Response<StoreListResponses> response) {
+//                if (response.isSuccessful() && response.body() != null) {
+//                    List<Store> list = response.body().getStoreList();
+//                    if (list == null) list = new ArrayList<>();
+//
+//                    // Manually set OrderTaken flag for Order tab so Icon shows
+//                    if(filterType.equals("Order Taken")) {
+//                        for(Store s : list) s.setOrderTaken(true);
+//                    }
+//
+//                    storesLiveData.setValue(Resource.success(list));
+//                } else {
+//                    storesLiveData.setValue(Resource.error("Server Error: " + response.code(), null));
+//                }
+//            }
+//            @Override
+//            public void onFailure(Call<StoreListResponses> call, Throwable t) {
+//                storesLiveData.setValue(Resource.error("Network Error: " + t.getMessage(), null));
+//            }
+//        });
+//    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //   look above code
 
