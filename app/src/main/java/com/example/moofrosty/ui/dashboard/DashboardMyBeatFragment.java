@@ -137,10 +137,10 @@ public class DashboardMyBeatFragment extends Fragment {
                 }
             }
         });
-
+//Store -->> Outlet
         viewModel.getFilteredStores().observe(getViewLifecycleOwner(), stores -> {
             storeAdapter.updateList(stores);
-            searchBar.setHint(stores.size() + " Store(s)");
+            searchBar.setHint(stores.size() + " Outlet(u)");
             if(stores.isEmpty()) tvNoData.setVisibility(View.VISIBLE);
             else tvNoData.setVisibility(View.GONE);
         });
