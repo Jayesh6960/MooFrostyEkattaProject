@@ -242,7 +242,7 @@
             }
 
             // Setup Dropdown
-            String[] reasons = {"Order Taken", "Stock Available", "Store is Closed", "Owner is not available"};
+            String[] reasons = {"Order Taken", "Stock Available", "Outlet is Closed", "Owner is not available"};
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, reasons);
             spReason.setAdapter(adapter);
 
@@ -269,7 +269,7 @@
                     takeOrderViewModel.performCheckOut(token, currentStore.getShopId(), selectedReason);
                     bottomSheetDialog.dismiss();
                 } else {
-                    Toast.makeText(this, "Store Data Missing", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Outlet Data Missing", Toast.LENGTH_SHORT).show();
                 }
             });
 

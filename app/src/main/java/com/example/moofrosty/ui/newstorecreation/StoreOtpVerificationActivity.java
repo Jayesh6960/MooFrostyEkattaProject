@@ -44,8 +44,6 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
     TextView tvDate ;
     ScrollView scrollView;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

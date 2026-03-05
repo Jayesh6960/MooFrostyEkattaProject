@@ -8,46 +8,46 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#F5F5F5"
         android:gravity="center"
         android:orientation="vertical"
-        android:background="#F5F5F5"
         tools:context=".ui.dashboard.DashboardMyBeatFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/calendar_recycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#E2E2E2"
             android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:background="#E2E2E2" />
+            android:paddingBottom="5dp" />
 
         <LinearLayout
             android:id="@+id/ll_beat_dropdown_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:padding="12dp"
             android:layout_marginTop="1dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
+            android:background="@color/white"
             android:clickable="true"
-            android:focusable="true">
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="12dp">
 
             <TextView
                 android:id="@+id/tv_beat_dropdown"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="Beat Name : Select"
+                android:textColor="@color/black"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@color/black"/>
+                android:textStyle="bold" />
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
-                app:tint="@color/black"/>
+                app:tint="@color/black" />
         </LinearLayout>
 
         <LinearLayout
@@ -60,21 +60,23 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
                 android:layout_height="80dp"
+                android:layout_marginEnd="4dp"
                 android:layout_weight="1"
-                app:cardCornerRadius="8dp"
                 app:cardBackgroundColor="#80CBC4"
-                android:layout_marginEnd="4dp">
+                app:cardCornerRadius="8dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal|center_vertical">
+                    android:gravity="center_horizontal|center_vertical"
+                    android:orientation="vertical">
+
                     <TextView
-                        android:text="Order Value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="15sp"
-                        android:textColor="@color/black"/>
+                        android:text="Order Value"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/tv_order_val"
@@ -90,29 +92,32 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
                 android:layout_height="80dp"
+                android:layout_marginEnd="4dp"
                 android:layout_weight="1"
-                app:cardCornerRadius="8dp"
                 app:cardBackgroundColor="#F48FB1"
-                android:layout_marginEnd="4dp">
+                app:cardCornerRadius="8dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal|center_vertical">
+                    android:gravity="center_horizontal|center_vertical"
+                    android:orientation="vertical">
+
                     <TextView
-                        android:text="Stores Visited"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="15sp"
-                        android:textColor="@color/black"/>
+                        android:text="Outlet Visited"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+
                     <TextView
                         android:id="@+id/tv_visited_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0/0"
+                        android:textColor="@color/black"
                         android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"/>
+                        android:textStyle="bold" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -120,27 +125,30 @@
                 android:layout_width="0dp"
                 android:layout_height="80dp"
                 android:layout_weight="1"
-                app:cardCornerRadius="8dp"
-                app:cardBackgroundColor="#90CAF9">
+                app:cardBackgroundColor="#90CAF9"
+                app:cardCornerRadius="8dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal|center_vertical">
+                    android:gravity="center_horizontal|center_vertical"
+                    android:orientation="vertical">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Order Taken"
-                        android:textSize="15sp"
-                        android:textColor="@color/black"/>
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+
                     <TextView
                         android:id="@+id/tv_order_taken_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0/0"
+                        android:textColor="@color/black"
                         android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"/>
+                        android:textStyle="bold" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
         </LinearLayout>
@@ -148,25 +156,26 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="8dp"
-            android:gravity="center_vertical">
-<!--//new updates Done in the Code -->
+            android:padding="8dp">
+            <!--//new updates Done in the Code -->
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_search"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
-                android:layout_weight="1"
                 android:layout_marginRight="10dp"
+                android:layout_weight="1"
                 android:background="@drawable/rounded_edittext_bg"
-                android:hint="0 Store(s)"
-                android:singleLine="true"
-                android:drawablePadding="10dp"
-                android:paddingStart="12dp"
                 android:drawableStart="@drawable/search_icon"
+                android:drawablePadding="10dp"
                 android:drawableTint="@color/Purple_Color"
-                android:textSize="16sp"
-                android:textCursorDrawable="@drawable/cursor_purple_bold"/>
+                android:hint="0 Outlet(s)"
+                android:paddingStart="12dp"
+                android:singleLine="true"
+                android:textCursorDrawable="@drawable/cursor_purple_bold"
+                android:textSize="16sp" />
 
             <ImageView
                 android:id="@+id/btn_map_view"
@@ -182,34 +191,34 @@
             android:id="@+id/tab_layout_filter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabMode="scrollable"
-            app:tabRippleColor="@null"
-            app:tabIndicatorHeight="0dp"
-            app:tabBackground="@drawable/selector_mybeattab_background"
-            app:tabTextColor="@color/selector_mybeattab_text"
-            app:tabTextAppearance="@style/MyCustomTabText"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginBottom="4dp"/>
+            android:layout_marginBottom="4dp"
+            app:tabBackground="@drawable/selector_mybeattab_background"
+            app:tabIndicatorHeight="0dp"
+            app:tabMode="scrollable"
+            app:tabRippleColor="@null"
+            app:tabTextAppearance="@style/MyCustomTabText"
+            app:tabTextColor="@color/selector_mybeattab_text" />
 
         <TextView
             android:id="@+id/tv_no_data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="No stores available"
             android:layout_marginTop="120dp"
+            android:text="No Outlet available"
+            android:textColor="@android:color/darker_gray"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@android:color/darker_gray"
-            android:visibility="visible"/>
+            android:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/store_recycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/item_store_list"
-            android:background="#FAFAFA"/>
+            android:background="#FAFAFA"
+            tools:listitem="@layout/item_store_list" />
 
 
     </LinearLayout>

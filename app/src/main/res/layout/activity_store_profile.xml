@@ -77,7 +77,7 @@
             android:id="@+id/btn_enter_store"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:text="Enter Store"
+            android:text="Enter Outlet"
             android:textColor="@color/white"
             android:backgroundTint="@color/Pink_color"
             android:textAllCaps="false"

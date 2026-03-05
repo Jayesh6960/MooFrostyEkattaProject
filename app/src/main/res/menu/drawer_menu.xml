@@ -8,7 +8,7 @@
         <item
             android:id="@+id/menu_store"
             android:icon="@drawable/newstorecreation"
-            android:title="New Store Creation" />
+            android:title="@string/New_outlet_Creation" />
         <item
             android:id="@+id/menu_collection"
             android:icon="@drawable/collectionsummary"

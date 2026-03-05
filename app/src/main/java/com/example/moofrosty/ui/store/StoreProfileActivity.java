@@ -137,8 +137,8 @@ public class StoreProfileActivity extends AppCompatActivity {
             v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), systemBars.bottom);
             return insets;
         });
-
-        tvTitle.setText("Enter Store");
+//Before  Store-->> Outlet
+        tvTitle.setText("Enter Outlet");
         btnBack.setVisibility(View.VISIBLE);
         btnMenu.setVisibility(View.GONE);
         btnBack.setOnClickListener(v -> onBackPressed());
@@ -201,12 +201,12 @@ public class StoreProfileActivity extends AppCompatActivity {
         if (currentStore != null) {
             tvTitle.setText(currentStore.getStoreName());
         }
-
+//before Store-->> Outlet
         // Setup Tabs
         StorePagerAdapter adapter = new StorePagerAdapter(this);
         viewPager.setAdapter(adapter);
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
-            if (position == 0) tab.setText("Store Profile");
+            if (position == 0) tab.setText("Outlet Profile");
             else tab.setText("Order History");
         }).attach();
 
@@ -355,15 +355,15 @@ public class StoreProfileActivity extends AppCompatActivity {
 //
 //        builder.show();
 //    }
-
+//Store--->> Outlet
     private void showGeofenceDialog(StoreProfileViewModel.GeofenceData data) {
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("Geofencing Alert!")
                 .setMessage(
-                        "Distance from Store: " + String.format("%.2f", data.distance) + "m\n\n" +
+                        "Distance from Outlet: " + String.format("%.2f", data.distance) + "m\n\n" +
                                 "Current Lat: " + data.currentLat + "\n" +
                                 "Current Lng: " + data.currentLng + "\n\n" +
-                                "Please take order within 100m of store location."
+                                "Please take order within 100m of Outlet location."
                 )
                 .setPositiveButton("OK", null)
                 .setIcon(R.drawable.ic_error_icon_geofensing)
