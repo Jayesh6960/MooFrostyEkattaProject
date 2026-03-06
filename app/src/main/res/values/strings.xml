@@ -9,7 +9,7 @@
     <string name="esp_0_0">ESP: 0/0</string>
     <string name="ta_0_0">TA: 0/0</string>
     <string name="tlsd_0">TLSD: 0</string>
-    <string name="shop_front">Shop Front</string>
+    <string name="shop_front">Outlet Front</string>
     <string name="take_order">Take Order</string>
     <string name="orders">Orders</string>
     <string name="mission">Mission</string>
@@ -25,21 +25,18 @@
     <string name="margin">Margin</string>
     <string name="stk_pcs">Stock Quantity : </string>
     <string name="add_to_cart">Add to cart</string>
-
+    <string name="New_outlet_Creation">New Outlet Creation</string>
     <string name="back">Back</string>
     <string name="support">Support</string>
-
     <!-- Mail Support -->
     <string name="mail_support">Mail Support</string>
     <string name="support_email">moofrostys@gmail.com</string>
-
+    <string name="Outlet_Proposal_Info">Outlet Proposal Info</string>
     <!-- Call Helpline -->
     <string name="call_helpline">Call Helpline Support (Application Issues)</string>
     <string name="helpline_number">( 7020686174) </string>
-
     <!-- Salary & Other Issues -->
     <string name="salary_issues">For Salary &amp; Other Issues</string>
-
     <string name="three_p_rs">3P RS Salesman</string>
     <string name="non_three_p_rs">NON 3P RS Salesman</string>
     <string name="contact_tsf">Contact TSF Helpline</string>

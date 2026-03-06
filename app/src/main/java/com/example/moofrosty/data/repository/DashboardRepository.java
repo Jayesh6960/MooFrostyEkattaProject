@@ -15,17 +15,20 @@ public class DashboardRepository {
 
         // Safety check to prevent NullPointer
         if (mocName == null) mocName = "MOC 02";
-
+//MGP(Slaes)- Monthly Sales
+//        EFOS -->> ATM (Actual time in Market)
         if (mocName.contains("MOC 02")) {
             // DECEMBER DATA
             totalIncentives.setValue("0 / 0");
-            items.add(new DashboardItem("MGP(Sales)", 0, "0/0", 0, 0));
-            items.add(new DashboardItem("EFOS", 0, "0/0", 0, 0));
+            items.add(new DashboardItem("Monthly Sales", 0, "0/0", 0, 0));
+            items.add(new DashboardItem("ATM", 0, "0/0", 0, 0));
         } else if (mocName.contains("MOC 1")) {
             // NOVEMBER DATA
+            //Changes Before  Changes After MGP Sales--Monthly Sales
+            //Changes Before Change  Before Change After change ATM  Actul Time in Market
             totalIncentives.setValue("0 / 0");
-            items.add(new DashboardItem("MGP(Sales)", 0, "0/0", 0, 0));
-            items.add(new DashboardItem("EFOS", 0, "0/0", 0, 0));
+            items.add(new DashboardItem("Monthly Sales ", 0, "0/0", 0, 0));
+            items.add(new DashboardItem("ATM", 0, "0/0", 0, 0));
         }
 
 //        if (mocName.contains("MOC 01")) {

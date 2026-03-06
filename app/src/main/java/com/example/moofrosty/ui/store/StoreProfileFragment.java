@@ -67,7 +67,7 @@ public class StoreProfileFragment extends Fragment {
                 tvOwnerName.setText("Owner Name  : " + store.getOwnerName());
             //    tvHulCode.setText("HUL Code: " + store.getHulCode());
                 tvHulCode.setText("Moo Frosty Code : Empty" );
-                tvPartyCode.setText("Store Code  : " + store.getShopId());    //.replaceAll("[^0-9]", ""));
+                tvPartyCode.setText("Outlet Code  : " + store.getShopId());    //.replaceAll("[^0-9]", ""));
                 tvPhone.setText(store.getMobileNumber());
                 tvAddress.setText(store.getAddress());
 

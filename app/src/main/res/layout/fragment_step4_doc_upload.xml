@@ -93,7 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:textSize="16dp"
-            android:text="Upload Shop Board (Outside) *" />
+            android:text="Upload Store Board (Outside) *" />
 
         <ImageView
             android:id="@+id/img_board"
@@ -109,7 +109,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:textSize="16dp"
-            android:text="Upload Shop Image (Inside) *" />
+            android:text="Upload Store Image (Inside) *" />
 
         <ImageView
             android:id="@+id/img_inside"

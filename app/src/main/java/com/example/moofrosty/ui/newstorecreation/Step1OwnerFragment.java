@@ -69,7 +69,7 @@ public class Step1OwnerFragment extends Fragment {
 
             if(name.isEmpty() ) {
 
-                tillowner.setError("Owner full name is required");
+                tillowner.setError("Owner name is required");
                 return;
             }
 //            if(email.isEmpty() ) {

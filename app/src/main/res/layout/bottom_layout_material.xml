@@ -38,7 +38,7 @@
         app:hintTextColor="@color/Purple_Color"
         app:cursorColor="@color/Purple_Color"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:hint="Store Name">
+        android:hint="Outlet Name">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tvStore"

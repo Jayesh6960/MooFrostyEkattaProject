@@ -37,7 +37,7 @@ import com.example.moofrosty.data.model.StoreListResponse;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Calendar;
-
+//Latest changes 05-03-2026
 public class NewStoreActivity extends AppCompatActivity {
 
     private NewStoreListViewModel viewModel;
@@ -83,7 +83,7 @@ public class NewStoreActivity extends AppCompatActivity {
             return insets;
         });
 
-        tvTitle.setText("New Store Creation");
+        tvTitle.setText("New Outlet Creation");
         btnBack.setVisibility(View.VISIBLE);
         btnMenu.setVisibility(View.GONE);
         tvDate.setVisibility(View.VISIBLE);
@@ -103,7 +103,7 @@ public class NewStoreActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(NewStoreListViewModel.class);
 
         // 3. Setup Toolbar
-        tvTitle.setText("New Store Creation");
+        tvTitle.setText("New Outlet Creation");
         btnBack.setOnClickListener(v -> finish());
 
         // 4. Setup Recycler
