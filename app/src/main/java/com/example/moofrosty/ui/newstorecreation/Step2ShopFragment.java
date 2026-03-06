@@ -1,5 +1,6 @@
 package com.example.moofrosty.ui.newstorecreation;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -7,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,15 +27,15 @@ import com.example.moofrosty.data.model.SecondaryChannelResponse;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-
+//Address Should  be FullAddress From the Front(Appside) end
 public class Step2ShopFragment extends Fragment {
 
     private CreateStoreViewModel viewModel;
     private SessionManager sessionManager;
 
     private AutoCompleteTextView spCountry, spState, spDist, spCity, spBeat, spRsId, spSecondaryChannel, spOutletType;
-    private TextInputEditText etShopName, etPin, etAddress;
-    private TextInputLayout tilShopName, tilCountry, tilState, tilDistrict, tilCity, tilBeat, tilRsId, tilSecondaryChannel, tilOutletType, tilAddress,tilPin;
+    private TextInputEditText etShopName, etPin, etAddressline1,etAddressline2,etAddressline3;
+    private TextInputLayout tilShopName, tilCountry, tilState, tilDistrict, tilCity, tilBeat, tilRsId, tilSecondaryChannel, tilOutletType, tilAddress1,tilAddress2,tilAddress3,tilPin;
 
     public Step2ShopFragment() {
         // Required empty public constructor
@@ -47,6 +49,7 @@ public class Step2ShopFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_step2_shop, container, false);
     }
 
+    @SuppressLint("SuspiciousIndentation")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -68,7 +71,11 @@ public class Step2ShopFragment extends Fragment {
         etShopName = view.findViewById(R.id.et_shop_name);
         spOutletType = view.findViewById(R.id.sp_outlet_type);
         etPin = view.findViewById(R.id.et_pin);
-        etAddress = view.findViewById(R.id.et_address);
+        etAddressline1 = view.findViewById(R.id.et_address1);
+        etAddressline2=view.findViewById(R.id.et_address2);
+        etAddressline3=view.findViewById(R.id.et_address3);
+
+
 
         tilShopName = view.findViewById(R.id.til_shop_name);
         tilPin = view.findViewById(R.id.til_pin);
@@ -80,11 +87,13 @@ public class Step2ShopFragment extends Fragment {
         tilRsId = view.findViewById(R.id.til_rs_id);
         tilSecondaryChannel = view.findViewById(R.id.til_secondary_channel);
         tilOutletType = view.findViewById(R.id.til_outlet_type);
-        tilAddress = view.findViewById(R.id.til_address);
+        tilAddress1 = view.findViewById(R.id.til_address1);
+        tilAddress2 = view.findViewById(R.id.til_address2);
+        tilAddress3=view.findViewById(R.id.til_address3);
 
         MaterialButton btnNext = view.findViewById(R.id.btn_next);
 
-        String[] outletTypes = {"COC", "ROC"};
+        String[] outletTypes = {"OM", "CM"};
         ArrayAdapter<String> outletAdapter = new ArrayAdapter<>(requireContext(),
                 android.R.layout.simple_dropdown_item_1line, outletTypes);
         spOutletType.setAdapter(outletAdapter);
@@ -284,7 +293,15 @@ public class Step2ShopFragment extends Fragment {
         // --- 🔥 FIX: RESTORE DATA ---
         if (viewModel.storeName != null) etShopName.setText(viewModel.storeName);
         if (viewModel.pinCode != null) etPin.setText(viewModel.pinCode);
-        if (viewModel.address != null) etAddress.setText(viewModel.address);
+//        if (viewModel.address != null) etAddress.setText(viewModel.address);
+                if (viewModel.address != null) {
+
+            String[] address = viewModel.address.split(",");
+
+            if (address.length > 0) etAddressline1.setText(address[0].trim());
+            if (address.length > 1) etAddressline2.setText(address[1].trim());
+            if (address.length > 2) etAddressline3.setText(address[2].trim());
+        }
 
         // Restore Dropdowns (We set the text, but false hides the filter list)
         if (viewModel.outletType != null) spOutletType.setText(viewModel.outletType, false);
@@ -311,7 +328,8 @@ public class Step2ShopFragment extends Fragment {
             tilRsId.setError(null);
             tilSecondaryChannel.setError(null);
             tilOutletType.setError(null);
-            tilAddress.setError(null);
+//            tilAddress.setError(null);
+            tilAddress1.setError(null);
 
             // Individual validations
             if (etShopName.getText().toString().trim().isEmpty()) {
@@ -354,10 +372,37 @@ public class Step2ShopFragment extends Fragment {
                 tilOutletType.setError("Please select Outlet type ");
                 isValid = false;
             }
-            if (etAddress.getText().toString().trim().isEmpty()) {
-                tilAddress.setError("Please select Address ");
+//            if (etAddress.getText().toString().trim().isEmpty()) {
+//                tilAddress.setError("Please select Address ");
+//                isValid = false;
+//            }
+
+                        if (etAddressline1.getText().toString().trim().isEmpty()) {
+//                            both  address required
+                tilAddress1.setError("Address Line 1 required");
+
+                tilAddress2.setError("Address Line 2 required");
                 isValid = false;
             }
+                        String address1 = etAddressline1.getText().toString().trim();
+            String address2 = etAddressline2.getText().toString().trim();
+            String address3 = etAddressline3.getText().toString().trim();
+
+            String fullAddress = address1;
+
+            if (!address2.isEmpty())
+                fullAddress += "#" + address2;
+
+            if (!address3.isEmpty())
+                fullAddress += "#" + address3;
+
+            viewModel.address = fullAddress;
+            Log.d("STORE_CREATION", "Address Line 1 : " + address1);
+//            Log.d("STORE_CREATION", "Address Line 2 : " + address2);
+            Log.d("FullAddress", "Address Line 3 : " + fullAddress);
+
+
+
 
             // Stop if invalid
             if (!isValid) return;
@@ -367,7 +412,8 @@ public class Step2ShopFragment extends Fragment {
             //           viewModel.rsId = etRsId.getText().toString();
 //            viewModel.outletType = etType.getText().toString();
             viewModel.pinCode = etPin.getText().toString();
-            viewModel.address = etAddress.getText().toString();
+//            viewModel.address = etAddress.getText().toString();
+
 
 //            // ✅ SAME PATTERN
 //            viewModel.secondaryChannel =
