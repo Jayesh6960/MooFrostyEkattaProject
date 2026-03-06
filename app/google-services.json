@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "655423885221",
+    "project_id": "moofrostyecommerceapp",
+    "storage_bucket": "moofrostyecommerceapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:655423885221:android:8dde7bbd5b61a7c7b3e24c",
+        "android_client_info": {
+          "package_name": "com.example.moofrosty"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApsfDnrvxmycZ6uHS1BVjx3P-tRPemR9w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
