@@ -433,14 +433,16 @@ public class Step2ShopFragment extends Fragment {
 //                isValid = false;
 //            }
 
-                        if (etAddressline1.getText().toString().trim().isEmpty()) {
-//                            both  address required
+            if (etAddressline1.getText().toString().trim().isEmpty()) {
                 tilAddress1.setError("Address Line 1 required");
+                isValid = false;
+            }
 
+            if (etAddressline2.getText().toString().trim().isEmpty()) {
                 tilAddress2.setError("Address Line 2 required");
                 isValid = false;
             }
-                        String address1 = etAddressline1.getText().toString().trim();
+            String address1 = etAddressline1.getText().toString().trim();
             String address2 = etAddressline2.getText().toString().trim();
             String address3 = etAddressline3.getText().toString().trim();
 
