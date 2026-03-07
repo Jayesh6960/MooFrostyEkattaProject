@@ -34,7 +34,7 @@ public class Step2ShopFragment extends Fragment {
     private AutoCompleteTextView spCountry, spState, spDist, spCity, spBeat, spRsId, spSecondaryChannel, spOutletType;
     private TextInputEditText etShopName, etPin, etAddress;
     private TextInputLayout tilShopName, tilCountry, tilState, tilDistrict, tilCity, tilBeat, tilRsId, tilSecondaryChannel, tilOutletType, tilAddress,tilPin;
-
+    private View loadingOverlay;
     public Step2ShopFragment() {
         // Required empty public constructor
     }
@@ -54,7 +54,7 @@ public class Step2ShopFragment extends Fragment {
         viewModel = new ViewModelProvider(requireActivity()).get(CreateStoreViewModel.class);
         sessionManager = new SessionManager(requireContext());
         String token = sessionManager.getToken();
-
+        loadingOverlay = view.findViewById(R.id.loading_overlay);
         // --- INITIALIZE VIEWS ---
         spCountry = view.findViewById(R.id.sp_country);
         spState = view.findViewById(R.id.sp_state);
@@ -108,13 +108,36 @@ public class Step2ShopFragment extends Fragment {
         }
 
         viewModel.countries.observe(getViewLifecycleOwner(), res -> {
-            if (res.status == Resource.Status.SUCCESS && res.data != null) {
-                ArrayAdapter<LocationResponse.Country> adapter =
-                        new ArrayAdapter<>(requireContext(),
-                                android.R.layout.simple_dropdown_item_1line,
-                                res.data.getData());
+            if (res.status == Resource.Status.LOADING) {
+                loadingOverlay.setVisibility(View.VISIBLE); // Show Loader
+            } else {
+                loadingOverlay.setVisibility(View.GONE); // Hide Loader
+                if (res.status == Resource.Status.SUCCESS && res.data != null) {
+                    ArrayAdapter<LocationResponse.Country> adapter =
+                            new ArrayAdapter<>(requireContext(),
+                                    android.R.layout.simple_dropdown_item_1line,
+                                    res.data.getData());
+                    spCountry.setAdapter(adapter);
 
-                spCountry.setAdapter(adapter);
+                    if (viewModel.selectedCountryId == null || viewModel.selectedCountryId.isEmpty()) {
+                        for (LocationResponse.Country country : res.data.getData()) {
+                            if (country.getName().equalsIgnoreCase("India")) {
+                                // 1. Set the text in the UI (false = don't popup the list)
+                                spCountry.setText(country.getName(), false);
+
+                                // 2. Save to ViewModel
+                                viewModel.selectedCountryId = String.valueOf(country.getId());
+                                viewModel.selectedCountryName = country.getName();
+
+                                // 3. Automatically fetch states for India
+                                if (NetworkUtil.isNetworkAvailable(requireContext())) {
+                                    viewModel.fetchStates(sessionManager.getToken(), country.getId());
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
             }
         });
 
@@ -141,10 +164,36 @@ public class Step2ShopFragment extends Fragment {
 
         // -------- STATE --------
         viewModel.states.observe(getViewLifecycleOwner(), res -> {
-            if (res.status == Resource.Status.SUCCESS && res.data != null) {
-                spState.setAdapter(new ArrayAdapter<>(requireContext(),
-                        android.R.layout.simple_dropdown_item_1line,
-                        res.data.getData()));
+            if (res.status == Resource.Status.LOADING) {
+                loadingOverlay.setVisibility(View.VISIBLE); // Show Loader
+            } else {
+                loadingOverlay.setVisibility(View.GONE); // Hide Loader
+                if (res.status == Resource.Status.SUCCESS && res.data != null) {
+                    spState.setAdapter(new ArrayAdapter<>(requireContext(),
+                            android.R.layout.simple_dropdown_item_1line,
+                            res.data.getData()));
+
+                    if (viewModel.selectedStateId == null || viewModel.selectedStateId.isEmpty()) {
+                        for (LocationResponse.State state : res.data.getData()) {
+                            if (state.getName().equalsIgnoreCase("Maharashtra")) {
+                                // 1. Set the text in the UI
+                                spState.setText(state.getName(), false);
+
+                                // 2. Save to ViewModel
+                                viewModel.selectedStateId = String.valueOf(state.getId());
+                                viewModel.selectedStateName = state.getName();
+
+                                // 3. Automatically fetch districts for Maharashtra
+                                if (NetworkUtil.isNetworkAvailable(requireContext())) {
+                                    viewModel.fetchDistricts(sessionManager.getToken(), state.getId());
+                                }
+                                break;
+                            }
+                        }
+                    }
+                } else if (res.status == Resource.Status.ERROR) {
+                    Toast.makeText(requireContext(), res.message, Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -168,10 +217,17 @@ public class Step2ShopFragment extends Fragment {
 
         // -------- DISTRICT --------
         viewModel.districts.observe(getViewLifecycleOwner(), res -> {
-            if (res.status == Resource.Status.SUCCESS && res.data != null) {
-                spDist.setAdapter(new ArrayAdapter<>(requireContext(),
-                        android.R.layout.simple_dropdown_item_1line,
-                        res.data.getData()));
+            if (res.status == Resource.Status.LOADING) {
+                loadingOverlay.setVisibility(View.VISIBLE); // Show Loader
+            } else {
+                loadingOverlay.setVisibility(View.GONE); // Hide Loader
+                if (res.status == Resource.Status.SUCCESS && res.data != null) {
+                    spDist.setAdapter(new ArrayAdapter<>(requireContext(),
+                            android.R.layout.simple_dropdown_item_1line,
+                            res.data.getData()));
+                } else if (res.status == Resource.Status.ERROR) {
+                    Toast.makeText(requireContext(), res.message, Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
