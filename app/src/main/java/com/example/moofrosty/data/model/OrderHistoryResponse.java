@@ -130,6 +130,9 @@ public class OrderHistoryResponse {
 
         @SerializedName("discount_percent")
         public String discountPercent;
+
+        @SerializedName("is_discard")
+        public int isDiscard;
     }
 
     public static class ProductDetail implements Serializable {

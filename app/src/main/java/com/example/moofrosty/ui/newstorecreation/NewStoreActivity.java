@@ -49,6 +49,7 @@ public class NewStoreActivity extends AppCompatActivity {
     ImageView btnBack ,btnMenu;
     FloatingActionButton fabAdd;
     Toolbar toolbar;
+    boolean isAttendanceMarked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +68,7 @@ public class NewStoreActivity extends AppCompatActivity {
         btnMenu = findViewById(R.id.btn_menu);
         tvTitle = findViewById(R.id.tv_title);
         tvDate = findViewById(R.id.tv_date_picker);
+
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -90,6 +92,7 @@ public class NewStoreActivity extends AppCompatActivity {
 
 
         sessionManager = new SessionManager(this);
+        isAttendanceMarked = sessionManager.isAttendanceMarked();
         // 1. Init Views
 //        ImageView btnBack = findViewById(R.id.btn_back);
 //        TextView tvTitle = findViewById(R.id.tv_toolbar_title);
@@ -113,8 +116,14 @@ public class NewStoreActivity extends AppCompatActivity {
 
         // 6. FAB Logic
         fabAdd.setOnClickListener(v -> {
-            Intent intent = new Intent(NewStoreActivity.this, StoreOtpVerificationActivity.class);
-            startActivity(intent);
+            if(!isAttendanceMarked){
+                Log.d("isattendancemar","markescheck"+isAttendanceMarked);
+                Toast.makeText(this, "User Not Marked Attendance", Toast.LENGTH_SHORT).show();
+            }else {
+                Log.d("isattendancemar","markescheckelse"+isAttendanceMarked);
+                Intent intent = new Intent(NewStoreActivity.this, StoreOtpVerificationActivity.class);
+                startActivity(intent);
+            }
         });
 
         // 7. Observers

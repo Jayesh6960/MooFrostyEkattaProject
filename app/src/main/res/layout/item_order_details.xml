@@ -24,16 +24,17 @@
             android:id="@+id/tv_billed_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/img_product"
             android:layout_alignStart="@id/img_product"
-            android:layout_alignBottom="@id/img_product"
-            android:text="Billed"
+            android:layout_marginTop="20dp"
             android:background="#4CAF50"
-            android:visibility="gone"
-            android:textColor="@android:color/white"
-            android:textSize="12sp"
-            android:textStyle="bold"
             android:paddingStart="8dp"
-            android:paddingEnd="8dp"/>
+            android:paddingEnd="8dp"
+            android:text="Billed"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="0dp"

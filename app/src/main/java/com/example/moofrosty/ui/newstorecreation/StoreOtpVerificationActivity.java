@@ -136,10 +136,10 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
         // 3. Click Listener: Submit OTP
         btnSubmitOtp.setOnClickListener(v -> {
             String otp = etOtp.getText().toString().trim();
-////            if (otp.length() < 4) {
-////                etOtp.setError("Enter Valid OTP");
-////                return;
-////            }
+//            if (otp.length() < 4) {
+//                etOtp.setError("Enter Valid OTP");
+//                return;
+//            }
 
             if (!otp.equals("123456")) {
                 etOtp.setError("Invalid OTP");
@@ -158,6 +158,8 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
             startActivity(intent);
             finish(); // Close verification screen so user can't go back to it
         });
+
+        //  fot oto below
 
 //        btnSubmitOtp.setOnClickListener(v -> {
 //            String otp = etOtp.getText().toString().trim();
@@ -240,6 +242,8 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
 
     }
 
+
+    //otp below
 //    private void showOtpScreen(String mobileNumber) {
 //        btnSendVerification.setVisibility(View.GONE);
 //        etMobile.setEnabled(false); // Lock the number so it can't be changed

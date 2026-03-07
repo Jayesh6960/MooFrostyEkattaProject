@@ -32,6 +32,9 @@
         }
 
         public <T> void fetchLocationData(Call<LocationResponse<T>> call, MutableLiveData<Resource<LocationResponse<T>>> liveData) {
+
+            liveData.postValue(Resource.loading(null));
+
             call.enqueue(new Callback<LocationResponse<T>>() {
                 @Override public void onResponse(Call<LocationResponse<T>> call, Response<LocationResponse<T>> response) {
                     if(response.isSuccessful() && response.body() != null) liveData.postValue(Resource.success(response.body()));
