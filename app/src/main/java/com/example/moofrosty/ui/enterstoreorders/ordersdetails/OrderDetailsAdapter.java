@@ -1,6 +1,7 @@
 package com.example.moofrosty.ui.enterstoreorders.ordersdetails;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +49,7 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imgProduct;
-        TextView tvProductName, tvMrp, tvBilledQty, tvAmount, tvDiscountPercent;
+        TextView tvProductName, tvMrp, tvBilledQty, tvAmount, tvDiscountPercent, tvBilledTag;;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -60,6 +61,7 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
             tvAmount = itemView.findViewById(R.id.tv_item_amount);
             // [HIGHLIGHT] Find Discount ID
             tvDiscountPercent = itemView.findViewById(R.id.tv_discount_amount);
+            tvBilledTag = itemView.findViewById(R.id.tv_billed_tag);
 
         }
 
@@ -87,15 +89,20 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
 
 
             // [HIGHLIGHT] Final Amount mapping (Selling Total)
-            if (tvAmount != null && item.finalAmount != null && item.productSellingPrice!=null) {
-                tvAmount.setText("RATE              : ₹" + item.productSellingPrice);
+//            if (tvAmount != null && item.finalAmount != null && item.productSellingPrice!=null && !item.productSellingPrice.equals("0")) {
+//                tvAmount.setText("RATE              : ₹" + item.productSellingPrice);
+//                tvAmount.setVisibility(View.VISIBLE);
+//            }
+
+            if (tvAmount != null && item.productSellingPrice!=null && !item.productSellingPrice.equals("0")) {
                 tvAmount.setVisibility(View.VISIBLE);
+                tvAmount.setText("RATE              : ₹" + item.productSellingPrice);
             }
 
             // [HIGHLIGHT] 6. Discount & Status Logic
             // Only show discount if Order Status is 1 (Billed)
             if (orderStatus == 1) {
-                if (item.discountPercent != null && !item.discountPercent.equals("0") && !item.discountPercent.isEmpty()) {
+                if (item.discountPercent != null) {
                     tvDiscountPercent.setVisibility(View.VISIBLE);
                     tvDiscountPercent.setText("DISCOUNT     : " + item.discountPercent + "%");
                 } else {
@@ -106,6 +113,16 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
                     tvBilledQty.setText("BiLL QTY        : "+item.units + " Unit(s)");
                 }else {
                     tvBilledQty.setVisibility(View.GONE);
+                }
+                tvBilledTag.setVisibility(View.VISIBLE);
+                if (item.isDiscard == 1) {
+                    // Item was discarded
+                    tvBilledTag.setText("Discarded");
+                    tvBilledTag.setBackgroundColor(Color.parseColor("#9E9E9E")); // Grey Background
+                } else {
+                    // Item was billed successfully
+                    tvBilledTag.setText("Billed");
+                    tvBilledTag.setBackgroundColor(Color.parseColor("#4CAF50")); // Green Background
                 }
             } else {
                 tvDiscountPercent.setVisibility(View.GONE);

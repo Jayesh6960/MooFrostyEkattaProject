@@ -319,7 +319,7 @@ public class StoreProfileActivity extends AppCompatActivity {
 
                     if(isAttendanceMarked){
                         boolean isNetAvailable = NetworkUtil.isNetworkAvailable(StoreProfileActivity.this);
-                        Log.d("ispresent","ispresent2 ");
+                        Log.d("ispresent","ispresent2 "+isAttendanceMarked);
                         // 3. Get Token
                         String token = sessionManager.getToken();
                         // --- PASS ALL TO VIEWMODEL ---
