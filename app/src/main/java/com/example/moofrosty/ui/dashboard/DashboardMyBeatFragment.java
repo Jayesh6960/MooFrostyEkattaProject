@@ -140,7 +140,7 @@ public class DashboardMyBeatFragment extends Fragment {
 //Store -->> Outlet
         viewModel.getFilteredStores().observe(getViewLifecycleOwner(), stores -> {
             storeAdapter.updateList(stores);
-            searchBar.setHint(stores.size() + " Outlet(u)");
+            searchBar.setHint(stores.size() + " Outlet(S)");
             if(stores.isEmpty()) tvNoData.setVisibility(View.VISIBLE);
             else tvNoData.setVisibility(View.GONE);
         });
