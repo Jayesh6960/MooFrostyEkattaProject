@@ -33,7 +33,7 @@
     <string name="support_email">moofrostys@gmail.com</string>
     <string name="Outlet_Proposal_Info">Outlet Proposal Info</string>
     <!-- Call Helpline -->
-    <string name="call_helpline">Call Helpline Support (Application Issues)</string>
+    <string name="call_helpline">Call Helpline Support \n(Application Issues)</string>
     <string name="helpline_number">( 7020686174) </string>
     <!-- Salary & Other Issues -->
     <string name="salary_issues">For Salary &amp; Other Issues</string>
@@ -48,4 +48,6 @@
     <string name="close">Close</string>
     <string name="apply">Apply</string>
     <string name="cancel">Cancel</string>
+    <string name="support_timing">Support Timing:- 9:45 AM to 5:00 PM</string>
+
 </resources>
