@@ -456,7 +456,7 @@ public class Step2ShopFragment extends Fragment {
             String fullAddress = address1 + "#" + address2 + "#" + address3;
 
             viewModel.address = fullAddress;
-            Log.d("STORE_CREATION", "Address Line 1 : " + address1);
+            Log.d("STORE_CREATIONjjkj", "Address Line 1 : " + address1);
 //            Log.d("STORE_CREATION", "Address Line 2 : " + address2);
             Log.d("FullAddress", "Address Line 3 : " + fullAddress);
 
@@ -482,7 +482,27 @@ public class Step2ShopFragment extends Fragment {
 //                    etssname.getText().toString().trim();
 
             ((CreateStoreWizardActivity) requireActivity()).nextStep();
+            String logDetails =
+                    "STORE_CREATION_DETAILS\n" +
+                            "----------------------------\n" +
+                            "Shop Name: " + etShopName.getText().toString().trim() + "\n" +
+                            "Pin Code: " + etPin.getText().toString().trim() + "\n" +
+                            "Country ID: " + viewModel.selectedCountryId + "\n" +
+                            "State ID: " + viewModel.selectedStateId + "\n" +
+                            "District ID: " + viewModel.selectedDistId + "\n" +
+                            "City ID: " + viewModel.selectedCityId + "\n" +
+                            "Beat ID: " + viewModel.selectedBeatId + "\n" +
+                            "RS/SS ID: " + spRsId.getText().toString().trim() + "\n" +
+                            "Secondary Channel: " + spSecondaryChannel.getText().toString().trim() + "\n" +
+                            "Outlet Type: " + spOutletType.getText().toString().trim() + "\n" +
+                            "Address Line 1: " + address1 + "\n" +
+                            "Address Line 2: " + address2 + "\n" +
+                            "Address Line 3: " + address3 + "\n" +
+                            "Full Address: " + fullAddress + "\n";
+
+            Log.d("STORE_CREATION_Details", logDetails);
         });
+
     }
 }
 //package com.example.moofrosty.ui.newstorecreation;

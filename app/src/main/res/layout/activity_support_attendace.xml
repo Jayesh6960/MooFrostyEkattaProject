@@ -58,11 +58,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                app:cardCornerRadius="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                app:cardElevation="10dp"
-                >
+                app:cardCornerRadius="10dp"
+                app:cardElevation="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -75,43 +74,44 @@
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:src="@drawable/support_mail_24"
-                        app:tint="@color/colorPrimary"
-                        android:contentDescription="@string/mail_support" />
+                        android:contentDescription="@string/mail_support"
+                        app:tint="@color/colorPrimary" />
 
                     <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/mail_support"
-                        android:textStyle="bold"
                         android:textColor="@color/black"
-                        android:textSize="15dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/support_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="@string/support_email"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="15sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:textSize="15sp" />
+
                 </LinearLayout>
+
             </androidx.cardview.widget.CardView>
 
             <!-- CARD 2 : CALL HELPLINE -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardCallSupport"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                app:cardCornerRadius="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                app:cardElevation="10dp"
-                >
+                app:cardCornerRadius="10dp"
+                app:cardElevation="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:gravity="center"
                     android:padding="16dp">
@@ -120,28 +120,39 @@
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:src="@drawable/support_callicon"
-                        app:tint="@color/colorPrimary"
-                        android:contentDescription="@string/call_helpline" />
+                        android:contentDescription="@string/call_helpline"
+                        app:tint="@color/colorPrimary" />
 
                     <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/call_helpline"
-                        android:textStyle="bold"
                         android:textColor="@color/black"
-                        android:textSize="15dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/support_call"
-                        android:text="@string/helpline_number"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="15sp"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                        android:layout_height="wrap_content"
+                        android:text="@string/helpline_number"
+                        android:layout_marginRight="5dp"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="15sp" />
 
+                    <!-- Support Timing -->
+                    <TextView
+                        android:id="@+id/support_timing"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="@string/support_timing"
+                        android:textSize="13sp"
+                        android:textColor="#777777"
+                        android:textStyle="bold" />
+
+                </LinearLayout>            </androidx.cardview.widget.CardView>
             <!-- CARD 3 : SALARY & OTHER ISSUES -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardSalaryIssues"
