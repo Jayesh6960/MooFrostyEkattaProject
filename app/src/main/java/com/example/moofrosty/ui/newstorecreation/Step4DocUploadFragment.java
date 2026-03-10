@@ -53,6 +53,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 //Latest Changes Date 24_02_2026
 // GST  nonMandatory
@@ -63,7 +65,7 @@ public class Step4DocUploadFragment extends Fragment {
 
     private ImageView imgDoc, imgBoard, imgInside;
     private MaterialButton btnSubmit;
-    private ProgressBar progressBar;
+    private ProgressBar progressBar,progressImgDoc, progressImgBoard, progressImgInside;
 
     private TextInputEditText etDocNum, etGstnNumber;
     private TextInputLayout tilDoc, gstnNumber;
@@ -71,10 +73,13 @@ public class Step4DocUploadFragment extends Fragment {
     private int currentImageRequest = 0;
 
     private File currentPhotoFile;
+    // Executor Service to run image processing in the background
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     public Step4DocUploadFragment() {
         // Required empty public constructor
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -105,6 +110,10 @@ public class Step4DocUploadFragment extends Fragment {
         imgDoc = view.findViewById(R.id.img_doc);
         imgBoard = view.findViewById(R.id.img_board);
         imgInside = view.findViewById(R.id.img_inside);
+
+        progressImgDoc = view.findViewById(R.id.progress_img_doc);
+        progressImgBoard = view.findViewById(R.id.progress_img_board);
+        progressImgInside = view.findViewById(R.id.progress_img_inside);
 
         btnSubmit = view.findViewById(R.id.btn_submit);
         progressBar = view.findViewById(R.id.progress_bar);
@@ -401,11 +410,41 @@ public class Step4DocUploadFragment extends Fragment {
         currentImageRequest = reqCode;
         ImagePicker.with(this)
                 .cameraOnly() // Forces default camera, ignores gallery
-                .compress(1024)
-                .maxResultSize(1080, 1080)
+//                .compress(1024)                     //  compress seperate add
+//                .maxResultSize(1080, 1080)
                 .start();
     }
 
+    // onActivityResult  normal code without loader
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (resultCode == Activity.RESULT_OK && data != null) {
+//            Uri uri = data.getData();
+//            if (uri != null) {
+//                File file = new File(uri.getPath());
+//
+//                // [HIGHLIGHT] Stamp GPS Location on the Image Before saving!
+//                file = addLocationWatermark(file);
+//
+//                if (currentImageRequest == 1) {
+//                    viewModel.docImage = file;
+//                    imgDoc.setImageURI(Uri.fromFile(file));
+//                } else if (currentImageRequest == 2) {
+//                    viewModel.boardImage = file;
+//                    imgBoard.setImageURI(Uri.fromFile(file));
+//                } else if (currentImageRequest == 3) {
+//                    viewModel.insideImage = file;
+//                    imgInside.setImageURI(Uri.fromFile(file));
+//                }
+//            }
+//        } else if (resultCode == ImagePicker.RESULT_ERROR) {
+//            Toast.makeText(requireContext(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show();
+//        }
+//    }
+
+    // onActivityResult  code with loader
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -413,21 +452,46 @@ public class Step4DocUploadFragment extends Fragment {
         if (resultCode == Activity.RESULT_OK && data != null) {
             Uri uri = data.getData();
             if (uri != null) {
-                File file = new File(uri.getPath());
+                final File file = new File(uri.getPath());
 
-                // [HIGHLIGHT] Stamp GPS Location on the Image Before saving!
-                file = addLocationWatermark(file);
-
-                if (currentImageRequest == 1) {
-                    viewModel.docImage = file;
-                    imgDoc.setImageURI(Uri.fromFile(file));
-                } else if (currentImageRequest == 2) {
-                    viewModel.boardImage = file;
-                    imgBoard.setImageURI(Uri.fromFile(file));
-                } else if (currentImageRequest == 3) {
-                    viewModel.insideImage = file;
-                    imgInside.setImageURI(Uri.fromFile(file));
+                // 1. Show the appropriate progress bar immediately
+                if (currentImageRequest == 1 && progressImgDoc != null) {
+                    progressImgDoc.setVisibility(View.VISIBLE);
+                    imgDoc.setAlpha(0.3f); // Dim image while loading
+                } else if (currentImageRequest == 2 && progressImgBoard != null) {
+                    progressImgBoard.setVisibility(View.VISIBLE);
+                    imgBoard.setAlpha(0.3f);
+                } else if (currentImageRequest == 3 && progressImgInside != null) {
+                    progressImgInside.setVisibility(View.VISIBLE);
+                    imgInside.setAlpha(0.3f);
                 }
+
+                // 2. Process Watermark in Background Thread
+                executorService.execute(() -> {
+                    // Stamping GPS Location takes time...
+                    File processedFile = addLocationWatermark(file);
+
+                    // 3. Update UI on Main Thread when finished
+                    requireActivity().runOnUiThread(() -> {
+
+                        if (currentImageRequest == 1) {
+                            viewModel.docImage = processedFile;
+                            imgDoc.setImageURI(Uri.fromFile(processedFile));
+                            if (progressImgDoc != null) progressImgDoc.setVisibility(View.GONE);
+                            imgDoc.setAlpha(1.0f); // Restore brightness
+                        } else if (currentImageRequest == 2) {
+                            viewModel.boardImage = processedFile;
+                            imgBoard.setImageURI(Uri.fromFile(processedFile));
+                            if (progressImgBoard != null) progressImgBoard.setVisibility(View.GONE);
+                            imgBoard.setAlpha(1.0f);
+                        } else if (currentImageRequest == 3) {
+                            viewModel.insideImage = processedFile;
+                            imgInside.setImageURI(Uri.fromFile(processedFile));
+                            if (progressImgInside != null) progressImgInside.setVisibility(View.GONE);
+                            imgInside.setAlpha(1.0f);
+                        }
+                    });
+                });
             }
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
             Toast.makeText(requireContext(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show();
@@ -458,8 +522,14 @@ public class Step4DocUploadFragment extends Fragment {
                     + "Lat " + String.format(Locale.US, "%.6f", lat) + "° Long " + String.format(Locale.US, "%.6f", lng) + "°\n"
                     + dateTime;
 
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inSampleSize = 2; // Resize image to speed up processing and save memory
+            Bitmap originalBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath(), options);
+
+            if (originalBitmap == null) return imageFile;
+
             // 3. Load Bitmap and make it Mutable (so we can draw on it)
-            Bitmap originalBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+
             Bitmap mutableBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
             Canvas canvas = new Canvas(mutableBitmap);
 

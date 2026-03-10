@@ -352,7 +352,7 @@ public class Step2ShopFragment extends Fragment {
 //        if (viewModel.address != null) etAddress.setText(viewModel.address);
                 if (viewModel.address != null) {
 
-            String[] address = viewModel.address.split(",");
+            String[] address = viewModel.address.split("#");
 
             if (address.length > 0) etAddressline1.setText(address[0].trim());
             if (address.length > 1) etAddressline2.setText(address[1].trim());
@@ -446,13 +446,14 @@ public class Step2ShopFragment extends Fragment {
             String address2 = etAddressline2.getText().toString().trim();
             String address3 = etAddressline3.getText().toString().trim();
 
-            String fullAddress = address1;
-
-            if (!address2.isEmpty())
-                fullAddress += "#" + address2;
-
-            if (!address3.isEmpty())
-                fullAddress += "#" + address3;
+//            String fullAddress = address1;
+//
+//            if (!address2.isEmpty())
+//                fullAddress += "#" + address2;
+//
+//            if (!address3.isEmpty())
+//                fullAddress += "#" + address3;
+            String fullAddress = address1 + "#" + address2 + "#" + address3;
 
             viewModel.address = fullAddress;
             Log.d("STORE_CREATIONjjkj", "Address Line 1 : " + address1);

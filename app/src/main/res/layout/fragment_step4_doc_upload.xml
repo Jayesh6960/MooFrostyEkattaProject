@@ -79,14 +79,37 @@
             android:textSize="16dp"
             android:text="(Upload Document Image) *" />
 
-        <ImageView
-            android:id="@+id/img_doc"
+<!--        <ImageView-->
+<!--            android:id="@+id/img_doc"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="150dp"-->
+<!--            android:background="#EEE"-->
+<!--            android:elevation="3dp"-->
+<!--            android:scaleType="centerInside"-->
+<!--            android:src="@android:drawable/ic_menu_camera" />-->
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:elevation="3dp"
-            android:background="#EEE"
-            android:scaleType="centerInside"
-            android:src="@android:drawable/ic_menu_camera" />
+            android:layout_height="150dp">
+
+            <ImageView
+                android:id="@+id/img_doc"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#EEE"
+                android:elevation="3dp"
+                android:scaleType="centerInside"
+                android:src="@android:drawable/ic_menu_camera" />
+
+            <ProgressBar
+                android:id="@+id/progress_img_doc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                android:elevation="5dp"
+                android:indeterminateTint="@color/Pink_color" />
+        </RelativeLayout>
 
         <TextView
             android:layout_width="wrap_content"
@@ -95,14 +118,37 @@
             android:textSize="16dp"
             android:text="Upload Outlet Board (Outside) *" />
 
-        <ImageView
-            android:id="@+id/img_board"
+<!--        <ImageView-->
+<!--            android:id="@+id/img_board"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="150dp"-->
+<!--            android:background="#EEE"-->
+<!--            android:elevation="3dp"-->
+<!--            android:scaleType="centerInside"-->
+<!--            android:src="@android:drawable/ic_menu_camera" />-->
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:background="#EEE"
-            android:elevation="3dp"
-            android:scaleType="centerInside"
-            android:src="@android:drawable/ic_menu_camera" />
+            android:layout_height="150dp">
+
+            <ImageView
+                android:id="@+id/img_board"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#EEE"
+                android:elevation="3dp"
+                android:scaleType="centerInside"
+                android:src="@android:drawable/ic_menu_camera" />
+
+            <ProgressBar
+                android:id="@+id/progress_img_board"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                android:elevation="5dp"
+                android:indeterminateTint="@color/Pink_color" />
+        </RelativeLayout>
 
         <TextView
             android:layout_width="wrap_content"
@@ -111,14 +157,37 @@
             android:textSize="16dp"
             android:text="Upload Outlet Image (Inside) *" />
 
-        <ImageView
-            android:id="@+id/img_inside"
+<!--        <ImageView-->
+<!--            android:id="@+id/img_inside"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="150dp"-->
+<!--            android:background="#EEE"-->
+<!--            android:elevation="3dp"-->
+<!--            android:scaleType="centerInside"-->
+<!--            android:src="@android:drawable/ic_menu_camera" />-->
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:background="#EEE"
-            android:elevation="3dp"
-            android:scaleType="centerInside"
-            android:src="@android:drawable/ic_menu_camera" />
+            android:layout_height="150dp">
+
+            <ImageView
+                android:id="@+id/img_inside"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#EEE"
+                android:elevation="3dp"
+                android:scaleType="centerInside"
+                android:src="@android:drawable/ic_menu_camera" />
+
+            <ProgressBar
+                android:id="@+id/progress_img_inside"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                android:elevation="5dp"
+                android:indeterminateTint="@color/Pink_color" />
+        </RelativeLayout>
 
         <ProgressBar
             android:id="@+id/progress_bar"
