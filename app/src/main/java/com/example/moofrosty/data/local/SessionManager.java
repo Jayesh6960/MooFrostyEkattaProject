@@ -35,6 +35,7 @@ public class SessionManager {
     // 🔹 NEW KEY (ONLY ADDITION FOR LOCATION FLOW)
     private static final String KEY_LOCATION_READY = "location_ready";
     private static final String KEY_IS_PRESENT = "is_present";
+    private static final String KEY_IS_PRESENT_OUT = "is_present_out";
 
 //    public SessionManager(Context context) {
 //        pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
@@ -238,6 +239,15 @@ public class SessionManager {
     // --- Save Attendance Status ---
     public void saveIsPresent(boolean isPresent) {
         editor.putBoolean(KEY_IS_PRESENT, isPresent);
+        editor.apply();
+    }
+
+    public boolean isAttendanceOutMarked() {
+        return pref.getBoolean(KEY_IS_PRESENT_OUT, false);
+    }
+
+    public void saveIsPresentOut(boolean isPresentOut) {
+        editor.putBoolean(KEY_IS_PRESENT_OUT, isPresentOut);
         editor.apply();
     }
 
