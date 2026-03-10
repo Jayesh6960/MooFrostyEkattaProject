@@ -116,11 +116,14 @@ public class NewStoreActivity extends AppCompatActivity {
 
         // 6. FAB Logic
         fabAdd.setOnClickListener(v -> {
-            if(!isAttendanceMarked){
-                Log.d("isattendancemar","markescheck"+isAttendanceMarked);
-                Toast.makeText(this, "User Not Marked Attendance", Toast.LENGTH_SHORT).show();
-            }else {
-                Log.d("isattendancemar","markescheckelse"+isAttendanceMarked);
+            boolean isPresent = sessionManager.isAttendanceMarked();
+            boolean isPresentOut = sessionManager.isAttendanceOutMarked();
+
+            if (!isPresent) {
+                Toast.makeText(this, "User Not Marked Attendance. Please punch in.", Toast.LENGTH_SHORT).show();
+            } else if (isPresentOut) {
+                Toast.makeText(this, "You have punched out for today. Cannot create a new store.", Toast.LENGTH_LONG).show();
+            } else {
                 Intent intent = new Intent(NewStoreActivity.this, StoreOtpVerificationActivity.class);
                 startActivity(intent);
             }

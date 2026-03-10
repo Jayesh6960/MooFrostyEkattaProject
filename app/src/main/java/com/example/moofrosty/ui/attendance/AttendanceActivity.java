@@ -128,9 +128,12 @@ public class AttendanceActivity extends AppCompatActivity {
                     if (resource.data != null) {
                         updateUIBasedOnStatus(resource.data);
                         boolean serverIsPresent = resource.data.isPresent();
+                        boolean serverIsPresentOut = resource.data.isPresentOut();
                         sessionManager.saveIsPresent(serverIsPresent);
+                        sessionManager.saveIsPresentOut(serverIsPresentOut);
 
                         Log.d("AttendanceSync", "Session Updated: isPresent = " + serverIsPresent);
+                        Log.d("AttendanceSync", "Session Updated: isPresentOut = " + serverIsPresentOut);
                     }
                     break;
                 case ERROR:

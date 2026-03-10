@@ -118,7 +118,13 @@ public class LoginResponse {
         @SerializedName("isPresent")
         private boolean isPresent;
 
+        @SerializedName("isPresentOut")
+        private boolean isPresentOut;
+
+
+
         public boolean isPresent() { return isPresent; }
+        public boolean isPresentOut() { return isPresentOut; }
     }
 
 
