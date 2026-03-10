@@ -274,19 +274,34 @@ public class DashboardMyBeatFragment extends Fragment {
             checked[i] = b.isSelected();
         }
 
-        AlertDialog dialog = new AlertDialog.Builder(requireContext())
-                .setTitle("Select Beat(s)")
-                .setMultiChoiceItems(names, checked,
-                        (d, which, isChecked) -> viewModel.onBeatSelectionChanged(which, isChecked))
-                .setPositiveButton("OK", (d, which) -> {
-                    // Triggers API Call in ViewModel
-                    viewModel.confirmBeatSelection();
-                })
-//                .setNegativeButton("Cancel", null)
-                .show();
+//        AlertDialog dialog = new AlertDialog.Builder(requireContext())
+//                .setTitle("Select Beat(s)")
+//                .setMultiChoiceItems(names, checked,
+//                        (d, which, isChecked) -> viewModel.onBeatSelectionChanged(which, isChecked))
+//                .setPositiveButton("OK", (d, which) -> {
+//                    // Triggers API Call in ViewModel
+//                    viewModel.confirmBeatSelection();
+//                })
+////                .setNegativeButton("Cancel", null)
+//                .show();
+//
+//        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(requireContext(), R.color.Purple_Color));
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Select Beat(s)");
+        builder.setMultiChoiceItems(names, checked,
+                (d, which, isChecked) -> viewModel.onBeatSelectionChanged(which, isChecked));
 
+        builder.setPositiveButton("OK", (d, which) -> {
+            storeAdapter.updateList(new ArrayList<>());
+            progressBar.setVisibility(View.VISIBLE);
+            storeRecycler.setVisibility(View.GONE);
+            tvNoData.setVisibility(View.GONE);
+            viewModel.confirmBeatSelection();
+        });
+        AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(requireContext(), R.color.Purple_Color));
-//        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(requireContext(), R.color.Purple_Color));
     }
 
 //    private void showBeatSelectionDialog() {

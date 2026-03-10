@@ -110,10 +110,15 @@ public class LoginActivity extends BaseActivity {
                             Log.d("sessonpass","checkpass"+token+" "+fullJson);
 
                             boolean isPresent = false;
+                            boolean isPresentOut = false;
+                            if (resp.getAttendanceStatus() != null) {
                                 isPresent = resp.getAttendanceStatus().isPresent();
+                                isPresentOut = resp.getAttendanceStatus().isPresentOut(); // [HIGHLIGHT] Add this
+                            }
                             Log.d("isPresent","isPresent"+isPresent);
 
                             sessionManager.saveIsPresent(isPresent);
+                            sessionManager.saveIsPresentOut(isPresentOut);
                        //     Log.d("sessonpassid","checkpass" + sessionManager.saveUserId(resp.getUser().getId()));
 
                             navigateToDashboard();

@@ -313,20 +313,28 @@ public class StoreProfileActivity extends AppCompatActivity {
                     // 1. Attendance Check (Ideally get this from SharedPrefs/Session)
                     //  boolean isAttendanceMarked = sessionManager.isAttendanceMarked();
                     //          boolean isAttendanceMarked = true; // Hardcoded for now per your request
+
                     boolean isAttendanceMarked = sessionManager.isAttendanceMarked();
+                    boolean isPresent = sessionManager.isAttendanceMarked();
+                    boolean isPresentOut = sessionManager.isAttendanceOutMarked();
                     // boolean isAttendanceMarked = attendanceStatusResponse.isPresent();
                     Log.d("ispresent","ispresent"+isAttendanceMarked);
 
-                    if(isAttendanceMarked){
-                        boolean isNetAvailable = NetworkUtil.isNetworkAvailable(StoreProfileActivity.this);
-                        Log.d("ispresent","ispresent2 "+isAttendanceMarked);
-                        // 3. Get Token
-                        String token = sessionManager.getToken();
-                        // --- PASS ALL TO VIEWMODEL ---
-                        viewModel.onEnterStoreClicked(loc, isNetAvailable, isAttendanceMarked, token);
-                    }else {
+                    if (!isPresent) {
                         progressDialog.dismiss();
-                        Toast.makeText(StoreProfileActivity.this, "User Not Marked Attendance", Toast.LENGTH_SHORT).show();
+                        Log.d("ispresent","ispresentif"+isPresent);
+                        Toast.makeText(StoreProfileActivity.this, "User Not Marked Attendance. Please punch in.", Toast.LENGTH_SHORT).show();
+
+                    } else if (isPresentOut) {
+                        Log.d("ispresent","ispresentoutif"+isPresentOut);
+                        Toast.makeText(StoreProfileActivity.this, "You have punched out. Cannot enter store today.", Toast.LENGTH_LONG).show();
+
+                    } else {
+                        Log.d("ispresent","ispresentoutif"+isPresentOut+" ,"+isPresent);
+                        boolean isNetAvailable = NetworkUtil.isNetworkAvailable(StoreProfileActivity.this);
+                        String token = sessionManager.getToken();
+
+                        viewModel.onEnterStoreClicked(loc, isNetAvailable, isPresent, token);
                     }
 
                 } else {
