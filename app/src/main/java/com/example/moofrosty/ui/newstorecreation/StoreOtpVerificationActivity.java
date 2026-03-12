@@ -112,7 +112,7 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
         tvTitle.setText("Registration");
         btnBack.setOnClickListener(v -> finish());
 
-        // 2. Click Listener: Send Code
+//         2. Click Listener: Send Code
         btnSendVerification.setOnClickListener(v -> {
             String mobile = etMobile.getText().toString().trim();
             if (mobile.length() < 10) {
@@ -134,47 +134,47 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
         });
 
         // 3. Click Listener: Submit OTP
-//        btnSubmitOtp.setOnClickListener(v -> {
-//            String otp = etOtp.getText().toString().trim();
-////            if (otp.length() < 4) {
-////                etOtp.setError("Enter Valid OTP");
-////                return;
-////            }
-//
-//            if (!otp.equals("123456")) {
-//                etOtp.setError("Invalid OTP");
-//                return;
-//            }
-//
-//            // --- SUCCESS LOGIC ---
-//            Toast.makeText(this, "OTP Verified Successfully!", Toast.LENGTH_SHORT).show();
-//
-//            // Get the verified mobile number
-//            String verifiedMobile = etMobile.getText().toString().trim();
-//
-//            // Navigate to CreateStoreWizardActivity and pass the number
-//            Intent intent = new Intent(StoreOtpVerificationActivity.this, CreateStoreWizardActivity.class);
-//            intent.putExtra("MOBILE_NUMBER", verifiedMobile);
-//            startActivity(intent);
-//            finish(); // Close verification screen so user can't go back to it
-//        });
-
-        //  fot oto below
-
         btnSubmitOtp.setOnClickListener(v -> {
             String otp = etOtp.getText().toString().trim();
+//            if (otp.length() < 4) {
+//                etOtp.setError("Enter Valid OTP");
+//                return;
+//            }
 
-            if (otp.length() < 6) {
-                layoutOtp.setError("Enter Valid 6-digit OTP");
+            if (!otp.equals("123456")) {
+                etOtp.setError("Invalid OTP");
                 return;
             }
 
-            layoutOtp.setError(null);
+            // --- SUCCESS LOGIC ---
+            Toast.makeText(this, "OTP Verified Successfully!", Toast.LENGTH_SHORT).show();
 
-            // [HIGHLIGHT] Verify OTP with Firebase
-            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, otp);
-            verifyFirebaseOTP(credential);
+            // Get the verified mobile number
+            String verifiedMobile = etMobile.getText().toString().trim();
+
+            // Navigate to CreateStoreWizardActivity and pass the number
+            Intent intent = new Intent(StoreOtpVerificationActivity.this, CreateStoreWizardActivity.class);
+            intent.putExtra("MOBILE_NUMBER", verifiedMobile);
+            startActivity(intent);
+            finish(); // Close verification screen so user can't go back to it
         });
+
+        //  fot oto below
+
+//        btnSubmitOtp.setOnClickListener(v -> {
+//            String otp = etOtp.getText().toString().trim();
+//
+//            if (otp.length() < 6) {
+//                layoutOtp.setError("Enter Valid 6-digit OTP");
+//                return;
+//            }
+//
+//            layoutOtp.setError(null);
+//
+//            // [HIGHLIGHT] Verify OTP with Firebase
+//            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, otp);
+//            verifyFirebaseOTP(credential);
+//        });
 
         // 4. Observe API Result
         viewModel.getCheckResult().observe(this, resource -> {
@@ -200,9 +200,9 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
                             tvStatus.setTextColor(getColor(android.R.color.holo_red_dark));
                             tvStatus.setVisibility(View.VISIBLE);
                         } else {
-                            String mobile = etMobile.getText().toString().trim();
-                            showOtpScreen(mobile);
-//                            showOtpScreen();
+//                            String mobile = etMobile.getText().toString().trim();
+//                            showOtpScreen(mobile);
+                            showOtpScreen();
                         }
                     }
                 } else {
@@ -244,65 +244,65 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
 
 
     //otp below
-    private void showOtpScreen(String mobileNumber) {
-        btnSendVerification.setVisibility(View.GONE);
-        etMobile.setEnabled(false); // Lock the number so it can't be changed
-        layoutOtp.setVisibility(View.VISIBLE);
+//    private void showOtpScreen(String mobileNumber) {
+//        btnSendVerification.setVisibility(View.GONE);
+//        etMobile.setEnabled(false); // Lock the number so it can't be changed
+//        layoutOtp.setVisibility(View.VISIBLE);
+//
+//        btnSubmitOtp.setVisibility(View.VISIBLE);
+//        btnSubmitOtp.setText("Sending OTP...");
+//        btnSubmitOtp.setEnabled(false); // Disable until OTP is actually sent
+//
+//        tvStatus.setText("Sending OTP securely. Please wait...");
+//        tvStatus.setTextColor(getColor(R.color.Purple_Color));
+//        tvStatus.setVisibility(View.VISIBLE);
+//
+//        // Start Firebase OTP generation
+////        sendFirebaseOTP(mobileNumber);
+//    }
 
-        btnSubmitOtp.setVisibility(View.VISIBLE);
-        btnSubmitOtp.setText("Sending OTP...");
-        btnSubmitOtp.setEnabled(false); // Disable until OTP is actually sent
-
-        tvStatus.setText("Sending OTP securely. Please wait...");
-        tvStatus.setTextColor(getColor(R.color.Purple_Color));
-        tvStatus.setVisibility(View.VISIBLE);
-
-        // Start Firebase OTP generation
-        sendFirebaseOTP(mobileNumber);
-    }
-
-    private void sendFirebaseOTP(String mobileNumber) {
-        PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
-                .setPhoneNumber("+91" + mobileNumber)       // Add Country Code (+91 for India)
-                .setTimeout(60L, TimeUnit.SECONDS)          // Timeout and force resend
-                .setActivity(this)                          // Activity for callback binding
-                .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-
-                    @Override
-                    public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
-                        // This is called if Android automatically reads the SMS
-                        String code = credential.getSmsCode();
-                        if (code != null) {
-                            etOtp.setText(code);
-                            verifyFirebaseOTP(credential);
-                        }
-                    }
-
-                    @Override
-                    public void onVerificationFailed(@NonNull FirebaseException e) {
-                        // Failed to send OTP
-                        Toast.makeText(StoreOtpVerificationActivity.this, "Failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                        btnSubmitOtp.setText("Retry Sending OTP");
-                        btnSubmitOtp.setEnabled(true);
-
-                        btnSubmitOtp.setOnClickListener(v -> sendFirebaseOTP(mobileNumber)); // Allow retry
-                    }
-
-                    @Override
-                    public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken token) {
-                        // OTP Successfully sent to user's phone!
-                        super.onCodeSent(verificationId, token);
-                        mVerificationId = verificationId; // Save this to verify later
-
-                        tvStatus.setText("OTP sent to " + mobileNumber + ". Please enter it below.");
-                        btnSubmitOtp.setText("Verify & Proceed");
-                        btnSubmitOtp.setEnabled(true);
-                        etOtp.requestFocus();
-                    }
-                }).build();
-
-        PhoneAuthProvider.verifyPhoneNumber(options);
-    }
+//    private void sendFirebaseOTP(String mobileNumber) {
+//        PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
+//                .setPhoneNumber("+91" + mobileNumber)       // Add Country Code (+91 for India)
+//                .setTimeout(60L, TimeUnit.SECONDS)          // Timeout and force resend
+//                .setActivity(this)                          // Activity for callback binding
+//                .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+//
+//                    @Override
+//                    public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
+//                        // This is called if Android automatically reads the SMS
+//                        String code = credential.getSmsCode();
+//                        if (code != null) {
+//                            etOtp.setText(code);
+//                            verifyFirebaseOTP(credential);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onVerificationFailed(@NonNull FirebaseException e) {
+//                        // Failed to send OTP
+//                        Toast.makeText(StoreOtpVerificationActivity.this, "Failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
+//                        btnSubmitOtp.setText("Retry Sending OTP");
+//                        btnSubmitOtp.setEnabled(true);
+//
+//                        btnSubmitOtp.setOnClickListener(v -> sendFirebaseOTP(mobileNumber)); // Allow retry
+//                    }
+//
+//                    @Override
+//                    public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken token) {
+//                        // OTP Successfully sent to user's phone!
+//                        super.onCodeSent(verificationId, token);
+//                        mVerificationId = verificationId; // Save this to verify later
+//
+//                        tvStatus.setText("OTP sent to " + mobileNumber + ". Please enter it below.");
+//                        btnSubmitOtp.setText("Verify & Proceed");
+//                        btnSubmitOtp.setEnabled(true);
+//                        etOtp.requestFocus();
+//                    }
+//                }).build();
+//
+//        PhoneAuthProvider.verifyPhoneNumber(options);
+//    }
 
     private void verifyFirebaseOTP(PhoneAuthCredential credential) {
         btnSubmitOtp.setEnabled(false);
@@ -331,16 +331,17 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
     }
 
 
-//    private void showOtpScreen() {
-//        btnSendVerification.setVisibility(View.GONE);
-//        etMobile.setEnabled(false); // Lock the number so it can't be changed
-//        layoutOtp.setVisibility(View.VISIBLE);
-//        btnSubmitOtp.setVisibility(View.VISIBLE);
-//
-//        tvStatus.setText("Number Available. Please enter OTP to verify.");
-//        tvStatus.setTextColor(getColor(R.color.Purple_Color));
-//        tvStatus.setVisibility(View.VISIBLE);
-//
-//        etOtp.requestFocus();
-//    }
+
+    private void showOtpScreen() {
+        btnSendVerification.setVisibility(View.GONE);
+        etMobile.setEnabled(false); // Lock the number so it can't be changed
+        layoutOtp.setVisibility(View.VISIBLE);
+        btnSubmitOtp.setVisibility(View.VISIBLE);
+
+        tvStatus.setText("Number Available. Please enter OTP to verify.");
+        tvStatus.setTextColor(getColor(R.color.Purple_Color));
+        tvStatus.setVisibility(View.VISIBLE);
+
+        etOtp.requestFocus();
+    }
 }
