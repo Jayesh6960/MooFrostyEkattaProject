@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.moofrosty.R;
+import com.example.moofrosty.core.network.Constants;
 import com.example.moofrosty.data.model.CartItem;
 import com.example.moofrosty.data.model.Product;
 import com.example.moofrosty.data.model.ProductApiModel;
@@ -160,7 +161,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 //                caseunitnumber.setText("Total Units: " + currentTotalUnitsInCart);
 //            }
 
-            String imageUrl = "https://moofrosty.ekatta.in/" + product.productImage;
+//            String imageUrl = "https://moofrosty.ekatta.in/" + product.productImage;
+            String imageUrl = Constants.BASE_URL + product.productImage;
             Glide.with(context).load(imageUrl).placeholder(R.drawable.icecategori).into(imgProduct);
 
             // Visibility Logic

@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.moofrosty.R;
+import com.example.moofrosty.core.network.Constants;
 import com.example.moofrosty.data.model.CartItem;
 import com.example.moofrosty.data.model.Product;
 
@@ -103,7 +104,8 @@ public class CartAdapter extends ListAdapter<CartItem, CartAdapter.CartViewHolde
             Product p = item.getProduct();
 
             // 1. Image
-            String fullImageUrl = "https://moofrosty.ekatta.in/" + p.getImageUrl();
+//            String fullImageUrl = "https://moofrosty.ekatta.in/" + p.getImageUrl();
+            String fullImageUrl = Constants.BASE_URL + p.getImageUrl();
             Glide.with(itemView.getContext())
                     .load(fullImageUrl)
                     .placeholder(R.drawable.icecategori)

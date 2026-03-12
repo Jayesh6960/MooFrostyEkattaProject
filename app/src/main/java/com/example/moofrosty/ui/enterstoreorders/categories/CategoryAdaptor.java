@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.moofrosty.R;
+import com.example.moofrosty.core.network.Constants;
 import com.example.moofrosty.data.model.CategoryModel;
 import com.example.moofrosty.ui.filter.CategorySelectionListener;
 
@@ -37,7 +38,7 @@ public class CategoryAdaptor extends RecyclerView.Adapter<CategoryAdaptor.ViewHo
         CategoryModel model = list.get(position);
         holder.name.setText(model.categoryTitle);
 
-        String imageUrl = "https://moofrosty.ekatta.in/" + model.categoryImage;
+        String imageUrl = Constants.BASE_URL + model.categoryImage;
         Glide.with(holder.itemView.getContext())
                 .load(imageUrl)
                 .placeholder(R.drawable.icecategori)

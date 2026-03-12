@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.moofrosty.R;
+import com.example.moofrosty.core.network.Constants;
 import com.example.moofrosty.data.model.CartItem;
 import com.example.moofrosty.data.model.OrderHistoryResponse;
 import com.example.moofrosty.data.model.Product;
@@ -73,7 +74,7 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
 
             // Getting Image from nested object
             if (item.productDetails != null && item.productDetails.productImage != null) {
-                String imgUrl = "https://moofrosty.ekatta.in/" + item.productDetails.productImage;
+                String imgUrl = Constants.BASE_URL + item.productDetails.productImage;
                 Glide.with(itemView.getContext())
                         .load(imgUrl)
                         .placeholder(R.drawable.icecategori)
