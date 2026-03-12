@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.moofrosty.core.network.Constants;
 import com.example.moofrosty.data.model.CategoryModel;
 import com.example.moofrosty.data.model.SubCategoryModel;
 import com.example.moofrosty.ui.filter.FilterSelectionListener;
@@ -47,7 +48,8 @@ public class SubCategoriesAdaptor extends RecyclerView.Adapter<SubCategoriesAdap
         SubCategoryModel model = list.get(position);
         holder.name.setText(model.subcategoryTitle);
 
-        String imageUrl = "https://moofrosty.ekatta.in/" + model.subcategoryImage;
+//        String imageUrl = "https://moofrosty.ekatta.in/" + model.subcategoryImage;
+        String imageUrl = Constants.BASE_URL + model.subcategoryImage;
         Glide.with(holder.itemView.getContext())
                 .load(imageUrl)
                 .placeholder(R.drawable.icecategori)
