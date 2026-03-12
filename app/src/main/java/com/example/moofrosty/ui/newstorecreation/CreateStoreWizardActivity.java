@@ -144,7 +144,7 @@ public class CreateStoreWizardActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(this, "Location permission needed for tagging store", Toast.LENGTH_SHORT).show();
                 }
-            });
+    });
 
     private void checkLocationPermissionAndStart() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
