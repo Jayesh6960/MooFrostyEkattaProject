@@ -2,6 +2,7 @@ package com.example.moofrosty.ui.enterstoreorders.ordersdetails;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,6 +100,7 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
                 tvAmount.setVisibility(View.VISIBLE);
                 tvAmount.setText("RATE              : ₹" + item.productSellingPrice);
             }
+            Log.d("selling price", "selling price: "+item.productSellingPrice);
 
             // [HIGHLIGHT] 6. Discount & Status Logic
             // Only show discount if Order Status is 1 (Billed)
