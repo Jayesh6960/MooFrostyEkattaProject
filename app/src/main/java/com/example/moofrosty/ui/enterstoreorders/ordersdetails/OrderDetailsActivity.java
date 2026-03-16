@@ -1,6 +1,7 @@
 package com.example.moofrosty.ui.enterstoreorders.ordersdetails;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -125,6 +126,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
         // [HIGHLIGHT] Fetch total amount safely from orderSummary
         if(currentOrder.orderSummary != null) {
             tvBillAmount.setText(String.format(Locale.US, ": ₹%.2f", currentOrder.orderSummary.orderValue));
+            Log.d("Totalvalues", "Totolvalue:"+currentOrder.orderSummary.orderValue);
         }
 
         // [HIGHLIGHT] JSON replaced user with shop logic

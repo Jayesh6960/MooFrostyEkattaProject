@@ -200,9 +200,9 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
                             tvStatus.setTextColor(getColor(android.R.color.holo_red_dark));
                             tvStatus.setVisibility(View.VISIBLE);
                         } else {
-//                            String mobile = etMobile.getText().toString().trim();
-//                            showOtpScreen(mobile);
-                            showOtpScreen();
+                            String mobile = etMobile.getText().toString().trim();
+                            showOtpScreen(mobile);
+//                            showOtpScreen();
                         }
                     }
                 } else {
@@ -244,22 +244,22 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
 
 
     //otp below
-//    private void showOtpScreen(String mobileNumber) {
-//        btnSendVerification.setVisibility(View.GONE);
-//        etMobile.setEnabled(false); // Lock the number so it can't be changed
-//        layoutOtp.setVisibility(View.VISIBLE);
-//
-//        btnSubmitOtp.setVisibility(View.VISIBLE);
-//        btnSubmitOtp.setText("Sending OTP...");
-//        btnSubmitOtp.setEnabled(false); // Disable until OTP is actually sent
-//
-//        tvStatus.setText("Sending OTP securely. Please wait...");
-//        tvStatus.setTextColor(getColor(R.color.Purple_Color));
-//        tvStatus.setVisibility(View.VISIBLE);
-//
-//        // Start Firebase OTP generation
-//        sendFirebaseOTP(mobileNumber);
-//    }
+    private void showOtpScreen(String mobileNumber) {
+        btnSendVerification.setVisibility(View.GONE);
+        etMobile.setEnabled(false); // Lock the number so it can't be changed
+        layoutOtp.setVisibility(View.VISIBLE);
+
+        btnSubmitOtp.setVisibility(View.VISIBLE);
+        btnSubmitOtp.setText("Sending OTP...");
+        btnSubmitOtp.setEnabled(false); // Disable until OTP is actually sent
+
+        tvStatus.setText("Sending OTP securely. Please wait...");
+        tvStatus.setTextColor(getColor(R.color.Purple_Color));
+        tvStatus.setVisibility(View.VISIBLE);
+
+        // Start Firebase OTP generation
+        sendFirebaseOTP(mobileNumber);
+    }
 
     private void sendFirebaseOTP(String mobileNumber) {
         PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
@@ -331,16 +331,16 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
     }
 
 
-    private void showOtpScreen() {
-        btnSendVerification.setVisibility(View.GONE);
-        etMobile.setEnabled(false); // Lock the number so it can't be changed
-        layoutOtp.setVisibility(View.VISIBLE);
-        btnSubmitOtp.setVisibility(View.VISIBLE);
-
-        tvStatus.setText("Number Available. Please enter OTP to verify.");
-        tvStatus.setTextColor(getColor(R.color.Purple_Color));
-        tvStatus.setVisibility(View.VISIBLE);
-
-        etOtp.requestFocus();
-    }
+//    private void showOtpScreen() {
+//        btnSendVerification.setVisibility(View.GONE);
+//        etMobile.setEnabled(false); // Lock the number so it can't be changed
+//        layoutOtp.setVisibility(View.VISIBLE);
+//        btnSubmitOtp.setVisibility(View.VISIBLE);
+//
+//        tvStatus.setText("Number Available. Please enter OTP to verify.");
+//        tvStatus.setTextColor(getColor(R.color.Purple_Color));
+//        tvStatus.setVisibility(View.VISIBLE);
+//
+//        etOtp.requestFocus();
+//    }
 }
