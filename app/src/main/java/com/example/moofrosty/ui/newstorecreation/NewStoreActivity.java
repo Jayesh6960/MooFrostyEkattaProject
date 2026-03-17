@@ -34,6 +34,7 @@ import com.example.moofrosty.core.network.Resource;
 import com.example.moofrosty.core.utils.NetworkUtil;
 import com.example.moofrosty.data.local.SessionManager;
 import com.example.moofrosty.data.model.StoreListResponse;
+import com.example.moofrosty.ui.attendance.AttendanceActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Calendar;
@@ -121,6 +122,8 @@ public class NewStoreActivity extends AppCompatActivity {
 
             if (!isPresent) {
                 Toast.makeText(this, "User Not Marked Attendance. Please punch in.", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(NewStoreActivity.this, AttendanceActivity.class);
+//                startActivity(intent);
             } else if (isPresentOut) {
                 Toast.makeText(this, "You have punched out for today. Cannot create a new store.", Toast.LENGTH_LONG).show();
             } else {

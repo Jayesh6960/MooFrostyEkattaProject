@@ -36,6 +36,7 @@ import com.example.moofrosty.core.utils.NetworkUtil;
 import com.example.moofrosty.data.local.SessionManager;
 import com.example.moofrosty.data.model.AttendanceStatusResponse;
 import com.example.moofrosty.data.model.Store;
+import com.example.moofrosty.ui.attendance.AttendanceActivity;
 import com.example.moofrosty.ui.enterstoreorders.ActionPointActivitys;
 import com.example.moofrosty.ui.enterstoreorders.takeorder.TakeOrderActivity;
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -319,11 +320,13 @@ public class StoreProfileActivity extends AppCompatActivity {
                     boolean isPresentOut = sessionManager.isAttendanceOutMarked();
                     // boolean isAttendanceMarked = attendanceStatusResponse.isPresent();
                     Log.d("ispresent","ispresent"+isAttendanceMarked);
-
+//Temop don't have to deploy
                     if (!isPresent) {
                         progressDialog.dismiss();
                         Log.d("ispresent","ispresentif"+isPresent);
                         Toast.makeText(StoreProfileActivity.this, "User Not Marked Attendance. Please punch in.", Toast.LENGTH_SHORT).show();
+//                                        Intent intent = new Intent(StoreProfileActivity.this, AttendanceActivity.class);
+//                startActivity(intent);
 
                     } else if (isPresentOut) {
                         Log.d("ispresent","ispresentoutif"+isPresentOut);

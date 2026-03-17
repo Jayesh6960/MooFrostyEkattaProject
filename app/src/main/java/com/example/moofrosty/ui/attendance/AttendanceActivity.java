@@ -209,12 +209,12 @@ public class AttendanceActivity extends AppCompatActivity {
                 tvStatusMessage.setText("Punched In: " + data.intime + " | Punched Out: " + data.outtime);
                 break;
 
-            case 4: // Sunday
-                btnPunch.setText("SUNDAY");
-                btnPunch.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
-                btnPunch.setEnabled(false);
-                tvStatusMessage.setText("Enjoy your holiday!");
-                break;
+//            case 4: // Sunday
+//                btnPunch.setText("SUNDAY");
+//                btnPunch.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
+//                btnPunch.setEnabled(false);
+//                tvStatusMessage.setText("Enjoy your holiday!");
+//                break;
 
             case 5: // Holiday or Leave
                 String msg = data.isHoliday ? "Holiday" : "On Leave";
