@@ -2,6 +2,7 @@ package com.example.moofrosty.ui.newstorecreation;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -51,6 +52,8 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
     TextView tvTitle;
     TextView tvDate ;
     ScrollView scrollView;
+    private boolean isOtpRequestInProgress = false;
+    private CountDownTimer countDownTimer;
 
     private FirebaseAuth mAuth;
     private String mVerificationId;
@@ -113,25 +116,69 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
         btnBack.setOnClickListener(v -> finish());
 
         // 2. Click Listener: Send Code
-        btnSendVerification.setOnClickListener(v -> {
-            String mobile = etMobile.getText().toString().trim();
-            if (mobile.length() < 10) {
-                till_mob.setError("Enter valid mobile number");
+            btnSendVerification.setOnClickListener(v -> {
+                String mobile = etMobile.getText().toString().trim();
+                if (mobile.length() < 10) {
+                    till_mob.setError("Enter valid mobile number");
 
-                return;
-            }
-
-            if (NetworkUtil.isNetworkAvailable(this)) {
-                String token = sessionManager.getToken();
-                if(!token.isEmpty()) {
-                    viewModel.verifyNumber(token, mobile);
-                } else {
-                    Toast.makeText(this, "Session Expired", Toast.LENGTH_SHORT).show();
+                    return;
                 }
-            } else {
-                Toast.makeText(this, "No Internet Connection", Toast.LENGTH_LONG).show();
-            }
-        });
+
+                if (NetworkUtil.isNetworkAvailable(this)) {
+                    String token = sessionManager.getToken();
+                    if(!token.isEmpty()) {
+                        viewModel.verifyNumber(token, mobile);
+                    } else {
+                        Toast.makeText(this, "Session Expired", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(this, "No Internet Connection", Toast.LENGTH_LONG).show();
+                }
+            });
+        //:Latest Updated code for  then firebase implemention
+
+//        btnSendVerification.setOnClickListener(v -> {
+//
+//            String mobile = etMobile.getText().toString().trim();
+//
+//            // ✅ Mobile validation
+//            if (mobile.length() != 10) {
+//                till_mob.setError("Enter valid mobile number");
+//                return;
+//            }
+//
+//            // ✅ Prevent multiple clicks / duplicate API calls
+//            if (isOtpRequestInProgress) {
+//                Toast.makeText(this, "Please wait before requesting OTP again", Toast.LENGTH_SHORT).show();
+//                return;
+//            }
+//
+//            // ✅ Check Internet
+//            if (!NetworkUtil.isNetworkAvailable(this)) {
+//                Toast.makeText(this, "No Internet Connection", Toast.LENGTH_LONG).show();
+//                return;
+//            }
+//
+//            String token = sessionManager.getToken();
+//
+//            if (token == null || token.isEmpty()) {
+//                Toast.makeText(this, "Session Expired", Toast.LENGTH_SHORT).show();
+//                return;
+//            }
+//
+//            // ✅ Mark request started
+//            isOtpRequestInProgress = true;
+//
+//            // ✅ Disable button
+//            btnSendVerification.setEnabled(false);
+//
+//            // ✅ Call API
+//            viewModel.verifyNumber(token, mobile);
+//
+//            // ✅ Start cooldown timer (60 sec)
+//            startOtpCooldown();
+//        });
+
 
         // 3. Click Listener: Submit OTP
         btnSubmitOtp.setOnClickListener(v -> {
@@ -141,10 +188,10 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
 //                return;
 //            }
 
-            if (!otp.equals("123456")) {
-                etOtp.setError("Invalid OTP");
-                return;
-            }
+//            if (!otp.equals("123456")) {
+//                etOtp.setError("Invalid OTP");
+//                return;
+//            }
 
             // --- SUCCESS LOGIC ---
             Toast.makeText(this, "OTP Verified Successfully!", Toast.LENGTH_SHORT).show();
@@ -241,6 +288,23 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
         dialog.show();
 
     }
+//    private void startOtpCooldown() {
+//
+//        countDownTimer = new CountDownTimer(60000, 1000) {
+//            @Override
+//            public void onTick(long millisUntilFinished) {
+//                btnSendVerification.setText("Wait " + millisUntilFinished / 1000 + " sec");
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//                isOtpRequestInProgress = false;
+//                btnSendVerification.setEnabled(true);
+//                btnSendVerification.setText("Send OTP");
+//            }
+//        }.start();
+//    }
+
 
 
     //otp below

@@ -72,10 +72,10 @@ public class AttendanceViewModel extends ViewModel {
     public int calculatePunchState(AttendanceStatusResponse data) {
 
         // 1. Check Sunday
-        Calendar calendar = Calendar.getInstance();
-        if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-            return 4; // Sunday
-        }
+//        Calendar calendar = Calendar.getInstance();
+//        if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+//            return 4; // Sunday
+//        }
 
         // 2. Check Leave/Holiday
         // isAbleToPunch false means user is on leave or restricted
