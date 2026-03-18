@@ -161,7 +161,7 @@ public class DashboardMyBeatFragment extends Fragment {
 //            if (selectedCount == 0) tvBeatDropdown.setText("Beat Name : None");
 //            else tvBeatDropdown.setText(sb.toString());
 //        });
-
+//Ordered Values:Order values + Billed values
 //        viewModel.getTotalOrderValue().observe(getViewLifecycleOwner(), val -> tvOrderValue.setText(String.valueOf(val.intValue())));
         viewModel.getTotalOrderValue().observe(getViewLifecycleOwner(), val -> {
             if (val != null) {
