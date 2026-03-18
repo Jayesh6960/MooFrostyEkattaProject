@@ -114,7 +114,7 @@
                 android:gravity="center"
                 android:layout_marginTop="16dp"
                 android:textSize="14sp"
-                android:visibility="gone"/>
+                android:visibility="visible"/>
 
             <!-- OTP Section (Hidden Initially) -->
             <com.google.android.material.textfield.TextInputLayout
@@ -135,7 +135,9 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:maxLength="6"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp"
+                    android:cursorVisible="true"
+                    android:visibility="visible"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
