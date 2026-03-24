@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.moofrosty.core.network.Resource;
 import com.example.moofrosty.data.model.DashboardItem;
+import com.example.moofrosty.data.model.UserDetailResponse;
 import com.example.moofrosty.data.repository.DashboardRepository;
 
 import java.util.List;
@@ -57,5 +59,14 @@ public class DashboardViewModel extends ViewModel{
     public void loadData(String mocName) {
         // This fetches data from Repository and updates dashboardItems
         repository.fetchMocData(mocName, dashboardItems, totalIncentives);
+    }
+    private MutableLiveData<Resource<UserDetailResponse>> userStatusLiveData = new MutableLiveData<>();
+
+    public LiveData<Resource<UserDetailResponse>> getUserStatus() {
+        return userStatusLiveData;
+    }
+
+    public void checkUserStatus(String token) {
+        repository.checkUserStatus(token, userStatusLiveData);
     }
 }

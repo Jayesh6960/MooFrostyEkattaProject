@@ -35,7 +35,7 @@ public class LoginRepository {
 
                 if (response.isSuccessful() && response.body() != null) {
                     LoginResponse resp = response.body();
-                    Log.d("API_DEBUG", "Response Status: " + resp.isStatus());
+                    Log.d("Apistatus", "Response Status: " + resp.isStatus());
                     Log.d("API_DEBUG", "Response Message: " + resp.getMessage());
                     // Direct access (No .getData())
                     Log.d("API_DEBUG", "Token Found: " + resp.getToken());
@@ -46,14 +46,14 @@ public class LoginRepository {
                         liveData.postValue(Resource.error(resp.getMessage(), null));
                     }
                 } else {
-                    Log.e("API_DEBUG", "Response Unsuccessful or Body is Null");
+                    Log.e("API_DEBUG_massage", "Response Unsuccessful or Body is Null"+response.code());
                     liveData.postValue(Resource.error("Error: " + response.code(), null));
                 }
             }
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
-                Log.e("API_DEBUG", "Network Failure: " + t.getMessage());
+                Log.e("API_DEBUG12345", "Network Failure: " + t.getMessage());
                 liveData.postValue(Resource.error("Network Failure: " + t.getMessage(), null));
             }
         });

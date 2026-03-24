@@ -25,6 +25,7 @@
     import com.example.moofrosty.data.model.StoreListWrapperResponse;
     import com.example.moofrosty.data.model.SubCategoryResponse;
     import com.example.moofrosty.data.model.UserDetailResponse;
+//    import com.example.moofrosty.data.model.UserStatusResponse;
 
     import okhttp3.MultipartBody;
     import okhttp3.RequestBody;
@@ -231,6 +232,9 @@
 
         @GET("api/admin/user-detail")
         Call<UserDetailResponse> getUserDetail(@Header("Authorization") String token);
+
+//        @GET("api/admin/login/user/{id}")
+//        Call<UserStatusResponse> getUserById(@Path("id") int userId);
 
         @GET("api/admin/get-user-attendance")
         Call<AttendanceStatusResponse> checkAttendanceStatus(@Header("Authorization") String token);

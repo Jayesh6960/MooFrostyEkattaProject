@@ -1,12 +1,19 @@
 package com.example.moofrosty.ui.dashboard;
 
+import static com.example.moofrosty.core.network.Resource.Status.ERROR;
+import static com.example.moofrosty.core.network.Resource.Status.LOADING;
+import static com.example.moofrosty.core.network.Resource.Status.SUCCESS;
+
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
@@ -22,15 +29,27 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.example.moofrosty.core.network.ApiClient;
+import com.example.moofrosty.core.network.ApiService;
 import com.example.moofrosty.data.local.SessionManager;
+import com.example.moofrosty.data.model.LoginResponse;
+import com.example.moofrosty.data.model.UserDetailResponse;
+import com.example.moofrosty.data.model.UserStatusResponse;
 import com.example.moofrosty.ui.attendance.AttendanceActivity;
 import com.example.moofrosty.R;
 import com.example.moofrosty.ui.login.LoginActivity;
+import com.example.moofrosty.ui.login.LoginViewModel;
 import com.example.moofrosty.ui.newstorecreation.NewStoreActivity;
 import com.example.moofrosty.ui.splash.BaseActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DashboardActivity extends BaseActivity{
 
@@ -43,6 +62,10 @@ public class DashboardActivity extends BaseActivity{
     private ImageView btnMenu;
     SessionManager sessionManager;
     private TextView tvTitle;
+    private Handler handler = new Handler(Looper.getMainLooper());
+    private Runnable runnable;
+    DashboardViewModel dashboardViewModel;
+
 
 
     // Dynamic Views
@@ -64,6 +87,16 @@ public class DashboardActivity extends BaseActivity{
         navigationView = findViewById(R.id.nav_view);
         bottomNav = findViewById(R.id.bottom_navigation);
         btnMenu = findViewById(R.id.btn_menu);
+        dashboardViewModel = new ViewModelProvider(this).get(DashboardViewModel.class);
+        observeUserStatus();
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                String token = "Bearer " + sessionManager.getToken();
+                dashboardViewModel.checkUserStatus(token);
+                handler.postDelayed(this, 5000); // every 2 minutes
+            }
+        };
 
 
         // 2. Window Insets
@@ -133,6 +166,13 @@ public class DashboardActivity extends BaseActivity{
 
         setupBackPressHandler();
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        checkUserActiveStatus();
+        handler.post(runnable);
+    }
+
 
     private void setupBackPressHandler() {
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
@@ -160,7 +200,111 @@ public class DashboardActivity extends BaseActivity{
             }
         });
     }
+//    private void checkUserActiveStatus() {
+//
+//        int userId = sessionManager.getUserId();
+//        Log.d("StatusCheck123", "Checking status for userId: " + userId);
+//
+//        ApiService apiService = ApiClient.getApi();
+//        Call<LoginResponse> call = apiService.getUserById(userId);
+//
+//        Log.d("StatusCheck", "API CALL STARTED");
+//
+//        call.enqueue(new Callback<LoginResponse>() {
+//
+//            @Override
+//            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+//
+//                Log.d("StatusCheck", "API RESPONSE RECEIVED");
+//                Log.d("StatusCheck", "Response Code: " + response.code());
+//
+//                if (response.isSuccessful() && response.body() != null) {
+//
+//                    Log.d("StatusCheckgsondata", "Response Body: " + new Gson().toJson(response.body()));
+//
+//                    if (response.body().getData() != null) {
+//
+//                        String status = response.body().getData().getStatus();
+//                        Log.d("StatusCheck", "Server status: " + status);
+//
+//                        if ("0".equals(status)) {
+//
+//                            Log.d("StatusCheck", "USER IS DEACTIVATED → LOGOUT");
+//
+//                            Toast.makeText(DashboardActivity.this,
+//                                    "Your account has been deactivated by admin.",
+//                                    Toast.LENGTH_LONG).show();
+//
+//                            logoutUser();
+//                        } else {
+//                            Log.d("StatusCheck", "USER IS ACTIVE");
+//                        }
+//
+//                    } else {
+//                        Log.d("StatusCheck", "Data is NULL in response");
+//                    }
+//
+//                } else {
+//                    Log.d("StatusCheck", "Response NOT successful");
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<LoginResponse> call, Throwable t) {
+//
+//                Log.d("StatusCheck", "API FAILED: " + t.getMessage());
+//            }
+//        });
+//    }
 
+
+
+//    private void checkUserActiveStatus() {
+//
+//        String token = "Bearer " + sessionManager.getToken(); // 🔴 IMPORTANT
+//
+//        ApiService apiService = ApiClient.getApi();
+//        Call<UserDetailResponse> call = apiService.getUserDetail(token);
+//
+//        Log.d("StatusCheck", "Token: " + token);
+//        Log.d("StatusCheck", "URL: " + call.request().url());
+//
+//        call.enqueue(new Callback<UserDetailResponse>() {
+//
+//            @Override
+//            public void onResponse(Call<UserDetailResponse> call, Response<UserDetailResponse> response) {
+//
+//                Log.d("StatusCheck", "Code: " + response.code());
+//
+//                if (response.isSuccessful() && response.body() != null
+//                        && response.body().getData() != null) {
+//
+//                    String status = response.body().getData().getstatus();
+//
+//                    Log.d("StatusCheck", "Server status: " + status);
+//
+//                    if ("0".equals(status)) {
+//
+//                        Log.d("StatusCheck", "DEACTIVATED → LOGOUT");
+//
+//                        Toast.makeText(DashboardActivity.this,
+//                                "Your account has been deactivated by admin.",
+//                                Toast.LENGTH_LONG).show();
+//
+//                        logoutUser(); // 🔴 FORCE LOGOUT
+//                    }
+//
+//                } else {
+//                    Log.d("StatusCheck", "Data NULL or invalid response");
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<UserDetailResponse> call, Throwable t) {
+//                Log.d("StatusCheck", "Error: " + t.getMessage());
+//            }
+//        });
+//    }
     private void showExitDialog() {
         // 1. Create the dialog but don't show it yet
         AlertDialog dialog = new android.app.AlertDialog.Builder(this)
@@ -198,129 +342,65 @@ public class DashboardActivity extends BaseActivity{
         fragmentTransaction.replace(R.id.fragment_container, fragment);
         fragmentTransaction.commit();
     }
-
-//    @Override
-//    public void onBackPressed() {
-//        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-//            drawerLayout.closeDrawer(GravityCompat.START);
-//        } else {
-//            super.onBackPressed();
+//    runnable = new Runnable() {
+//        @Override
+//        public void run() {
+//
+//            String token = "Bearer " + sessionManager.getToken();
+//
+//            Log.d("StatusCheck", "Calling API...");
+//
+//             // ✅ THIS LINE IS REQUIRED
+//
+//            handler.postDelayed(this, 5000);
 //        }
-//    }
+//    };
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+    private void observeUserStatus() {
+
+        dashboardViewModel.getUserStatus().observe(this, resource -> {
+
+            if (resource != null) {
+
+                switch (resource.status) {
+
+                    case SUCCESS:
+
+                        UserDetailResponse resp = resource.data;
+
+                        if (resp != null && resp.getData() != null) {
+
+                            String status = resp.getData().getstatus(); // ✅ FIXED
+
+                            Log.d("StatusCheck", "Final Status: " + status);
+
+                            if ("0".equals(status)) {
+
+                                Toast.makeText(this,
+                                        "User is inactive. Please contact admin",
+                                        Toast.LENGTH_LONG).show();
+                                logoutUser();
+                            }
+                        }
+                        break;
+
+                    case ERROR:
+                        Log.d("StatusCheck", "Error: " + resource.message);
+                        break;
+                }
+            }
+        });
+    }
 
 }
 
 
 
-
-//        // 2. Initialize Views
-//        drawerLayout = findViewById(R.id.drawer_layout);
-//        navigationView = findViewById(R.id.nav_view);
-//        bottomNav = findViewById(R.id.bottom_navigation);
-//        topBarContainer = findViewById(R.id.top_bar_container);
-//        //relativeScreen = findViewById(R.id.relativelayoutmenu);
-//        btnMenu = findViewById(R.id.btn_menu);
-//
-//        homeContainer = findViewById(R.id.home_container);
-//        myBeatContainer = findViewById(R.id.text_my_beat);
-//
-//        tvMocDropdown = findViewById(R.id.tv_moc_dropdown);
-//        tvTotalIncentives = findViewById(R.id.tv_total_incentives);
-//        tvViewMore = findViewById(R.id.tv_view_more);
-//        recyclerView = findViewById(R.id.dashboard_recycler);
-//
-//        // 3. Apply Window Insets (Your requested logic)
-//        ViewCompat.setOnApplyWindowInsetsListener(topBarContainer, (v, insets) -> {
-//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-//            // Added padding to top to avoid status bar overlap
-//            v.setPadding(v.getPaddingLeft(), systemBars.top, v.getPaddingRight(), v.getPaddingBottom());
-//            return insets;
-//        });
-//
-//        ViewCompat.setOnApplyWindowInsetsListener(bottomNav, (v, insets) -> {
-//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-//            v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), systemBars.bottom);
-//            return insets;
-//        });
-//
-//        // 4. MVVM Setup
-//        viewModel = new ViewModelProvider(this).get(DashboardViewModel.class);
-//
-//        // Grid setup: 2 columns
-////        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
-//        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3, GridLayoutManager.HORIZONTAL, false);
-//        recyclerView.setLayoutManager(gridLayoutManager);
-//        // Observer
-//        viewModel.getDashboardItems().observe(this, items -> {
-//            // YOU MUST SAVE THE DATA HERE
-//            currentListForDetail = items;
-//
-//            DashboardAdapter adapter = new DashboardAdapter(items);
-//            recyclerView.setAdapter(adapter);
-//        });
-//
-//        viewModel.getTotalIncentives().observe(this, value -> {
-//            if(tvTotalIncentives != null) tvTotalIncentives.setText(value);
-//        });
-//
-//        // 5. Drawer / Menu Logic
-//        btnMenu.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
-//
-//        navigationView.setNavigationItemSelectedListener(item -> {
-//            // Handle Drawer clicks here
-//            drawerLayout.closeDrawer(GravityCompat.START);
-//            return true;
-//        });
-//
-////        bottomNav.setOnItemSelectedListener(item -> {
-////            // Handle Bottom Nav clicks here
-////            return true;
-////        });
-//        bottomNav.setOnItemSelectedListener(item -> {
-//            int id = item.getItemId();
-//            if (id == R.id.nav_home) {
-//                homeContainer.setVisibility(View.VISIBLE);
-//                myBeatContainer.setVisibility(View.GONE);
-//                return true;
-//            } else if (id == R.id.nav_beat) {
-//                homeContainer.setVisibility(View.GONE);
-//                myBeatContainer.setVisibility(View.VISIBLE);
-//                return true;
-//            }
-//            return false;
-//        });
-//
-//        tvMocDropdown.setOnClickListener(v -> {
-//            PopupMenu popup = new PopupMenu(DashboardActivity.this, v);
-//            // Adding specific requested date ranges
-//            popup.getMenu().add("MOC 12 (01 Dec - 31 Dec)");
-//            popup.getMenu().add("MOC 11 (01 Nov - 30 Nov)");
-//            popup.getMenu().add("MOC 10 (01 Oct - 31 Oct)");
-//
-//            popup.setOnMenuItemClickListener(menuItem -> {
-//                String fullTitle = menuItem.getTitle().toString();
-//                // Extract "MOC 12" to show in the header
-//                String shortTitle = fullTitle.split("\\(")[0].trim();
-//                tvMocDropdown.setText(shortTitle);
-//
-//                // Pass full title to Repo or just MOC name?
-//                // Repo uses "MOC 12" string match.
-//                viewModel.loadData(shortTitle);
-//                return true;
-//            });
-//            popup.show();
-//        });
-//
-//        // --- VIEW MORE LOGIC ---
-//        tvViewMore.setOnClickListener(v -> {
-//            if (currentListForDetail == null || currentListForDetail.isEmpty()) {
-//                Toast.makeText(DashboardActivity.this, "No data to show", Toast.LENGTH_SHORT).show();
-//                return;
-//            }
-//            Intent intent = new Intent(DashboardActivity.this, ViewMoreDetailsActivity.class);
-//            // Pass the data
-//            intent.putExtra("DATA_LIST", (Serializable) currentListForDetail);
-//            // Pass the Title (e.g., "MOC 12")
-//            intent.putExtra("TITLE", tvMocDropdown.getText().toString());
-//            startActivity(intent);
-//        });
