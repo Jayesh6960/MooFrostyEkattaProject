@@ -16,14 +16,22 @@ public class LoginResponse {
     @SerializedName("token_type")
     private String tokenType;
 
+
     @SerializedName("user")
     private User user;
+    @SerializedName("data")
+    private User data;
 
     // --- Getters ---
     public boolean isStatus() { return status; }
     public String getMessage() { return message; }
     public String getToken() { return token; }
     public User getUser() { return user; }
+    public User getData() {
+        return data;
+    }
+
+
 
     // --- Inner Class: User ---
     public static class User {
@@ -56,6 +64,12 @@ public class LoginResponse {
 
         @SerializedName("beat")
         private Beat beat;
+        @SerializedName("status")
+        private String status;
+
+
+
+
 
         @SerializedName("bank_detail")
         private BankDetail bankDetail;
@@ -69,6 +83,11 @@ public class LoginResponse {
         public String getEmail() { return email; }
         public String getMobileNumber() { return mobileNumber; }
         public Beat getBeat() { return beat; }
+        public String getStatus() {
+            return status;
+        }
+
+
     }
 
     // --- Inner Class: Beat ---

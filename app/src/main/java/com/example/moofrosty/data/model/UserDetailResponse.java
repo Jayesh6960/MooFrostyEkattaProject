@@ -74,6 +74,8 @@ public class UserDetailResponse {
 
         @SerializedName("beats")
         private List<Beat> beats;
+        @SerializedName("status")
+        private String status;
 
         @SerializedName("bank_detail")
         private BankDetail bankDetail;
@@ -93,6 +95,7 @@ public class UserDetailResponse {
         public String getExperienceYears() { return experienceYears; }
         public String getExperienceMonths() { return experienceMonths; }
         public String getPastEmployer() { return pastEmployer; }
+        public String getstatus() { return status; }
 
         public List<Beat> getBeats() { return beats; }
         public BankDetail getBankDetail() { return bankDetail; }

@@ -31,7 +31,7 @@ public class LoginActivity extends BaseActivity {
     private LoginViewModel loginViewModel;
     private SessionManager sessionManager;
     private View loadingLayout;
-
+//New Code Updated Latest Date Updated 24-03-2026
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,38 +90,159 @@ public class LoginActivity extends BaseActivity {
 //        // 4. Click Listener
 //        loginButton.setOnClickListener(v -> handleLogin());
 
+//        loginViewModel.getLoginResult().observe(this, resource -> {
+//            if (resource != null) {
+//                switch (resource.status) {
+//                    case LOADING:
+//                        setLoadingState(true);
+//                        break;
+//
+//                    case SUCCESS:
+//                        setLoadingState(false);
+//                        setLoadingState(false);
+//                        LoginResponse resp = resource.data;
+//                        if (resp != null) {
+//
+//                            String token = resp.getToken();
+//                            String fullJson = new Gson().toJson(resp);
+//                            sessionManager.saveLoginSession(token, fullJson);
+//                            sessionManager.saveUserId(resp.getUser().getId());
+//                            Log.d("sessonpass","checkpass"+token+" "+fullJson);
+//
+//                            boolean isPresent = false;
+//                            boolean isPresentOut = false;
+//                            if (resp.getAttendanceStatus() != null) {
+//                                isPresent = resp.getAttendanceStatus().isPresent();
+//                                isPresentOut = resp.getAttendanceStatus().isPresentOut(); // [HIGHLIGHT] Add this
+//                            }
+//                            Log.d("isPresent","isPresent"+isPresent);
+//
+//                            sessionManager.saveIsPresent(isPresent);
+//                            sessionManager.saveIsPresentOut(isPresentOut);
+//                       //     Log.d("sessonpassid","checkpass" + sessionManager.saveUserId(resp.getUser().getId()));
+//
+//                            navigateToDashboard();
+//                        } else {
+//                            Toast.makeText(this, "Login failed: No response data", Toast.LENGTH_SHORT).show();
+//                        }
+//                        break;
+//
+////                    case ERROR:
+////                        setLoadingState(false);
+////                        String errorMsg = resource.message != null ? resource.message : "";
+////                        if (errorMsg.contains("401")
+////                                || errorMsg.toLowerCase().contains("unauthorized")
+////                                || errorMsg.toLowerCase().contains("invalid")) {
+////                            Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show();
+////                        } else {
+////                            Toast.makeText(this, "Login failed. Please try again", Toast.LENGTH_SHORT).show();
+////                        }
+////                        break;
+////                    case ERROR:
+////                        setLoadingState(false);
+////
+////                        String errorMsg = resource.message != null ? resource.message.toLowerCase() : "";
+////
+////                        if (errorMsg.contains("401")
+////                                || errorMsg.contains("unauthorized")
+////                                || errorMsg.contains("invalid")) {
+////
+////                            Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show();
+////
+////                        } else if (errorMsg.contains("inactive") || errorMsg.contains("deactivated")) {
+////
+////                            Toast.makeText(this, "Your account has been deactivated. Please contact admin.", Toast.LENGTH_LONG).show();
+////
+////                            // 🔴 Force Logout
+////                            logoutUser();
+////
+////                        } else {
+////                            Toast.makeText(this, "User is inactive. Please contact admin.", Toast.LENGTH_SHORT).show();
+////                        }
+////                        break;
+//                    case ERROR:
+//                        setLoadingState(false);
+//
+//                        String errorMsg = resource.message != null ? resource.message.toLowerCase() : "";
+//                        Log.d("errormassage", "onCreate: "+errorMsg);
+//
+//                        if (errorMsg.contains("401")
+//                                || errorMsg.contains("unauthorized")
+//                                || errorMsg.contains("invalid")) {
+//
+//                            Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show();
+//
+//                        } else if (errorMsg.contains("") || errorMsg.contains("false")) {
+//
+//                            // ✅ Show message
+//                            Toast.makeText(this, "Your account has been deactivated. Please contact admin.", Toast.LENGTH_LONG).show();
+//
+//                            // 🔴 ALWAYS logout
+//                            logoutUser();
+//
+//                        } else {
+//
+//                            // 🔴 IMPORTANT: If backend is inconsistent, still logout for safety
+//                            Toast.makeText(this, "User is inactive. Please contact admin.", Toast.LENGTH_SHORT).show();
+//
+//                            logoutUser(); // ✅ Add this line
+//                        }
+//                        break;
+//                }
+//            }
+//        });
+
         loginViewModel.getLoginResult().observe(this, resource -> {
             if (resource != null) {
+
                 switch (resource.status) {
+
                     case LOADING:
                         setLoadingState(true);
                         break;
 
                     case SUCCESS:
                         setLoadingState(false);
-                        setLoadingState(false);
-                        LoginResponse resp = resource.data;
-                        if (resp != null) {
 
+                        LoginResponse resp = resource.data;
+
+                        if (resp != null && resp.getUser() != null) {
+
+                            // 🔴 CHECK USER STATUS (MOST IMPORTANT)
+                            String status = String.valueOf(resp.getUser().getStatus()); // "0" or "1"
+                            Log.d("Status", "Login status: " + status);
+
+                            if ("0".equals(status)) {
+                                Toast.makeText(this,
+                                        "Your account has been deactivated. Please contact admin.",
+                                        Toast.LENGTH_LONG).show();
+
+                                logoutUser();
+                                return; // ❗ stop आगे execution
+                            }
+
+                            // ✅ Continue Login (Only if Active)
                             String token = resp.getToken();
                             String fullJson = new Gson().toJson(resp);
+
                             sessionManager.saveLoginSession(token, fullJson);
                             sessionManager.saveUserId(resp.getUser().getId());
-                            Log.d("sessonpass","checkpass"+token+" "+fullJson);
+
+                            Log.d("session", "token: " + token);
 
                             boolean isPresent = false;
                             boolean isPresentOut = false;
+
                             if (resp.getAttendanceStatus() != null) {
                                 isPresent = resp.getAttendanceStatus().isPresent();
-                                isPresentOut = resp.getAttendanceStatus().isPresentOut(); // [HIGHLIGHT] Add this
+                                isPresentOut = resp.getAttendanceStatus().isPresentOut();
                             }
-                            Log.d("isPresent","isPresent"+isPresent);
 
                             sessionManager.saveIsPresent(isPresent);
                             sessionManager.saveIsPresentOut(isPresentOut);
-                       //     Log.d("sessonpassid","checkpass" + sessionManager.saveUserId(resp.getUser().getId()));
 
                             navigateToDashboard();
+
                         } else {
                             Toast.makeText(this, "Login failed: No response data", Toast.LENGTH_SHORT).show();
                         }
@@ -129,13 +250,27 @@ public class LoginActivity extends BaseActivity {
 
                     case ERROR:
                         setLoadingState(false);
-                        String errorMsg = resource.message != null ? resource.message : "";
+
+                        String errorMsg = resource.message != null ? resource.message.toLowerCase() : "";
+                        Log.d("errormessage", errorMsg);
+
                         if (errorMsg.contains("401")
-                                || errorMsg.toLowerCase().contains("unauthorized")
-                                || errorMsg.toLowerCase().contains("invalid")) {
+                                || errorMsg.contains("unauthorized")
+                                || errorMsg.contains("invalid")) {
+
+                            // ❌ Wrong credentials
                             Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show();
+
+                        } else if (errorMsg.contains("token") || errorMsg.contains("expired")) {
+
+                            // 🔴 Session expired
+                            Toast.makeText(this, "Session expired. Please login again.", Toast.LENGTH_LONG).show();
+                            logoutUser();
+
                         } else {
-                            Toast.makeText(this, "Login failed. Please try again", Toast.LENGTH_SHORT).show();
+
+                            // ✅ Generic error (NO deactivation here)
+                            Toast.makeText(this, "User Deactivate  . Please Contact Admin.", Toast.LENGTH_SHORT).show();
                         }
                         break;
                 }
@@ -144,6 +279,16 @@ public class LoginActivity extends BaseActivity {
 
         loginButton.setOnClickListener(v -> handleLogin());
     }
+
+//private void logoutUser() {
+//
+//    sessionManager.logout(); // clear all data
+//
+//    Intent intent = new Intent(this, LoginActivity.class);
+//    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//    startActivity(intent);
+//    finishAffinity(); // ✅ ensures all activities closed
+//}
 
     private void handleLogin() {
             String email = emailEditText.getText() != null ? emailEditText.getText().toString().trim() : "";            /// 2
