@@ -24,5 +24,8 @@ public class LoginViewModel extends ViewModel {
     public void login(String email, String password) {
         repository.loginUser(email, password, loginResult);
     }
+//    public void login(String mobileNumber, String password) {
+//        repository.loginUser(mobileNumber, password, loginResult);
+//    }
 
 }

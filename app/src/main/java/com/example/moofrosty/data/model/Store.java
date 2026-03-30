@@ -38,8 +38,15 @@
         public int getShopId() { return shopId; }
         public String getStoreName() { return storeName; }
         public String getMobileNumber() { return mobileNumber; }
-        public String getAddress() { return address; }
+//        public String getAddress() { return address; }
         public String getOwnerName() { return ownerName; }
+        public String getAddress() {
+            if (address != null && !address.isEmpty()) {
+                String[] parts = address.split("#");
+                return android.text.TextUtils.join(", ", parts);
+            }
+            return "";
+        }
 
         // Helper for Lat/Lng
         public double getLat() {

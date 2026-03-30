@@ -107,31 +107,75 @@ public class DashboardMyBeatFragment extends Fragment {
         storeRecycler.setAdapter(storeAdapter);
 
         // 4. Observers
+//        viewModel.getStoresResource().observe(getViewLifecycleOwner(), resource -> {
+//            if (resource != null) {
+//                switch (resource.status) {
+//                    case LOADING:
+//                        progressBar.setVisibility(View.VISIBLE);
+//                        storeRecycler.setVisibility(View.GONE);
+//                        tvNoData.setVisibility(View.GONE);
+//                        break;
+//                    case SUCCESS:
+//                        progressBar.setVisibility(View.GONE);
+//                        storeRecycler.setVisibility(View.VISIBLE);
+//                        if (resource.data != null) {
+//                            viewModel.setMasterStoreList(resource.data);
+//                            tvNoData.setVisibility(View.GONE);
+//                        }
+//                        else {
+//                            // Handle empty data
+//                            storeAdapter.updateList(new ArrayList<>());
+//                            tvNoData.setVisibility(View.VISIBLE);
+//                        }
+//                        break;
+//                    case ERROR:
+//                        progressBar.setVisibility(View.GONE);
+//                        storeRecycler.setVisibility(View.GONE);
+//                        tvNoData.setVisibility(View.VISIBLE);
+//                        Toast.makeText(getContext(), resource.message, Toast.LENGTH_SHORT).show();
+//                        break;
+//                }
+//            }
+//        });
         viewModel.getStoresResource().observe(getViewLifecycleOwner(), resource -> {
             if (resource != null) {
                 switch (resource.status) {
+
                     case LOADING:
                         progressBar.setVisibility(View.VISIBLE);
                         storeRecycler.setVisibility(View.GONE);
                         tvNoData.setVisibility(View.GONE);
                         break;
+
                     case SUCCESS:
                         progressBar.setVisibility(View.GONE);
-                        storeRecycler.setVisibility(View.VISIBLE);
-                        if (resource.data != null) {
+
+                        if (resource.data != null && !resource.data.isEmpty()) {
+
+                            storeRecycler.setVisibility(View.VISIBLE);
+
+                            // Save master list in ViewModel
                             viewModel.setMasterStoreList(resource.data);
+
+                            // Update RecyclerView Adapter
+                            storeAdapter.updateList(resource.data);
+
                             tvNoData.setVisibility(View.GONE);
-                        }
-                        else {
+
+                        } else {
+
                             // Handle empty data
+                            storeRecycler.setVisibility(View.GONE);
                             storeAdapter.updateList(new ArrayList<>());
                             tvNoData.setVisibility(View.VISIBLE);
                         }
                         break;
+
                     case ERROR:
                         progressBar.setVisibility(View.GONE);
                         storeRecycler.setVisibility(View.GONE);
                         tvNoData.setVisibility(View.VISIBLE);
+
                         Toast.makeText(getContext(), resource.message, Toast.LENGTH_SHORT).show();
                         break;
                 }

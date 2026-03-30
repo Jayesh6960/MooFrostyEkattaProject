@@ -43,6 +43,24 @@ public class MyBeatRepository {
 
 
     // --- 1. INITIAL FETCH (Gets User Beats, then triggers the first store fetch) ---
+//    public void fetchInitialDashboardData(MutableLiveData<Resource<List<Store>>> storesLiveData,
+//                                          MutableLiveData<List<BeatModel>> beatsLiveData,
+//                                          MutableLiveData<Integer> totalCountData,
+//                                          MutableLiveData<Double> totalOrderValue,
+//                                          MutableLiveData<Integer> visitedCount,
+//                                          MutableLiveData<Integer> orderCount) {
+//
+//        storesLiveData.setValue(Resource.loading(null));
+//
+//        if (!NetworkUtil.isNetworkAvailable(context)) {
+//            storesLiveData.setValue(Resource.error("No Internet Connection", null));
+//            return;
+//        }
+//
+//        String token = "Bearer " + sessionManager.getToken();
+//        Log.d(TAG, "API REQUEST: getUserDetail");
+//
+//     }
     public void fetchInitialDashboardData(MutableLiveData<Resource<List<Store>>> storesLiveData,
                                           MutableLiveData<List<BeatModel>> beatsLiveData,
                                           MutableLiveData<Integer> totalCountData,
@@ -58,49 +76,83 @@ public class MyBeatRepository {
         }
 
         String token = "Bearer " + sessionManager.getToken();
+
         Log.d(TAG, "API REQUEST: getUserDetail");
 
         apiService.getUserDetail(token).enqueue(new Callback<UserDetailResponse>() {
+
             @Override
             public void onResponse(Call<UserDetailResponse> call, Response<UserDetailResponse> response) {
+
                 Log.d(TAG, "API RESPONSE: getUserDetail | Code: " + response.code());
 
                 if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
+
                     UserDetailResponse.Data data = response.body().getData();
 
                     if (data != null && data.getBeats() != null && !data.getBeats().isEmpty()) {
-                        List<BeatModel> beatList = new ArrayList<>();
+
+                        List<UserDetailResponse.Data.Beat> beats = data.getBeats();
+
+                        List<BeatModel> beatModels = new ArrayList<>();
                         StringBuilder beatIdsBuilder = new StringBuilder();
 
-                        for (UserDetailResponse.Data.Beat b : data.getBeats()) {
-                            beatList.add(new BeatModel(String.valueOf(b.getBeatId()), b.getFullBeatName(), 0, true));
-                            if (beatIdsBuilder.length() > 0) beatIdsBuilder.append(",");
+                        for (int i = 0; i < beats.size(); i++) {
+
+                            UserDetailResponse.Data.Beat b = beats.get(i);
+
+                            BeatModel beatModel = new BeatModel(
+                                    String.valueOf(b.getBeatId()),
+                                    b.getFullBeatName(),
+                                    0,
+                                    true
+                            );
+
+                            beatModels.add(beatModel);
+
                             beatIdsBuilder.append(b.getBeatId());
+
+                            if (i < beats.size() - 1) {
+                                beatIdsBuilder.append(",");
+                            }
                         }
 
-                        beatsLiveData.postValue(beatList);
-                        String selectedBeatIds = beatIdsBuilder.toString();
+                        String beatIds = beatIdsBuilder.toString();
 
-                        Log.d(TAG, "Extracted Beat IDs: " + selectedBeatIds);
+                        beatsLiveData.postValue(beatModels);
 
-                        // Trigger the API Calls for Stores & Counts
-                        fetchStoresForTab(token, selectedBeatIds, "All", storesLiveData, totalCountData, totalOrderValue);
-                        fetchGlobalCounts(token, selectedBeatIds, visitedCount, orderCount);
+                        Log.d(TAG, "Beat IDs fetched: " + beatIds);
+
+                        // Now fetch stores for ALL tab
+                        fetchStoresForTab(
+                                token,
+                                beatIds,
+                                "All",
+                                storesLiveData,
+                                totalCountData,
+                                totalOrderValue
+                        );
+
+                        // Fetch global counts
+                        fetchGlobalCounts(token, beatIds, visitedCount, orderCount);
 
                     } else {
-                        Log.e(TAG, "User has no assigned Beats");
-                        storesLiveData.setValue(Resource.error("User has no assigned Beats", null));
+
+                        storesLiveData.setValue(Resource.error("No beats assigned to user", null));
                     }
+
                 } else {
-                    Log.e(TAG, "Failed to fetch User Details");
-                    storesLiveData.setValue(Resource.error("Failed to fetch User Details", null));
+
+                    storesLiveData.setValue(Resource.error("Failed to fetch user details", null));
                 }
             }
 
             @Override
             public void onFailure(Call<UserDetailResponse> call, Throwable t) {
+
                 Log.e(TAG, "API FAILURE: getUserDetail | Error: " + t.getMessage());
-                storesLiveData.setValue(Resource.error("Network Error: " + t.getMessage(), null));
+
+                storesLiveData.setValue(Resource.error(t.getMessage(), null));
             }
         });
     }
@@ -128,7 +180,7 @@ public class MyBeatRepository {
                                 MutableLiveData<Integer> totalCountData,
                                 MutableLiveData<Double> totalOrderValue) {
 
-        Log.d(TAG, "API REQUEST: getStoreList (ALL) | BeatIds: " + beatIds + " | Date: " + date);
+        Log.d("getuserdetails", "API REQUEST: getStoreList (ALL) | BeatIds: " + beatIds + " | Date: " + date);
 
         apiService.getStoreList(token, beatIds, date, "bit_wise_all").enqueue(new Callback<StoreListResponses>() {
             @Override

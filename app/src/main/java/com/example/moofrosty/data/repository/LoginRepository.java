@@ -26,7 +26,11 @@ public class LoginRepository {
         liveData.postValue(Resource.loading(null));
 
         LoginRequest request = new LoginRequest(email, password);
-        Log.d("API_DEBUG", "Sending Payload: Email=" + email + ", Pass=" + password);
+//        LoginRequest request = new LoginRequest(mobileNumber, password);
+
+//        Log.d("API_DEBUG", "Sending Payload: Email=" + email + ", Pass=" + password);
+//        Log.d("API_DEBUG", "Sending Payload: Email=" + mobileNumber + ", Pass=" + password);
+
 
         apiService.loginUser(request).enqueue(new Callback<LoginResponse>() {
             @Override

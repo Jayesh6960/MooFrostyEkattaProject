@@ -25,7 +25,12 @@
     import com.example.moofrosty.data.model.StoreListWrapperResponse;
     import com.example.moofrosty.data.model.SubCategoryResponse;
     import com.example.moofrosty.data.model.UserDetailResponse;
+    import com.example.moofrosty.data.model.UserStatusResponse;
+    import com.example.moofrosty.ui.ATMSummary.StoreModel;;
+//    import com.example.moofrosty.ui.ATMSummary.StoreModel;
 //    import com.example.moofrosty.data.model.UserStatusResponse;
+
+    import java.util.List;
 
     import okhttp3.MultipartBody;
     import okhttp3.RequestBody;
@@ -122,13 +127,8 @@
         @GET("api/admin/secondary-channel")
         Call<SecondaryChannelResponse> getSecondaryChannels(@Header("Authorization") String token);
 
-        @GET("api/admin/get-store-list")
-        Call<StoreListResponse> getStoreList(
-                @Header("Authorization") String token,
-                @Query("date") String date,
-//                @Query("Storelist") boolean Storelist
-                @Query("page") String page
-        );
+//
+//        );
 //        @GET("api/admin/get-store-list")
 //        Call<StoreListResponses> getStoreList(
 //                @Header("Authorization") String token,
@@ -136,12 +136,12 @@
 //                @Query("page") String page // Pass "bit_wise_all" here
 //        );
 //
-//        @GET("api/admin/get-store-list")
-//        Call<StoreListWrapperResponse> getStoreListVisited(
-//                @Header("Authorization") String token,
-//                @Query("date") String date, // Changed from logDate to date
-//                @Query("page") String page  // Pass "visited_shop" here
-//        );
+        @GET("api/admin/get-store-list")
+        Call<StoreListWrapperResponse> getStoreListVisited(
+                @Header("Authorization") String token,
+                @Query("date") String date, // Changed from logDate to date
+                @Query("page") String page  // Pass "visited_shop" here
+        );
 //
 //        // 3. NOT VISITED STORES
 //        @GET("api/admin/get-store-list")
@@ -193,7 +193,9 @@
                 @Query("date") String date,
                 @Query("page") String page
         );
-
+        //Temporarya pass through the dummy data
+//        @GET("store/list")
+//        Call<List<StoreModel>> getStoreList();
 
 //        with date abovove and beat id
 
@@ -233,8 +235,8 @@
         @GET("api/admin/user-detail")
         Call<UserDetailResponse> getUserDetail(@Header("Authorization") String token);
 
-//        @GET("api/admin/login/user/{id}")
-//        Call<UserStatusResponse> getUserById(@Path("id") int userId);
+        @GET("api/admin/login/user/{id}")
+        Call<UserStatusResponse> getUserById(@Path("id") int userId);
 
         @GET("api/admin/get-user-attendance")
         Call<AttendanceStatusResponse> checkAttendanceStatus(@Header("Authorization") String token);
@@ -298,4 +300,6 @@
                 @Header("Authorization") String token,
                 @Query("shop_id") int shopId // [HIGHLIGHT] Added shop_id query parameter
         );
+
+        Call<StoreListResponse> getStoreList(String s, String date, String page);
     }

@@ -23,7 +23,7 @@ import com.example.moofrosty.ui.splash.BaseActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
-
+//access to the Beat manager
 public class LoginActivity extends BaseActivity {
 
     private TextInputEditText emailEditText, passwordEditText;
@@ -218,7 +218,7 @@ public class LoginActivity extends BaseActivity {
                                         Toast.LENGTH_LONG).show();
 
                                 logoutUser();
-                                return; // ❗ stop आगे execution
+                                return; //
                             }
 
                             // ✅ Continue Login (Only if Active)
@@ -291,13 +291,22 @@ public class LoginActivity extends BaseActivity {
 //}
 
     private void handleLogin() {
-            String email = emailEditText.getText() != null ? emailEditText.getText().toString().trim() : "";            /// 2
+            String email = emailEditText.getText() != null ? emailEditText.getText().toString().trim() : "";/// 2
+//        Log.d("Emailladdres", "Emailladdres"+email);
+//        String mobile = emailEditText.getText() != null ? emailEditText.getText().toString().trim() : "";/// 2
+
         String password = passwordEditText.getText() != null ? passwordEditText.getText().toString().trim() : "";
 
         if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Please enter both Username and Password", Toast.LENGTH_SHORT).show();
             return;
         }
+//
+//        if (mobile.isEmpty() || password.isEmpty()) {
+//            Toast.makeText(this, "Please enter both Username and Password", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+
         // Network Check
         if (NetworkUtil.isNetworkAvailable(this)) {
             loginViewModel.login(email, password);

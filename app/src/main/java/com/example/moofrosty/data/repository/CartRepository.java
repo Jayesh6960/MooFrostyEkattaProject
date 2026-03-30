@@ -132,7 +132,7 @@ public class CartRepository {
                     try {
                         if (response.errorBody() != null) {
                             String errorStr = response.errorBody().string();
-                            Log.e(TAG, "Error Body: " + errorStr);
+                            Log.e("Error Body:" , "Error Body: " + errorStr);
 
                             // Try to parse the JSON error body to get the real message
                             GeneralResponse errorResponse = new Gson().fromJson(errorStr, GeneralResponse.class);
