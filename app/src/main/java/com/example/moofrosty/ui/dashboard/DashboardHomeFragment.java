@@ -94,6 +94,20 @@ public class DashboardHomeFragment extends Fragment {
             });
             popup.show();
         });
+//        tvMocDropdown.setOnClickListener(v -> {
+//            PopupMenu popup = new PopupMenu(requireContext(), v);
+//            popup.getMenu().add("SOW 02 (02 Feb - 28 Feb)");
+//            popup.getMenu().add("SOW 01 (01 Jan - 31 Jan)");
+//
+//            popup.setOnMenuItemClickListener(menuItem -> {
+//                String fullTitle = menuItem.getTitle().toString();
+//                String shortTitle = fullTitle.split("\\(")[0].trim();
+//                tvMocDropdown.setText(shortTitle);
+//                viewModel.loadData(shortTitle);
+//                return true;
+//            });
+//            popup.show();
+//        });
 
         // 6. View More Logic
         tvViewMore.setOnClickListener(v -> {

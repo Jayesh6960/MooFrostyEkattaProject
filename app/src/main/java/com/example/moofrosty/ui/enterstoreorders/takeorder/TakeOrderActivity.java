@@ -2,9 +2,11 @@
 
     import android.app.ProgressDialog;
     import android.content.Intent;
+    import android.content.SharedPreferences;
     import android.os.Bundle;
     import android.text.Editable;
     import android.text.TextWatcher;
+    import android.util.Log;
     import android.view.LayoutInflater;
     import android.view.View;
     import android.widget.ArrayAdapter;
@@ -53,6 +55,10 @@
     import com.google.android.material.textfield.TextInputEditText;
     import com.google.android.material.textfield.TextInputLayout;
 
+    import java.text.SimpleDateFormat;
+    import java.util.Date;
+    import java.util.Locale;
+//Logs already Store at the backend Side in then database
     public class TakeOrderActivity extends AppCompatActivity {
 
             private AppBarLayout appBarLayout;
@@ -157,12 +163,18 @@
                     loadFragment(new ShopFrontFragment());
                     bottomNav.setSelectedItemId(R.id.nav_shop_front);
                 }
+//            iconPower.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    showCheckOutDialog();
+//                }
+//            });
 
-                iconPower.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-//    //                    Intent intent = new Intent(TakeOrderActivity.this, StoreProfileActivity.class);
-//    //                    startActivity(intent);
+//                iconPower.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+////                        Intent intent = new Intent(TakeOrderActivity.this, StoreProfileActivity.class);
+////                        startActivity(intent);
 //                        Intent intent = new Intent(TakeOrderActivity.this, StoreProfileActivity.class);
 //                        if (getIntent().getSerializableExtra("STORE_DATA") != null) {
 //                            intent.putExtra("STORE_DATA", getIntent().getSerializableExtra("STORE_DATA"));
@@ -171,9 +183,51 @@
 //                        startActivity(intent);
 //                        cartViewModel.clearCart();
 //                        finish();
-                        showCheckOutDialog();
-                    }
-                });
+//                        showCheckOutDialog();
+//                    }
+//                });
+            iconPower.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    // Save distance first
+                    // Show dialog if required
+                    showCheckOutDialog();
+
+//                    Intent intent = new Intent(TakeOrderActivity.this, StoreProfileActivity.class);
+//
+//                    if (getIntent().getSerializableExtra("STORE_DATA") != null) {
+//                        intent.putExtra("STORE_DATA",
+//                                getIntent().getSerializableExtra("STORE_DATA"));
+//                    }
+//
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+//                            Intent.FLAG_ACTIVITY_NEW_TASK);
+//
+//                    cartViewModel.clearCart();
+//
+//                    startActivity(intent);
+//                    finish();
+                }
+            });
+//            iconPower.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//
+//                    // Check if cart has items (order taken)
+//                    if (cartViewModel.getCheckoutResult() != null && !cartViewModel.getCheckoutResult().isInitialized()) {
+//
+//                        // ✅ Order already taken → Skip reason dialog
+//                        logoutUser();
+//
+//                    } else {
+//
+//                        // ❌ No order taken → Show reason dialog
+//                        showCheckOutDialog();
+//                    }
+//                }
+//            });
+
             setupCheckOutObserver();
             searchbar = findViewById(R.id.search_bar);
             searchbar.addTextChangedListener(new TextWatcher() {
@@ -250,7 +304,30 @@
             ivClose.setOnClickListener(v -> bottomSheetDialog.dismiss());
 
             // Confirm Button
+//            btnConfirm.setOnClickListener(v -> {
+//                String selectedReason = spReason.getText().toString();
+//
+//                if (selectedReason.isEmpty()) {
+//                    Toast.makeText(this, "Please select a reason", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+//
+//                if (!NetworkUtil.isNetworkAvailable(this)) {
+//                    Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+//
+//                if (currentStore != null) {
+//                    // Call API
+//                    String token = sessionManager.getToken();
+//                    takeOrderViewModel.performCheckOut(token, currentStore.getShopId(), selectedReason);
+//                    bottomSheetDialog.dismiss();
+//                } else {
+//                    Toast.makeText(this, "Outlet Data Missing", Toast.LENGTH_SHORT).show();
+//                }
+//            });
             btnConfirm.setOnClickListener(v -> {
+
                 String selectedReason = spReason.getText().toString();
 
                 if (selectedReason.isEmpty()) {
@@ -264,16 +341,49 @@
                 }
 
                 if (currentStore != null) {
-                    // Call API
+
+                    // ✅ Capture OUT time
+                    String outTime = getCurrentDateTime();
+
+                    SharedPreferences prefs = getSharedPreferences("store_data", MODE_PRIVATE);
+
+                    prefs.edit()
+                            .putString("store_out_time", outTime)
+                            .apply();
+
+                    Log.d("StoreTiming", "OUT Time Saved: " + outTime);
+
+                    // ✅ Call API
                     String token = sessionManager.getToken();
                     takeOrderViewModel.performCheckOut(token, currentStore.getShopId(), selectedReason);
+
                     bottomSheetDialog.dismiss();
+
                 } else {
                     Toast.makeText(this, "Outlet Data Missing", Toast.LENGTH_SHORT).show();
                 }
             });
 
+
             bottomSheetDialog.show();
+        }
+//    private void logoutUser() {
+//        Intent intent = new Intent(TakeOrderActivity.this, StoreProfileActivity.class);
+//
+//        if (getIntent().getSerializableExtra("STORE_DATA") != null) {
+//            intent.putExtra("STORE_DATA", getIntent().getSerializableExtra("STORE_DATA"));
+//        }
+//
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//
+//        startActivity(intent);
+//
+//        cartViewModel.clearCart(); // clear cart after logout
+//        finish();
+//    }
+        private String getCurrentDateTime() {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+            return sdf.format(new Date());
         }
 
         private void setupCheckOutObserver() {

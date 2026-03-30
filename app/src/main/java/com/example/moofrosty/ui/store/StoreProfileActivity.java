@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -53,6 +54,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class StoreProfileActivity extends AppCompatActivity {
 
 
@@ -71,7 +76,7 @@ public class StoreProfileActivity extends AppCompatActivity {
     ImageView btnMenu;
     TextView tvTitle;
     TextView tvDate ;
-
+// Logs already store at the Backend side
     //    // Permissions Launcher
 //    private final ActivityResultLauncher<String[]> locationPermissionRequest =
 //            registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result -> {
@@ -212,17 +217,56 @@ public class StoreProfileActivity extends AppCompatActivity {
         }).attach();
 
         // --- ENTER STORE CLICK ---
+//        btnEnterStore.setOnClickListener(v -> {
+//            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                locationPermissionRequest.launch(new String[]{
+//                        Manifest.permission.ACCESS_FINE_LOCATION,
+//                        Manifest.permission.ACCESS_COARSE_LOCATION
+//                });
+//            } else {
+//                fetchLocationAndProceed();
+//                checkGpsAndProceed();
+//            }
+//        });
         btnEnterStore.setOnClickListener(v -> {
+
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
                 locationPermissionRequest.launch(new String[]{
                         Manifest.permission.ACCESS_FINE_LOCATION,
                         Manifest.permission.ACCESS_COARSE_LOCATION
                 });
+
             } else {
+
+                SharedPreferences prefs = getSharedPreferences("store_data", MODE_PRIVATE);
+
+                // ✅ Check if already saved (avoid overwriting)
+                String existingInTime = prefs.getString("store_in_time", null);
+
+                if (existingInTime == null) {
+
+                    String inTime = getCurrentDateTime(); // ✅ Capture time only once
+
+                    prefs.edit().putString("store_in_time", inTime).apply();
+
+                    Log.d("StoreTiming", "IN Time Saved: " + inTime);
+
+                } else {
+                    Log.d("StoreTiming", "IN Time already exists: " + existingInTime);
+                }
+
+                // Continue your existing flow
                 fetchLocationAndProceed();
                 checkGpsAndProceed();
             }
         });
+
+    }
+//temporaray used to Store the current time in  Store data
+    private String getCurrentDateTime() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        return sdf.format(new Date());
     }
 
     private void observeViewModel() {

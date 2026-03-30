@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,7 +71,7 @@ public class StoreProfileFragment extends Fragment {
                 tvPartyCode.setText("Outlet Code  : " + store.getShopId());    //.replaceAll("[^0-9]", ""));
                 tvPhone.setText(store.getMobileNumber());
                 tvAddress.setText(store.getAddress());
-
+                Log.d("fulladdress", "address"+store.getAddress());
                 // Click Listeners for Actions
 //                btnCall.setOnClickListener(v -> {
 //                    Intent intent = new Intent(Intent.ACTION_DIAL);

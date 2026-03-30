@@ -24,6 +24,7 @@
         <intent>
             <action android:name="android.media.action.IMAGE_CAPTURE" />
         </intent>
+
         <package android:name="com.google.android.apps.maps" />
 
         <intent>
@@ -44,9 +45,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MooFrosty"
         tools:node="merge">
-<!--        <activity-->
-<!--            android:name=".ui.attendance.Toolbarhelper"-->
-<!--            android:exported="false" />-->
+        <activity
+            android:name=".ui.ATMSummary.AtmSummaryActivity"
+            android:exported="false" />
+        <!-- <activity -->
+        <!-- android:name=".ui.attendance.Toolbarhelper" -->
+        <!-- android:exported="false" /> -->
         <!-- Store Creation -->
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -55,8 +59,9 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"/>
+                android:resource="@xml/file_paths" />
         </provider>
+
         <activity
             android:name=".ui.newstorecreation.CreateStoreWizardActivity"
             android:exported="false" />

@@ -37,6 +37,8 @@ import com.example.moofrosty.data.local.SessionManager;
 import com.example.moofrosty.data.model.LoginResponse;
 import com.example.moofrosty.data.model.UserDetailResponse;
 import com.example.moofrosty.data.model.UserStatusResponse;
+//import com.example.moofrosty.ui.ATMSummary.AtmSummaryActivity;
+import com.example.moofrosty.ui.ATMSummary.AtmSummaryActivity;
 import com.example.moofrosty.ui.attendance.AttendanceActivity;
 import com.example.moofrosty.R;
 import com.example.moofrosty.ui.login.LoginActivity;
@@ -124,6 +126,7 @@ public class DashboardActivity extends BaseActivity{
         tvTitle.setText(userName);
         updateNavHeader();
         // 4. Click Listeners
+//        menu_fos
         btnMenu.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
 
             navigationView.setNavigationItemSelectedListener(item -> {
@@ -138,7 +141,14 @@ public class DashboardActivity extends BaseActivity{
                     startActivity(intent);
                     drawerLayout.closeDrawer(GravityCompat.START);
                     return true;
-                } else if (id == R.id.menu_logout) {
+                }
+                else if (id == R.id.menu_atm) {
+//                     Open the New Store Creation List/History Page
+//                    Intent intent = new Intent(DashboardActivity.this, AtmSummaryActivity.class);
+//                    startActivity(intent);
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                    return true;
+                }else if (id == R.id.menu_logout) {
                     sessionManager.logout();
                     Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
                     startActivity(intent);
@@ -365,7 +375,6 @@ public class DashboardActivity extends BaseActivity{
         }
     }
     private void observeUserStatus() {
-
         dashboardViewModel.getUserStatus().observe(this, resource -> {
 
             if (resource != null) {

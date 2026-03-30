@@ -308,65 +308,65 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
 
 
     //otp below
-    private void showOtpScreen(String mobileNumber) {
-        btnSendVerification.setVisibility(View.GONE);
-        etMobile.setEnabled(false); // Lock the number so it can't be changed
-        layoutOtp.setVisibility(View.VISIBLE);
+//    private void showOtpScreen(String mobileNumber) {
+//        btnSendVerification.setVisibility(View.GONE);
+//        etMobile.setEnabled(false); // Lock the number so it can't be changed
+//        layoutOtp.setVisibility(View.VISIBLE);
+//
+//        btnSubmitOtp.setVisibility(View.VISIBLE);
+//        btnSubmitOtp.setText("Sending OTP...");
+//        btnSubmitOtp.setEnabled(false); // Disable until OTP is actually sent
+//
+//        tvStatus.setText("Sending OTP securely. Please wait...");
+//        tvStatus.setTextColor(getColor(R.color.Purple_Color));
+//        tvStatus.setVisibility(View.VISIBLE);
+//
+//        // Start Firebase OTP generation
+////        sendFirebaseOTP(mobileNumber);
+//    }
 
-        btnSubmitOtp.setVisibility(View.VISIBLE);
-        btnSubmitOtp.setText("Sending OTP...");
-        btnSubmitOtp.setEnabled(false); // Disable until OTP is actually sent
-
-        tvStatus.setText("Sending OTP securely. Please wait...");
-        tvStatus.setTextColor(getColor(R.color.Purple_Color));
-        tvStatus.setVisibility(View.VISIBLE);
-
-        // Start Firebase OTP generation
-        sendFirebaseOTP(mobileNumber);
-    }
-
-    private void sendFirebaseOTP(String mobileNumber) {
-        PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
-                .setPhoneNumber("+91" + mobileNumber)       // Add Country Code (+91 for India)
-                .setTimeout(60L, TimeUnit.SECONDS)          // Timeout and force resend
-                .setActivity(this)                          // Activity for callback binding
-                .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-
-                    @Override
-                    public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
-                        // This is called if Android automatically reads the SMS
-                        String code = credential.getSmsCode();
-                        if (code != null) {
-                            etOtp.setText(code);
-                            verifyFirebaseOTP(credential);
-                        }
-                    }
-
-                    @Override
-                    public void onVerificationFailed(@NonNull FirebaseException e) {
-                        // Failed to send OTP
-                        Toast.makeText(StoreOtpVerificationActivity.this, "Failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                        btnSubmitOtp.setText("Retry Sending OTP");
-                        btnSubmitOtp.setEnabled(true);
-
-                        btnSubmitOtp.setOnClickListener(v -> sendFirebaseOTP(mobileNumber)); // Allow retry
-                    }
-
-                    @Override
-                    public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken token) {
-                        // OTP Successfully sent to user's phone!
-                        super.onCodeSent(verificationId, token);
-                        mVerificationId = verificationId; // Save this to verify later
-
-                        tvStatus.setText("OTP sent to " + mobileNumber + ". Please enter it below.");
-                        btnSubmitOtp.setText("Verify & Proceed");
-                        btnSubmitOtp.setEnabled(true);
-                        etOtp.requestFocus();
-                    }
-                }).build();
-
-        PhoneAuthProvider.verifyPhoneNumber(options);
-    }
+//    private void sendFirebaseOTP(String mobileNumber) {
+//        PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
+//                .setPhoneNumber("+91" + mobileNumber)       // Add Country Code (+91 for India)
+//                .setTimeout(60L, TimeUnit.SECONDS)          // Timeout and force resend
+//                .setActivity(this)                          // Activity for callback binding
+//                .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+//
+//                    @Override
+//                    public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
+//                        // This is called if Android automatically reads the SMS
+//                        String code = credential.getSmsCode();
+//                        if (code != null) {
+//                            etOtp.setText(code);
+//                            verifyFirebaseOTP(credential);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onVerificationFailed(@NonNull FirebaseException e) {
+//                        // Failed to send OTP
+//                        Toast.makeText(StoreOtpVerificationActivity.this, "Failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
+//                        btnSubmitOtp.setText("Retry Sending OTP");
+//                        btnSubmitOtp.setEnabled(true);
+//
+//                        btnSubmitOtp.setOnClickListener(v -> sendFirebaseOTP(mobileNumber)); // Allow retry
+//                    }
+//
+//                    @Override
+//                    public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken token) {
+//                        // OTP Successfully sent to user's phone!
+//                        super.onCodeSent(verificationId, token);
+//                        mVerificationId = verificationId; // Save this to verify later
+//
+//                        tvStatus.setText("OTP sent to " + mobileNumber + ". Please enter it below.");
+//                        btnSubmitOtp.setText("Verify & Proceed");
+//                        btnSubmitOtp.setEnabled(true);
+//                        etOtp.requestFocus();
+//                    }
+//                }).build();
+//
+//        PhoneAuthProvider.verifyPhoneNumber(options);
+//    }
 
     private void verifyFirebaseOTP(PhoneAuthCredential credential) {
         btnSubmitOtp.setEnabled(false);
