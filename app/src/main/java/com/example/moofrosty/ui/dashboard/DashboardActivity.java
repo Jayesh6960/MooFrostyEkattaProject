@@ -144,8 +144,8 @@ public class DashboardActivity extends BaseActivity{
                 }
                 else if (id == R.id.menu_atm) {
 //                     Open the New Store Creation List/History Page
-//                    Intent intent = new Intent(DashboardActivity.this, AtmSummaryActivity.class);
-//                    startActivity(intent);
+                    Intent intent = new Intent(DashboardActivity.this, AtmSummaryActivity.class);
+                    startActivity(intent);
                     drawerLayout.closeDrawer(GravityCompat.START);
                     return true;
                 }else if (id == R.id.menu_logout) {

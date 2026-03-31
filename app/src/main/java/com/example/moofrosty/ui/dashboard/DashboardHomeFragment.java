@@ -14,11 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.moofrosty.R;
+import com.example.moofrosty.data.local.SessionManager;
 import com.example.moofrosty.data.model.DashboardItem;
 
 import java.io.Serializable;
@@ -34,6 +36,9 @@ public class DashboardHomeFragment extends Fragment {
     // UI Elements
     private TextView tvMocDropdown, tvTotalIncentives, tvViewMore;
     private RecyclerView recyclerView;
+    private LinearLayout ll_user_dropdown_container,orderdetaiols;
+    private SessionManager sessionManager;
+
 
 
     public DashboardHomeFragment() {
@@ -55,6 +60,25 @@ public class DashboardHomeFragment extends Fragment {
         tvMocDropdown = view.findViewById(R.id.tv_moc_dropdown);
         tvTotalIncentives = view.findViewById(R.id.tv_total_incentives);
         tvViewMore = view.findViewById(R.id.tv_view_more);
+        ll_user_dropdown_container = view.findViewById(R.id.ll_user_dropdown_container);
+        orderdetaiols = view.findViewById(R.id.orderdetaiols);
+
+        sessionManager = new SessionManager(requireContext());
+//        Temporaray We  Don't have to updated the code  right know we will change next phase'
+
+        String role = String.valueOf(sessionManager.getUserMobile());
+
+        if (role != null && role.equalsIgnoreCase("8080808080")) {
+
+            ll_user_dropdown_container.setVisibility(View.VISIBLE);
+            orderdetaiols.setVisibility(View.VISIBLE);
+
+        } else {
+//
+            ll_user_dropdown_container.setVisibility(View.GONE);
+            orderdetaiols.setVisibility(View.GONE);
+//        }
+
         recyclerView = view.findViewById(R.id.dashboard_recycler);
 
         // 2. Setup ViewModel
@@ -122,4 +146,5 @@ public class DashboardHomeFragment extends Fragment {
             Toast.makeText(requireContext(), "We Are Updating Soon", Toast.LENGTH_SHORT).show();
         });
     }
+}
 }

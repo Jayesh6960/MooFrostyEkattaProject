@@ -44,8 +44,18 @@ public class StoreModel {
     // 🔹 Empty constructor (Required for Retrofit)
     public StoreModel() {}
 //Ready for the Live Api implementation
-    public StoreModel(String storeName, int mocSales, int daySales, int numberOfLines, String inTime, String outTime) {
+    public StoreModel(String salespersonname, String currentdate, String totaltime, String outlets, String averagetime,String storeName, int mocSales, int daySales, int numberOfLines, String inTime, String outTime) {
         this.storeName = storeName;
+        this.salespersonname=salespersonname;
+        this.mocSales = mocSales;
+        this.daySales = daySales;
+        this.numberOfLines = numberOfLines;
+        this.inTime=inTime;
+        this.outTime=outTime;
+    }
+    public void StoreModelStore(String currentdate, String totaltime, String outlets, String averagetime, String storeName, int mocSales, int daySales, int numberOfLines, String inTime, String outTime) {
+        this.storeName = storeName;
+        this.salespersonname=salespersonname;
         this.mocSales = mocSales;
         this.daySales = daySales;
         this.numberOfLines = numberOfLines;
@@ -57,7 +67,7 @@ public class StoreModel {
 
     // 🔹 Getters
     public String getSalesperson() {
-        return salespersonname != null ? salespersonname : "--";//Static data Updated in the code
+        return salespersonname != null ? salespersonname :salespersonname  ;//Static data Updated in the code
     }
 
     public String getCurrentdate() {
@@ -68,6 +78,13 @@ public class StoreModel {
         return totaltime != null ? totaltime : "--";
     }
 
+    public int getActualOutlets() {
+        return 0;
+    }
+
+    public int getTotalOutlets() {
+        return 0;
+    }
 
 
     public String getOutlets(int actualOutlets, int totalOutlets) {

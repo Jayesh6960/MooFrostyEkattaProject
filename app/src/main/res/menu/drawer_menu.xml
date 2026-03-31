@@ -13,7 +13,7 @@
             android:id="@+id/menu_collection"
             android:icon="@drawable/collectionsummary"
             android:visible="false"
-            android:title="Collection Summary" />
+            android:title="@string/CollectionSummary" />
         <item
             android:id="@+id/menu_visitor"
             android:icon="@android:drawable/ic_menu_my_calendar"
@@ -22,8 +22,9 @@
         <item
             android:id="@+id/menu_atm"
             android:icon="@drawable/fossummary"
-            android:visible="false"
-            android:title="Today's ATM Summary" />
+            android:visible="true"
+            android:title="@string/Todays_Atm_Summary" />
+
         <item
             android:id="@+id/change_password"
             android:icon="@drawable/changepassword"

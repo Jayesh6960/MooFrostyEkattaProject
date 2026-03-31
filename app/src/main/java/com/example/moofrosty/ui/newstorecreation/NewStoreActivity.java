@@ -177,11 +177,13 @@ public class NewStoreActivity extends AppCompatActivity {
         if (NetworkUtil.isNetworkAvailable(this)) {
             // Passing token starts the fetch
             viewModel.setToken(sessionManager.getToken());
+            Log.d("token", "checkNetworkAndLoad: "+sessionManager.getToken());
         } else {
             Toast.makeText(this, "No Internet Connection", Toast.LENGTH_LONG).show();
             // Optional: Show a retry button or empty state
         }
     }
+
 
     private void showDatePicker() {
         Calendar cal = Calendar.getInstance();

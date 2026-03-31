@@ -25,6 +25,7 @@
     <string name="margin">Margin</string>
     <string name="stk_pcs">Stock Quantity : </string>
     <string name="Todays_Atm_Summary">"Today's ATM Summary" </string>
+    <string name="CollectionSummary">Collection Summary</string>
 
     <string name="add_to_cart">Add to cart</string>
     <string name="New_outlet_Creation">New Outlet Creation</string>
