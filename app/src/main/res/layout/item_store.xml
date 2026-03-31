@@ -4,87 +4,231 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
-    android:layout_marginStart="8dp"
-    android:layout_marginEnd="8dp"
+    android:layout_margin="12dp"
+    android:layout_gravity="center"
     app:cardCornerRadius="10dp"
-    app:cardElevation="3dp">
+    app:cardElevation="4dp">
 
     <LinearLayout
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="40dp">
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/storecretaet"
-            android:outlineAmbientShadowColor="@color/red">
+        android:padding="16dp">
 
-        </ImageView>
-
-
-        <!-- Store Name -->
-        <TextView
-            android:id="@+id/txtName"
-            android:layout_width="wrap_content"
+        <!-- Header Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Store Name"
-            android:textStyle="bold"
-            android:textSize="14sp"
-            android:textColor="#000000"/>
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/storecretaet"
+                app:tint="@color/blue"/>
+
+            <TextView
+                android:id="@+id/txtName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Store Name"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_baseline_keyboard_arrow_down_24"/>
+        </LinearLayout>
 
         <!-- MOC Sales -->
-        <TextView
-            android:id="@+id/txtMocSales"
-            android:layout_width="wrap_content"
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="MOC Sales: ₹0"
-            android:textSize="12sp"
-            android:layout_marginTop="2dp"/>
+            android:layout_marginTop="10dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="3dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="8dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="MOC Sales : "
+                    android:textStyle="bold"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/txtMocSales"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="₹0"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="4dp"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
         <!-- Day Sales + Lines -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-        <TextView
-            android:id="@+id/txtDaySales"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Day Sales: ₹0  "
-            android:textSize="12sp"
-            android:layout_marginTop="2dp"/>
-        <TextView
-            android:id="@+id/txtstorlines"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="₹0"
-            android:textSize="12sp"
-            android:layout_marginTop="2dp"/>
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:weightSum="2">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="4dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="3dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Day Sales : "
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:id="@+id/txtDaySalesValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="--"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:textColor="@color/black"
+                        android:layout_marginStart="6dp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="4dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="3dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/txtStoreLinesLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Lines : "
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:id="@+id/txtStoreLinesValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="--"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:layout_marginStart="6dp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
 
         <!-- In Time + Out Time -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-        <TextView
-            android:id="@+id/txtinTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="In Time: -- "
-            android:textSize="12sp"
-            android:layout_marginTop="2dp"/>
-        <TextView
-            android:id="@+id/txtoutTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:text="Out Time: --"
-            android:textSize="12sp"
-            android:layout_marginTop="2dp"/>
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:weightSum="2">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="4dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="3dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="In Time : "
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:id="@+id/txtinTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="--"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:layout_marginStart="6dp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="4dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="3dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Out Time : "
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:id="@+id/txtoutTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="--"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+
+                        android:layout_marginStart="6dp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
         </LinearLayout>
+
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

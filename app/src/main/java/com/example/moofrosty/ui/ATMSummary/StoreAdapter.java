@@ -22,15 +22,17 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txtName, txtMocSales, txtDaySales, txtinTime, txtoutTime;
+        TextView txtName, txtMocSales, txtDaySales, txtinTime, txtoutTime,txtlines;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             txtName = itemView.findViewById(R.id.txtName);
             txtMocSales = itemView.findViewById(R.id.txtMocSales);
-            txtDaySales = itemView.findViewById(R.id.txtDaySales);
+            txtDaySales = itemView.findViewById(R.id.txtDaySalesValue);
             txtinTime = itemView.findViewById(R.id.txtinTime);
+            txtlines = itemView.findViewById(R.id.txtStoreLinesValue);
+
             txtoutTime = itemView.findViewById(R.id.txtoutTime);
         }
     }
@@ -49,15 +51,14 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
         StoreModel item = list.get(position);
 
         holder.txtName.setText(item.getStoreName());
-        holder.txtMocSales.setText("MOC Sales: ₹" + item.getMocSales());
+        holder.txtMocSales.setText( "₹"+String.valueOf(item.getMocSales()));
 
         holder.txtDaySales.setText(
-                "Day Sales: ₹" + item.getDaySales() +
-                        " No. of lines: " + item.getNumberOfLines()
-        );
+                String.valueOf("₹"+item.getDaySales()));
+        holder.txtlines.setText("5");
 
-        holder.txtinTime.setText("In Time: " + item.getInTime());
-        holder.txtoutTime.setText("Out Time: " + item.getOutTime());
+        holder.txtinTime.setText(item.getInTime());
+        holder.txtoutTime.setText(item.getOutTime());
     }
 
     // ✅ FIXED METHOD

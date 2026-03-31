@@ -127,8 +127,13 @@
         @GET("api/admin/secondary-channel")
         Call<SecondaryChannelResponse> getSecondaryChannels(@Header("Authorization") String token);
 
-//
-//        );
+        @GET("api/admin/get-store-list")
+        Call<StoreListResponse> getStoreList(
+                @Header("Authorization") String token,
+                @Query("date") String date,
+//                @Query("Storelist") boolean Storelist
+                @Query("page") String page
+        );
 //        @GET("api/admin/get-store-list")
 //        Call<StoreListResponses> getStoreList(
 //                @Header("Authorization") String token,
@@ -136,12 +141,12 @@
 //                @Query("page") String page // Pass "bit_wise_all" here
 //        );
 //
-        @GET("api/admin/get-store-list")
-        Call<StoreListWrapperResponse> getStoreListVisited(
-                @Header("Authorization") String token,
-                @Query("date") String date, // Changed from logDate to date
-                @Query("page") String page  // Pass "visited_shop" here
-        );
+//        @GET("api/admin/get-store-list")
+//        Call<StoreListWrapperResponse> getStoreListVisited(
+//                @Header("Authorization") String token,
+//                @Query("date") String date, // Changed from logDate to date
+//                @Query("page") String page  // Pass "visited_shop" here
+//        );
 //
 //        // 3. NOT VISITED STORES
 //        @GET("api/admin/get-store-list")
@@ -194,8 +199,8 @@
                 @Query("page") String page
         );
         //Temporarya pass through the dummy data
-//        @GET("store/list")
-//        Call<List<StoreModel>> getStoreList();
+        @GET("store/list")
+        Call<List<StoreModel>> getStoreList();
 
 //        with date abovove and beat id
 
@@ -300,6 +305,4 @@
                 @Header("Authorization") String token,
                 @Query("shop_id") int shopId // [HIGHLIGHT] Added shop_id query parameter
         );
-
-        Call<StoreListResponse> getStoreList(String s, String date, String page);
     }

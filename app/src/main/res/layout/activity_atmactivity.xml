@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="40dp"
+
         >
 
         <include
@@ -83,16 +84,18 @@
                         android:layout_height="40dp"
                         android:orientation="horizontal">
 
-                        <com.journeyapps.barcodescanner.CameraPreview
+
+                        <ImageView
                             android:id="@+id/userimage"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:layout_marginStart="10dp"
                             android:layout_marginEnd="10dp"
-                            android:visibility="gone"
-                             >
-                        </com.journeyapps.barcodescanner.CameraPreview>
+                            android:src="@drawable/moofrostylogos"
 
+                            android:visibility="visible">
+
+                        </ImageView>
 
                         <TextView
                             android:id="@+id/Salespersonname"
@@ -125,54 +128,70 @@
             <!-- SUMMARY CARDS -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_height="109dp"
                 android:layout_marginTop="10dp"
+                android:orientation="horizontal"
                 android:weightSum="3">
 
                 <!-- Total Time -->
                 <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:layout_margin="4dp"
-                    android:layout_height="wrap_content">
+                    android:layout_weight="1">
 
                     <LinearLayout
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:padding="10dp"
                         android:layout_width="match_parent"
-                        android:layout_height="70dp">
+                        android:layout_height="match_parent"
+                        android:background="@color/gray_color"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/baseline_access_time_24">
+
+                        </ImageView>
 
                         <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="Total Time in \n \t\tOutlet"
-                            android:textStyle="bold"
                             android:textSize="12sp"
-                             android:layout_height="wrap_content"
-                             android:layout_width="wrap_content"/>
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/totaltime"
-                            android:text="--"
-                            android:textSize="13sp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"/>
+                            android:text="--"
+                            android:textSize="13sp" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
                 <!-- Outlets -->
                 <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:layout_margin="4dp"
-                    android:layout_height="wrap_content">
+                    android:layout_weight="1">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_height="93dp"
+                        android:background="@color/gray_color"
                         android:gravity="center"
                         android:orientation="vertical"
                         android:padding="10dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="25dp"
+                            android:src="@drawable/ic_baseline_store_24">
+
+                        </ImageView>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -181,42 +200,67 @@
                             android:textSize="12sp"
                             android:textStyle="bold" />
 
-                        <TextView
-                            android:id="@+id/outlets"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="A/T"
-                            android:textSize="13sp" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="30dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/actual"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="A"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/targeted"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="/T"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
                 <!-- Avg Time -->
                 <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:layout_margin="4dp"
-                    android:layout_height="wrap_content">
+                    android:layout_weight="1">
 
                     <LinearLayout
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:padding="10dp"
                         android:layout_width="match_parent"
-                        android:layout_height="70dp">
+                        android:layout_height="match_parent"
+                        android:background="@color/gray_color"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/baseline_access_time_24">
+
+                        </ImageView>
 
                         <TextView
-                            android:text="Avg Time Spent /\n \t\t\t Outlet"
-                            android:textStyle="bold"
-                            android:textSize="12sp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"/>
+                            android:text="Avg Time Spent /\n \t\t\t Outlet"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/Averagetime"
-                            android:text="--"
-                            android:textSize="13sp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"/>
+                            android:text="--"
+                            android:textSize="13sp" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -237,79 +281,216 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginTop="12dp"
-                android:padding="8dp"
+                android:layout_marginHorizontal="10dp"
                 android:background="@android:color/white">
 
                 <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:text="Today's Activity"
                     android:textStyle="bold"
                     android:textSize="14sp"
-                    android:gravity="center"
-                    android:visibility="visible"
+                    android:textColor="@color/black"/>
+
+                <!-- Attendance -->
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp">
 
-                <TextView
-                    android:id="@+id/punchinattendance"
-                    android:text="Attendance: --"
-                    android:textSize="12sp"
-                    android:layout_gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_marginTop="6dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/Storeintime"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="First Check-in: --"
-                        android:textSize="12sp"
-                        android:layout_height="wrap_content"/>
-
-                    <TextView
-                        android:id="@+id/Storeouttime"
-                        android:text="Last Check-out: --"
-                        android:textSize="12sp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        />
-                </LinearLayout>
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
 
+                        <TextView
+                            android:text="Attendance:"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <TextView
+                            android:id="@+id/punchinattendance"
+                            android:text="--"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:layout_marginStart="6dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <!-- First Checkin + Last Checkout -->
                 <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginTop="6dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:weightSum="2">
 
-                    <TextView
-                        android:id="@+id/totalsales"
+                    <androidx.cardview.widget.CardView
                         android:layout_width="0dp"
-                        android:layout_marginRight="20sp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Total Day Sales: ₹0"
-                        android:textSize="12sp"
-                        android:layout_height="wrap_content"/>
+                        android:layout_margin="6dp"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp">
 
-                    <TextView
-                        android:id="@+id/totaloutlet"
-                        android:text="Total Lines: ₹0"
-                        android:textSize="12sp"
-                        android:layout_marginRight="20dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="10dp">
+
+                            <TextView
+                                android:text="First Check-in : "
+                                android:textSize="14sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                            <TextView
+                                android:id="@+id/Storeintime"
+                                android:layout_width="51dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:text="--"
+                                android:textColor="@color/black"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_margin="6dp"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp">
+
+                        <LinearLayout
+                            android:layout_width="192dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="15dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Last Check-out : "
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/Storeouttime"
+                                android:layout_width="55dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:text="--"
+                                android:textColor="@color/black"
+                                android:textSize="13sp"
+                                android:layout_marginRight="20dp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
                 </LinearLayout>
-            </LinearLayout>
 
+                <!-- Total Sales + Total Lines -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_margin="6dp"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="10dp">
+
+                            <TextView
+                                android:text="Total Sales : ₹"
+                                android:textSize="14sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                            <TextView
+                                android:id="@+id/totalsales"
+                                android:layout_width="59dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:text="--"
+                                android:textColor="@color/black"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_margin="6dp"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="10dp">
+
+                            <TextView
+                                android:text="Total Lines : "
+                                android:textSize="14sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                            <TextView
+                                android:id="@+id/totaloutlet"
+                                android:layout_width="67dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:text="0"
+                                android:textColor="@color/black"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+
+            </LinearLayout>
             <!-- RECYCLER VIEW -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp">
+
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/storeRecyclerView"
@@ -318,6 +499,8 @@
                     android:nestedScrollingEnabled="false"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_store"
+                    android:visibility="visible"
+
                     />
             </androidx.cardview.widget.CardView>
 

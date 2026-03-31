@@ -44,7 +44,8 @@ public class ApplyLeaveFragment extends Fragment {
     private final List<LeaveTypeResponse.LeaveType> leaveTypeList = new ArrayList<>();
     private final List<String> leaveTypeNames = new ArrayList<>();
 
-    private int selectedLeaveTypeId = -1;
+    private int
+            selectedLeaveTypeId = -1;
 
     public ApplyLeaveFragment() {
 

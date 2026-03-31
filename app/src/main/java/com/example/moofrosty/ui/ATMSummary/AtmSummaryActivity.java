@@ -6,6 +6,7 @@ import static com.example.moofrosty.core.network.Resource.Status.SUCCESS;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -46,7 +47,7 @@ public class AtmSummaryActivity extends AppCompatActivity {
     private TextView totalTime, outlets, averageTime;
 
     // 🔹 Today Activity
-    private TextView attendance, storeInTime, storeOutTime, totalSales, totalOutlet;
+    private TextView attendance, storeInTime, storeOutTime, totalSales, actual,totalOutlet,targeted;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -90,21 +91,24 @@ public class AtmSummaryActivity extends AppCompatActivity {
         currentDate = findViewById(R.id.currentdate);
 
         totalTime = findViewById(R.id.totaltime);
-        outlets = findViewById(R.id.outlets);
+        actual = findViewById(R.id.actual);
+        totalOutlet = findViewById(R.id.totaloutlet);
+        targeted = findViewById(R.id.targeted);
+
         averageTime = findViewById(R.id.Averagetime);
 
         attendance = findViewById(R.id.punchinattendance);
         storeInTime = findViewById(R.id.Storeintime);
         storeOutTime = findViewById(R.id.Storeouttime);
         totalSales = findViewById(R.id.totalsales);
-        totalOutlet = findViewById(R.id.totaloutlet);
     }
 
     // 🔥 Toolbar setup
     private void setupToolbar() {
         setSupportActionBar(toolbar);
 
-        tvTitle.setText("Todays Atm Summary");
+        tvTitle.setText("Today's Atm Summary");
+        tvTitle.setGravity(Gravity.CENTER_HORIZONTAL);
 
         btn_back.setVisibility(View.VISIBLE);
         btn_back.setOnClickListener(v ->
@@ -170,31 +174,94 @@ public class AtmSummaryActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.GONE);
 
                     ArrayList<StoreModel> dummyList = new ArrayList<>();
-                    dummyList.add(new StoreModel("--", 0, 0, 0, "00:00 AM", "00:00 PM"));
-//                    dummyList.add(new StoreModel("Pravin Super Market", 300, 1200, 5, "09:30 AM", "06:00 PM"));
-//                    dummyList.add(new StoreModel("Patil Store", 200, 900, 3, "10:00 AM", "05:30 PM"));
-//                    dummyList.add(new StoreModel("Shree Ganesh Store", 450, 1500, 7, "09:15 AM", "06:45 PM"));
-//                    dummyList.add(new StoreModel("Mahalaxmi Traders", 350, 1100, 4, "10:30 AM", "05:50 PM"));
-//                    dummyList.add(new StoreModel("Sai Kirana Store", 250, 800, 2, "11:00 AM", "04:30 PM"));
+                dummyList.add(new StoreModel(
+        "Vaibhav Kulkarni",
+        "Current Date",
+        "Total Time",
+        "Outlets",
+        "Average Time",
+        "Pravin Super Market",
+        300,
+        1200,
+        5,
+        "09:30 AM",
+        "06:00 PM"
+));
+                    dummyList.add(new StoreModel(
+                            "Vaibhav Kulkarni",
+                            "Current Date",
+                            "Total Time",
+                            "Outlets",
+                            "Average Time",
+                            "Patil Super Market",
+                            300,
+                            1200,
+                            5,
+                            "09:30 AM",
+                            "06:00 PM"
+                    ));
+                    dummyList.add(new StoreModel(
+                            "Vaibhav Kulkarni",
+                            "Current Date",
+                            "Total Time",
+                            "Outlets",
+                            "Average Time",
+                            "Swami  Super Market",
+                            300,
+                            1200,
+                            5,
+                            "09:30 AM",
+                            "06:00 PM"
+                    ));
+                    dummyList.add(new StoreModel(
+                            "Vaibhav Kulkarni",
+                            "Current Date",
+                            "Total Time",
+                            "Outlets",
+                            "Average Time",
+                            "Swami Samarth  Super Market",
+                            300,
+                            1200,
+                            5,
+                            "09:30 AM",
+                            "06:00 PM"
+                    ));
 
+
+//
+//dummyList.add(new StoreModel(
+//        "Amit Deshmukh",
+//        "Current Date",
+//        "Total Time",
+//        "Outlets",
+//        "Average Time",
+//        "Ganesh Kirana Store",
+//        400,
+//        1500,
+//        6,
+//        "09:15 AM",
+//        "06:30 PM"
+//));
+// in the above
                     adapter.updateList(dummyList);
-
                     StoreModel first = dummyList.get(0);
                     salespersonName.setText(first.getSalesperson());
                     currentDate.setText(first.getCurrentdate());
                     totalTime.setText(first.getTotaltime());
-                    outlets.setText(first.getOutlets(3,10));
+//                    outlets.setText(first.getOutlets(3,10));
                     averageTime.setText(first.getAveragetime());
+                    totalSales.setText(String.valueOf(first.getDaySales()));
+//                    totalOutlet.setText("Total Lines: " + first.getOutlets(3,5));
+                    storeInTime.setText(first.getInTime());
+                    storeOutTime.setText( first.getOutTime());
 
-//
-                    totalSales.setText("Total Day Sales: ₹" + first.getDaySales());
-                    totalOutlet.setText("Total Lines: " + first.getNumberOfLines());
-                    storeInTime.setText("First Check-in: " + first.getInTime());
-                    storeOutTime.setText("Last Check-out: " + first.getOutTime());
 
-                    attendance.setText("Attendance: Present");
+                    actual.setText(String.valueOf(first.getActualOutlets()));
+                    targeted.setText("/" + first.getTotalOutlets());
+
+                    attendance.setText("Absent");
                     totalTime.setText(first.getTotaltime());
-                    outlets.setText(String.valueOf(dummyList.size()));
+//                    outlets.setText(String.valueOf(dummyList.size()));
                     averageTime.setText(first.getAveragetime());
 
                     break;

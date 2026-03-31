@@ -32,29 +32,29 @@ public class AtmRepository {
             // 🔄 Loading state
             liveData.setValue(new Resource<>(Resource.Status.LOADING, null, null));
 
-//            apiService.getStoreList().enqueue(new Callback<List<StoreModel>>() {
-//                @Override
-//                public void onResponse(Call<List<StoreModel>> call, Response<List<StoreModel>> response) {
-//
-//                    if (response.isSuccessful() && response.body() != null) {
-//
-//                        // ✅ SUCCESS
-//                        liveData.setValue(new Resource<>(Resource.Status.SUCCESS, response.body(), null));
-//
-//                    } else {
-//
-//                        // 🔥 USE DUMMY DATA IF API EMPTY
-//                        liveData.setValue(new Resource<>(Resource.Status.SUCCESS,getDummyData(), null));
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure(Call<List<StoreModel>> call, Throwable t) {
-//
-//                    // 🔥 FALLBACK TO DUMMY DATA
-//                    liveData.setValue(new Resource<>(Resource.Status.SUCCESS,getDummyData(),"Using dummy data"));
-//                }
-//            });
+            apiService.getStoreList().enqueue(new Callback<List<StoreModel>>() {
+                @Override
+                public void onResponse(Call<List<StoreModel>> call, Response<List<StoreModel>> response) {
+
+                    if (response.isSuccessful() && response.body() != null) {
+
+                        // ✅ SUCCESS
+                        liveData.setValue(new Resource<>(Resource.Status.SUCCESS, response.body(), null));
+
+                    } else {
+
+                        // 🔥 USE DUMMY DATA IF API EMPTY
+                        liveData.setValue(new Resource<>(Resource.Status.SUCCESS,getDummyData(), null));
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<StoreModel>> call, Throwable t) {
+
+                    // 🔥 FALLBACK TO DUMMY DATA
+                    liveData.setValue(new Resource<>(Resource.Status.SUCCESS,getDummyData(),"Using dummy data"));
+                }
+            });
 
             return liveData;
         }
