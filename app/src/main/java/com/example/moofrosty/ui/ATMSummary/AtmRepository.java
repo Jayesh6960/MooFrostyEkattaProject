@@ -1,7 +1,4 @@
 package com.example.moofrosty.ui.ATMSummary;
-
-
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 

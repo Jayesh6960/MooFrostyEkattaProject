@@ -52,7 +52,7 @@ public class DashboardHomeFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_dashboard_home, container, false);
     }
-
+//UserDetails sales person define as per the Sales Person user name
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -66,18 +66,6 @@ public class DashboardHomeFragment extends Fragment {
         sessionManager = new SessionManager(requireContext());
 //        Temporaray We  Don't have to updated the code  right know we will change next phase'
 
-        String role = String.valueOf(sessionManager.getUserMobile());
-
-        if (role != null && role.equalsIgnoreCase("8080808080")) {
-
-            ll_user_dropdown_container.setVisibility(View.VISIBLE);
-            orderdetaiols.setVisibility(View.VISIBLE);
-
-        } else {
-//
-            ll_user_dropdown_container.setVisibility(View.GONE);
-            orderdetaiols.setVisibility(View.GONE);
-//        }
 
         recyclerView = view.findViewById(R.id.dashboard_recycler);
 
@@ -146,5 +134,4 @@ public class DashboardHomeFragment extends Fragment {
             Toast.makeText(requireContext(), "We Are Updating Soon", Toast.LENGTH_SHORT).show();
         });
     }
-}
 }

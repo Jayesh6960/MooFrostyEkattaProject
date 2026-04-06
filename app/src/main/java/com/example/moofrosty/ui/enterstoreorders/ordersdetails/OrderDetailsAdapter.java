@@ -113,7 +113,7 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
                 }
                 if (item.units != null) {
                     tvBilledQty.setVisibility(View.VISIBLE);
-                    tvBilledQty.setText("BiLL QTY        : "+item.units + " Unit(s)");
+                    tvBilledQty.setText("BILL QTY        : "+item.units + " Unit(s)");
                 }else {
                     tvBilledQty.setVisibility(View.GONE);
                 }
