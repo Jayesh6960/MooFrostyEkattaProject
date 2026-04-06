@@ -4,6 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+
+
+//UserDetailsrepsponse-> 1)DATA2)BankDetail->3)BEAT :-Hirarchy for the user Details
 public class UserDetailResponse {
     // Note: JSON shows "status": "success", so we use String here
 

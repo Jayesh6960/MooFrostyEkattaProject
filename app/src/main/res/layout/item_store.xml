@@ -40,32 +40,37 @@
                 android:textStyle="bold"/>
 
             <ImageView
+                android:id="@+id/drowpdow"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_baseline_keyboard_arrow_down_24"/>
+                android:src="@drawable/swapdown"
+                app:tint="@color/blue"/>
         </LinearLayout>
 
         <!-- MOC Sales -->
         <androidx.cardview.widget.CardView
+            android:id="@+id/mocsales"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             app:cardCornerRadius="8dp"
-            app:cardElevation="3dp">
+            app:cardElevation="3dp"
+            android:visibility="gone">
 
             <LinearLayout
+                android:id="@+id/mocss"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="8dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp">
+                android:layout_marginLeft="20dp"
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="MOC Sales : "
-                    android:textStyle="bold"
                     android:textSize="14sp"/>
 
                 <TextView
@@ -82,11 +87,13 @@
 
         <!-- Day Sales + Lines -->
         <LinearLayout
+            android:id="@+id/daysales"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginTop="8dp"
-            android:weightSum="2">
+            android:weightSum="2"
+            android:visibility="gone">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
@@ -97,26 +104,27 @@
                 app:cardElevation="3dp">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="158dp"
+                    android:layout_height="match_parent"
                     android:orientation="horizontal"
-                    android:padding="10dp">
+                    android:padding="10dp"
+                    >
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Day Sales : "
-                        android:textSize="14sp"/>
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/txtDaySalesValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="--"
-                        android:textStyle="bold"
-                        android:textSize="14sp"
+                        android:layout_marginStart="6dp"
+                        android:text="0"
                         android:textColor="@color/black"
-                        android:layout_marginStart="6dp"/>
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -129,23 +137,25 @@
                 app:cardElevation="3dp">
 
                 <LinearLayout
+                    android:id="@+id/numberofline"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:padding="10dp">
+                    android:padding="10dp"
+                    android:visibility="visible">
 
                     <TextView
                         android:id="@+id/txtStoreLinesLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Lines : "
-                        android:textSize="14sp"/>
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/txtStoreLinesValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="--"
+                        android:text="N/A"
                         android:textSize="14sp"
                         android:textStyle="bold"
                         android:textColor="@color/black"
@@ -156,11 +166,13 @@
 
         <!-- In Time + Out Time -->
         <LinearLayout
+            android:id="@+id/intimeouttime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginTop="8dp"
-            android:weightSum="2">
+            android:weightSum="2"
+            android:visibility="gone">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
@@ -174,7 +186,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:padding="10dp">
+                    android:padding="10dp"
+                    android:visibility="visible">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -186,7 +199,7 @@
                         android:id="@+id/txtinTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="--"
+                        android:text="N/A"
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         android:textStyle="bold"
@@ -206,7 +219,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:padding="10dp">
+                    android:padding="10dp"
+                    android:visibility="visible">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -218,7 +232,7 @@
                         android:id="@+id/txtoutTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="--"
+                        android:text="N/A"
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         android:textStyle="bold"

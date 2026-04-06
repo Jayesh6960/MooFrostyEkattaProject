@@ -13,12 +13,18 @@ public class OrderHistoryResponse {
     @SerializedName("data")
     public List<OrderData> data;
 
+//    @SerializedName("place_order_list")
+//    public List<OrderData> placeOrderList;
+
     public static class OrderData implements Serializable {
         @SerializedName("bill_header_id")
         public int billHeaderId;
 
         @SerializedName("invoice_no")
         public String invoiceNo;
+
+        @SerializedName("order_id")
+        public String orderId;
 
         @SerializedName("shop")
         public Shop shop;
@@ -35,6 +41,7 @@ public class OrderHistoryResponse {
         @SerializedName("order_time_unit")
         public String orderTimeUnit;
 
+
         @SerializedName("order_summary")
         public OrderSummary orderSummary;
 
@@ -48,6 +55,11 @@ public class OrderHistoryResponse {
         public String getinvoiceId() {
             return invoiceNo;
         }
+
+//        public String getOrderId() {
+//            return orderId;
+//        }
+
     }
 
     public static class Shop implements Serializable {

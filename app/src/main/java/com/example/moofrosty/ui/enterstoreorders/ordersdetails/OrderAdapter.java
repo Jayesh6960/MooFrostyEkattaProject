@@ -95,7 +95,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                 tvOrderStatus.setBackgroundResource(R.drawable.tab_unselected_bg);
                 // [HIGHLIGHT] Show Bill Value Row only if Billed
                 llBillValueRow.setVisibility(View.VISIBLE);
-            } else {
+            } else if (order.status == 0) {
                 tvOrderStatus.setText("Order Placed");
                 tvOrderStatus.setTextColor(Color.parseColor("#0D6EfD"));
                 tvOrderStatus.setBackgroundResource(R.drawable.tab_unselected_bg);
@@ -113,9 +113,10 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                 tvBillValue.setText(String.format(Locale.getDefault(), ": ₹%.2f", order.orderSummary.billValue));
 //                tvItemsBilled.setText(": " + order.orderSummary.totalUnits);
                 tvItemsBilled.setText(": " + currentUnit + "/" + orderTimeUnit);
+
             } else {
                 tvOrderValue.setText(": ₹0.00");
-                    tvItemsBilled.setText(": 0/0");
+                tvItemsBilled.setText(": " + orderTimeUnit + "/" + orderTimeUnit);
             }
             Log.d("order.orderSummary.totalFinalAmount", "order.orderSummary.totalFinalAmount"+order.orderSummary.totalFinalAmount);
         }

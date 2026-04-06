@@ -22,7 +22,7 @@
         <item
             android:id="@+id/menu_atm"
             android:icon="@drawable/fossummary"
-            android:visible="true"
+            android:visible="false"
             android:title="@string/Todays_Atm_Summary" />
 
         <item
@@ -42,7 +42,9 @@
         <item
             android:id="@+id/terms_condition"
             android:icon="@drawable/termsandcondition"
-            android:title="Teams and Condition" />
+            android:title="Teams and Condition"
+            android:visible="true"/>
+
         <item
             android:id="@+id/menu_logout"
             android:icon="@drawable/logout"

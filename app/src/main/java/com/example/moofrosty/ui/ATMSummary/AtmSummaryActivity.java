@@ -73,9 +73,14 @@ public class AtmSummaryActivity extends AppCompatActivity {
         setupToolbar();
         setupRecycler();
 
-        viewModel = new ViewModelProvider(this).get(AtmViewModel.class);
 
+        viewModel = new ViewModelProvider(this).get(AtmViewModel.class);
         observeData();
+
+
+
+
+
     }
 
     // 🔥 Initialize all views
@@ -242,7 +247,7 @@ public class AtmSummaryActivity extends AppCompatActivity {
 //        "09:15 AM",
 //        "06:30 PM"
 //));
-// in the above
+
                     adapter.updateList(dummyList);
                     StoreModel first = dummyList.get(0);
                     salespersonName.setText(first.getSalesperson());
@@ -250,7 +255,7 @@ public class AtmSummaryActivity extends AppCompatActivity {
                     totalTime.setText(first.getTotaltime());
 //                    outlets.setText(first.getOutlets(3,10));
                     averageTime.setText(first.getAveragetime());
-                    totalSales.setText(String.valueOf(first.getDaySales()));
+                    totalSales.setText("₹"+String.valueOf(first.getDaySales()));
 //                    totalOutlet.setText("Total Lines: " + first.getOutlets(3,5));
                     storeInTime.setText(first.getInTime());
                     storeOutTime.setText( first.getOutTime());

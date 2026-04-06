@@ -124,9 +124,9 @@ public class OrderDetailsActivity extends AppCompatActivity {
         TextView tvStatusText = findViewById(R.id.tv_status_text);
 
         // [HIGHLIGHT] Fetch total amount safely from orderSummary
-        if(currentOrder.orderSummary != null) {
+        if (currentOrder.orderSummary != null) {
             tvBillAmount.setText(String.format(Locale.US, ": ₹%.2f", currentOrder.orderSummary.orderValue));
-            Log.d("Totalvalues", "Totolvalue:"+currentOrder.orderSummary.orderValue);
+            Log.d("Totalvalues", "Totolvalue:" + currentOrder.orderSummary.orderValue);
         }
 
         // [HIGHLIGHT] JSON replaced user with shop logic
@@ -139,17 +139,56 @@ public class OrderDetailsActivity extends AppCompatActivity {
         }
 
         // Status Logic
+//        if (currentOrder.status == 1) {
+//            tvStatusText.setText("Billed");
+//            tvStatusText.setTextColor(getColor(R.color.green));
+//            invoicenolayout.setVisibility(View.VISIBLE);
+//            tvbilledno.setText(": " + currentOrder.getinvoiceId());
+//        } else if (currentOrder.status == 0) {
+//            {
+//                tvStatusText.setText("Order Placed");
+//                tvStatusText.setTextColor(getColor(R.color.infoBarBlue));
+//            }
+//        }
+//        if (currentOrder.status == 1) {
+//
+//            tvStatusText.setText("Billed");
+//            tvStatusText.setTextColor(getColor(R.color.green));
+//
+//            invoicenolayout.setVisibility(View.VISIBLE);
+//            tvbilledno.setText(": " + currentOrder.getinvoiceId());
+//
+//        } else if (currentOrder.status == 0) {
+//
+//            tvStatusText.setText("Order Placed");
+//            tvStatusText.setTextColor(getColor(R.color.infoBarBlue));
+//
+//            invoicenolayout.setVisibility(View.VISIBLE);
+//            tvbilledno.setText(": " + currentOrder.getinvoiceId());
+//        }
         if (currentOrder.status == 1) {
+
             tvStatusText.setText("Billed");
             tvStatusText.setTextColor(getColor(R.color.green));
+
             invoicenolayout.setVisibility(View.VISIBLE);
             tvbilledno.setText(": " + currentOrder.getinvoiceId());
-        } else {
+
+        } else if (currentOrder.status == 0) {
+
             tvStatusText.setText("Order Placed");
             tvStatusText.setTextColor(getColor(R.color.infoBarBlue));
-        }
-    }
 
+            invoicenolayout.setVisibility(View.VISIBLE);
+
+
+            // SHOW ORDER ID HERE
+            tvbilledno.setText(": " + currentOrder.orderId);
+        }
+
+        Log.d("OrderStatusCheck", "Status: " + currentOrder.status);
+        Log.d("OrderStatusCheck", "InvoiceNo: " + currentOrder.invoiceNo);
+        Log.d("OrderStatusCheck", "OrderId: " + currentOrder.orderId);
 //    private void setupOrderInfo() {
 //        TextView tvBillAmount = findViewById(R.id.tv_bill_amount);
 //        TextView tvSalespersonTitle = findViewById(R.id.tv_salesperson_title); // ID for "Salesperson Orders"
@@ -179,6 +218,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
 //            tvStatusText.setTextColor(getColor(R.color.infoBarBlue)); // Define blue/orange
 //        }
 //    }
+    }
 }
 
 
