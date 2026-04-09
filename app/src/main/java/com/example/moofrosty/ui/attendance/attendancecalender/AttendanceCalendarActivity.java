@@ -209,8 +209,6 @@ public class AttendanceCalendarActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
    // Collection<? extends EventDay>
     private List<EventDay> getLeaveEvents(List<LeaveResponse.UserLeaveData> leaveList) {
