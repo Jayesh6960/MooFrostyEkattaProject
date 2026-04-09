@@ -104,32 +104,78 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
 
             // [HIGHLIGHT] 6. Discount & Status Logic
             // Only show discount if Order Status is 1 (Billed)
+//            if (orderStatus == 1) {
+//                if (item.discountPercent != null) {
+//                    tvDiscountPercent.setVisibility(View.VISIBLE);
+//                    tvDiscountPercent.setText("DISCOUNT     : " + item.discountPercent + "%");
+//                } else {
+//                    tvDiscountPercent.setVisibility(View.GONE);
+//                }
+//                if (item.units != null) {
+//                    tvBilledQty.setVisibility(View.VISIBLE);
+//                    tvBilledQty.setText("BILL QTY        : "+item.units + " Unit(s)");
+//                }else {
+//                    tvBilledQty.setVisibility(View.GONE);
+//                }
+//                tvBilledTag.setVisibility(View.VISIBLE);
+//                if (item.isDiscard == 1) {
+//                    // Item was discarded
+//                    tvBilledTag.setText("Discarded");
+//                    tvBilledTag.setBackgroundColor(Color.parseColor("#9E9E9E")); // Grey Background
+//                } else {
+//                    // Item was billed successfully
+//                    tvBilledTag.setText("Billed");
+//                    tvBilledTag.setBackgroundColor(Color.parseColor("#4CAF50")); // Green Background
+//                }
+//            }
             if (orderStatus == 1) {
+
                 if (item.discountPercent != null) {
                     tvDiscountPercent.setVisibility(View.VISIBLE);
-                    tvDiscountPercent.setText("DISCOUNT     : " + item.discountPercent + "%");
+                    tvDiscountPercent.setText("DISCOUNT : " + item.discountPercent + "%");
                 } else {
                     tvDiscountPercent.setVisibility(View.GONE);
                 }
+
                 if (item.units != null) {
                     tvBilledQty.setVisibility(View.VISIBLE);
-                    tvBilledQty.setText("BILL QTY        : "+item.units + " Unit(s)");
-                }else {
+                    tvBilledQty.setText("BILL QTY : " + item.units + " Unit(s)");
+                } else {
                     tvBilledQty.setVisibility(View.GONE);
                 }
+
                 tvBilledTag.setVisibility(View.VISIBLE);
+
                 if (item.isDiscard == 1) {
-                    // Item was discarded
+
+                    // Log discard status
+
+
                     tvBilledTag.setText("Discarded");
-                    tvBilledTag.setBackgroundColor(Color.parseColor("#9E9E9E")); // Grey Background
+                    tvBilledTag.setBackgroundColor(Color.parseColor("#9E9E9E"));
+
                 } else {
-                    // Item was billed successfully
+
+                    // Log billed status
+//                    Log.d("ORDER_STATUS", "Invoice: " + item.invoiceNo + " Status: Billed");
+
                     tvBilledTag.setText("Billed");
-                    tvBilledTag.setBackgroundColor(Color.parseColor("#4CAF50")); // Green Background
+                    tvBilledTag.setBackgroundColor(Color.parseColor("#4CAF50"));
+                    Log.d("ORDER_STATUS", "Invoice: " + item.isDiscard + " Status: Discarded");
                 }
-            } else {
-                tvDiscountPercent.setVisibility(View.GONE);
-                tvBilledQty.setVisibility(View.GONE);
+            }
+            else {
+                    tvDiscountPercent.setVisibility(View.GONE);
+
+                    tvBilledQty.setVisibility(View.GONE);
+
+
+                tvBilledTag.setVisibility(View.VISIBLE);
+                    tvBilledTag.setText("Discarded");
+                    tvBilledTag.setBackgroundColor(Color.parseColor("#9E9E9E"));
+
+//                tvDiscountPercent.setVisibility(View.GONE);
+//                tvBilledQty.setVisibility(View.GONE);
             }
 
         }

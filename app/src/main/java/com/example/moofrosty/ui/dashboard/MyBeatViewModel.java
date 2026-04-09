@@ -157,7 +157,9 @@ public class MyBeatViewModel extends AndroidViewModel {
     public LiveData<Resource<List<Store>>> getStoresResource() { return storesResource; }
     public LiveData<List<BeatModel>> getBeats() { return beats; }
     public LiveData<List<Store>> getFilteredStores() { return filteredStores; }
-    public LiveData<Double> getTotalOrderValue() { return totalOrderValue; }
+    public LiveData<Double> getTotalOrderValue() {
+        return totalOrderValue;
+    }
     public LiveData<Integer> getRepoTotalCount() { return repoTotalCount; }
     public LiveData<Integer> getRepoVisitedCount() { return repoVisitedCount; }
     public LiveData<Integer> getRepoOrderCount() { return repoOrderCount; }

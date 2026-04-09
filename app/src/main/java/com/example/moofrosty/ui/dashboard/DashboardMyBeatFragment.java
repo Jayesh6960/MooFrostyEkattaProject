@@ -211,6 +211,7 @@ public class DashboardMyBeatFragment extends Fragment {
             if (val != null) {
                 // Formatting as an integer with the ₹ symbol for a clean UI
                 tvOrderValue.setText("₹ " + val.intValue());
+                Log.d("TotalOrderValue", "Total Order Value: ₹ " + val.intValue());
             }
         });
         // [HIGHLIGHT] Update the counts manually here based on the raw integers
