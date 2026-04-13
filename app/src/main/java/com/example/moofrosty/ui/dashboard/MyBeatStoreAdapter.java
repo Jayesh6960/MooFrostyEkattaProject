@@ -46,19 +46,20 @@ public class MyBeatStoreAdapter
         dismissTooltip();
         this.stores = newStores;
         notifyDataSetChanged();
-    }
+}
 
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(
-            @NonNull ViewGroup parent, int viewType) {
+@NonNull
+@Override
+public ViewHolder onCreateViewHolder(
+        @NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_store_list, parent, false);
-        return new ViewHolder(view);
-    }
+    View view = LayoutInflater.from(parent.getContext())
+            .inflate(R.layout.item_store_list, parent, false);
+    return new ViewHolder(view);
+}
 
-    @Override
+
+@Override
     public void onBindViewHolder(
             @NonNull ViewHolder holder, int position) {
 

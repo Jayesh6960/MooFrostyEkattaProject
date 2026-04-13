@@ -92,10 +92,20 @@
                 android:id="@+id/tv_billed_qty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:textSize="17sp"
                 android:layout_marginTop="4dp"
                 android:text="180/180 Unit(s)"
+                android:textColor="@android:color/black"
+                />
+            <TextView
+                android:id="@+id/tv_order_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:textSize="17sp"
+                android:layout_marginTop="4dp"
+                android:text="₹17.32 "
                 android:textColor="@android:color/black"
                 />
         </LinearLayout>

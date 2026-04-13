@@ -63,6 +63,7 @@
         }
 
         // --- Setters for UI ---
+
         public boolean isVisited() { return isVisited; }
         public void setVisited(boolean visited) { isVisited = visited; }
         public boolean isOrderTaken() { return isOrderTaken; }

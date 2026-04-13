@@ -50,6 +50,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
         OrderHistoryResponse.OrderData order = orderList.get(position);
         holder.bind(order);
+        Log.d("orderdatalist", "orderdetails"+order);
         holder.itemView.setOnClickListener(v -> listener.onOrderClick(order));
     }
 

@@ -15,21 +15,25 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.moofrosty.R;
 import com.example.moofrosty.core.network.Constants;
-import com.example.moofrosty.data.model.CartItem;
+import com.example.moofrosty.data.model.OrderDetailsResponse;
 import com.example.moofrosty.data.model.OrderHistoryResponse;
-import com.example.moofrosty.data.model.Product;
 
 import java.util.List;
-import java.util.Locale;
 
 public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapter.ViewHolder>{
 
-    private final List<OrderHistoryResponse.Item> itemList;
-    private final int orderStatus;
+//    private final List<OrderHistoryResponse.Item> itemList;
+//    private final int orderStatus;
+//
+//    public OrderDetailsAdapter(List<OrderHistoryResponse.Item> itemList, int orderStatus) {
+//        this.itemList = itemList;
+//        this.orderStatus = orderStatus;
+//    }
+private final List<OrderDetailsResponse.Item> itemList;
 
-    public OrderDetailsAdapter(List<OrderHistoryResponse.Item> itemList, int orderStatus) {
+    public OrderDetailsAdapter(List<OrderDetailsResponse.Item> itemList, int orderStatus) {
         this.itemList = itemList;
-        this.orderStatus = orderStatus;
+//        this.orderStatus = orderStatus;
     }
 
     @NonNull
@@ -38,11 +42,16 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_order_details, parent, false);
         return new ViewHolder(view);
     }
-
+//
+//    @Override
+//    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+//        holder.bind(itemList.get(position),orderStatus);
+//    }
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bind(itemList.get(position),orderStatus);
+        holder.bind(itemList.get(position));
     }
+
 
     @Override
     public int getItemCount() {
@@ -51,7 +60,8 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imgProduct;
-        TextView tvProductName, tvMrp, tvBilledQty, tvAmount, tvDiscountPercent, tvBilledTag;;
+        TextView tvProductName, tvMrp, tvBilledQty, tvAmount, tvDiscountPercent, tvBilledTag, tvordervalu;
+        ;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -64,46 +74,58 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
             // [HIGHLIGHT] Find Discount ID
             tvDiscountPercent = itemView.findViewById(R.id.tv_discount_amount);
             tvBilledTag = itemView.findViewById(R.id.tv_billed_tag);
+            tvordervalu = itemView.findViewById(R.id.tv_order_value);
+
 
         }
+//
+//        @SuppressLint("SetTextI18n")
+//        public void bind(OrderHistoryResponse.Item item, int orderStatus)
 
-        @SuppressLint("SetTextI18n")
-        public void bind(OrderHistoryResponse.Item item, int orderStatus) {
-
-            // [HIGHLIGHT] Fetching Flat Product Name
-            tvProductName.setText(item.productName != null ? item.productName : "Unknown Product");
-
-            // Getting Image from nested object
-            if (item.productDetails != null && item.productDetails.productImage != null) {
-                String imgUrl = Constants.BASE_URL + item.productDetails.productImage;
-                Glide.with(itemView.getContext())
-                        .load(imgUrl)
-                        .placeholder(R.drawable.icecategori)
-                        .into(imgProduct);
-            }
-
-            // [HIGHLIGHT] Getting MRP directly from flat mapping
-            if (item.productMrp != null) {
-                tvMrp.setText("MRP               : ₹" + item.productMrp);
-            }
-
-            // [HIGHLIGHT] Getting Units
-
-
-            // [HIGHLIGHT] Final Amount mapping (Selling Total)
+//        public void bind(OrderDetailsResponse.Item item) {
+//
+//            // [HIGHLIGHT] Fetching Flat Product Name
+//            tvProductName.setText(item.productName != null ? item.productName : "Unknown Product");
+//            tvProductName.setText(item.productDetails.productName != null ? item.productDetails.productName : "Unknown Product");
+//
+//            // Getting Image from nested object
+//            if (item.productDetails != null && item.productDetails.productImage != null) {
+//                String imgUrl = Constants.BASE_URL + item.productDetails.productImage;
+//                Glide.with(itemView.getContext())
+//                        .load(imgUrl)
+//                        .placeholder(R.drawable.icecategori)
+//                        .into(imgProduct);
+//            }
+//
+//            // [HIGHLIGHT] Getting MRP directly from flat mapping
+//            if (item.productDetails.mrp != null) {
+//                tvMrp.setText("MRP               : ₹" + item.productDetails.mrp);
+//            }
+//            if (item.productDetails.productMrp != null) {
+//                tvMrp.setText("MRP               : ₹" + item.productMrp);
+//            }
+//
+//            // [HIGHLIGHT] Getting Units
+//
+//
+//            // [HIGHLIGHT] Final Amount mapping (Selling Total)
 //            if (tvAmount != null && item.finalAmount != null && item.productSellingPrice!=null && !item.productSellingPrice.equals("0")) {
-//                tvAmount.setText("RATE              : ₹" + item.productSellingPrice);
+//                tvAmount.setText("RATE              : ₹" + item.productDetails.sellingPrice);
 //                tvAmount.setVisibility(View.VISIBLE);
 //            }
-
-            if (tvAmount != null && item.productSellingPrice!=null && !item.productSellingPrice.equals("0")) {
-                tvAmount.setVisibility(View.VISIBLE);
-                tvAmount.setText("RATE              : ₹" + item.productSellingPrice);
-            }
-            Log.d("selling price", "selling price: "+item.productSellingPrice);
-
-            // [HIGHLIGHT] 6. Discount & Status Logic
-            // Only show discount if Order Status is 1 (Billed)
+//
+//            if (tvAmount != null && item.productSellingPrice!=null && !item.productSellingPrice.equals("0")) {
+//                tvAmount.setVisibility(View.VISIBLE);
+//                tvAmount.setText("RATE              : ₹" + item.productSellingPrice);
+//            }
+//            if (tvAmount != null && item.productDetails.sellingPrice != null && !item.productDetails.sellingPrice.equals("0")) {
+//                tvAmount.setVisibility(View.VISIBLE);
+//                tvAmount.setText("RATE              : ₹" + item.productSellingPrice);
+//            }
+//                Log.d("selling price", "selling price: " + item.productSellingPrice);
+////
+////                // [HIGHLIGHT] 6. Discount & Status Logic
+////                // Only show discount if Order Status is 1 (Billed)
 //            if (orderStatus == 1) {
 //                if (item.discountPercent != null) {
 //                    tvDiscountPercent.setVisibility(View.VISIBLE);
@@ -118,68 +140,160 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
 //                    tvBilledQty.setVisibility(View.GONE);
 //                }
 //                tvBilledTag.setVisibility(View.VISIBLE);
-//                if (item.isDiscard == 1) {
-//                    // Item was discarded
-//                    tvBilledTag.setText("Discarded");
-//                    tvBilledTag.setBackgroundColor(Color.parseColor("#9E9E9E")); // Grey Background
-//                } else {
-//                    // Item was billed successfully
-//                    tvBilledTag.setText("Billed");
-//                    tvBilledTag.setBackgroundColor(Color.parseColor("#4CAF50")); // Green Background
-//                }
+////                if (item.isDiscard == 1) {
+////                    // Item was discarded
+////                    tvBilledTag.setText("Discarded");
+////                    tvBilledTag.setBackgroundColor(Color.parseColor("#9E9E9E")); // Grey Background
+////                }
+////                if (item.isDiscard == 1) {
+////                    // Item was discarded
+////                    tvBilledTag.setText("Not Billed");
+////                    tvBilledTag.setBackgroundColor(Color.parseColor("#9E9E9E")); // Grey Background
+////                }
+////                else {
+////                    // Item was billed successfully
+////                    tvBilledTag.setText("Billed");
+////                    tvBilledTag.setBackgroundColor(Color.parseColor("#4CAF50")); // Green Background
+////                }
 //            }
-            if (orderStatus == 1) {
+////
+//////
+////            // Discount
+//////            if (item.discountPercent != null) {
+//////                tvDiscountPercent.setVisibility(View.GONE);
+//////                tvDiscountPercent.setText("DISCOUNT : " + item.discountPercent + "%");
+//////
+//////            } else {
+//////                tvDiscountPercent.setVisibility(View.GONE);
+//////            }
+////                // Discount
+////                if (orderStatus == 1 && item.discountPercent != null && !item.discountPercent.equals("0")) {
+////
+////                    tvDiscountPercent.setVisibility(View.VISIBLE);
+////                    tvDiscountPercent.setText("DISCOUNT : " + item.discountPercent + "%");
+////
+////                } else {
+////
+////                    tvDiscountPercent.setVisibility(View.GONE);
+////
+////                }
+//
+//// Billed Quantity
+////            if (item.units != null) {
+////                tvBilledQty.setVisibility(View.GONE);
+//////                tvBilledQty.setText("BILL QTY : " + item.units + " Unit(s)");
+////            } else {
+////                tvBilledQty.setVisibility(View.GONE);
+////            }
+//
+//// Status Tag (Billed / Discarded)
+//                tvBilledTag.setVisibility(View.VISIBLE);
+//
+//                String statusText;
+//                String colorCode;
+//
+//// Handling both statuses in the same tab
+//                if (item.status == 1) {
+//                    statusText = "Discarded";
+//                    colorCode = "#9E9E9E";
+//                }
+////            if (item.isDiscard == 1) {
+////                statusText = "Not Billed";
+////                colorCode = "#36802d";
+////            }
+//                else {
+//                    statusText = "Billed";
+//                    colorCode = "#4CAF50";
+//                }
+//
+//// Apply UI
+//                tvBilledTag.setText(statusText);
+//                tvBilledTag.setBackgroundColor(Color.parseColor(colorCode));
+//
+//// Logging
+////            Log.d("ORDER_STATUS",
+////                    "Invoice: " + item.invoiceNo +
+////                            " isDiscard: " + item.isDiscard +
+////                            " Status: " + statusText);
+//
+//            }
+//        }
+//        @SuppressLint("SetTextI18n")
+        public void bind(OrderDetailsResponse.Item item) {
 
-                if (item.discountPercent != null) {
-                    tvDiscountPercent.setVisibility(View.VISIBLE);
-                    tvDiscountPercent.setText("DISCOUNT : " + item.discountPercent + "%");
-                } else {
-                    tvDiscountPercent.setVisibility(View.GONE);
-                }
+            if (item == null) return;
 
-                if (item.units != null) {
-                    tvBilledQty.setVisibility(View.VISIBLE);
-                    tvBilledQty.setText("BILL QTY : " + item.units + " Unit(s)");
-                } else {
-                    tvBilledQty.setVisibility(View.GONE);
-                }
+            // ---------------- Product Name ----------------
+            if (item.productDetails != null && item.productDetails.productName != null) {
+                tvProductName.setText(item.productDetails.productName);
+            } else {
+                tvProductName.setText("Unknown Product");
+            }
 
-                tvBilledTag.setVisibility(View.VISIBLE);
+            // ---------------- Product Image ----------------
+            if (item.productDetails != null && item.productDetails.productImage != null) {
 
-                if (item.isDiscard == 1) {
+                String imgUrl = Constants.BASE_URL + item.productDetails.productImage;
 
-                    // Log discard status
+                Glide.with(itemView.getContext())
+                        .load(imgUrl)
+                        .placeholder(R.drawable.icecategori)
+                        .into(imgProduct);
+            }
 
+            // ---------------- MRP ----------------
+            if (item.productDetails != null && item.productDetails.mrp != null) {
+                tvMrp.setText("MRP : ₹" + item.productDetails.mrp);
+            } else {
+                tvMrp.setText("MRP : ₹0");
+            }
 
-                    tvBilledTag.setText("Discarded");
-                    tvBilledTag.setBackgroundColor(Color.parseColor("#9E9E9E"));
+            // ---------------- RATE ----------------
+            tvAmount.setVisibility(View.VISIBLE);
+            tvAmount.setText("RATE : ₹" + item.productDetails.sellingPrice);
 
-                } else {
+            // ---------------- Units ----------------
+            tvBilledQty.setVisibility(View.VISIBLE);
+            tvBilledQty.setText("BILL QTY : " + item.units + " Unit(s)");
 
-                    // Log billed status
-//                    Log.d("ORDER_STATUS", "Invoice: " + item.invoiceNo + " Status: Billed");
+            // ---------------- Discount ---------------
+            if (item.discountPercent > 0) {
+                tvDiscountPercent.setVisibility(View.VISIBLE);
+                tvDiscountPercent.setText("DISCOUNT : " + item.discountPercent + "%");
+            } else {
+                tvDiscountPercent.setVisibility(View.GONE);
+            }
 
-                    tvBilledTag.setText("Billed");
-                    tvBilledTag.setBackgroundColor(Color.parseColor("#4CAF50"));
-                    Log.d("ORDER_STATUS", "Invoice: " + item.isDiscard + " Status: Discarded");
-                }
+            // ---------------- Status Tag ----------------
+            tvBilledTag.setVisibility(View.VISIBLE);
+
+            String statusText;
+            String colorCode;
+
+//            if (item.status == 0) {
+//                statusText = "Not Billed";
+//                colorCode = "#9E9E9E";
+//            }
+            if (item.status == 0) {
+                statusText = "Not Billed";
+                colorCode = "#006400";
             }
             else {
-                    tvDiscountPercent.setVisibility(View.GONE);
-
-                    tvBilledQty.setVisibility(View.GONE);
-
-
-                tvBilledTag.setVisibility(View.VISIBLE);
-                    tvBilledTag.setText("Discarded");
-                    tvBilledTag.setBackgroundColor(Color.parseColor("#9E9E9E"));
-
-//                tvDiscountPercent.setVisibility(View.GONE);
-//                tvBilledQty.setVisibility(View.GONE);
+                statusText = "Billed";
+                colorCode = "#4CAF50";
             }
 
+            tvBilledTag.setText(statusText);
+            tvBilledTag.setBackgroundColor(Color.parseColor(colorCode));
+
+            // ---------------- Debug Logs ----------------
+            Log.d("ORDER_ITEM_BIND",
+                    "Product: " + tvProductName.getText() +
+                            " | Units: " + item.units +
+                            " | Price: " + item.productSellingPrice +
+                            " | Discount: " + item.discountPercent +
+                            " | Status: " + item.status);
         }
-    }
 
 //        @SuppressLint("SetTextI18n")
 //        public void bind(OrderHistoryResponse.Item item) {
@@ -211,6 +325,7 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
 //        }
 //    }
 
+    }
 }
 
 //    private final List<CartItem> itemList;

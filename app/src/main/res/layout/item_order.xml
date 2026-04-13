@@ -48,6 +48,7 @@
             android:paddingTop="4dp"
             android:paddingBottom="4dp"
             app:tint="@color/colorPrimary" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -69,6 +70,22 @@
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/black"
                     tools:text=": ₹7,757" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="Invoice No \t\t\t" />
+                <TextView
+                    android:id="@+id/tv_invoice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    tools:text=": ORD2026001" />
             </LinearLayout>
 
             <LinearLayout

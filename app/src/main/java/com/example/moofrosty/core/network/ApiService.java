@@ -13,6 +13,7 @@
     import com.example.moofrosty.data.model.LocationResponse;
     import com.example.moofrosty.data.model.LoginRequest;
     import com.example.moofrosty.data.model.LoginResponse;
+    import com.example.moofrosty.data.model.OrderDetailsResponse;
     import com.example.moofrosty.data.model.OrderHistoryResponse;
     import com.example.moofrosty.data.model.ProductResponse;
     import com.example.moofrosty.data.model.PunchResponse;
@@ -304,5 +305,12 @@
         Call<OrderHistoryResponse> getOrderHistory(
                 @Header("Authorization") String token,
                 @Query("shop_id") int shopId // [HIGHLIGHT] Added shop_id query parameter
+        );
+//        Seprate reponse handle for the Details adaptor
+        @GET("api/admin/order-detail")
+        Call<OrderDetailsResponse> getOrderDetails(
+                @Header("Authorization") String token,
+                @Query("order_no") String orderNo,
+                @Query("bill_no") String billNo
         );
     }
