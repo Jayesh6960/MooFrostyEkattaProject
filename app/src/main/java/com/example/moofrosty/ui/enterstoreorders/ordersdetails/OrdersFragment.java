@@ -24,6 +24,7 @@ import com.example.moofrosty.data.local.SessionManager;
 import com.example.moofrosty.data.model.Order;
 import com.example.moofrosty.data.model.OrderHistoryResponse;
 import com.example.moofrosty.ui.cart.CartViewModel;
+import com.example.moofrosty.ui.enterstoreorders.takeorder.TakeOrderActivity;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.Locale;
@@ -83,6 +84,7 @@ public class OrdersFragment extends Fragment implements OrderAdapter.OnOrderClic
 
         // 4. Observe Data
         setupObservers();
+
     }
 
     private void setupTabs() {
@@ -94,6 +96,7 @@ public class OrdersFragment extends Fragment implements OrderAdapter.OnOrderClic
         recyclerOrders.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerOrders.setAdapter(adapter);
     }
+
 
     private void setupObservers() {
         cartViewModel.getOrderHistory().observe(getViewLifecycleOwner(), resource -> {
@@ -109,6 +112,12 @@ public class OrdersFragment extends Fragment implements OrderAdapter.OnOrderClic
                             adapter.updateList(resource.data.data);
                             // [HIGHLIGHT] Setting count properly dynamically
                             tvOrderCount.setText(" : "+resource.data.data.size() + " orders");
+                            Log.d("datacount", "datacount"+resource.data.data.size());
+                            int orderCount = resource.data.data.size();
+                            Intent intent = new Intent(getActivity(), TakeOrderActivity.class);
+                            intent.putExtra("order_count", orderCount);
+                            Log.d("order_count", "order_count"+orderCount);
+//                            startActivity(intent);
                         }
                         break;
 

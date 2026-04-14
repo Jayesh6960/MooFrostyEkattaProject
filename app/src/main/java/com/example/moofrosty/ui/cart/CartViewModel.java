@@ -73,6 +73,7 @@ public class CartViewModel extends ViewModel {
     public void checkout() {
         if(token.isEmpty()) return;
         cartRepository.checkout(token, userId, shopId, checkoutResult);
+         boolean checkoutResult = false;
     }
 
     // Cart Modifications

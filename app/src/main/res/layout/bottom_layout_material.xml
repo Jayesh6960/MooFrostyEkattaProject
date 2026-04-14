@@ -14,7 +14,7 @@
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Order Missed"
+            android:text="Order Record"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@color/black" />
