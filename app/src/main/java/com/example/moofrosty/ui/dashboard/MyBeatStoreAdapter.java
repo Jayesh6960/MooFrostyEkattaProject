@@ -46,83 +46,244 @@ public class MyBeatStoreAdapter
         dismissTooltip();
         this.stores = newStores;
         notifyDataSetChanged();
-    }
+}
 
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(
-            @NonNull ViewGroup parent, int viewType) {
+@NonNull
+@Override
+public ViewHolder onCreateViewHolder(
+        @NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_store_list, parent, false);
-        return new ViewHolder(view);
-    }
+    View view = LayoutInflater.from(parent.getContext())
+            .inflate(R.layout.item_store_list, parent, false);
+    return new ViewHolder(view);
+}
 
-    @Override
-    public void onBindViewHolder(
-            @NonNull ViewHolder holder, int position) {
 
-        Store store = stores.get(position);
-        holder.tvName.setText(store.getStoreName());
+//@Override
+//    public void onBindViewHolder(
+//            @NonNull ViewHolder holder, int position) {
+//
+//        Store store = stores.get(position);
+//        holder.tvName.setText(store.getStoreName());
+//        String tooltipText = "";
+//    String finalTooltipText = tooltipText;
+////        holder.imgStatus.setVisibility(View.VISIBLE);
+//        if (store.isOrderTaken()) {
+//            holder.imgStatus.setVisibility(View.VISIBLE);
+//            holder.imgStatus.setImageResource(R.drawable.cartgreenicon);
+//            holder.imgStatus.setVisibility(View.GONE);
+//            tooltipText = "Order Taken";
+//        } else if (store.isVisited()) {
+//            holder.imgStatus.setVisibility(View.VISIBLE);
+//            holder.imgStatus.setVisibility(View.GONE);
+//            holder.imgStatus.setImageResource(R.drawable.locationuser);
+//            tooltipText = "Visited";
+//
+//        } else {
+//            holder.imgStatus.setVisibility(View.VISIBLE);
+////            holder.imgStatus.setOnClickListener(v -> {
+////                showTooltip(holder.imgStatus, holder.itemView, "Order Taken", position);
+////            });
+//            holder.ordertaken.setVisibility(View.VISIBLE);
+////            holder.ordertaken.setOnClickListener(v -> {
+////                showTooltip(holder.ordertaken, holder.itemView, "Visited", position);
+////            });
+////            if()
+////            holder.imgStatus.setVisibility(View.VISIBLE);
+////            holder.imgStatus.setImageResource(R.drawable.cartgreenicon);
+////            tooltipText = "Order Taken";
+////            holder.ordertaken.setVisibility(View.VISIBLE);
+////            holder.ordertaken.setImageResource(R.drawable.locationuser);
+////            tooltipText = "Visited";
+//        }
+//
+////        String finalTooltipText = tooltipText;
+//
+//        holder.imgStatus.setOnClickListener(v -> {
+//            if (finalTooltipText.isEmpty()) return;
+//
+//            if (currentTooltipPosition == position) {
+//                dismissTooltip();
+//            } else {
+//                showTooltip(holder.imgStatus, holder.itemView,
+//                        finalTooltipText, position);
+//            }
+//        });
+//
+//        holder.btnCall.setOnClickListener(v -> {
+//            String mobile = store.getMobileNumber();
+//            if (mobile != null && !mobile.isEmpty()) {
+//                Intent intent = new Intent(Intent.ACTION_DIAL);
+//                intent.setData(Uri.parse("tel:" + mobile));
+//                context.startActivity(intent);
+//            }
+//        });
+//
+//        holder.btnDirection.setOnClickListener(v -> {
+//            double lat = store.getLat();
+//            double lng = store.getLng();
+//
+//            if (lat != 0 && lng != 0) {
+//                Uri uri = Uri.parse("google.navigation:q=" + lat + "," + lng);
+//                Intent mapIntent = new Intent(Intent.ACTION_VIEW, uri);
+//                mapIntent.setPackage("com.google.android.apps.maps");
+//
+//                if (mapIntent.resolveActivity(context.getPackageManager()) != null) {
+//                    context.startActivity(mapIntent);
+//                }
+//            }
+//        });
+//
+//        holder.itemView.setOnClickListener(v -> {
+//            dismissTooltip();
+//            Intent intent = new Intent(context, StoreProfileActivity.class);
+//            intent.putExtra("STORE_DATA", (Serializable) store);
+//            context.startActivity(intent);
+//        });
+//    }
+// Visied Store list not  recevied from the backend side once recevied will updated the data
+@Override
+public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        String tooltipText = "";
+    Store store = stores.get(position);
+    holder.tvName.setText(store.getStoreName());
+
+    String tooltipText = "";
+
+    // Reset icons (VERY IMPORTANT for RecyclerView)
+    holder.imgStatus.setVisibility(View.GONE);
+    holder.ordertaken.setVisibility(View.GONE);
+
+    holder.imgStatus.setOnClickListener(v -> {
+        showTooltip(holder.imgStatus, holder.itemView, "Visited", position);
+    });
+//
+// Tooltip for Order Taken icon
+    holder.ordertaken.setOnClickListener(v -> {
+        showTooltip(holder.ordertaken, holder.itemView, "Order Taken", position);
+    });
 
         if (store.isOrderTaken()) {
-            holder.imgStatus.setVisibility(View.VISIBLE);
-            holder.imgStatus.setImageResource(R.drawable.cartgreenicon);
-            tooltipText = "Order Taken";
-        } else if (store.isVisited()) {
-            holder.imgStatus.setVisibility(View.VISIBLE);
-            holder.imgStatus.setImageResource(R.drawable.locationuser);
-            tooltipText = "Visited";
-        } else {
-            holder.imgStatus.setVisibility(View.INVISIBLE);
+
+        holder.ordertaken.setVisibility(View.VISIBLE);
+        holder.ordertaken.setImageResource(R.drawable.cartgreenicon);
+
+        tooltipText = "Order Taken";
+
+    }
+    else if (store.isVisited()) {
+
+        holder.imgStatus.setVisibility(View.VISIBLE);
+        holder.imgStatus.setImageResource(R.drawable.locationuser);
+
+        tooltipText = "Visited";
+    }
+        else {
+
+            // Show both icons
+            holder.imgStatus.setVisibility(View.GONE);
+//            holder.imgStatus.setImageResource(R.drawable.locationuser);
+//
+//
+            holder.ordertaken.setVisibility(View.GONE);
+//            holder.ordertaken.setImageResource(R.drawable.cartgreenicon);
+
         }
 
-        String finalTooltipText = tooltipText;
 
-        holder.imgStatus.setOnClickListener(v -> {
-            if (finalTooltipText.isEmpty()) return;
+//    else  {
+//            holder.imgStatus.setVisibility(View.VISIBLE);
+//            holder.imgStatus.setImageResource(R.drawable.locationuser);
+//
+//            holder.ordertaken.setVisibility(View.VISIBLE);
+//            if(store.isOrderTaken()){
+//                tooltipText = "Order Taken";
+//
+//            }
+//            else{
+//                tooltipText = "Visited";
+//            }
+//
+////        }
+////        else {
+//
+////            if (store.isVisited()) {
+////                tooltipText="Visited";
+//////                holder.imgStatus.setVisibility(View.VISIBLE);
+//////                holder.imgStatus.setImageResource(R.drawable.locationuser);
+////            }
+////            else {
+////            tooltipText="Order takedn";
+////
+////            }
+//
+//
+//    }
 
-            if (currentTooltipPosition == position) {
-                dismissTooltip();
-            } else {
-                showTooltip(holder.imgStatus, holder.itemView,
-                        finalTooltipText, position);
-            }
-        });
+    String finalTooltipText = tooltipText;
 
-        holder.btnCall.setOnClickListener(v -> {
-            String mobile = store.getMobileNumber();
-            if (mobile != null && !mobile.isEmpty()) {
-                Intent intent = new Intent(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse("tel:" + mobile));
-                context.startActivity(intent);
-            }
-        });
+    holder.imgStatus.setOnClickListener(v -> {
 
-        holder.btnDirection.setOnClickListener(v -> {
-            double lat = store.getLat();
-            double lng = store.getLng();
+        if (finalTooltipText.isEmpty()) return;
 
-            if (lat != 0 && lng != 0) {
-                Uri uri = Uri.parse("google.navigation:q=" + lat + "," + lng);
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, uri);
-                mapIntent.setPackage("com.google.android.apps.maps");
-
-                if (mapIntent.resolveActivity(context.getPackageManager()) != null) {
-                    context.startActivity(mapIntent);
-                }
-            }
-        });
-
-        holder.itemView.setOnClickListener(v -> {
+        if (currentTooltipPosition == position) {
             dismissTooltip();
-            Intent intent = new Intent(context, StoreProfileActivity.class);
-            intent.putExtra("STORE_DATA", (Serializable) store);
+        } else {
+            showTooltip(holder.imgStatus, holder.itemView, finalTooltipText, position);
+        }
+    });
+
+    holder.ordertaken.setOnClickListener(v -> {
+
+        if (finalTooltipText.isEmpty()) return;
+
+        if (currentTooltipPosition == position) {
+            dismissTooltip();
+        } else {
+            showTooltip(holder.ordertaken, holder.itemView, finalTooltipText, position);
+        }
+    });
+
+    holder.btnCall.setOnClickListener(v -> {
+
+        String mobile = store.getMobileNumber();
+
+        if (mobile != null && !mobile.isEmpty()) {
+
+            Intent intent = new Intent(Intent.ACTION_DIAL);
+            intent.setData(Uri.parse("tel:" + mobile));
             context.startActivity(intent);
-        });
-    }
+        }
+    });
+
+    holder.btnDirection.setOnClickListener(v -> {
+
+        double lat = store.getLat();
+        double lng = store.getLng();
+
+        if (lat != 0 && lng != 0) {
+
+            Uri uri = Uri.parse("google.navigation:q=" + lat + "," + lng);
+
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, uri);
+            mapIntent.setPackage("com.google.android.apps.maps");
+
+            if (mapIntent.resolveActivity(context.getPackageManager()) != null) {
+                context.startActivity(mapIntent);
+            }
+        }
+    });
+
+    holder.itemView.setOnClickListener(v -> {
+
+        dismissTooltip();
+
+        Intent intent = new Intent(context, StoreProfileActivity.class);
+        intent.putExtra("STORE_DATA", (Serializable) store);
+        context.startActivity(intent);
+    });
+}
+
 
     @Override
     public int getItemCount() {
@@ -131,7 +292,7 @@ public class MyBeatStoreAdapter
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvName;
-        ImageView btnCall, btnDirection, imgStatus;
+        ImageView btnCall, btnDirection, imgStatus,ordertaken;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -139,6 +300,7 @@ public class MyBeatStoreAdapter
             btnCall = itemView.findViewById(R.id.btn_call);
             btnDirection = itemView.findViewById(R.id.btn_direction);
             imgStatus = itemView.findViewById(R.id.img_status);
+            ordertaken=itemView.findViewById(R.id.imageordertaken);
         }
     }
 

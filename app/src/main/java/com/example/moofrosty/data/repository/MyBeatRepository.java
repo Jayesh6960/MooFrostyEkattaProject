@@ -19,6 +19,7 @@ import com.example.moofrosty.data.model.UserDetailResponse;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -195,7 +196,7 @@ public class MyBeatRepository {
                         List<Store> list = response.body().getStoreList();
                         if (list == null) list = new ArrayList<>();
 
-                        Log.d(TAG, "API SUCCESS: Fetched " + list.size() + " stores.");
+                        Log.d("ShopDetails", "API SUCCESS: Fetched " + list + " stores.");
                         storesLiveData.setValue(Resource.success(list));
                     } else {
                         storesLiveData.setValue(Resource.error("No stores found", null));
@@ -216,34 +217,283 @@ public class MyBeatRepository {
     private void fetchVisitedStores(String token, String beatIds, String date, MutableLiveData<Resource<List<Store>>> storesLiveData) {
         Log.d(TAG, "API REQUEST: getStoreListVisited | BeatIds: " + beatIds + " | Date: " + date);
 
-        apiService.getStoreListVisited(token, beatIds, date, "visited_shop").enqueue(new Callback<StoreListWrapperResponse>() {
-            @Override
-            public void onResponse(Call<StoreListWrapperResponse> call, Response<StoreListWrapperResponse> response) {
-                Log.d(TAG, "API RESPONSE: getStoreListVisited | Code: " + response.code());
+//        apiService.getStoreListVisited(token, beatIds, date, "visited_shop").enqueue(new Callback<StoreListWrapperResponse>() {
+//            @Override
+//            public void onResponse(Call<StoreListWrapperResponse> call, Response<StoreListWrapperResponse> response) {
+//                Log.d(TAG, "API RESPONSE: getStoreListVisited | Code: " + response.code());
+//
+//                if (response.isSuccessful() && response.body() != null) {
+//                    List<Store> extractedList = new ArrayList<>();
+//                    if (response.body().getWrappers() != null) {
+//                        for (StoreListWrapperResponse.StoreWrapper w : response.body().getWrappers()) {
+//                            if (w.getStore() != null) {
+//                                Store s = w.getStore();
+//                                s.setVisited(true);
+//                                extractedList.add(s);
+//                            }
+//                        }
+//                    }
+//                    Log.d(TAG, "API SUCCESS: Fetched " + extractedList.size() + " VISITED stores.");
+//                    storesLiveData.setValue(Resource.success(extractedList));
+//                } else {
+//                    storesLiveData.setValue(Resource.error("Server Error", null));
+//                }
+//            }
+//            @Override
+//            public void onFailure(Call<StoreListWrapperResponse> call, Throwable t) {
+//                Log.e(TAG, "API FAILURE: getStoreListVisited | Error: " + t.getMessage());
+//                storesLiveData.setValue(Resource.error(t.getMessage(), null));
+//            }
+//        });
+//        apiService.getStoreListVisited(token, beatIds, date, "visited_shop")
+//                .enqueue(new Callback<StoreListWrapperResponse>() {
+//
+//                    @Override
+//                    public void onResponse(Call<StoreListWrapperResponse> call,
+//                                           Response<StoreListWrapperResponse> response) {
+//
+//                        Log.d(TAG, "API RESPONSE: getStoreListVisited | Code: " + response.code());
+//
+//                        if (response.isSuccessful() && response.body() != null) {
+//
+//                            List<Store> extractedList = new ArrayList<>();
+//
+//                            if (response.body().getWrappers() != null) {
+//
+//                                for (StoreListWrapperResponse.StoreWrapper w : response.body().getWrappers()) {
+//
+//                                    if (w.getStore() != null) {
+//
+//                                        Store s = w.getStore();
+//
+//                                        // Read status from API
+//                                        s.setVisited(s.getIsVisitedApi() == 1);
+//                                        s.setOrderTaken(s.getIsOrderTakenApi() == 1);
+//
+//                                        extractedList.add(s);
+//                                    }
+//                                }
+//                            }
+//
+//                            Log.d(TAG, "API SUCCESS: Fetched " + extractedList.size() + " VISITED stores.");
+//
+//                            storesLiveData.setValue(Resource.success(extractedList));
+//
+//                        } else {
+//                            storesLiveData.setValue(Resource.error("Server Error", null));
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<StoreListWrapperResponse> call, Throwable t) {
+//
+//                        Log.e(TAG, "API FAILURE: getStoreListVisited | Error: " + t.getMessage());
+//                        storesLiveData.setValue(Resource.error(t.getMessage(), null));
+//                    }
+//                });
+//        apiService.getStoreListVisited(token, beatIds, date, "visited_shop")
+//                .enqueue(new Callback<StoreListWrapperResponse>() {
+//
+//                    @Override
+//                    public void onResponse(Call<StoreListWrapperResponse> call,
+//                                           Response<StoreListWrapperResponse> response) {
+//
+//                        Log.d("API Code Response", "API RESPONSE: getStoreListVisited | Code: " + response.code());
+//
+//                        if (response.isSuccessful() && response.body() != null) {
+//
+//                            List<Store> extractedList = new ArrayList<>();
+//
+//                            if (response.body().getWrappers() != null) {
+//
+//                                for (StoreListWrapperResponse.StoreWrapper w : response.body().getWrappers()) {
+//
+//                                    if (w.getStore() != null) {
+//
+//                                        Store s = w.getStore();
+//
+//                                        // Convert API int values to boolean
+//                                        s.setVisited(s.getIsVisitedApi() == 1);
+//                                        s.setOrderTaken(s.getIsOrderTakenApi() == 1);
+//                                        Log.d(TAG, "STORE DATA:");
+//                                        Log.d(TAG, "Store ID: " + s.getShopId());
+//                                        Log.d(TAG, "Store Name: " + s.getStoreName());
+//                                        Log.d(TAG, "Visited: " + s.isVisited());
+//                                        Log.d(TAG, "Order Taken: " + s.isOrderTaken());
+//
+//                                        extractedList.add(s);
+//                                        Log.d("Extactlist", "data"+extractedList);
+//
+//                                    }
+//                                }
+//                            }
+//
+//                            Log.d("API list", "API SUCCESS: Fetched " + extractedList + " VISITED stores.");
+//
+//                            storesLiveData.setValue(Resource.success(extractedList));
+//
+//                        } else {
+//                            storesLiveData.setValue(Resource.error("Server Error", null));
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<StoreListWrapperResponse> call, Throwable t) {
+//
+//                        Log.e(TAG, "API FAILURE: getStoreListVisited | Error: " + t.getMessage());
+//                        storesLiveData.setValue(Resource.error(t.getMessage(), null));
+//                    }
+//                });
+//        apiService.getStoreListVisited(token, beatIds, date, "visited_shop")
+//                .enqueue(new Callback<StoreListWrapperResponse>() {
+//
+//                    @Override
+//                    public void onResponse(Call<StoreListWrapperResponse> call,
+//                                           Response<StoreListWrapperResponse> response) {
+//
+//                        Log.d("API_RESPONSE", "Code: " + response.code());
+//
+//                        if (response.isSuccessful() && response.body() != null) {
+//
+//                            List<Store> extractedList = new ArrayList<>();
+//
+//                            if (response.body().getStores() != null) {
+//
+//                                for (Store s : response.body().getStores()) {
+//
+//                                    if (s == null) continue;
+//
+//                                    s.setVisited(s.getIsVisitedApi() == 1);
+//                                    s.setOrderTaken(s.getIsOrderTakenApi() == 1);
+//
+//                                    Log.d("STORE_DATA", "Store ID: " + s.getShopId());
+//                                    Log.d("STORE_DATA", "Store Name: " + s.getStoreName());
+//                                    Log.d("STORE_DATA", "Visited: " + s.isVisited());
+//                                    Log.d("", "Order Taken: " + s.isOrderTaken());
+//
+//                                    extractedList.add(s);
+//                                }
+//                            }
+//
+//                            Log.d("API_LIST_SIZE", "Fetched Stores: " + extractedList.size());
+//
+//                            storesLiveData.setValue(Resource.success(extractedList));
+//
+//                        } else {
+//                            storesLiveData.setValue(Resource.error("Server Error", null));
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<StoreListWrapperResponse> call, Throwable t) {
+//
+//                        Log.e("API_FAILURE", "Error: " + t.getMessage());
+//                        storesLiveData.setValue(Resource.error(t.getMessage(), null));
+//                    }
+//                });
 
-                if (response.isSuccessful() && response.body() != null) {
-                    List<Store> extractedList = new ArrayList<>();
-                    if (response.body().getWrappers() != null) {
-                        for (StoreListWrapperResponse.StoreWrapper w : response.body().getWrappers()) {
-                            if (w.getStore() != null) {
-                                Store s = w.getStore();
-                                s.setVisited(true);
-                                extractedList.add(s);
+//        apiService.getStoreListVisited(token, beatIds, date, "visited_shop")
+//                .enqueue(new Callback<StoreListWrapperResponse>() {
+//
+//                    @Override
+//                    public void onResponse(Call<StoreListWrapperResponse> call,
+//                                           Response<StoreListWrapperResponse> response) {
+//
+//                        Log.d("API_RESPONSE", "Code: " + response.code());
+//
+//                        if (response.isSuccessful() && response.body() != null) {
+//
+//                            List<Store> extractedList = new ArrayList<>();
+//
+//                            if (response.body().getStores() != null) {
+//
+//                                for (Store s : response.body().getStores()) {
+//
+//                                    if (s == null) continue;
+//
+//                                    s.setVisited(s.getIsVisitedApi() == 1);
+//                                    s.setOrderTaken(s.getIsOrderTakenApi() == 1);
+//
+//                                    Log.d("STORE_DATA", "Store ID: " + s.getShopId());
+//                                    Log.d("STORE_DATA", "Store Name: " + s.getStoreName());
+//                                    Log.d("STORE_DATA", "Visited: " + s.isVisited());
+//                                    Log.d("STORE_DATA", "Order Taken: " + s.isOrderTaken());
+//
+//                                    extractedList.add(s);
+//                                }
+//                            }
+//
+//                            Log.d("API_LIST_SIZE", "Fetched Stores: " + extractedList.size());
+//                            Log.d("API_COUNT", "Count from API: " + response.body().getCount());
+//
+//                            storesLiveData.setValue(Resource.success(extractedList));
+//
+//                        } else {
+//                            storesLiveData.setValue(Resource.error("Server Error", null));
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<StoreListWrapperResponse> call, Throwable t) {
+//
+//                        Log.e("API_FAILURE", "Error: " + t.getMessage());
+//                        storesLiveData.setValue(Resource.error(t.getMessage(), null));
+//                    }
+//                });
+        apiService.getStoreListVisited(token, beatIds, date, "visited_shop")
+                .enqueue(new Callback<StoreListWrapperResponse>() {
+
+                    @Override
+                    public void onResponse(Call<StoreListWrapperResponse> call,
+                                           Response<StoreListWrapperResponse> response) {
+
+                        Log.d("API_RESPONSE", "Code: " + response.code());
+
+                        if (response.isSuccessful() && response.body() != null) {
+
+                            List<Store> extractedList = new ArrayList<>();
+
+                            if (response.body().getStores() != null) {
+
+                                for (Store s : response.body().getStores()) {
+
+                                    if (s == null) continue;
+
+                                    // convert API values to boolean
+                                    boolean visited = s.getIsVisitedApi() == 1;
+                                    boolean orderTaken = s.getIsOrderTakenApi() == 0;
+
+                                    s.setVisited(visited);
+//                                    s.setOrderTaken(orderTaken);
+
+                                    Log.d("STORE_DATA", "Store ID: " + s.getShopId());
+                                    Log.d("STORE_DATA", "Store Name: " + s.getStoreName());
+                                    Log.d("STORE_DATA", "Visited: " + visited);
+//                                    Log.d("STORE_DATA", "Order Taken: " + orderTaken);
+
+                                    // ✅ Keep only if both are true
+                                    if (visited  && orderTaken) { 
+                                        extractedList.add(s);
+                                    }
+                                }
                             }
+
+                            Log.d("API_LIST_SIZE", "Filtered Stores: " + extractedList.size());
+
+                            storesLiveData.setValue(Resource.success(extractedList));
+
+                        } else {
+                            storesLiveData.setValue(Resource.error("Server Error", null));
                         }
                     }
-                    Log.d(TAG, "API SUCCESS: Fetched " + extractedList.size() + " VISITED stores.");
-                    storesLiveData.setValue(Resource.success(extractedList));
-                } else {
-                    storesLiveData.setValue(Resource.error("Server Error", null));
-                }
-            }
-            @Override
-            public void onFailure(Call<StoreListWrapperResponse> call, Throwable t) {
-                Log.e(TAG, "API FAILURE: getStoreListVisited | Error: " + t.getMessage());
-                storesLiveData.setValue(Resource.error(t.getMessage(), null));
-            }
-        });
+
+                    @Override
+                    public void onFailure(Call<StoreListWrapperResponse> call, Throwable t) {
+
+                        Log.e("API_FAILURE", "Error: " + t.getMessage());
+                        storesLiveData.setValue(Resource.error(t.getMessage(), null));
+                    }
+                });
     }
 
     // --- C. FETCH NOT VISITED OR ORDER TAKEN ---
@@ -277,7 +527,7 @@ public class MyBeatRepository {
                             s.setOrderTaken(false);
                         }
                     }
-                    Log.d(TAG, "API SUCCESS: Fetched " + list.size() + " " + filterType + " stores.");
+                    Log.d(TAG, "API SUCCESS: Fetched " + list.size()+ " " + filterType + " stores.");
                     storesLiveData.setValue(Resource.success(list));
                 } else {
                     storesLiveData.setValue(Resource.error("Server Error", null));

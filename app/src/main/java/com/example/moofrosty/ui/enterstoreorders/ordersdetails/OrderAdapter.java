@@ -1,5 +1,7 @@
 package com.example.moofrosty.ui.enterstoreorders.ordersdetails;
 
+import static android.view.View.VISIBLE;
+
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.util.Log;
@@ -22,7 +24,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder>{
+public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
     private List<OrderHistoryResponse.OrderData> orderList = new ArrayList<>();
     private final OnOrderClickListener listener;
 
@@ -50,6 +52,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
         OrderHistoryResponse.OrderData order = orderList.get(position);
         holder.bind(order);
+        Log.d("orderdatalist", "orderdetails" + order);
         holder.itemView.setOnClickListener(v -> listener.onOrderClick(order));
     }
 
@@ -71,15 +74,16 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
             tvBillValue = itemView.findViewById(R.id.tv_bill_value);
             llBillValueRow = itemView.findViewById(R.id.ll_bill_value_row);
+
         }
 
         @SuppressLint("SetTextI18n")
         public void bind(OrderHistoryResponse.OrderData order) {
             // 1. Date
             String dateStr = order.checkoutDate;
-            Log.d("OrderDate", "OrderDate : "+dateStr);
+            Log.d("OrderDate", "OrderDate : " + dateStr);
             try {
-                if(dateStr != null && dateStr.length() >= 10) {
+                if (dateStr != null && dateStr.length() >= 10) {
                     tvOrderDate.setText(dateStr.substring(0, 10));
                 } else {
                     tvOrderDate.setText(dateStr);
@@ -89,40 +93,80 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             }
 
             // 2. Status
-            if (order.status == 1) {
-                tvOrderStatus.setText("Billed");
-                tvOrderStatus.setTextColor(Color.parseColor("#0D6EfD"));
-                tvOrderStatus.setBackgroundResource(R.drawable.tab_unselected_bg);
-                // [HIGHLIGHT] Show Bill Value Row only if Billed
-                llBillValueRow.setVisibility(View.VISIBLE);
-            } else if (order.status == 0) {
+            if (order.status == 0) {
                 tvOrderStatus.setText("Order Placed");
                 tvOrderStatus.setTextColor(Color.parseColor("#0D6EfD"));
                 tvOrderStatus.setBackgroundResource(R.drawable.tab_unselected_bg);
+                // [HIGHLIGHT] Show Bill Value Row only if Billed
+                llBillValueRow.setVisibility(VISIBLE);
+            } else if (order.status == 1) {
+                int totalUnits = order.orderSummary.getTotalUnits();
+                int billQty = order.orderSummary.getBillQty();
+                tvOrderStatus.setText("Billed");//
+                tvOrderStatus.setTextColor(Color.parseColor("#0D6EfD"));
+                tvOrderStatus.setBackgroundResource(R.drawable.tab_unselected_bg);
                 // [HIGHLIGHT] Hide Bill Value Row
-                llBillValueRow.setVisibility(View.GONE);
+                llBillValueRow.setVisibility(VISIBLE);
+            }
+            //Discard added in the code
+            else if (order.status == 4) {
+                tvOrderStatus.setText("Discard Order");
+                tvOrderStatus.setTextColor(Color.parseColor("#0D6EfD"));
+                tvOrderStatus.setBackgroundResource(R.drawable.tab_unselected_bg);
+                // [HIGHLIGHT] Hide Bill Value Row
+                llBillValueRow.setVisibility(VISIBLE);
             }
 
-            String currentUnit = (order.currentUnit != null && !order.currentUnit.isEmpty()) ? order.currentUnit : "0";
-            String orderTimeUnit = (order.orderTimeUnit != null && !order.orderTimeUnit.isEmpty()) ? order.orderTimeUnit : "0";
+//            String currentUnit = (order.currentUnit != null && !order.currentUnit.isEmpty()) ? order.currentUnit : "0";
+//            String orderTimeUnit = (order.orderTimeUnit != null && !order.orderTimeUnit.isEmpty()) ? order.orderTimeUnit : "0";
+            String orderTimeUnit = String.valueOf(order.orderSummary.getTotalUnits());
+            String currentUnit = String.valueOf(order.orderSummary.getBillQty());
 
             // [HIGHLIGHT] 3. Order Value & Items Billed Using OrderSummary
+//            if (order.orderSummary != null) {
+//                tvOrderValue.setText(String.format(Locale.getDefault(), ": ₹%.2f", order.orderSummary.orderValue));
+//                // [HIGHLIGHT] Show Bill Value
+//                tvBillValue.setText(String.format(Locale.getDefault(), ": ₹%.2f", order.orderSummary.billValue));
+////                tvItemsBilled.setText(": " + order.orderSummary.totalUnits);
+//                tvItemsBilled.setText(": " + currentUnit + "/" + orderTimeUnit);
+//
+//            }
+            int totalUnits = order.orderSummary.getTotalUnits();
+            int billQty = order.orderSummary.getBillQty();
+
             if (order.orderSummary != null) {
-                tvOrderValue.setText(String.format(Locale.getDefault(), ": ₹%.2f", order.orderSummary.orderValue));
-                // [HIGHLIGHT] Show Bill Value
-                tvBillValue.setText(String.format(Locale.getDefault(), ": ₹%.2f", order.orderSummary.billValue));
-//                tvItemsBilled.setText(": " + order.orderSummary.totalUnits);
-                tvItemsBilled.setText(": " + currentUnit + "/" + orderTimeUnit);
+
+                double orderValue = order.orderSummary.orderValue;
+                double billValue = order.orderSummary.billValue;
+
+                // Amount display
+                tvOrderValue.setText(String.format(Locale.getDefault(), ": ₹%.2f", orderValue));
+                tvBillValue.setText(String.format(Locale.getDefault(), ": ₹%.2f", billValue));
+
+                // ✅ Items Billed Logic
+                //need to updated the data rom the backend side
+                if (order.status == 1) {
+
+                    // Order Placed → show Total/Total
+                    tvItemsBilled.setText(": " + billQty + "/" + totalUnits);
+                    Log.d("order.orderSummary.totalunits", "order.orderSummary.units" + order.orderSummary.totalUnits);
+                } else if (order.status == 0) {
+                    // Billed → show BillQty/Total
+                    tvItemsBilled.setText(": " + totalUnits + "/" + totalUnits);
+                } else {
+                    // Optional fallback (for discard or others)
+                    tvItemsBilled.setText(": " + billQty + "/" + totalUnits);
+                }
 
             } else {
                 tvOrderValue.setText(": ₹0.00");
-                tvItemsBilled.setText(": " + orderTimeUnit + "/" + orderTimeUnit);
+                tvItemsBilled.setText(": 0/0");
             }
-            Log.d("order.orderSummary.totalFinalAmount", "order.orderSummary.totalFinalAmount"+order.orderSummary.totalFinalAmount);
+            Log.d("order.orderSummary.totalFinalAmount", "order.orderSummary.totalFinalunits :" + order.orderSummary.totalFinalAmount);
         }
 
     }
-
+}
 
 //        @SuppressLint("SetTextI18n")
 //        public void bind(OrderHistoryResponse.OrderData order) {
@@ -160,7 +204,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 //        }
 //    }
 
-}
+
 
 
   //  dummy code when api not call yet below

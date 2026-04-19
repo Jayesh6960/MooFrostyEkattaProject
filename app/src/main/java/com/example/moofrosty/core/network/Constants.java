@@ -13,5 +13,6 @@ public class Constants {
     public static final String BASE_URL = "https://test.moofrosty.in/";
 //    Production link(Client)
 // public static final String BASE_URL = "https://moofrosty.in/";
+//     public static final String BASE_URL = "http://10.140.187.162:8000";
 
 }

@@ -33,6 +33,7 @@
     import androidx.fragment.app.FragmentTransaction;
     import androidx.lifecycle.ViewModelProvider;
 
+    import com.example.moofrosty.core.network.Resource;
     import com.example.moofrosty.core.utils.NetworkUtil;
     import com.example.moofrosty.data.local.SessionManager;
     import com.example.moofrosty.data.model.Store;
@@ -56,7 +57,10 @@
     import com.google.android.material.textfield.TextInputLayout;
 
     import java.text.SimpleDateFormat;
+    import java.util.ArrayList;
+    import java.util.Arrays;
     import java.util.Date;
+    import java.util.List;
     import java.util.Locale;
 //Logs already Store at the backend Side in then database
     public class TakeOrderActivity extends AppCompatActivity {
@@ -83,6 +87,8 @@
             private SessionManager sessionManager;
             private Store currentStore;
             private ProgressDialog progressDialog;
+            private boolean isOrderTaken = false;//fales no Order not taken  0
+
 
 
         @Override
@@ -104,6 +110,7 @@
                 relativescreen = findViewById(R.id.relativelayoutmenu);
                 top_barContainer = findViewById(R.id.top_bar_container);
 
+
                 // --- NEW Views ---
                 iconCart = findViewById(R.id.icon_cart);
                 cartBadge = findViewById(R.id.cart_badge);
@@ -118,10 +125,15 @@
                 progressDialog = new ProgressDialog(this);
                 progressDialog.setMessage("Checking Out...");
                 progressDialog.setCancelable(false);
+//            isOrderTaken = sessionManager.isOrderTaken();
+            isOrderTaken = getIntent().getBooleanExtra("IS_ORDER_TAKEN", false);
+
+
 
                 // Retrieve Store Object passed from previous activity
                 if (getIntent().getSerializableExtra("STORE_DATA") != null) {
                     currentStore = (Store) getIntent().getSerializableExtra("STORE_DATA");
+                    Log.d("STORE_DATA", "onCreate: " + currentStore.getStoreName());
                 }
 
 
@@ -144,19 +156,45 @@
 
                 iconCart.setOnClickListener(v -> openCartFragment());
                 floatingCartBar.setOnClickListener(v -> openCartFragment()); // Add listener
-                cartViewModel.getCartTotals().observe(this, totals -> {
-                    if (totals.uniqueItemCount == 0) {
-                        cartBadge.setVisibility(View.GONE);
-                        floatingCartBar.setVisibility(View.GONE);
-                    } else {
-                        cartBadge.setVisibility(View.VISIBLE);
-                        cartBadge.setText(String.valueOf(totals.uniqueItemCount));
-                        floatingCartBar.setVisibility(View.VISIBLE);
-                        tvcartitemcount.setText(totals.totalUnitCount+" items");
-                        tvcarttotalprice.setText("₹"+totals.totalPrice);
+//                cartViewModel.getCartTotals().observe(this, totals -> {
+//                    if (totals.uniqueItemCount == 0) {
+//                        cartBadge.setVisibility(View.GONE);
+//                        floatingCartBar.setVisibility(View.GONE);
+//                    } else {
+//                        cartBadge.setVisibility(View.VISIBLE);
+//                        cartBadge.setText(String.valueOf(totals.uniqueItemCount));
+//                        floatingCartBar.setVisibility(View.VISIBLE);
+//                        tvcartitemcount.setText(totals.totalUnitCount+" items");
+//                        tvcarttotalprice.setText("₹"+totals.totalPrice);
+//
+//                    }
+//                });
+            //Order  takedn values is  changes done
 
-                    }
-                });
+
+            cartViewModel.getCartTotals().observe(this, totals -> {
+
+                if (totals.uniqueItemCount == 0) {
+
+                    cartBadge.setVisibility(View.GONE);
+                    floatingCartBar.setVisibility(View.GONE);
+
+//                    isOrderTaken = false;
+
+                } else {
+                    cartBadge.setVisibility(View.VISIBLE);
+                    cartBadge.setText(String.valueOf(totals.uniqueItemCount));
+                    floatingCartBar.setVisibility(View.VISIBLE);
+
+                    tvcartitemcount.setText(totals.totalUnitCount + " items");
+                    tvcarttotalprice.setText("₹" + totals.totalPrice);
+//                    isOrderTaken = true;
+//                    cartViewModel.checkout();
+
+                }
+            });
+
+
                 bottomNav.setOnItemSelectedListener(navListener);
                 // Load the default fragment
                 if (savedInstanceState == null) {
@@ -271,40 +309,111 @@
             });
         }
 
-        private void showCheckOutDialog() {
-            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
-            View sheetView = LayoutInflater.from(this).inflate(R.layout.bottom_layout_material, null); // Make sure layout name matches
-            bottomSheetDialog.setContentView(sheetView);
 
-            // Bind Views from Bottom Sheet
-            TextView tvTitle = sheetView.findViewById(R.id.tvTitle); // Assuming ID is tvTitle
-            ImageView ivClose = sheetView.findViewById(R.id.ivClose);
-            TextInputEditText tvStore = sheetView.findViewById(R.id.tvStore);
-            TextInputLayout tilBeat = sheetView.findViewById(R.id.tvBeat).getParent() instanceof TextInputLayout ? (TextInputLayout) sheetView.findViewById(R.id.tvBeat).getParent() : null; // Get layout to hide
-            View beatView = sheetView.findViewById(R.id.tvBeat); // The edit text itself
 
-            // Hide Beat Field as requested
-            if(tilBeat != null) tilBeat.setVisibility(View.GONE);
-            else if(beatView != null) ((View)beatView.getParent()).setVisibility(View.GONE); // Fallback
-
-            AutoCompleteTextView spReason = sheetView.findViewById(R.id.spReason);
-            MaterialButton btnConfirm = sheetView.findViewById(R.id.btnConfirm);
-
-            // Populate Data
-            if (currentStore != null) {
-                tvStore.setText(currentStore.getStoreName());
-            }
-
-            // Setup Dropdown
-            String[] reasons = {"Order Taken", "Stock Available", "Outlet is Closed", "Owner is not available"};
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, reasons);
-            spReason.setAdapter(adapter);
-
-            // Close Button
-            ivClose.setOnClickListener(v -> bottomSheetDialog.dismiss());
-
-            // Confirm Button
+//        private void showCheckOutDialog() {
+//            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+//            View sheetView = LayoutInflater.from(this).inflate(R.layout.bottom_layout_material, null); // Make sure layout name matches
+//            bottomSheetDialog.setContentView(sheetView);
+//
+//            // Bind Views from Bottom Sheet
+//            TextView tvTitle = sheetView.findViewById(R.id.tvTitle); // Assuming ID is tvTitle
+//            ImageView ivClose = sheetView.findViewById(R.id.ivClose);
+//            TextInputEditText tvStore = sheetView.findViewById(R.id.tvStore);
+//            TextInputLayout tilBeat = sheetView.findViewById(R.id.tvBeat).getParent() instanceof TextInputLayout ? (TextInputLayout) sheetView.findViewById(R.id.tvBeat).getParent() : null; // Get layout to hide
+//            View beatView = sheetView.findViewById(R.id.tvBeat); // The edit text itself
+//
+//            // Hide Beat Field as requested
+//            if(tilBeat != null) tilBeat.setVisibility(View.GONE);
+//            else if(beatView != null) ((View)beatView.getParent()).setVisibility(View.GONE); // Fallback
+//
+//            AutoCompleteTextView spReason = sheetView.findViewById(R.id.spReason);
+//            MaterialButton btnConfirm = sheetView.findViewById(R.id.btnConfirm);
+//
+//            // Populate Data
+//            if (currentStore != null) {
+//                tvStore.setText(currentStore.getStoreName());
+//            }
+//            int orderCount = getIntent().getIntExtra("order_count", 0);
+//
+//            Log.d("orderCount", "Received: " + orderCount);
+////
+////
+////            // Setup Dropdown
+//            String[] reasons = {"Order Taken", "Stock Available", "Outlet is Closed", "Owner is not available"};
+//            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, reasons);
+//            spReason.setAdapter(adapter);
+////            dummay code return for the order check condition below
+////            String[] reasons = {"Order Taken", "Stock Available", "Outlet is Closed", "Owner is not available"};
+//
+////            ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+////                    android.R.layout.simple_dropdown_item_1line, reasons);
+////
+//            spReason.setAdapter(adapter);
+//            String[] reasons;
+//
+//            if (isOrderTaken) {
+//
+//                // Only Order Taken option
+//                reasons = new String[]{"Order Taken"};
+//
+//            } else {
+//
+//                // Other reasons
+//                reasons = new String[]{
+//                        "Stock Available",
+//                        "Outlet is Closed",
+//                        "Owner is not available"
+//                };
+//            }
+//
+//            ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+//                    android.R.layout.simple_dropdown_item_1line, reasons);
+//
+//            spReason.setAdapter(adapter);
+//
+//            if (isOrderTaken) {
+//
+//                spReason.setText("Order Taken", false);
+//                spReason.setEnabled(false);
+//
+//            } else {
+//
+//                spReason.setText("", false);
+//                spReason.setEnabled(true);
+//            }
+//
+//
+//
+//
+//            // Close Button
+//            ivClose.setOnClickListener(v -> bottomSheetDialog.dismiss());
+//
+//            // Confirm Button
+////            btnConfirm.setOnClickListener(v -> {
+////                String selectedReason = spReason.getText().toString();
+////
+////                if (selectedReason.isEmpty()) {
+////                    Toast.makeText(this, "Please select a reason", Toast.LENGTH_SHORT).show();
+////                    return;
+////                }
+////
+////                if (!NetworkUtil.isNetworkAvailable(this)) {
+////                    Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+////                    return;
+////                }
+////
+////                if (currentStore != null) {
+////                    // Call API
+////                    String token = sessionManager.getToken();
+////                    takeOrderViewModel.performCheckOut(token, currentStore.getShopId(), selectedReason);
+////                    bottomSheetDialog.dismiss();
+////                } else {
+////                    Toast.makeText(this, "Outlet Data Missing", Toast.LENGTH_SHORT).show();
+////                }
+////            });
 //            btnConfirm.setOnClickListener(v -> {
+//
 //                String selectedReason = spReason.getText().toString();
 //
 //                if (selectedReason.isEmpty()) {
@@ -318,69 +427,235 @@
 //                }
 //
 //                if (currentStore != null) {
-//                    // Call API
+//
+//                    // ✅ Capture OUT time
+//                    String outTime = getCurrentDateTime();
+//
+//                    SharedPreferences prefs = getSharedPreferences("store_data", MODE_PRIVATE);
+//
+//                    prefs.edit()
+//                            .putString("store_out_time", outTime)
+//                            .apply();
+//
+//                    Log.d("StoreTiming", "OUT Time Saved: " + outTime);
+//
+//                    // ✅ Call API
 //                    String token = sessionManager.getToken();
 //                    takeOrderViewModel.performCheckOut(token, currentStore.getShopId(), selectedReason);
+//
 //                    bottomSheetDialog.dismiss();
+//
 //                } else {
 //                    Toast.makeText(this, "Outlet Data Missing", Toast.LENGTH_SHORT).show();
 //                }
 //            });
-            btnConfirm.setOnClickListener(v -> {
-
-                String selectedReason = spReason.getText().toString();
-
-                if (selectedReason.isEmpty()) {
-                    Toast.makeText(this, "Please select a reason", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (!NetworkUtil.isNetworkAvailable(this)) {
-                    Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (currentStore != null) {
-
-                    // ✅ Capture OUT time
-                    String outTime = getCurrentDateTime();
-
-                    SharedPreferences prefs = getSharedPreferences("store_data", MODE_PRIVATE);
-
-                    prefs.edit()
-                            .putString("store_out_time", outTime)
-                            .apply();
-
-                    Log.d("StoreTiming", "OUT Time Saved: " + outTime);
-
-                    // ✅ Call API
-                    String token = sessionManager.getToken();
-                    takeOrderViewModel.performCheckOut(token, currentStore.getShopId(), selectedReason);
-
-                    bottomSheetDialog.dismiss();
-
-                } else {
-                    Toast.makeText(this, "Outlet Data Missing", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-
-            bottomSheetDialog.show();
-        }
-//    private void logoutUser() {
-//        Intent intent = new Intent(TakeOrderActivity.this, StoreProfileActivity.class);
 //
-//        if (getIntent().getSerializableExtra("STORE_DATA") != null) {
-//            intent.putExtra("STORE_DATA", getIntent().getSerializableExtra("STORE_DATA"));
+//
+//            bottomSheetDialog.show();
+//        }
+private void showCheckOutDialog() {
+
+    BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+    View sheetView = LayoutInflater.from(this)
+            .inflate(R.layout.bottom_layout_material, null);
+
+    bottomSheetDialog.setContentView(sheetView);
+
+    TextView tvTitle = sheetView.findViewById(R.id.tvTitle);
+    ImageView ivClose = sheetView.findViewById(R.id.ivClose);
+    TextInputEditText tvStore = sheetView.findViewById(R.id.tvStore);
+    AutoCompleteTextView spReason = sheetView.findViewById(R.id.spReason);
+    MaterialButton btnConfirm = sheetView.findViewById(R.id.btnConfirm);
+
+    // Hide Beat field
+    TextInputLayout tilBeat =
+            sheetView.findViewById(R.id.tvBeat).getParent() instanceof TextInputLayout
+                    ? (TextInputLayout) sheetView.findViewById(R.id.tvBeat).getParent()
+                    : null;
+
+    if (tilBeat != null) {
+        tilBeat.setVisibility(View.GONE);
+    }
+
+    // Set Store Name
+    if (currentStore != null) {
+        tvStore.setText(currentStore.getStoreName());
+    }
+    // ------------------------------
+    // Order Taken Logic
+    // ------------------------------
+
+    String[] reasons;
+
+    if (isOrderTaken) {
+
+        reasons = new String[]{"Order Taken"};
+
+    } else {
+
+        reasons = new String[]{
+                "Stock Available",
+                "Outlet is Closed",
+                "Owner is not available"
+        };
+    }
+
+    ArrayAdapter<String> adapter = new ArrayAdapter<>(
+            this,
+            android.R.layout.simple_dropdown_item_1line,
+            reasons
+    );
+
+    spReason.setAdapter(adapter);
+
+    if (isOrderTaken) {
+        spReason.setText("Order Taken", false);
+        spReason.setEnabled(false);
+        spReason.setFocusable(false);
+        spReason.setClickable(false);
+    } else {
+        spReason.setText("", true);
+        spReason.setEnabled(true);
+    }
+
+    // Close button
+    ivClose.setOnClickListener(v -> bottomSheetDialog.dismiss());
+
+    // Confirm Button
+//    btnConfirm.setOnClickListener(v -> {
+//
+//        String selectedReason = spReason.getText().toString();
+//
+//        if (selectedReason.isEmpty()) {
+//            Toast.makeText(this, "Please select a reason", Toast.LENGTH_SHORT).show();
+//            return;
 //        }
 //
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//        if (!NetworkUtil.isNetworkAvailable(this)) {
+//            Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
 //
-//        startActivity(intent);
+//        if (currentStore != null) {
 //
-//        cartViewModel.clearCart(); // clear cart after logout
-//        finish();
+//            // Save OUT time
+//            String outTime = getCurrentDateTime();
+//
+//            SharedPreferences prefs =
+//                    getSharedPreferences("store_data", MODE_PRIVATE);
+//
+//            prefs.edit()
+//                    .putString("store_out_time", outTime)
+//                    .apply();
+//
+//            Log.d("StoreTiming", "OUT Time Saved: " + outTime);
+//
+//            // Call Checkout API
+//            String token = sessionManager.getToken();
+//            takeOrderViewModel.performCheckOut(
+//                    token,
+//                    currentStore.getShopId(),
+//                    selectedReason
+//            );
+//
+//            bottomSheetDialog.dismiss();
+//
+//        } else {
+//            Toast.makeText(this, "Outlet Data Missing", Toast.LENGTH_SHORT).show();
+//        }
+//    });
+    btnConfirm.setOnClickListener(v -> {
+        btnConfirm.setEnabled(true);
+
+        String selectedReason;
+
+
+        Log.d("CHECK_FLAG", "isOrderTaken = " + isOrderTaken);
+        // ✅ Force reason if order taken
+        if (isOrderTaken) {
+            selectedReason = "Order Taken";
+            Log.d("selectedReason", "showCheckOutDialog: "+selectedReason);
+
+        } else {
+            selectedReason = spReason.getText().toString();
+            Log.d("Selectresone", "showCheckOutDialog: "+selectedReason);
+        }
+
+        if (selectedReason.isEmpty()) {
+            Toast.makeText(this, "Please select a reason", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!NetworkUtil.isNetworkAvailable(this)) {
+            Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (currentStore != null) {
+
+            // Save OUT time
+            String outTime = getCurrentDateTime();
+
+            SharedPreferences prefs =
+                    getSharedPreferences("store_data", MODE_PRIVATE);
+
+            prefs.edit()
+                    .putString("store_out_time", outTime)
+                    .apply();
+
+            Log.d("StoreTiming", "OUT Time Saved: " + outTime);
+
+
+            // ✅ API call with correct reason
+            String token = sessionManager.getToken();
+            takeOrderViewModel.performCheckOut(
+                    token,
+                    currentStore.getShopId(),
+                    selectedReason
+            );
+            Log.d("shopdetails ", "showCheckOutDialog: "+currentStore.getShopId());
+            bottomSheetDialog.dismiss();
+
+        }
+
+        else {
+            logoutUser();
+            Toast.makeText(this, "Outlet Data Missing", Toast.LENGTH_SHORT).show();
+
+        }
+
+    });
+
+    bottomSheetDialog.show();
+}
+//    private void observeCheckoutResult() {
+//
+//        cartViewModel.getCheckoutResult().observe(this, resource -> {
+//
+//            boolean isOrderTaken = false;
+//
+//            if (resource != null && resource.status == Resource.Status.SUCCESS) {
+//                isOrderTaken = true;
+//            }
+//
+//            updateReasonUI(isOrderTaken);
+//        });
 //    }
+
+    private void logoutUser() {
+        Intent intent = new Intent(TakeOrderActivity.this, StoreProfileActivity.class);
+
+        if (getIntent().getSerializableExtra("STORE_DATA") != null) {
+            intent.putExtra("STORE_DATA", getIntent().getSerializableExtra("STORE_DATA"));
+        }
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        startActivity(intent);
+
+        cartViewModel.clearCart(); // clear cart after logout
+        finish();
+    }
         private String getCurrentDateTime() {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
             return sdf.format(new Date());
@@ -399,6 +674,7 @@
                         String msg = resource.data != null ? resource.data.getMessage() : "Checked Out Successfully";
                         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
                         performExitLogic();
+
                         break;
 
                     case ERROR:
@@ -411,9 +687,13 @@
             });
         }
 
-        private void performExitLogic() {
+
+
+
+    private void performExitLogic() {
             // 1. Clear Cart
             cartViewModel.clearCart();
+
 
             // 2. Navigate to StoreProfile
             Intent intent = new Intent(TakeOrderActivity.this, StoreProfileActivity.class);
@@ -513,6 +793,7 @@
     ////        }
     //    }
 
+
         private void updateBottomNavigationSelection() {
             // 1. Get the currently visible fragment
             //    (You must know the ID of your fragment container)
@@ -562,6 +843,7 @@
             fragmentTransaction.commit();
         }
 
+
             private void openCartFragment() {
     //            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
     //            if (!(currentFragment instanceof CartFragment)) {
@@ -574,4 +856,5 @@
                 Intent intent = new Intent(TakeOrderActivity.this, CartActivity.class);
                 startActivity(intent);
             }
+
     }
