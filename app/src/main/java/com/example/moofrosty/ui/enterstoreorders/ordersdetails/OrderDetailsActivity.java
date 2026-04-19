@@ -370,6 +370,7 @@
 ////}
 package com.example.moofrosty.ui.enterstoreorders.ordersdetails;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -411,13 +412,15 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
     private LinearLayout invoicenolayout;
     private TextView tvbilledno;
+    private LinearLayout ordernolayout;
+    private TextView tvInvoice;
 
     private FrameLayout cartButtonLayout;
     private ImageButton iconPower;
-
+    OrderDetailsAdapter.ViewHolder viewHolder;
     private SessionManager sessionManager;
 
-    private ArrayList<OrderDetailsResponse.Item> itemList = new ArrayList<>();
+    private ArrayList<OrderDetailsResponse.OrderItem> itemList = new ArrayList<>();
 
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
@@ -474,6 +477,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
 //        // ✅ Call API
 //        fetchOrderDetails();
 //    }
+@SuppressLint("ResourceType")
 @Override
 protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -533,9 +537,10 @@ protected void onCreate(Bundle savedInstanceState) {
 
     findViewById(R.id.header_back_arrow).setOnClickListener(v -> finish());
 
+    ordernolayout = findViewById(R.id.ordernolayout);
+    tvbilledno = findViewById(R.id.tv_order_no);
     invoicenolayout = findViewById(R.id.invoicenolayout);
-    tvbilledno = findViewById(R.id.tv_billed_no);
-
+    tvInvoice = findViewById(R.id.tv_invoiceno);
     findViewById(R.id.search_bar_layout).setVisibility(View.GONE);
     findViewById(R.id.toolbarlayout).setVisibility(View.VISIBLE);
     findViewById(R.id.icon_scan).setVisibility(View.GONE);
@@ -545,6 +550,7 @@ protected void onCreate(Bundle savedInstanceState) {
 
     cartButtonLayout.setVisibility(View.GONE);
     iconPower.setVisibility(View.GONE);
+//    viewHolder.tvinvoice.setText("CSN001001");
 
     // Setup order info
     setupOrderInfo();
@@ -583,15 +589,15 @@ protected void onCreate(Bundle savedInstanceState) {
             tvStatusText.setText("Billed");
             tvStatusText.setTextColor(getColor(R.color.green));
 
-            invoicenolayout.setVisibility(View.VISIBLE);
-            tvbilledno.setText(": " + currentOrder.getinvoiceId());
+            tvInvoice.setVisibility(View.VISIBLE);
+            tvbilledno.setText(": " + currentOrder.orderId);
 
         } else {
 
             tvStatusText.setText("Order Placed");
             tvStatusText.setTextColor(getColor(R.color.infoBarBlue));
 
-            invoicenolayout.setVisibility(View.VISIBLE);
+            tvInvoice.setVisibility(View.VISIBLE);
             tvbilledno.setText(": " + currentOrder.orderId);
         }
 
@@ -599,105 +605,514 @@ protected void onCreate(Bundle savedInstanceState) {
         Log.d("OrderStatusCheck", "InvoiceNo: " + currentOrder.invoiceNo);
         Log.d("OrderStatusCheck", "OrderId: " + currentOrder.orderId);
     }
+//CODE COMMENT OUT DATE 17/04/2023
+//    private void fetchOrderDetails() {
+//        if (sessionManager == null) {
+//            sessionManager = new SessionManager(this);
+//        }
+//
+//        ApiService apiService =
+//                ApiClient.getRetrofitInstance().create(ApiService.class);
+//
+//        String token = "Bearer " + sessionManager.getToken();
+//
+//// Safe parameters
+//        String orderNo = currentOrder.orderId != null ? currentOrder.orderId : "";
+//        String billNo = currentOrder.invoiceNo != null ? currentOrder.invoiceNo : "";
+//
+//        Log.d("ORDER_API_DEBUG",
+//                "Token: " + token +
+//                        " | OrderNo: " + orderNo +
+//                        " | BillNo: " + billNo);
+//
+//        Call<OrderDetailsResponse> call =
+//                apiService.getOrderDetails(
+//                        token,
+//                        orderNo,
+//                        billNo
+//                );
+//
+//        call.enqueue(new Callback<OrderDetailsResponse>() {
+//
+//            @Override
+//            public void onResponse(Call<OrderDetailsResponse> call,
+//                                   Response<OrderDetailsResponse> response) {
+//
+//                Log.d("ORDER_API", "API CALLED");
+//
+//                if (response.isSuccessful() && response.body() != null) {
+//
+//                    OrderDetailsResponse data = response.body();
+//
+//                    Log.d("ORDER_RESPONSE",
+//                            "Status: " + data.status +
+//                                    " | OrderNo: " + data.orderNo);
+//
+//                    if (data.items != null && !data.items.isEmpty()) {
+//
+//                        itemList.clear();
+//
+//                        // Loop through invoices
+//                        for (OrderDetailsResponse.InvoiceItem invoice : data.items) {
+//
+//                            if (invoice.getItems() != null && !invoice.getItems().isEmpty()) {
+//
+//                                // Add all products to adapter list
+//                                itemList.addAll(invoice.getItems());
+//
+//                                // Debug each product
+//                                for (OrderDetailsResponse.InvoiceItem item : invoice.getItems()) {
+//
+//                                    String productName = "null";
+//
+//                                    if (item.getProductDetails() != null) {
+//                                        productName = item.getProductDetails().productName;
+//                                    }
+//
+//                                    Log.d("ORDER_ITEM_RESPONSE",
+//                                            "Product: " + productName +
+//                                                    " | BilledQty: " + item.getBilledQty() +
+//                                                    " | SellingPrice: " + item.getProductSellingPrice() +
+//                                                    " | DiscountPercent: " + item.getDiscountPercent() +
+//                                                    " | Status: " + item.getStatus());
+//                                }
+//                            }
+//                        }
+//
+//                        adapter.notifyDataSetChanged();
+//
+//                        Log.d("ORDER_API_SUCCESS",
+//                                "Total Products: " + itemList.size());
+//
+//                    } else {
+//
+//                        Log.d("ORDER_API_EMPTY",
+//                                "Items list is empty");
+//                    }
+//
+//                } else {
+//
+//                    Log.e("ORDER_API_ERROR",
+//                            "Response not successful: " + response.code());
+//
+//                    try {
+//                        Log.e("ORDER_API_ERROR_BODY",
+//                                response.errorBody().string());
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<OrderDetailsResponse> call,
+//                                  Throwable t) {
+//
+//                Log.e("ORDER_API_FAILURE",
+//                        "API FAILED: " + t.getMessage());
+//            }
+//        });
+//private void fetchOrderDetails() {
 
-    private void fetchOrderDetails() {
+//    if (sessionManager == null) {
+//        sessionManager = new SessionManager(this);
+//    }
+//
+//    ApiService apiService =
+//            ApiClient.getRetrofitInstance().create(ApiService.class);
+//
+//    String token = "Bearer " + sessionManager.getToken();
+//
+//    // Safe parameters
+//    String orderNo = currentOrder.orderId != null ? currentOrder.orderId : "";
+//    String billNo = currentOrder.invoiceNo != null ? currentOrder.invoiceNo : "";
+//
+//    Log.d("ORDER_API_DEBUG",
+//            "Token: " + token +
+//                    " | OrderNo: " + orderNo +
+//                    " | BillNo: " + billNo);
+//
+////    Call<OrderDetailsResponse> call =
+////            apiService.getOrderDetails(token, orderNo, billNo);
+//    Call<OrderDetailsResponse> call =
+//            apiService.getOrderDetails(token, orderNo );
+//
+//    call.enqueue(new Callback<OrderDetailsResponse>() {
+//
+//        @Override
+//        public void onResponse(Call<OrderDetailsResponse> call,
+//                               Response<OrderDetailsResponse> response) {
+//
+//            Log.d("ORDER_API", "API CALLED");
+//
+//            if (response.isSuccessful() && response.body() != null) {
+//
+//                OrderDetailsResponse data = response.body();
+//
+//                Log.d("ORDER_RESPONSE",
+//                        "Status: " + data.status +
+//                                " | OrderNo: " + data.orderNo);
+//
+//                if (data.items != null && !data.items.isEmpty()) {
+//
+//                    itemList.clear();
+//
+//                    // Loop through invoices
+//                    for (OrderDetailsResponse.InvoiceItem invoice : data.items) {
+//
+//                        if (invoice.getItems() != null &&
+//                                !invoice.getItems().isEmpty()) {
+//
+//                            // Add all products to adapter list
+//                            itemList.addAll(invoice.getItems());
+//
+//                            // Debug each product
+//                            for (OrderDetailsResponse.OrderItem item : invoice.getItems()) {
+//
+//                                String productName = "null";
+//
+//                                if (item.getProductDetails() != null) {
+//                                    productName =
+//                                            item.getProductDetails().productName;
+//                                }
+//
+//                                Log.d("ORDER_ITEM_RESPONSE",
+//                                        "Product: " + productName +
+//                                                " | OrderQty: " + item.getOrderQty() +
+//                                                " | BilledQty: " + item.getBilledQty() +
+//                                                " | SellingPrice: " + item.getProductSellingPrice() +
+//                                                " | Status: " + item.getStatus());
+//                            }
+//                        }
+//                    }
+//
+//                    adapter.notifyDataSetChanged();
+//
+//                    Log.d("ORDER_API_SUCCESS",
+//                            "Total Products: " + itemList.size());
+//
+//                } else {
+//
+//                    Log.d("ORDER_API_EMPTY",
+//                            "Items list is empty");
+//                }
+//
+//            } else {
+//
+//                Log.e("ORDER_API_ERROR",
+//                        "Response not successful: " + response.code());
+//
+//                try {
+//                    Log.e("ORDER_API_ERROR_BODY",
+//                            response.errorBody().string());
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//
+//        @Override
+//        public void onFailure(Call<OrderDetailsResponse> call,
+//                              Throwable t) {
+//
+//            Log.e("ORDER_API_FAILURE",
+//                    "API FAILED: " + t.getMessage());
+//        }
+//    });
+private void fetchOrderDetails() {
 
-        if (sessionManager == null) {
-            sessionManager = new SessionManager(this);
+    if (sessionManager == null) {
+        sessionManager = new SessionManager(this);
+    }
+
+    ApiService apiService =
+            ApiClient.getRetrofitInstance().create(ApiService.class);
+
+    String token = "Bearer " + sessionManager.getToken();
+
+    String orderNo = currentOrder.orderId != null ? currentOrder.orderId : "";
+    String billNo = currentOrder.invoiceNo != null ? currentOrder.invoiceNo : "";
+
+    Call<OrderDetailsResponse> call =
+            apiService.getOrderDetails(token, orderNo,billNo);
+
+    call.enqueue(new Callback<OrderDetailsResponse>() {
+//
+//        @Override
+//        public void onResponse(Call<OrderDetailsResponse> call,
+//                               Response<OrderDetailsResponse> response) {
+//
+//            if (!response.isSuccessful() || response.body() == null) {
+//                Log.e("ORDER", "Response failed");
+//                return;
+//            }
+//
+//
+//
+//
+//            OrderDetailsResponse data = response.body();
+//
+//            itemList.clear();
+//
+//            if (data.getItems() == null || data.getItems().isEmpty()) {
+//                Log.d("ORDER", "No invoice found");
+//                adapter.notifyDataSetChanged();
+//                return;
+//            }
+//
+//            // 🔥 TAKE FIRST INVOICE (SAFE DEFAULT)
+//            OrderDetailsResponse.InvoiceItem invoice =
+//                    data.getItems().get(0);
+//
+//            // ✅ HEADER BIND (INVOICE NUMBER)
+//            if (invoice.getInvoiceNo() == null) {
+////                tvInvoice.setText(invoice.getInvoiceNo());
+//                tvInvoice.setText("N/A");
+//            } else {
+////                tvInvoice.setText("N/A");
+//                tvInvoice.setText(invoice.getInvoiceNo());
+//            }
+//
+//            // 🔥 ITEMS BIND
+//            if (invoice.getItems() != null && !invoice.getItems().isEmpty()) {
+//                itemList.addAll(invoice.getItems());
+//            }
+//
+//            // Debug
+//            for (OrderDetailsResponse.OrderItem item : itemList) {
+//                Log.d("ORDER_ITEM",
+//                        item.getProductDetails() != null ?
+//                                item.getProductDetails().getProductName() :
+//                                "No Product");
+//            }
+//
+//            adapter.notifyDataSetChanged();
+//        }
+
+//For the multiple invoice below code is presnet
+@Override
+public void onResponse(Call<OrderDetailsResponse> call,
+                       Response<OrderDetailsResponse> response) {
+
+    if (!response.isSuccessful() || response.body() == null) {
+        Log.e("ORDER", "Response failed");
+        return;
+    }
+
+    OrderDetailsResponse data = response.body();
+
+    itemList.clear();
+
+    if (data.getItems() == null || data.getItems().isEmpty()) {
+        Log.d("ORDER", "No invoice found");
+        tvInvoice.setText("N/A");
+        adapter.notifyDataSetChanged();
+        return;
+    }
+
+    StringBuilder invoiceBuilder = new StringBuilder();
+
+    // ✅ LOOP ALL INVOICES
+    for (OrderDetailsResponse.InvoiceItem invoice : data.getItems()) {
+
+        // ---------------- HEADER (MULTIPLE INVOICE) ----------------
+        if (invoice.getInvoiceNo() != null) {
+            invoiceBuilder.append(invoice.getInvoiceNo()).append(", ");
+
         }
 
-        ApiService apiService =
-                ApiClient.getRetrofitInstance().create(ApiService.class);
+        // ---------------- ITEMS ----------------
+        if (invoice.getItems() != null && !invoice.getItems().isEmpty()) {
 
-        String token = "Bearer " + sessionManager.getToken();
+            itemList.addAll(invoice.getItems());
 
-        // Safe parameters
-        String orderNo = currentOrder.orderId != null ? currentOrder.orderId : "";
-        String billNo = currentOrder.invoiceNo != null ? currentOrder.invoiceNo : "";
+            // Debug each product
+            for (OrderDetailsResponse.OrderItem item : invoice.getItems()) {
 
-        Log.d("ORDER_API_DEBUG",
-                "Token: " + token +
-                        " | OrderNo: " + orderNo +
-                        " | BillNo: " + billNo);
+                String productName = "No Product";
 
-        Call<OrderDetailsResponse> call =
-                apiService.getOrderDetails(
-                        token,
-                        orderNo,
-                        billNo
-                );
+                if (item.getProductDetails() != null &&
+                        item.getProductDetails().getProductName() != null) {
 
-        call.enqueue(new Callback<OrderDetailsResponse>() {
-
-            @Override
-            public void onResponse(Call<OrderDetailsResponse> call,
-                                   Response<OrderDetailsResponse> response) {
-
-                Log.d("ORDER_API", "API CALLED");
-
-                if (response.isSuccessful() && response.body() != null) {
-
-                    OrderDetailsResponse data = response.body();
-
-                    Log.d("ORDER_RESPONSE",
-                            "Status: " + data.status +
-                                    " | OrderNo: " + data.orderNo +
-                                    " | BillNo: " + data.billNo);
-
-                    if (data.items != null && !data.items.isEmpty()) {
-
-                        itemList.clear();
-                        itemList.addAll(data.items);
-
-                        for (OrderDetailsResponse.Item item : data.items) {
-
-                            String productName = "null";
-
-                            if (item.productDetails != null) {
-                                productName = item.productDetails.productName;
-                            }
-
-                            Log.d("ORDER_ITEM_RESPONSE",
-                                    "Product: " + productName +
-                                            " | Units: " + item.units +
-                                            " | SellingPrice: " + item.productSellingPrice +
-                                            " | DiscountPercent: " + item.discountPercent +
-                                            " | FinalAmount: " + item.finalAmount +
-                                            " | Status: " + item.status);
-                        }
-
-                        adapter.notifyDataSetChanged();
-
-                        Log.d("ORDER_API_SUCCESS",
-                                "Total Items: " + data.items.size());
-
-                    } else {
-
-                        Log.d("ORDER_API_EMPTY",
-                                "Items list is empty");
-                    }
-
-                } else {
-
-                    Log.e("ORDER_API_ERROR",
-                            "Response not successful: " + response.code());
-
-                    try {
-                        Log.e("ORDER_API_ERROR_BODY",
-                                response.errorBody().string());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    productName = item.getProductDetails().getProductName();
                 }
-            }
+//    Log.d("INVOICE_PRODUCT",
+//            "Invoice: " + invoiceNo +
+//                    " Product: " + item.getProductDetails().getProductName());
 
-            @Override
-            public void onFailure(Call<OrderDetailsResponse> call,
-                                  Throwable t) {
-
-                Log.e("ORDER_API_FAILURE",
-                        "API FAILED: " + t.getMessage());
+                Log.d("ORDER_ITEM",
+                        "Product: " + productName +
+                                " | Qty: " + item.getBilledQty() +
+                                " | Price: " + item.getProductSellingPrice());
             }
-        });
+        }
     }
+
+    // ✅ SET ALL INVOICE NUMBERS
+    if (invoiceBuilder.length() > 0) {
+        // Remove last comma
+        invoiceBuilder.setLength(invoiceBuilder.length() - 2);
+        tvInvoice.setText(invoiceBuilder.toString());
+    } else {
+        tvInvoice.setText("N/A");
+    }
+
+    adapter.notifyDataSetChanged();
+
+    Log.d("ORDER_SUCCESS", "Total Items: " + itemList.size());
 }
+
+        @Override
+        public void onFailure(Call<OrderDetailsResponse> call, Throwable t) {
+            Log.e("ORDER", "API FAILED: " + t.getMessage());
+        }
+    });
+}
+}
+//    private void fetchOrderDetails() {
+//
+//        ApiService apiService =
+//                ApiClient.getRetrofitInstance().create(ApiService.class);
+//
+//        String token = "Bearer " + sessionManager.getToken();
+//
+//        Call<OrderDetailsResponse> call =
+//                apiService.getOrderDetails(token, currentOrder.orderId);
+//
+//        call.enqueue(new Callback<OrderDetailsResponse>() {
+//            @Override
+//            public void onResponse(Call<OrderDetailsResponse> call,
+//                                   Response<OrderDetailsResponse> response) {
+//
+//                if (response.isSuccessful() && response.body() != null) {
+//
+//                    OrderDetailsResponse data = response.body();
+//
+//                    itemList.clear();
+//
+//                    // 🔥 STEP 1: LOOP INVOICE
+//                    for (OrderDetailsResponse.InvoiceItem invoice : data.getItems()) {
+//
+//                        // ✅ HEADER (Invoice Number)
+//                        tvInvoice.setText(invoice.getInvoiceNo());
+//
+//                        // 🔥 STEP 2: ADD ALL ITEMS TO LIST
+//                        if (invoice.getItems() != null) {
+//                            itemList.addAll(invoice.getItems());
+//
+//                            // Debug
+//                            for (OrderDetailsResponse.OrderItem item : invoice.getItems()) {
+//                                Log.d("ORDER",
+//                                        item.getProductDetails().getProductName());
+//                            }
+//                        }
+//                    }
+//
+//                    adapter.notifyDataSetChanged();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<OrderDetailsResponse> call, Throwable t) {
+//                Log.e("ORDER", t.getMessage());
+//            }
+//        });
+//    }
+
+//        if (sessionManager == null) {
+//            sessionManager = new SessionManager(this);
+//        }
+//
+//        ApiService apiService =
+//                ApiClient.getRetrofitInstance().create(ApiService.class);
+//
+//        String token = "Bearer " + sessionManager.getToken();
+//
+//        // Safe parameters
+//        String orderNo = currentOrder.orderId != null ? currentOrder.orderId : "";
+//        String billNo = currentOrder.invoiceNo != null ? currentOrder.invoiceNo : "";
+//
+//        Log.d("ORDER_API_DEBUG",
+//                "Token: " + token +
+//                        " | OrderNo: " + orderNo +
+//                        " | BillNo: " + billNo);
+//
+//        Call<OrderDetailsResponse> call =
+//                apiService.getOrderDetails(
+//                        token,
+//                        orderNo,
+//                        billNo
+//                );
+//
+//        call.enqueue(new Callback<OrderDetailsResponse>() {
+//
+//            @Override
+//            public void onResponse(Call<OrderDetailsResponse> call,
+//                                   Response<OrderDetailsResponse> response) {
+//
+//                Log.d("ORDER_API", "API CALLED");
+//
+//                if (response.isSuccessful() && response.body() != null) {
+//
+//                    OrderDetailsResponse data = response.body();
+//
+//                    Log.d("ORDER_RESPONSE",
+//                            "Status: " + data.status +
+//                                    " | OrderNo: " + data.orderNo +
+//                                    " | BillNo: " + data.billNo);
+//
+//                    if (data.items != null && !data.items.isEmpty()) {
+//
+//                        itemList.clear();
+//                        itemList.addAll(data.items);
+//
+//                        for (OrderDetailsResponse.Item item : data.items) {
+//
+//                            String productName = "null";
+//
+//                            if (item.productDetails != null) {
+//                                productName = item.productDetails.productName;
+//                            }
+//
+//                            Log.d("ORDER_ITEM_RESPONSE",
+//                                    "Product: " + productName +
+//                                            " | Units: " + item.units +
+//                                            " | SellingPrice: " + item.productSellingPrice +
+//                                            " | DiscountPercent: " + item.discountPercent +
+//                                            " | FinalAmount: " + item.finalAmount +
+//                                            " | Status: " + item.status);
+//                        }
+//
+//                        adapter.notifyDataSetChanged();
+//
+//                        Log.d("ORDER_API_SUCCESS",
+//                                "Total Items: " + data.items.size());
+//
+//                    } else {
+//
+//                        Log.d("ORDER_API_EMPTY",
+//                                "Items list is empty");
+//                    }
+//
+//                } else {
+//
+//                    Log.e("ORDER_API_ERROR",
+//                            "Response not successful: " + response.code());
+//
+//                    try {
+//                        Log.e("ORDER_API_ERROR_BODY",
+//                                response.errorBody().string());
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<OrderDetailsResponse> call,
+//                                  Throwable t) {
+//
+//                Log.e("ORDER_API_FAILURE",
+//                        "API FAILED: " + t.getMessage());
+//            }
+//        });

@@ -6,17 +6,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="1dp">
-
+    <include
+        android:id="@+id/invoiceid"
+        layout="@layout/item_invoice_header" />
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:layout_height="match_parent"
+        android:padding="20dp"
+        android:layout_marginTop="40dp">
 
         <ImageView
             android:id="@+id/img_product"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_alignParentStart="true"
+            android:layout_alignParentStart="false"
             android:layout_centerVertical="true"
             tools:src="@drawable/conecategory" />
 
@@ -26,88 +29,101 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/img_product"
             android:layout_alignStart="@id/img_product"
-            android:layout_marginTop="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
             android:background="#4CAF50"
-            android:paddingStart="8dp"
+            android:paddingStart="10dp"
+            android:paddingRight="20dp"
             android:paddingEnd="8dp"
             android:text="Billed"
             android:textColor="@android:color/white"
             android:textSize="15sp"
             android:textStyle="bold"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/img_product"
-            android:layout_toStartOf="@id/icon_layout"
             android:layout_centerVertical="true"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="30dp"
+            android:layout_toStartOf="@id/icon_layout"
+            android:layout_toEndOf="@id/img_product"
             android:orientation="vertical">
 
 
             <TextView
                 android:id="@+id/tv_product_name"
                 android:layout_width="wrap_content"
-                android:textSize="18dp"
                 android:layout_height="wrap_content"
-                tools:text="Kw Choco Cone Rs.10"
                 android:textColor="@android:color/black"
-                android:textStyle="bold" />
-
+                android:textSize="18dp"
+                android:textStyle="bold"
+                tools:text="Kw Choco Cone Rs.10" />
 
 
             <TextView
                 android:id="@+id/tv_mrp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="₹9"
                 android:layout_marginTop="4dp"
+                android:textColor="@android:color/black"
                 android:textSize="17sp"
-                android:textColor="@android:color/black" />
+                tools:text="₹9" />
 
 
             <TextView
                 android:id="@+id/tv_item_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="₹54.81"
                 android:layout_marginTop="4dp"
+                android:textColor="@color/black"
                 android:textSize="17sp"
-                android:textColor="@color/black" />
+                tools:text="₹54.81" />
 
 
             <TextView
                 android:id="@+id/tv_discount_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="Disc: ₹17.32 (10%)"
                 android:layout_marginTop="4dp"
-                android:textSize="17sp"
                 android:textColor="#F44336"
-                android:visibility="gone"/>
+                android:textSize="17sp"
+                android:visibility="gone"
+                tools:text="Disc: ₹17.32 (10%)" />
 
 
             <TextView
                 android:id="@+id/tv_billed_qty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="visible"
-                android:textSize="17sp"
                 android:layout_marginTop="4dp"
                 android:text="180/180 Unit(s)"
                 android:textColor="@android:color/black"
-                />
+                android:textSize="17sp"
+                android:visibility="gone" />
+
             <TextView
                 android:id="@+id/tv_order_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:textSize="17sp"
                 android:layout_marginTop="4dp"
                 android:text="₹17.32 "
                 android:textColor="@android:color/black"
-                />
+                android:textSize="17sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_order_qty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="180/180 Unit(s)"
+                android:textColor="@android:color/black"
+                android:textSize="17sp"
+                android:visibility="gone" />
+
         </LinearLayout>
 
         <LinearLayout

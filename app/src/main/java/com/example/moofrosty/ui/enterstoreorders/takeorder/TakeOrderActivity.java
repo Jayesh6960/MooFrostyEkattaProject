@@ -58,6 +58,7 @@
 
     import java.text.SimpleDateFormat;
     import java.util.ArrayList;
+    import java.util.Arrays;
     import java.util.Date;
     import java.util.List;
     import java.util.Locale;
@@ -86,7 +87,8 @@
             private SessionManager sessionManager;
             private Store currentStore;
             private ProgressDialog progressDialog;
-            private boolean isOrderTaken = false;
+            private boolean isOrderTaken = false;//fales no Order not taken  0
+
 
 
         @Override
@@ -123,11 +125,15 @@
                 progressDialog = new ProgressDialog(this);
                 progressDialog.setMessage("Checking Out...");
                 progressDialog.setCancelable(false);
+//            isOrderTaken = sessionManager.isOrderTaken();
+            isOrderTaken = getIntent().getBooleanExtra("IS_ORDER_TAKEN", false);
+
 
 
                 // Retrieve Store Object passed from previous activity
                 if (getIntent().getSerializableExtra("STORE_DATA") != null) {
                     currentStore = (Store) getIntent().getSerializableExtra("STORE_DATA");
+                    Log.d("STORE_DATA", "onCreate: " + currentStore.getStoreName());
                 }
 
 
@@ -164,6 +170,8 @@
 //                    }
 //                });
             //Order  takedn values is  changes done
+
+
             cartViewModel.getCartTotals().observe(this, totals -> {
 
                 if (totals.uniqueItemCount == 0) {
@@ -171,20 +179,22 @@
                     cartBadge.setVisibility(View.GONE);
                     floatingCartBar.setVisibility(View.GONE);
 
-                    isOrderTaken = false;
+//                    isOrderTaken = false;
 
                 } else {
-
                     cartBadge.setVisibility(View.VISIBLE);
                     cartBadge.setText(String.valueOf(totals.uniqueItemCount));
                     floatingCartBar.setVisibility(View.VISIBLE);
 
                     tvcartitemcount.setText(totals.totalUnitCount + " items");
                     tvcarttotalprice.setText("₹" + totals.totalPrice);
+//                    isOrderTaken = true;
+//                    cartViewModel.checkout();
 
-                    isOrderTaken = true;
                 }
             });
+
+
                 bottomNav.setOnItemSelectedListener(navListener);
                 // Load the default fragment
                 if (savedInstanceState == null) {
@@ -471,7 +481,6 @@ private void showCheckOutDialog() {
     if (currentStore != null) {
         tvStore.setText(currentStore.getStoreName());
     }
-
     // ------------------------------
     // Order Taken Logic
     // ------------------------------
@@ -502,6 +511,8 @@ private void showCheckOutDialog() {
     if (isOrderTaken) {
         spReason.setText("Order Taken", false);
         spReason.setEnabled(false);
+        spReason.setFocusable(false);
+        spReason.setClickable(false);
     } else {
         spReason.setText("", true);
         spReason.setEnabled(true);
@@ -511,9 +522,64 @@ private void showCheckOutDialog() {
     ivClose.setOnClickListener(v -> bottomSheetDialog.dismiss());
 
     // Confirm Button
+//    btnConfirm.setOnClickListener(v -> {
+//
+//        String selectedReason = spReason.getText().toString();
+//
+//        if (selectedReason.isEmpty()) {
+//            Toast.makeText(this, "Please select a reason", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//
+//        if (!NetworkUtil.isNetworkAvailable(this)) {
+//            Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//
+//        if (currentStore != null) {
+//
+//            // Save OUT time
+//            String outTime = getCurrentDateTime();
+//
+//            SharedPreferences prefs =
+//                    getSharedPreferences("store_data", MODE_PRIVATE);
+//
+//            prefs.edit()
+//                    .putString("store_out_time", outTime)
+//                    .apply();
+//
+//            Log.d("StoreTiming", "OUT Time Saved: " + outTime);
+//
+//            // Call Checkout API
+//            String token = sessionManager.getToken();
+//            takeOrderViewModel.performCheckOut(
+//                    token,
+//                    currentStore.getShopId(),
+//                    selectedReason
+//            );
+//
+//            bottomSheetDialog.dismiss();
+//
+//        } else {
+//            Toast.makeText(this, "Outlet Data Missing", Toast.LENGTH_SHORT).show();
+//        }
+//    });
     btnConfirm.setOnClickListener(v -> {
+        btnConfirm.setEnabled(true);
 
-        String selectedReason = spReason.getText().toString();
+        String selectedReason;
+
+
+        Log.d("CHECK_FLAG", "isOrderTaken = " + isOrderTaken);
+        // ✅ Force reason if order taken
+        if (isOrderTaken) {
+            selectedReason = "Order Taken";
+            Log.d("selectedReason", "showCheckOutDialog: "+selectedReason);
+
+        } else {
+            selectedReason = spReason.getText().toString();
+            Log.d("Selectresone", "showCheckOutDialog: "+selectedReason);
+        }
 
         if (selectedReason.isEmpty()) {
             Toast.makeText(this, "Please select a reason", Toast.LENGTH_SHORT).show();
@@ -539,19 +605,25 @@ private void showCheckOutDialog() {
 
             Log.d("StoreTiming", "OUT Time Saved: " + outTime);
 
-            // Call Checkout API
+
+            // ✅ API call with correct reason
             String token = sessionManager.getToken();
             takeOrderViewModel.performCheckOut(
                     token,
                     currentStore.getShopId(),
                     selectedReason
             );
-
+            Log.d("shopdetails ", "showCheckOutDialog: "+currentStore.getShopId());
             bottomSheetDialog.dismiss();
 
-        } else {
-            Toast.makeText(this, "Outlet Data Missing", Toast.LENGTH_SHORT).show();
         }
+
+        else {
+            logoutUser();
+            Toast.makeText(this, "Outlet Data Missing", Toast.LENGTH_SHORT).show();
+
+        }
+
     });
 
     bottomSheetDialog.show();
@@ -570,20 +642,20 @@ private void showCheckOutDialog() {
 //        });
 //    }
 
-//    private void logoutUser() {
-//        Intent intent = new Intent(TakeOrderActivity.this, StoreProfileActivity.class);
-//
-//        if (getIntent().getSerializableExtra("STORE_DATA") != null) {
-//            intent.putExtra("STORE_DATA", getIntent().getSerializableExtra("STORE_DATA"));
-//        }
-//
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-//
-//        startActivity(intent);
-//
-//        cartViewModel.clearCart(); // clear cart after logout
-//        finish();
-//    }
+    private void logoutUser() {
+        Intent intent = new Intent(TakeOrderActivity.this, StoreProfileActivity.class);
+
+        if (getIntent().getSerializableExtra("STORE_DATA") != null) {
+            intent.putExtra("STORE_DATA", getIntent().getSerializableExtra("STORE_DATA"));
+        }
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        startActivity(intent);
+
+        cartViewModel.clearCart(); // clear cart after logout
+        finish();
+    }
         private String getCurrentDateTime() {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
             return sdf.format(new Date());
@@ -602,6 +674,7 @@ private void showCheckOutDialog() {
                         String msg = resource.data != null ? resource.data.getMessage() : "Checked Out Successfully";
                         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
                         performExitLogic();
+
                         break;
 
                     case ERROR:
@@ -620,6 +693,7 @@ private void showCheckOutDialog() {
     private void performExitLogic() {
             // 1. Clear Cart
             cartViewModel.clearCart();
+
 
             // 2. Navigate to StoreProfile
             Intent intent = new Intent(TakeOrderActivity.this, StoreProfileActivity.class);
@@ -782,4 +856,5 @@ private void showCheckOutDialog() {
                 Intent intent = new Intent(TakeOrderActivity.this, CartActivity.class);
                 startActivity(intent);
             }
+
     }

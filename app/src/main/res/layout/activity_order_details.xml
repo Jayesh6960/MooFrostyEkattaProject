@@ -163,20 +163,20 @@
                         android:layout_marginTop="8dp" />
 
                     <LinearLayout
-                        android:id="@+id/invoicenolayout"
+                        android:id="@+id/ordernolayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:layout_marginTop="8dp">
                         <TextView
                             android:layout_width="130dp"
                             android:layout_height="wrap_content"
                             android:textStyle="bold"
                             android:textSize="16dp"
-                            android:text="Invoice No  "/>
+                            android:text="Order No  "/>
                         <TextView
-                            android:id="@+id/tv_billed_no"
+                            android:id="@+id/tv_order_no"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="16dp"
@@ -200,15 +200,44 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <LinearLayout
+                android:id="@+id/invoicenolayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Invoice Number : "
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_invoiceno"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" "
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_order_items"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:nestedScrollingEnabled="false"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_order_details" />
+            android:nestedScrollingEnabled="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
         </LinearLayout>
+            </LinearLayout>
+
     </androidx.core.widget.NestedScrollView>
 </RelativeLayout>

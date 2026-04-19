@@ -50,7 +50,7 @@ public class OrderHistoryResponse {
 
 
         @SerializedName("items")
-        public List<Item> items;
+        public List<OrderSummary.Item> items;
 
         public String getinvoiceId() {
             return invoiceNo;
@@ -94,10 +94,12 @@ public class OrderHistoryResponse {
             return (fName + " " + lName).trim();
         }
     }
-
+    // Current units ==
     public static class OrderSummary implements Serializable {
         @SerializedName("total_units")
         public int totalUnits;
+        @SerializedName("bill_qty")
+        private int billQty;
 
         @SerializedName("total_basic_amount")
         public double totalBasicAmount;
@@ -116,44 +118,69 @@ public class OrderHistoryResponse {
 
         @SerializedName("bill_value")
         public double billValue;
-    }
 
-    public static class Item implements Serializable {
-        @SerializedName("productDetails")
-        public ProductDetail productDetails;
+        public int getBillQty() {
+            return billQty;
+        }
 
-        @SerializedName("product_name")
-        public String productName;
+        public void setBillQty(int billQty) {
+            this.billQty = billQty;
+        }
 
-        @SerializedName("product_mrp")
-        public String productMrp;
+        public void setTotalFinalAmount(double totalFinalAmount) {
+            this.totalFinalAmount = totalFinalAmount;
+        }
 
-        @SerializedName("product_selling_price")
-        public String productSellingPrice;
+        public double getTotalFinalAmount() {
+            return totalFinalAmount;
+        }
 
-        @SerializedName("units")
-        public String units; // Billed Qty
+        public void setTotalUnits(int totalUnits) {
+            this.totalUnits = totalUnits;
+        }
 
-        @SerializedName("final_amount")
-        public String finalAmount; // Selling Price Total
+        public int getTotalUnits() {
+            return totalUnits;
 
-        @SerializedName("discount_amount")
-        public String discountAmount;
 
-        @SerializedName("discount_percent")
-        public String discountPercent;
+        }
 
-        @SerializedName("is_discard")
-        public int isDiscard;
-    }
+        public static class Item implements Serializable {
+            @SerializedName("productDetails")
+            public ProductDetail productDetails;
 
-    public static class ProductDetail implements Serializable {
-        @SerializedName("productId")
-        public int productId;
+            @SerializedName("product_name")
+            public String productName;
 
-        @SerializedName("productImage")
-        public String productImage;
-    }
+            @SerializedName("product_mrp")
+            public String productMrp;
+
+            @SerializedName("product_selling_price")
+            public String productSellingPrice;
+
+            @SerializedName("units")
+            public String units; // Billed Qty
+
+            @SerializedName("final_amount")
+            public String finalAmount; // Selling Price Total
+
+            @SerializedName("discount_amount")
+            public String discountAmount;
+
+            @SerializedName("discount_percent")
+            public String discountPercent;
+
+            @SerializedName("is_discard")
+            public int isDiscard;
+        }
+
+        public static class ProductDetail implements Serializable {
+            @SerializedName("productId")
+            public int productId;
+
+            @SerializedName("productImage")
+            public String productImage;
+        }
 
 //    @SerializedName("status")
 //    public String status;
@@ -232,4 +259,5 @@ public class OrderHistoryResponse {
 //        @SerializedName("sellingPrice")
 //        public String sellingPrice;
 //    }
+    }
 }

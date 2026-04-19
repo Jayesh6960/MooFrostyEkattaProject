@@ -3,6 +3,7 @@ package com.example.moofrosty.ui.cart;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -27,6 +28,8 @@ import com.example.moofrosty.R;
 import com.example.moofrosty.core.utils.NetworkUtil;
 import com.example.moofrosty.data.local.SessionManager;
 import com.example.moofrosty.data.model.Product;
+import com.example.moofrosty.data.model.Store;
+import com.example.moofrosty.ui.enterstoreorders.takeorder.TakeOrderActivity;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.card.MaterialCardView;
 
@@ -101,7 +104,12 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.CartI
         setupObservers();
 
         // 6. Click Listeners
-        btnCheckout.setOnClickListener(v -> handleCheckout());
+        btnCheckout.setOnClickListener(v -> {
+            handleCheckout();
+            Intent intent = new Intent(CartActivity.this, TakeOrderActivity.class);
+            intent.putExtra("IS_ORDER_TAKEN", true); // ✅ IMPORTANT
+            startActivity(intent);
+        });
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
     }
 
