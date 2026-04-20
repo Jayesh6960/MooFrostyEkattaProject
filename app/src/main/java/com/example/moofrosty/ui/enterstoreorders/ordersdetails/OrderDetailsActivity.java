@@ -413,14 +413,15 @@ public class OrderDetailsActivity extends AppCompatActivity {
     private LinearLayout invoicenolayout;
     private TextView tvbilledno;
     private LinearLayout ordernolayout;
-    private TextView tvInvoice;
+    private TextView tvInvoice,invoiceadaptor;
 
     private FrameLayout cartButtonLayout;
     private ImageButton iconPower;
     OrderDetailsAdapter.ViewHolder viewHolder;
     private SessionManager sessionManager;
-
+    private ArrayList<OrderDetailsResponse.InvoiceItem> itemList1 = new ArrayList<>();
     private ArrayList<OrderDetailsResponse.OrderItem> itemList = new ArrayList<>();
+
 
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
@@ -541,6 +542,7 @@ protected void onCreate(Bundle savedInstanceState) {
     tvbilledno = findViewById(R.id.tv_order_no);
     invoicenolayout = findViewById(R.id.invoicenolayout);
     tvInvoice = findViewById(R.id.tv_invoiceno);
+    invoiceadaptor=findViewById(R.id.tv_invoice_header);
     findViewById(R.id.search_bar_layout).setVisibility(View.GONE);
     findViewById(R.id.toolbarlayout).setVisibility(View.VISIBLE);
     findViewById(R.id.icon_scan).setVisibility(View.GONE);
@@ -550,7 +552,7 @@ protected void onCreate(Bundle savedInstanceState) {
 
     cartButtonLayout.setVisibility(View.GONE);
     iconPower.setVisibility(View.GONE);
-//    viewHolder.tvinvoice.setText("CSN001001");
+
 
     // Setup order info
     setupOrderInfo();
@@ -561,6 +563,8 @@ protected void onCreate(Bundle savedInstanceState) {
 
     adapter = new OrderDetailsAdapter(itemList, currentOrder.status);
     recyclerView.setAdapter(adapter);
+//    adapter = new OrderDetailsAdapter(itemList, currentOrder.status);
+//    recyclerView.setAdapter(adapter);
 
     // Call API
     fetchOrderDetails();
@@ -903,7 +907,7 @@ public void onResponse(Call<OrderDetailsResponse> call,
 
     itemList.clear();
 
-    if (data.getItems() == null || data.getItems().isEmpty()) {
+    if (data.getItems() == null || data.getItems().isEmpty()){
         Log.d("ORDER", "No invoice found");
         tvInvoice.setText("N/A");
         adapter.notifyDataSetChanged();
@@ -916,9 +920,13 @@ public void onResponse(Call<OrderDetailsResponse> call,
     for (OrderDetailsResponse.InvoiceItem invoice : data.getItems()) {
 
         // ---------------- HEADER (MULTIPLE INVOICE) ----------------
-        if (invoice.getInvoiceNo() != null) {
-            invoiceBuilder.append(invoice.getInvoiceNo()).append(", ");
 
+        String invoiceNo = invoice.getInvoiceNo();
+
+        if (invoiceNo != null && !invoiceNo.trim().isEmpty() && !invoiceNo.equals("0")) {
+            invoiceBuilder.append(invoiceNo).append(", ");
+        } else {
+            tvInvoice.setText("N/A");
         }
 
         // ---------------- ITEMS ----------------
@@ -961,6 +969,7 @@ public void onResponse(Call<OrderDetailsResponse> call,
 
     Log.d("ORDER_SUCCESS", "Total Items: " + itemList.size());
 }
+
 
         @Override
         public void onFailure(Call<OrderDetailsResponse> call, Throwable t) {

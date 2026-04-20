@@ -8,12 +8,13 @@
     android:layout_marginTop="1dp">
     <include
         android:id="@+id/invoiceid"
-        layout="@layout/item_invoice_header" />
+        layout="@layout/item_invoice_header"
+        android:visibility="visible"/>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="20dp"
-        android:layout_marginTop="40dp">
+        android:padding="10dp"
+        android:layout_marginTop="45dp">
 
         <ImageView
             android:id="@+id/img_product"
@@ -25,22 +26,19 @@
 
         <TextView
             android:id="@+id/tv_billed_tag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_below="@+id/img_product"
             android:layout_alignStart="@id/img_product"
             android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
             android:layout_marginTop="15dp"
             android:background="#4CAF50"
-            android:paddingStart="10dp"
-            android:paddingRight="20dp"
-            android:paddingEnd="8dp"
-            android:text="Billed"
-            android:textColor="@android:color/white"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:visibility="visible" />
+            android:gravity="center"
+        android:text="Billed"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/linearLayout2"
@@ -116,6 +114,15 @@
 
             <TextView
                 android:id="@+id/tv_order_qty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="180/180 Unit(s)"
+                android:textColor="@android:color/black"
+                android:textSize="17sp"
+                android:visibility="gone" />
+            <TextView
+                android:id="@+id/tv_remain_qty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"

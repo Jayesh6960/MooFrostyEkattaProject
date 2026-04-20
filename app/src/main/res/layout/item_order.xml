@@ -115,7 +115,7 @@
                 <TextView
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:text="Items Billed" />
+                    android:text="Items \n Billed/Ordered" />
                 <TextView
                     android:id="@+id/tv_items_billed"
                     android:layout_width="wrap_content"

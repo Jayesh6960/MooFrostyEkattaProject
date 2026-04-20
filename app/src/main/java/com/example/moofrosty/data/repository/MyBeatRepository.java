@@ -551,7 +551,7 @@ public class MyBeatRepository {
             @Override
             public void onResponse(Call<StoreListWrapperResponse> call, Response<StoreListWrapperResponse> response) {
                 if(response.isSuccessful() && response.body() != null) {
-                    Log.d(TAG, "GLOBAL COUNT (Visited): " + response.body().getCount());
+                    Log.d("GLOBAL COUNT (Visited): ", "GLOBAL COUNT (Visited): " + response.body().getCount());
                     visitedCount.postValue(response.body().getCount());
                 }
             }

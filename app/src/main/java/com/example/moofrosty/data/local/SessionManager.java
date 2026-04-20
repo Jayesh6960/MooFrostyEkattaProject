@@ -492,6 +492,12 @@ public class SessionManager {
     public void updateUserStatus(int status) {
     }
 
+    public void setOrderTaken(boolean b) {
+        editor.putBoolean(KEY_ORDER_TAKEN, b);
+        editor.apply();
+    }
+    }
+
 //    public void setOrderTaken(boolean isTaken) {
 //        SharedPreferences.Editor editor = sharedPreferences.edit();
 //        editor.putBoolean(KEY_ORDER_TAKEN, isTaken);
@@ -501,4 +507,4 @@ public class SessionManager {
 //        return sharedPreferences.getBoolean(KEY_ORDER_TAKEN, false);
 //    }
 
-}
+

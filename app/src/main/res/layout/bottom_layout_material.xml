@@ -61,13 +61,15 @@
         app:hintTextColor="@color/Purple_Color"
         app:cursorColor="@color/Purple_Color"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:hint="Beat Name">
+        android:hint="Beat Name"
+        android:visibility="gone">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tvBeat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="false"
+            android:visibility="gone"
             android:text="BIDKIN" />
     </com.google.android.material.textfield.TextInputLayout>
 

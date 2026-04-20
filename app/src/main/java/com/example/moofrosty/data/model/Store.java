@@ -129,6 +129,8 @@ package com.example.moofrosty.data.model;
 
 import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Store implements Serializable {
 
@@ -177,13 +179,29 @@ public class Store implements Serializable {
 
     public String getOwnerName() { return ownerName; }
 
-    public String getAddress() {
-        if (address != null && !address.isEmpty()) {
-            String[] parts = address.split("#");
-            return android.text.TextUtils.join(", ", parts);
+//    public String getAddress() {
+//        if (address != null && !address.isEmpty()) {
+//            String[] parts = address.split("#");
+//            return android.text.TextUtils.join(", ", parts);
+//        }
+//        return "";
+//    }
+public String getAddress() {
+    if (address != null && !address.isEmpty()) {
+
+        String[] parts = address.split("#");
+        List<String> cleanParts = new ArrayList<>();
+
+        for (String part : parts) {
+            if (part != null && !part.trim().isEmpty()) {
+                cleanParts.add(part.trim());
+            }
         }
-        return "";
+
+        return android.text.TextUtils.join(", ", cleanParts);
     }
+    return "";
+}
 
     // Lat/Lng Helpers
     public double getLat() {

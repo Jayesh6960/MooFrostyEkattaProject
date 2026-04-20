@@ -30,6 +30,7 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
 //        this.orderStatus = orderStatus;
 //    }
     private final ArrayList<OrderDetailsResponse.OrderItem> itemList;
+    private ArrayList<OrderDetailsResponse.InvoiceItem> itemList1 = new ArrayList<>();
 
     public OrderDetailsAdapter(ArrayList<OrderDetailsResponse.OrderItem> itemList, int orderStatus) {
         this.itemList = itemList;
@@ -51,7 +52,9 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bind(itemList.get(position));
+//
     }
+
 
 
     @Override
@@ -59,9 +62,15 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
         return itemList != null ? itemList.size() : 0;
     }
 
+//    public void setData(List<InvoiceUIModel> finalList) {
+//        itemList.clear();
+//        itemList.addAll(finalList);
+//        notifyDataSetChanged();
+//    }
+
     static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imgProduct;
-        TextView tvProductName, tvMrp, tvBilledQty, tvOrderQty,tvAmount, tvDiscountPercent, tvBilledTag, tvbilledvalue,tvorderTag, tvordervalue, tvinvoice;
+        TextView tvProductName, tvMrp, tvBilledQty, tvOrderQty,tvAmount, tvDiscountPercent, tvBilledTag, tvbilledvalue,tvorderTag, tvordervalue, tvinvoice,tvremian;
         ;
 
         public ViewHolder(@NonNull View itemView) {
@@ -71,6 +80,8 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
             tvMrp = itemView.findViewById(R.id.tv_mrp);
             tvBilledQty = itemView.findViewById(R.id.tv_billed_qty);
             tvOrderQty = itemView.findViewById(R.id.tv_order_qty);
+            tvremian=itemView.findViewById(R.id.tv_remain_qty);
+
 
             // Assuming you have a TextView for the item amount, if not, add one to XML
             tvAmount = itemView.findViewById(R.id.tv_item_amount);
@@ -137,11 +148,23 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
 //                    .into(imgProduct);
 //        }
 //        }
+        @SuppressLint("SetTextI18n")
+
+        public void bind(OrderDetailsResponse.InvoiceItem item1)
+
+        {
+            if (item1.getInvoiceNo() != null) {
+                tvMrp.setText("Invoice               : ₹" + item1.getInvoiceNo());
+            }
+            if (item1.getInvoiceNo() != null) {
+                tvMrp.setText("Invoice              : ₹" + item1.getInvoiceNo());
+            }
+        }
 //
         @SuppressLint("SetTextI18n")
 
         public void bind(OrderDetailsResponse.OrderItem item) {
-            OrderDetailsResponse.InvoiceItem invoice =new OrderDetailsResponse.InvoiceItem();
+
             // [HIGHLIGHT] Fetching Flat Product Name
             tvProductName.setText(item.getProductDetails().productName != null ? item.getProductDetails().productName : "Unknown Product");
             tvProductName.setText(item.getProductDetails().productName != null ? item.getProductDetails().productName : "Unknown Product");
@@ -186,12 +209,18 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
 //                // [HIGHLIGHT] 6. Discount & Status Logic
 //                // Only show discount if Order Status is 1 (Billed)
             if (item.getStatus() == 1) {
+                if (item.getInvoiceNo() == null) {
+                tvinvoice.setVisibility(View.VISIBLE);
+                Log.d("Invoice","bind: "+"--");
+                tvinvoice.setText("--");
+            }
+
                 if (item.getInvoiceNo() != null) {
-                    tvinvoice.setVisibility(View.INVISIBLE);
-                    Log.d("Invoice","bind: "+item.getInvoiceNo());
-                    tvinvoice.setText("Invoice No : " + item.getInvoiceNo());
+                    tvinvoice.setVisibility(View.VISIBLE);
+                    Log.d("Invoice","bind: "+"--");
+                    tvinvoice.setText("--");
                 } else {
-                    tvinvoice.setVisibility(View.INVISIBLE);
+                    tvinvoice.setVisibility(View.VISIBLE);
                 }
 
 
@@ -218,6 +247,12 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
                 } else {
                     tvOrderQty.setVisibility(View.GONE);
                 }
+//                if (item.getOrderQty() != null) {
+//                    tvremian.setVisibility(View.VISIBLE);
+//                    tvremian.setText("Remain QTY    : " + item.getRemainingQty() + " Unit(s)");
+//                } else {
+//                    tvremian.setVisibility(View.GONE);
+//                }
                 if (item.getStatus() == 0) {
                     // Item was discarded
                     tvBilledTag.setText("Not Billed");

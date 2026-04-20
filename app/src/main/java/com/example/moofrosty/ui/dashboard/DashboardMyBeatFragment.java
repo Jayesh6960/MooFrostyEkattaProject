@@ -185,6 +185,7 @@ public class DashboardMyBeatFragment extends Fragment {
         viewModel.getFilteredStores().observe(getViewLifecycleOwner(), stores -> {
             storeAdapter.updateList(stores);
             searchBar.setHint(stores.size() + " Outlet(S)");
+            Log.d("Visited", "Visted"+stores.size());
             if(stores.isEmpty()) tvNoData.setVisibility(View.VISIBLE);
             else tvNoData.setVisibility(View.GONE);
         });
@@ -242,7 +243,9 @@ public class DashboardMyBeatFragment extends Fragment {
             @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
                 viewModel.onSearchQueryChanged(s.toString());
             }
-            @Override public void afterTextChanged(Editable s) {}
+            @Override public void afterTextChanged(Editable s) {
+                viewModel.onSearchQueryChanged(s.toString());
+            }
         });
 
         btnMap.setOnClickListener(v -> {
