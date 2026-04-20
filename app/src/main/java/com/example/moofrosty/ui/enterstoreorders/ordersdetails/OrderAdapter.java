@@ -1,5 +1,6 @@
 package com.example.moofrosty.ui.enterstoreorders.ordersdetails;
 
+import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 import android.annotation.SuppressLint;
@@ -114,7 +115,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                 tvOrderStatus.setTextColor(Color.parseColor("#0D6EfD"));
                 tvOrderStatus.setBackgroundResource(R.drawable.tab_unselected_bg);
                 // [HIGHLIGHT] Hide Bill Value Row
-                llBillValueRow.setVisibility(VISIBLE);
+                llBillValueRow.setVisibility(GONE);
             }
 
 //            String currentUnit = (order.currentUnit != null && !order.currentUnit.isEmpty()) ? order.currentUnit : "0";
@@ -140,6 +141,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                 double billValue = order.orderSummary.billValue;
 
                 // Amount display
+//                ordervalue=unit*rateofitem
                 tvOrderValue.setText(String.format(Locale.getDefault(), ": ₹%.2f", orderValue));
                 tvBillValue.setText(String.format(Locale.getDefault(), ": ₹%.2f", billValue));
 
@@ -152,7 +154,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                     Log.d("order.orderSummary.totalunits", "order.orderSummary.units" + order.orderSummary.totalUnits);
                 } else if (order.status == 0) {
                     // Billed → show BillQty/Total
-                    tvItemsBilled.setText(": " + totalUnits + "/" + totalUnits);
+                    tvItemsBilled.setText(": " + 0+ "/" + totalUnits);
                 } else {
                     // Optional fallback (for discard or others)
                     tvItemsBilled.setText(": " + billQty + "/" + totalUnits);

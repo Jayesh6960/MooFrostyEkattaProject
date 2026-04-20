@@ -1,6 +1,7 @@
 package com.example.moofrosty.ui.newstorecreation;
 
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +65,7 @@ public class NewStoreListAdapter extends RecyclerView.Adapter<NewStoreListAdapte
         }
 
         holder.itemView.setOnClickListener(v -> listener.onItemClick(item));
+        Log.d("Storelist :", "Storelist ");
 
 //        StoreCreationModel item = list.get(position);
 //        holder.tvName.setText(item.getStoreName());

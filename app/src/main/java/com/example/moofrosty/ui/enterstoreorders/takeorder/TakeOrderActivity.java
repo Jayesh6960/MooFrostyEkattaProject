@@ -87,7 +87,7 @@
             private SessionManager sessionManager;
             private Store currentStore;
             private ProgressDialog progressDialog;
-            private boolean isOrderTaken = false;//fales no Order not taken  0
+             boolean isOrderTaken = false;//fales no Order not taken  0
 
 
 
@@ -672,6 +672,7 @@ private void showCheckOutDialog() {
                         progressDialog.dismiss();
                         // Show success message from API if available, else default
                         String msg = resource.data != null ? resource.data.getMessage() : "Checked Out Successfully";
+
                         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
                         performExitLogic();
 

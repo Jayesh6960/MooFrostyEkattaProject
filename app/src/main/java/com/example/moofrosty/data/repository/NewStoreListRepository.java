@@ -1,5 +1,7 @@
 package com.example.moofrosty.data.repository;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.moofrosty.core.network.ApiClient;
@@ -71,12 +73,15 @@ public class NewStoreListRepository {
                                 liveData.postValue(Resource.success(response.body().getStoreList())
                                 );
                             } else {
-                                liveData.postValue(Resource.error("No data found", null)
-                                );
+                                liveData.postValue(Resource.error("No data found", null));
+                                Log.d("No Data Found", "Date not found error ");
+
                             }
                         } else {
                             liveData.postValue(Resource.error("Failed to load stores", null)
+
                             );
+                            Log.d("No Data Found", "Date not found error ");
                         }
                     }
                     @Override

@@ -106,9 +106,9 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.CartI
         // 6. Click Listeners
         btnCheckout.setOnClickListener(v -> {
             handleCheckout();
-            Intent intent = new Intent(CartActivity.this, TakeOrderActivity.class);
-            intent.putExtra("IS_ORDER_TAKEN", true); // ✅ IMPORTANT
-            startActivity(intent);
+//            Intent intent = new Intent(CartActivity.this, TakeOrderActivity.class);
+//            intent.putExtra("IS_ORDER_TAKEN", true); // ✅ IMPORTANT
+//            startActivity(intent);
         });
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
     }
@@ -123,6 +123,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.CartI
             return;
         }
         cartViewModel.checkout();
+
     }
 
     private void setupObservers() {
@@ -161,6 +162,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.CartI
                         break;
                     case SUCCESS:
                         progressBar.setVisibility(View.GONE);
+                        btnCheckout.setEnabled(false);
                     //    Toast.makeText(this, "Order Placed Successfully!", Toast.LENGTH_LONG).show();
                         showSuccessDialog();
                     //    finish();
@@ -214,6 +216,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.CartI
 //    }
 
     private void showSuccessDialog() {
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         // Inflate the custom layout
         View dialogView = getLayoutInflater().inflate(R.layout.layout_order_success_overlay, null);
@@ -225,9 +228,27 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.CartI
         }
         // Find button and set click listener
         Button btnDone = dialogView.findViewById(R.id.btn_continue_shopping);
+//        boolean isOrderTaken = false;
+//        btnDone.setOnClickListener(v -> {
+//            dialog.dismiss();
+//            Intent intent = new Intent(CartActivity.this, TakeOrderActivity.class);
+//            intent.putExtra("IS_ORDER_TAKEN", isOrderTaken);  // or your variable
+//            startActivity(intent);
+//            finish(); // Finish activity when button clicked
+//        });
+
+        SessionManager sessionManager = new SessionManager(CartActivity.this);
+
         btnDone.setOnClickListener(v -> {
             dialog.dismiss();
-            finish(); // Finish activity when button clicked
+
+            sessionManager.setOrderTaken(true);  // ✅ set ONLY on Done click
+
+            Intent intent = new Intent(CartActivity.this, TakeOrderActivity.class);
+            intent.putExtra("IS_ORDER_TAKEN", true);  // optional (can keep or remove)
+
+            startActivity(intent);
+            finish();
         });
         dialog.setCancelable(false); // Prevent closing by clicking outside
         dialog.show();

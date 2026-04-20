@@ -257,7 +257,7 @@ public class StoreProfileActivity extends AppCompatActivity {
                 }
 
                 // Continue your existing flow
-                fetchLocationAndProceed();
+//                fetchLocationAndProceed();
                 checkGpsAndProceed();
             }
         });
@@ -340,8 +340,13 @@ public class StoreProfileActivity extends AppCompatActivity {
         progressDialog.show();
 
         // High accuracy request
+//        LocationRequest locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 1000)
+//                .setWaitForAccurateLocation(true)
+//                .setMaxUpdates(1)
+//                .build();
+        //Low Accuarya code
         LocationRequest locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 1000)
-                .setWaitForAccurateLocation(true)
+                .setWaitForAccurateLocation(false)
                 .setMaxUpdates(1)
                 .build();
 
