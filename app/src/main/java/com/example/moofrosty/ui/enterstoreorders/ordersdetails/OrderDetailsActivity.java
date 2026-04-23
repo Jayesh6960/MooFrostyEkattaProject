@@ -907,6 +907,9 @@ public void onResponse(Call<OrderDetailsResponse> call,
 
     itemList.clear();
 
+    // ✅ VERY IMPORTANT (for adapter grouping)
+    OrderDetailsAdapter.ViewHolder.lastInvoiceNo = "";
+
     if (data.getItems() == null || data.getItems().isEmpty()){
         Log.d("ORDER", "No invoice found");
         tvInvoice.setText("N/A");
@@ -919,46 +922,39 @@ public void onResponse(Call<OrderDetailsResponse> call,
     // ✅ LOOP ALL INVOICES
     for (OrderDetailsResponse.InvoiceItem invoice : data.getItems()) {
 
-        // ---------------- HEADER (MULTIPLE INVOICE) ----------------
-
         String invoiceNo = invoice.getInvoiceNo();
 
+        // ✅ Collect invoice numbers
         if (invoiceNo != null && !invoiceNo.trim().isEmpty() && !invoiceNo.equals("0")) {
             invoiceBuilder.append(invoiceNo).append(", ");
-        } else {
-            tvInvoice.setText("N/A");
         }
 
-        // ---------------- ITEMS ----------------
+        // ✅ Attach invoice to each item
         if (invoice.getItems() != null && !invoice.getItems().isEmpty()) {
 
-            itemList.addAll(invoice.getItems());
-
-            // Debug each product
             for (OrderDetailsResponse.OrderItem item : invoice.getItems()) {
 
-                String productName = "No Product";
+                item.setInvoiceNo(invoiceNo); // ⭐ KEY LINE
 
-                if (item.getProductDetails() != null &&
-                        item.getProductDetails().getProductName() != null) {
+                itemList.add(item);
 
-                    productName = item.getProductDetails().getProductName();
-                }
-//    Log.d("INVOICE_PRODUCT",
-//            "Invoice: " + invoiceNo +
-//                    " Product: " + item.getProductDetails().getProductName());
+                // Debug
+                String productName =
+                        (item.getProductDetails() != null &&
+                                item.getProductDetails().getProductName() != null)
+                                ? item.getProductDetails().getProductName()
+                                : "No Product";
 
                 Log.d("ORDER_ITEM",
-                        "Product: " + productName +
-                                " | Qty: " + item.getBilledQty() +
-                                " | Price: " + item.getProductSellingPrice());
+                        "Invoice: " + invoiceNo +
+                                " | Product: " + productName +
+                                " | Qty: " + item.getBilledQty());
             }
         }
     }
 
-    // ✅ SET ALL INVOICE NUMBERS
+    // ✅ Set header invoices
     if (invoiceBuilder.length() > 0) {
-        // Remove last comma
         invoiceBuilder.setLength(invoiceBuilder.length() - 2);
         tvInvoice.setText(invoiceBuilder.toString());
     } else {

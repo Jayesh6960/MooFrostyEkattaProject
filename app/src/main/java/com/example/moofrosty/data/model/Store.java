@@ -129,8 +129,6 @@ package com.example.moofrosty.data.model;
 
 import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Store implements Serializable {
 
@@ -187,20 +185,15 @@ public class Store implements Serializable {
 //        return "";
 //    }
 public String getAddress() {
-    if (address != null && !address.isEmpty()) {
+    if (address == null || address.trim().isEmpty()) return "";
 
-        String[] parts = address.split("#");
-        List<String> cleanParts = new ArrayList<>();
-
-        for (String part : parts) {
-            if (part != null && !part.trim().isEmpty()) {
-                cleanParts.add(part.trim());
-            }
-        }
-
-        return android.text.TextUtils.join(", ", cleanParts);
+    String[] parts = address.split("#");
+    for (int i = 0; i < parts.length; i++) {
+        parts[i] = (parts[i] == null || "null".equalsIgnoreCase(parts[i].trim()))
+                ? ""
+                : parts[i].trim();
     }
-    return "";
+    return android.text.TextUtils.join(", ", parts);
 }
 
     // Lat/Lng Helpers
@@ -248,5 +241,23 @@ public String getAddress() {
 
     public void setOrderValue(double orderValue) {
         this.orderValue = orderValue;
+    }
+
+    public void setShopId(int shopId) {
+        this.shopId = shopId;
+    }
+
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
+    }
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
+    }
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+
     }
 }

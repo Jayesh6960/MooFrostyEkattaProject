@@ -1,6 +1,7 @@
 package com.example.moofrosty.ui.store;
 
 import android.location.Location;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -83,7 +84,8 @@ public class StoreProfileViewModel extends ViewModel {
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         String time = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
 
-        CheckInRequest request = new CheckInRequest(shopId, date, time, "in");
+        CheckInRequest request = new CheckInRequest(shopId, date, time, "in", "Store Entry");
+        Log.d("SHOPID", "SHOPID"+shopId);
 
         repository.enterStore(token, request, checkInStatus);
     }

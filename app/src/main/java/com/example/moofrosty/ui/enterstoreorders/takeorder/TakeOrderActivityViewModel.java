@@ -1,5 +1,7 @@
 package com.example.moofrosty.ui.enterstoreorders.takeorder;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -33,8 +35,11 @@ public class TakeOrderActivityViewModel extends ViewModel {
 
         // 2. Create Request (storein = "out")
         CheckInRequest request = new CheckInRequest(shopId, date, time, "out", reason);
+        Log.d("VM_REASON", "Received reason: " + reason);
 
         // 3. Call Repo
         repository.checkOutStore(token, request, checkoutStatus);
     }
+
+
 }

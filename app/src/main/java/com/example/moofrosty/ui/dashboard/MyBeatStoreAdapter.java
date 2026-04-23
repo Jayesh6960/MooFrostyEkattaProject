@@ -3,6 +3,7 @@ package com.example.moofrosty.ui.dashboard;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +46,7 @@ public class MyBeatStoreAdapter
     public void updateList(List<Store> newStores) {
         dismissTooltip();
         this.stores = newStores;
+        Log.d("updateList: ", "updateList: "+newStores.size());
         notifyDataSetChanged();
 }
 

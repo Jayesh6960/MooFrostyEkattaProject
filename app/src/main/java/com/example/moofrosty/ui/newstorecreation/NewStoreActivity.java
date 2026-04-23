@@ -230,7 +230,7 @@ public class NewStoreActivity extends AppCompatActivity {
         TextView tvBusiness = dialog.findViewById(R.id.tv_business);
 
         tvProposalId.setText("--" + item.getShopId());
-        tvStoreId.setText(""+(item.getShopId() == 0 ? "1" : item.getShopId()));
+        tvStoreId.setText("CSN_"+(item.getShopId() == 0 ? "1" : item.getShopId()));
         tvStoreName.setText(item.getStoreName());
         tvMobile.setText(item.getMobileNumber());
 
@@ -240,6 +240,7 @@ public class NewStoreActivity extends AppCompatActivity {
         tvStatus.setText(statusText);
 
         tvReason.setText("NA");
+//        tvAddress.setText(item.getAddress());
         tvAddress.setText(item.getAddress());
 
         tvDate.setText(item.getCreatedAt().substring(0, 10));
