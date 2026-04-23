@@ -69,7 +69,18 @@ public class StoreListResponse {
         public String getStoreName() { return storeName; }
         public String getOwnerName() { return ownerName; }
         public String getMobileNumber() { return mobileNumber; }
-        public String getAddress() { return address; }
+//        public String getAddress() { return address; }
+public String getAddress() {
+    if (address == null || address.trim().isEmpty()) return "";
+
+    String[] parts = address.split("#");
+    for (int i = 0; i < parts.length; i++) {
+        parts[i] = (parts[i] == null || "null".equalsIgnoreCase(parts[i].trim()))
+                ? ""
+                : parts[i].trim();
+    }
+    return android.text.TextUtils.join(", ", parts);
+}
         public String getCreatedAt() { return createdAt; }
         public int getBeatId() { return beatId; }
         public int getStatus() { return status; }

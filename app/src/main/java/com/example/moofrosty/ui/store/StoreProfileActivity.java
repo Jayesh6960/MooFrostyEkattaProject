@@ -54,6 +54,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -154,8 +155,14 @@ public class StoreProfileActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Processing...");
         progressDialog.setCancelable(false);
-        if (getIntent().getExtras() != null) {
-            currentStore = (Store) getIntent().getSerializableExtra("STORE_DATA");
+
+//        if (getIntent().getExtras() != null) {
+//            currentStore = (Store) getIntent().getSerializableExtra("STORE_DATA");
+//        }
+        Serializable data = getIntent().getSerializableExtra("STORE_DATA");
+
+        if (data instanceof Store) {
+            currentStore = (Store) data;
         }
 
         viewModel = new ViewModelProvider(this).get(StoreProfileViewModel.class);
@@ -170,6 +177,7 @@ public class StoreProfileActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.view_pager);
         btnEnterStore = findViewById(R.id.btn_enter_store);
         sessionManager = new SessionManager(this);
+
 
 
 
@@ -257,7 +265,7 @@ public class StoreProfileActivity extends AppCompatActivity {
                 }
 
                 // Continue your existing flow
-//                fetchLocationAndProceed();
+                fetchLocationAndProceed();
                 checkGpsAndProceed();
             }
         });
@@ -285,8 +293,17 @@ public class StoreProfileActivity extends AppCompatActivity {
                     Toast.makeText(this, resource.data, Toast.LENGTH_SHORT).show(); // "Check-in added successfully"
                     // Navigate to next screen
                     sessionManager.saveShopId(currentStore.getShopId());
+                    sessionManager.saveStoreName(currentStore.getStoreName());
+                    sessionManager.saveStoreDetails(
+                            currentStore.getShopId(),
+                            currentStore.getStoreName()
+                    );
+
                     Intent intent = new Intent(this, TakeOrderActivity.class); // Replace with your actual activity
                     intent.putExtra("STORE_DATA", currentStore);
+                    intent.putExtra("STORE_NAME", currentStore.getStoreName());
+
+                    Log.d("Store data:", "Store data");
                     startActivity(intent);
                     break;
 
@@ -345,7 +362,7 @@ public class StoreProfileActivity extends AppCompatActivity {
 //                .setMaxUpdates(1)
 //                .build();
         //Low Accuarya code
-        LocationRequest locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 1000)
+        LocationRequest locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10)
                 .setWaitForAccurateLocation(false)
                 .setMaxUpdates(1)
                 .build();

@@ -453,9 +453,25 @@ public class Step2ShopFragment extends Fragment {
 //
 //            if (!address3.isEmpty())
 //                fullAddress += "#" + address3;
-            String fullAddress = address1 + "#" + address2 + "#" + address3;
+            StringBuilder fullAddress = new StringBuilder();
 
-            viewModel.address = fullAddress;
+            if (address1 != null && !address1.trim().isEmpty()) {
+                fullAddress.append(address1.trim());
+            }
+
+            if (address2 != null && !address2.trim().isEmpty()) {
+                if (fullAddress.length() > 0) fullAddress.append("#");
+                fullAddress.append(address2.trim());
+            }
+
+            if (address3 != null && !address3.trim().isEmpty()) {
+                if (fullAddress.length() > 0) fullAddress.append("#");
+                fullAddress.append(address3.trim());
+            }
+
+            String finalAddress = fullAddress.toString();
+
+            viewModel.address = finalAddress;
             Log.d("STORE_CREATIONjjkj", "Address Line 1 : " + address1);
 //            Log.d("STORE_CREATION", "Address Line 2 : " + address2);
             Log.d("FullAddress", "Address Line 3 : " + fullAddress);

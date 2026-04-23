@@ -322,6 +322,13 @@ public class OrderDetailsResponse implements Serializable {
 
         @SerializedName("items")
         private List<OrderItem> items;
+        @SerializedName("discount_percent")
+        private String discountPercent;
+        public String getDiscountPercent() {
+            return discountPercent;
+        }
+
+
 
         public String getInvoiceNo() {
             return invoiceNo;
@@ -339,6 +346,8 @@ public class OrderDetailsResponse implements Serializable {
 
         @SerializedName("productDetails")
         private ProductDetail productDetails;
+        @SerializedName("discount_percent")
+        private String discountPercent;
 
         @SerializedName("order_qty")
         private String orderQty;
@@ -354,7 +363,10 @@ public class OrderDetailsResponse implements Serializable {
 
         @SerializedName("status")
         private int status;
+        @SerializedName("invoice_no")
         private String invoiceNo; // ✅ ADD THIS
+
+
 
         public String getInvoiceNo() {
             return invoiceNo;
@@ -363,6 +375,13 @@ public class OrderDetailsResponse implements Serializable {
         public void setInvoiceNo(String invoiceNo) {
             this.invoiceNo = invoiceNo;
         }
+        public String getDiscountPercent() {
+            return discountPercent;
+        }
+        public void setDiscountPercent(String discountPercent) {
+            this.discountPercent = discountPercent;
+        }
+
 
         public ProductDetail getProductDetails() {
             return productDetails;
@@ -477,5 +496,8 @@ public class OrderDetailsResponse implements Serializable {
             return productId;
         }
 
+        public String discount_percent() {
+            return discount_percent;
+        }
     }
 }

@@ -266,6 +266,7 @@ import android.os.Build;
 import androidx.core.content.ContextCompat;
 
 import com.example.moofrosty.data.model.LoginResponse;
+import com.example.moofrosty.data.model.Store;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -349,6 +350,13 @@ public class SessionManager {
     public void saveShopId(int shopId) {
         editor.putInt("shop_id", shopId);
         editor.apply();
+    }
+    public void saveStoreName(String storeName) {
+        editor.putString("store_name", storeName);
+        editor.apply();
+    }
+    public String getStoreName() {
+        return pref.getString("store_name", "");
     }
 
     public int getShopId() {
@@ -496,7 +504,36 @@ public class SessionManager {
         editor.putBoolean(KEY_ORDER_TAKEN, b);
         editor.apply();
     }
+
+
+    public boolean isOrderTaken() {
+        return pref.getBoolean(KEY_ORDER_TAKEN, false);
     }
+
+    public void setLastCheckoutReason(String s) {
+        editor.putString("last_checkout_reason", s);
+        editor.apply();
+
+    }
+    public void saveVisitedCount(int count) {
+        editor.putInt("visited_count", count);
+        editor.apply();
+    }
+
+    public int getVisitedCount() {
+        return pref.getInt("visited_count", 0);
+    }
+
+
+    public void saveStoreDetails(int shopId, String storeName) {
+        editor.putInt("shop_id", shopId);
+        editor.putString("store_name", storeName);
+        editor.apply();
+    }
+    public String getLastCheckoutReason() {
+        return pref.getString("last_checkout_reason", "");
+    }
+}
 
 //    public void setOrderTaken(boolean isTaken) {
 //        SharedPreferences.Editor editor = sharedPreferences.edit();

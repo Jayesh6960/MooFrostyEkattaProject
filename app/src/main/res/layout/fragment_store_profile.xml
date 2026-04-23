@@ -94,7 +94,7 @@
                         android:id="@+id/tv_phone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="9876543210"
+                        android:text="8080808080"
                         android:textStyle="bold"
                         android:textColor="#000"
                         android:textSize="18dp"

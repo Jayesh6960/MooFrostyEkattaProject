@@ -1,5 +1,7 @@
 package com.example.moofrosty.core.network;
 
+import android.util.Log;
+
 public class Constants {
 //    test
 //    user id  admin@example.com

@@ -32,6 +32,7 @@ import com.example.moofrosty.data.local.SessionManager;
 import com.example.moofrosty.data.model.BeatModel;
 import com.example.moofrosty.data.model.CalendarDateModel;
 import com.example.moofrosty.R;
+import com.example.moofrosty.data.model.Store;
 import com.example.moofrosty.data.repository.MyBeatRepository;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
@@ -159,15 +160,36 @@ public class DashboardMyBeatFragment extends Fragment {
 
                             // Update RecyclerView Adapter
                             storeAdapter.updateList(resource.data);
+                            for (Store s : resource.data) {
+                                Log.d("STORE_ITEM",
+                                        "ID: " + s.getShopId() +
+                                                ", Name: " + s.getStoreName() +
+                                                ", Visited: " + s.getIsVisitedApi() +
+                                                ", OrderTaken: " + s.getIsOrderTakenApi());
+                            }
 
                             tvNoData.setVisibility(View.GONE);
 
-                        } else {
+                        }
 
-                            // Handle empty data
+                        else {
+//
+//                            // Handle empty data
+//                            storeRecycler.setVisibility(View.GONE);
+//                            storeAdapter.updateList(new ArrayList<>());
+//
+//                            tvNoData.setVisibility(View.VISIBLE);
+                            List<Store> emptyList = new ArrayList<>();
+
+                            storeAdapter.updateList(emptyList);
                             storeRecycler.setVisibility(View.GONE);
-                            storeAdapter.updateList(new ArrayList<>());
                             tvNoData.setVisibility(View.VISIBLE);
+                            searchBar.setHint("0 Outlet(s)");
+
+                            sessionManager.saveVisitedCount(0);
+
+                            Log.d("EMPTY_STATE", "Data is null or empty");
+
                         }
                         break;
 
@@ -182,13 +204,57 @@ public class DashboardMyBeatFragment extends Fragment {
             }
         });
 //Store -->> Outlet
+//        viewModel.getFilteredStores().observe(getViewLifecycleOwner(), stores -> {
+//
+//            int countSearch = (stores != null) ? stores.size() : 0;
+//            Log.d("Visited", "Visitedxxx ");
+//
+//            storeAdapter.updateList(stores != null ? stores : new ArrayList<>());
+//
+//            searchBar.setHint(countSearch+ " Outlet(S)");
+//
+////            Log.d("Visited", "Visitedxxx " + countSearch);
+//
+//            if (stores == null || stores.isEmpty()) {
+//                tvNoData.setVisibility(View.VISIBLE);
+//            } else {
+//                tvNoData.setVisibility(View.GONE);
+//            }
+//        });
         viewModel.getFilteredStores().observe(getViewLifecycleOwner(), stores -> {
-            storeAdapter.updateList(stores);
-            searchBar.setHint(stores.size() + " Outlet(S)");
-            Log.d("Visited", "Visted"+stores.size());
-            if(stores.isEmpty()) tvNoData.setVisibility(View.VISIBLE);
-            else tvNoData.setVisibility(View.GONE);
+
+            int countSearch = (stores == null) ? 0 : stores.size();
+
+            Log.d("Visited", "Visitedxxx count = " + countSearch);
+
+            // ✅ Save count in SharedPreferences
+            sessionManager.saveVisitedCount(countSearch);
+
+            storeAdapter.updateList(stores != null ? stores : new ArrayList<>());
+
+            searchBar.setHint(countSearch + " Outlet(s)");
+
+            if (countSearch == 0) {
+                Log.d("ddddddd", "Count is ZERO");
+                tvNoData.setVisibility(View.VISIBLE);
+            } else {
+                tvNoData.setVisibility(View.GONE);
+            }
         });
+//        viewModel.getFilteredStores().observe(getViewLifecycleOwner(), newStores -> {
+//
+//            storeAdapter.updateList(newStores);
+//
+//
+//            int totalCount = viewModel.getTotalStoreCount();
+//
+//            searchBar.setHint(newStores.size()+ " Outlet(s)");
+//
+//            Log.d("Visited", "Filtered: " + newStores.size() + " | Total: " + totalCount);
+//
+//            tvNoData.setVisibility(newStores.isEmpty() ? View.VISIBLE : View.GONE);
+//        });
+//
 
 
 //        viewModel.getBeats().observe(getViewLifecycleOwner(), beats -> {
@@ -239,12 +305,17 @@ public class DashboardMyBeatFragment extends Fragment {
         }
 
         searchBar.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                viewModel.onSearchQueryChanged(s.toString());
+                Log.d("beforeTextChanged: ", "beforeTextChanged: "+count);
+            }
             @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
                 viewModel.onSearchQueryChanged(s.toString());
+                Log.d("onTextChanged: ", "beforeTextChanged: "+count);
             }
             @Override public void afterTextChanged(Editable s) {
                 viewModel.onSearchQueryChanged(s.toString());
+                Log.d("afterTextChanged: ", "beforeTextChanged: "+tvVisitedCount);
             }
         });
 
@@ -270,9 +341,14 @@ public class DashboardMyBeatFragment extends Fragment {
             @Override public void onTabSelected(TabLayout.Tab tab) {
                 storeAdapter.updateList(new ArrayList<>());
                 viewModel.onTabFilterChanged(tab.getText().toString());
+                Log.d("onTabSelected: ", "onTabSelected: ");
             }
-            @Override public void onTabUnselected(TabLayout.Tab tab) {}
-            @Override public void onTabReselected(TabLayout.Tab tab) {}
+            @Override public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+            @Override public void onTabReselected(TabLayout.Tab tab) {
+
+            }
         });
     }
 
@@ -280,6 +356,7 @@ public class DashboardMyBeatFragment extends Fragment {
     private void updateCountUI() {
         int total = viewModel.getRepoTotalCount().getValue() != null ? viewModel.getRepoTotalCount().getValue() : 0;
         int visited = viewModel.getRepoVisitedCount().getValue() != null ? viewModel.getRepoVisitedCount().getValue() : 0;
+        Log.d("updateCountUI: ", "updateCountUI: ");
         int ordered = viewModel.getRepoOrderCount().getValue() != null ? viewModel.getRepoOrderCount().getValue() : 0;
 
         tvVisitedCount.setText(visited + "/" + total);
@@ -339,12 +416,23 @@ public class DashboardMyBeatFragment extends Fragment {
         builder.setMultiChoiceItems(names, checked,
                 (d, which, isChecked) -> viewModel.onBeatSelectionChanged(which, isChecked));
 
+//        builder.setPositiveButton("OK", (d, which) -> {
+//            storeAdapter.updateList(new ArrayList<>());
+//            progressBar.setVisibility(View.VISIBLE);
+//            storeRecycler.setVisibility(View.GONE);
+//            tvNoData.setVisibility(View.GONE);
+//            viewModel.confirmBeatSelection();
+//        });
         builder.setPositiveButton("OK", (d, which) -> {
-            storeAdapter.updateList(new ArrayList<>());
+
             progressBar.setVisibility(View.VISIBLE);
             storeRecycler.setVisibility(View.GONE);
             tvNoData.setVisibility(View.GONE);
+
             viewModel.confirmBeatSelection();
+
+            TabLayout.Tab tab = tabLayoutFilter.getTabAt(0);
+            if (tab != null) tab.select();
         });
         AlertDialog dialog = builder.create();
         dialog.setCanceledOnTouchOutside(false);

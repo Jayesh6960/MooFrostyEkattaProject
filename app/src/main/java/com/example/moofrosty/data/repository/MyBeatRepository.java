@@ -133,6 +133,7 @@ public class MyBeatRepository {
                                 totalCountData,
                                 totalOrderValue
                         );
+                        Log.d("Intaly dahsboard data", "Intaly dahsboard data"+visitedCount);
 
                         // Fetch global counts
                         fetchGlobalCounts(token, beatIds, visitedCount, orderCount);
@@ -170,6 +171,7 @@ public class MyBeatRepository {
             fetchAllStores(token, beatIds, date, storesLiveData, totalCountData, totalOrderValue);
         } else if (filterType.equals("Visited")) {
             fetchVisitedStores(token, beatIds, date, storesLiveData);
+            Log.d("fetchStoresForTab: ", "fetchStoresForTab: " + filterType);
         } else {
             fetchDirectFilteredStores(token, beatIds, date, filterType, storesLiveData);
         }
@@ -461,7 +463,7 @@ public class MyBeatRepository {
 
                                     // convert API values to boolean
                                     boolean visited = s.getIsVisitedApi() == 1;
-                                    boolean orderTaken = s.getIsOrderTakenApi() == 0;
+//                                    boolean orderTaken = s.getIsOrderTakenApi() == 1;
 
                                     s.setVisited(visited);
 //                                    s.setOrderTaken(orderTaken);
@@ -472,7 +474,7 @@ public class MyBeatRepository {
 //                                    Log.d("STORE_DATA", "Order Taken: " + orderTaken);
 
                                     // ✅ Keep only if both are true
-                                    if (visited  && orderTaken) { 
+                                    if (visited ) {
                                         extractedList.add(s);
                                     }
                                 }
@@ -545,18 +547,50 @@ public class MyBeatRepository {
     public void fetchGlobalCounts(String token, String beatIds, MutableLiveData<Integer> visitedCount, MutableLiveData<Integer> orderCount) {
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
-        Log.d(TAG, "API REQUEST: fetchGlobalCounts | BeatIds: " + beatIds + " | Date: " + date);
+//        Log.d(TAG, "API REQUEST: fetchGlobalCounts | BeatIds: " + beatIds + " | Date: " + date);
 
-        apiService.getStoreListVisited(token, beatIds, date, "visited_shop").enqueue(new Callback<StoreListWrapperResponse>() {
-            @Override
-            public void onResponse(Call<StoreListWrapperResponse> call, Response<StoreListWrapperResponse> response) {
-                if(response.isSuccessful() && response.body() != null) {
-                    Log.d("GLOBAL COUNT (Visited): ", "GLOBAL COUNT (Visited): " + response.body().getCount());
-                    visitedCount.postValue(response.body().getCount());
-                }
-            }
-            @Override public void onFailure(Call<StoreListWrapperResponse> call, Throwable t) {}
-        });
+//        apiService.getStoreListVisited(token, beatIds, date, "visited_shop").enqueue(new Callback<StoreListWrapperResponse>() {
+//            @Override
+//            public void onResponse(Call<StoreListWrapperResponse> call, Response<StoreListWrapperResponse> response) {
+//                if(response.isSuccessful() && response.body() != null) {
+//                    Log.d("GLOBAL COUNT (Visited): ", "GLOBAL COUNT (Visited): " + response.body().getCount());
+//                    visitedCount.postValue(response.body().getCount());
+//                    Log.d("GLOBAL COUNT (Visited): ", "GLOBAL COUNT (Visited): " + response.body().getCount());
+//                }
+//
+//            }
+//            @Override public void onFailure(Call<StoreListWrapperResponse> call, Throwable t) {}
+//        });
+        apiService.getStoreListVisited(token, beatIds, date, "visited_shop")
+                .enqueue(new Callback<StoreListWrapperResponse>() {
+
+                    @Override
+                    public void onResponse(Call<StoreListWrapperResponse> call,
+                                           Response<StoreListWrapperResponse> response) {
+
+                        if (response.isSuccessful() && response.body() != null) {
+
+                            Integer count = response.body().getCount();
+
+                            if (count == null) {
+                                count = 0;
+                            }
+
+                            Log.d("VISITED_COUNT", "API Count: " + count);
+
+                            visitedCount.postValue(count);
+                        } else {
+                            Log.e("VISITED_COUNT", "Response failed or body null");
+                            visitedCount.postValue(0);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<StoreListWrapperResponse> call, Throwable t) {
+                        Log.e("VISITED_COUNT", "API Failure: " + t.getMessage(), t);
+                        visitedCount.postValue(0);
+                    }
+                });
 
         apiService.getStoreListByOrder(token, beatIds, date, "order_taken_shop").enqueue(new Callback<StoreListResponses>() {
             @Override

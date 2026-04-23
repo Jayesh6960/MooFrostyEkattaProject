@@ -30,6 +30,7 @@
 
     <!-- Store -->
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/outletname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -48,6 +49,7 @@
             android:textStyle="bold"
             android:textColor="@color/black"
             android:textSize="16sp"
+            android:visibility="visible"
             android:text="Laxmi Restaurant" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -75,9 +77,9 @@
 
     <!-- Reason (Material Dropdown) -->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilReason"
+        android:id="@+id/tilOrderTaken"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:hint="Reason"
         app:boxBackgroundMode="outline"
@@ -85,7 +87,28 @@
         app:boxStrokeColor="@color/Purple_Color"
         app:endIconTint="@color/Purple_Color"
         app:hintTextColor="@color/Purple_Color"
-        app:endIconMode="dropdown_menu">
+        android:visibility="gone">
+
+        <AutoCompleteTextView
+            android:id="@+id/spOrderTaken"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:textStyle="bold"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilReason"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="12dp"
+        android:hint="Reason"
+        app:boxBackgroundMode="outline"
+        android:visibility="visible"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        app:boxStrokeColor="@color/Purple_Color"
+        app:endIconTint="@color/Purple_Color"
+        app:hintTextColor="@color/Purple_Color">
 
         <AutoCompleteTextView
             android:id="@+id/spReason"
@@ -93,6 +116,7 @@
             android:textStyle="bold"
             android:layout_height="match_parent"
             android:paddingLeft="15sp"
+
             android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
 

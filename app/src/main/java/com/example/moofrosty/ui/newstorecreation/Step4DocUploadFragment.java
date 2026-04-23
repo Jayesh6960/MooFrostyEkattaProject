@@ -281,10 +281,12 @@ public class Step4DocUploadFragment extends Fragment {
 
             // 4️⃣ Location validation
             if (viewModel.latLong == null || viewModel.latLong.isEmpty()) {
+                Log.d("lOCATION ISSUE", "lOCATION ISSUE");
                 Toast.makeText(requireContext(),
                         "Fetching location, please wait",
                         Toast.LENGTH_SHORT).show();
                 return;
+
             }
 
             // 5️⃣ Network check

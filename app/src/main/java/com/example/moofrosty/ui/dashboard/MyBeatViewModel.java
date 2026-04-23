@@ -1,6 +1,7 @@
 package com.example.moofrosty.ui.dashboard;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -50,6 +51,11 @@ public class MyBeatViewModel extends AndroidViewModel {
     public void onTabFilterChanged(String tabName) {
         this.currentTabFilter = tabName;
         refreshDataFromApi();
+
+
+    }
+    public int getTotalStoreCount() {
+        return currentApiData != null ? currentApiData.size() : 0;
     }
 
     // Records the checkbox changes without calling API
@@ -138,20 +144,47 @@ public class MyBeatViewModel extends AndroidViewModel {
         applyLocalSearch();
     }
 
-    private void applyLocalSearch() {
-        List<Store> temp = new ArrayList<>();
-        if (currentApiData == null) currentApiData = new ArrayList<>();
+//    private void applyLocalSearch() {
+//        List<Store> temp = new ArrayList<>();
+//        if (currentApiData == null) currentApiData = new ArrayList<>();
+//
+//        for (Store s : currentApiData) {
+//            String name = s.getStoreName();
+//            if (name != null && name.toLowerCase().contains(currentSearchQuery.toLowerCase())) {
+//                temp.add(s);
+//            } else if (name == null && currentSearchQuery.isEmpty()) {
+//                temp.add(s);
+//            }
+//        }
+//        filteredStores.setValue(temp);
+//    }
+private void applyLocalSearch() {
+    List<Store> temp = new ArrayList<>();
 
-        for (Store s : currentApiData) {
-            String name = s.getStoreName();
-            if (name != null && name.toLowerCase().contains(currentSearchQuery.toLowerCase())) {
-                temp.add(s);
-            } else if (name == null && currentSearchQuery.isEmpty()) {
-                temp.add(s);
-            }
-        }
-        filteredStores.setValue(temp);
+    if (currentApiData == null) {
+        filteredStores.setValue(temp); // count = 0
+        return;
     }
+
+    String query = currentSearchQuery != null
+            ? currentSearchQuery.trim().toLowerCase()
+            : "";
+
+    for (Store s : currentApiData) {
+        String name = s.getStoreName();
+
+        if (name != null && name.toLowerCase().contains(query)) {
+            temp.add(s);
+        }
+    }
+
+    // 🔥 Final condition
+    if (temp.size() > 0) {
+        filteredStores.setValue(temp);   // show actual count
+    } else {
+        filteredStores.setValue(new ArrayList<>()); // force 0
+    }
+}
 
     // Getters
     public LiveData<Resource<List<Store>>> getStoresResource() { return storesResource; }

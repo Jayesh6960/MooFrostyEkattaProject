@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -14,6 +15,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -30,6 +33,7 @@ import com.example.moofrosty.data.local.SessionManager;
 import com.example.moofrosty.data.model.Product;
 import com.example.moofrosty.data.model.Store;
 import com.example.moofrosty.ui.enterstoreorders.takeorder.TakeOrderActivity;
+import com.example.moofrosty.ui.enterstoreorders.takeorder.TakeOrderActivityViewModel;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.card.MaterialCardView;
 
@@ -48,6 +52,10 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.CartI
     TextView btnCheckout;
     private ProgressBar progressBar;
     private SessionManager sessionManager;
+    private TakeOrderActivityViewModel takeOrderActivityViewModel;
+    private Store currentStore;
+
+
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -75,6 +83,9 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.CartI
         });
 
         // 2. Init Views
+        if (getIntent().getSerializableExtra("STORE_DATA") != null) {
+            currentStore = (Store) getIntent().getSerializableExtra("STORE_DATA");
+        }
         initViews();
 
         sessionManager = new SessionManager(this);
@@ -85,8 +96,9 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.CartI
         // 3. ViewModel & Session
         cartViewModel = new ViewModelProvider(this).get(CartViewModel.class);
         // Replace with actual session getters when available
-    //    int userId = 1;
-    //    int shopId = 3;
+        //    int userId = 1;
+        //    int shopId = 3;
+
         int userId = sessionManager.getUserId();
         int shopId = sessionManager.getShopId();
 
@@ -163,9 +175,9 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.CartI
                     case SUCCESS:
                         progressBar.setVisibility(View.GONE);
                         btnCheckout.setEnabled(false);
-                    //    Toast.makeText(this, "Order Placed Successfully!", Toast.LENGTH_LONG).show();
+                        //    Toast.makeText(this, "Order Placed Successfully!", Toast.LENGTH_LONG).show();
                         showSuccessDialog();
-                    //    finish();
+                        //    finish();
                         break;
                     case ERROR:
                         progressBar.setVisibility(View.GONE);
@@ -237,20 +249,44 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.CartI
 //            finish(); // Finish activity when button clicked
 //        });
 
-        SessionManager sessionManager = new SessionManager(CartActivity.this);
+//        SessionManager sessionManager = new SessionManager(CartActivity.this);
+
+//        btnDone.setOnClickListener(v -> {
+//            dialog.dismiss();
+//
+//            sessionManager.setOrderTaken(true);  // ✅ set ONLY on Done click
+//
+//            Intent intent = new Intent(CartActivity.this, TakeOrderActivity.class);
+//            if (currentStore != null) {
+//                intent.putExtra("STORE_DATA", currentStore);
+//            }
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            startActivity(intent);
+//            finish();
+//
+////            Intent intent = new Intent(CartActivity.this, TakeOrderActivity.class);
+////            intent.putExtra("IS_ORDER_TAKEN", true);  // optional (can keep or remove)
+////            startActivity(intent);
+////            finish();
+//        });
 
         btnDone.setOnClickListener(v -> {
             dialog.dismiss();
 
-            sessionManager.setOrderTaken(true);  // ✅ set ONLY on Done click
+            // [HIGHLIGHT] Save Order Taken State and Shop ID to Session
+            sessionManager.setOrderTaken(true);
+//            sessionManager.setLastCheckoutReason("Order Taken"); // Helper for logic
+            sessionManager.saveShopId(sessionManager.getShopId());
 
             Intent intent = new Intent(CartActivity.this, TakeOrderActivity.class);
-            intent.putExtra("IS_ORDER_TAKEN", true);  // optional (can keep or remove)
-
+            if (currentStore != null) {
+                intent.putExtra("STORE_DATA", currentStore);
+            }
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
             finish();
         });
-        dialog.setCancelable(false); // Prevent closing by clicking outside
+        dialog.setCancelable(false);
         dialog.show();
     }
 
@@ -272,11 +308,52 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.CartI
             cartViewModel.decrementUnit(p);
         }
     }
-    @Override public void onDeleteItem(Product p) {
-        cartViewModel.removeFromCart(p);
-    }
+
+    @Override public void onDeleteItem(Product p) { cartViewModel.removeFromCart(p); }
+
+//    @Override public void onDeleteItem(Product p) {
+//        cartViewModel.removeFromCart(p);
+//    }
+//    private ActivityResultLauncher<Intent> takeOrderLauncher =
+//            registerForActivityResult(
+//                    new ActivityResultContracts.StartActivityForResult(),
+//                    result -> {
+//                        if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+//
+//                            boolean isOrderTaken =
+//                                    result.getData().getBooleanExtra("IS_ORDER_TAKEN", false);
+//
+//                            String reason =
+//                                    result.getData().getStringExtra("REASON");
+//
+//                            String shopId =
+//                                    result.getData().getStringExtra("SHOP_ID");
+//
+//                            Log.d("FLOW", "Returned → " + isOrderTaken + ", " + reason);
+//
+//                            // ✅ Restore store safely
+//
+//                            if (currentStore.getStoreName() != null) {
+//                                currentStore.setShopId(currentStore.getShopId());
+//                            }
+//
+//                            // ✅ NOW open checkout dialog
+//                            openFinalCheckout(isOrderTaken, reason);
+//                        }
+//                    }
+//            );
+//
+//    private void openFinalCheckout(boolean isOrderTaken, String reason) {
+//        Intent intent = new Intent(CartActivity.this, TakeOrderActivity.class);
+//        intent.putExtra("IS_ORDER_TAKEN", isOrderTaken);
+//        intent.putExtra("REASON", reason);
+//        startActivity(intent);
+//    }
 }
 
+
+
+///   abpove code check for deleteitem and that intent
 
 //      //  checkoutBar = findViewById(R.id.checkout_bar);
 //        relativelayoutbottom = findViewById(R.id.main);
