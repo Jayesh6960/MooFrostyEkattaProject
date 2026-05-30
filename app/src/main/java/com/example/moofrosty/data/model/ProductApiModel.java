@@ -1,5 +1,7 @@
 package com.example.moofrosty.data.model;
 
+import android.util.Log;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;

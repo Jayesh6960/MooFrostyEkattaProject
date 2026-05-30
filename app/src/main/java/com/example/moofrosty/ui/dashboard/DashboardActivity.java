@@ -4,13 +4,19 @@ import static com.example.moofrosty.core.network.Resource.Status.ERROR;
 import static com.example.moofrosty.core.network.Resource.Status.LOADING;
 import static com.example.moofrosty.core.network.Resource.Status.SUCCESS;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +41,7 @@ import com.example.moofrosty.core.network.ApiClient;
 import com.example.moofrosty.core.network.ApiService;
 import com.example.moofrosty.data.local.SessionManager;
 import com.example.moofrosty.data.model.LoginResponse;
+import com.example.moofrosty.data.model.UpdateResponse;
 import com.example.moofrosty.data.model.UserDetailResponse;
 import com.example.moofrosty.data.model.UserStatusResponse;
 //import com.example.moofrosty.ui.ATMSummary.AtmSummaryActivity;
@@ -74,6 +81,7 @@ public class DashboardActivity extends BaseActivity{
 //    private TextView tvMocDropdown, tvTotalIncentives, tvViewMore;
 //    private RecyclerView recyclerView;
 
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +99,7 @@ public class DashboardActivity extends BaseActivity{
         btnMenu = findViewById(R.id.btn_menu);
         dashboardViewModel = new ViewModelProvider(this).get(DashboardViewModel.class);
         observeUserStatus();
+        setupversion();
         runnable = new Runnable() {
             @Override
             public void run() {
@@ -127,7 +136,7 @@ public class DashboardActivity extends BaseActivity{
         updateNavHeader();
         // 4. Click Listeners
 //        menu_fos
-        btnMenu.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
+
 
             navigationView.setNavigationItemSelectedListener(item -> {
                 int id = item.getItemId();
@@ -148,7 +157,15 @@ public class DashboardActivity extends BaseActivity{
                     startActivity(intent);
                     drawerLayout.closeDrawer(GravityCompat.START);
                     return true;
-                }else if (id == R.id.menu_logout) {
+                }
+//                else if (id == R.id.menu_atm) {
+////                     Open the New Store Creation List/History Page
+//                    Intent intent = new Intent(DashboardActivity.this, AtmSummaryActivity.class);
+//                    startActivity(intent);
+//                    drawerLayout.closeDrawer(GravityCompat.START);
+//                    return true;
+//                }
+                else if (id == R.id.menu_logout) {
                     sessionManager.logout();
                     Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
                     startActivity(intent);
@@ -182,7 +199,61 @@ public class DashboardActivity extends BaseActivity{
 //        checkUserActiveStatus();
         handler.post(runnable);
     }
+    //only change in  the  UI  that  is  the  visibliity  === visible
+    public  void setupversion(){
+        btnMenu.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
+        View footerView = getLayoutInflater().inflate(R.layout.nav_footer, navigationView, false);
 
+        NavigationView navigationView = findViewById(R.id.nav_view);
+
+// Footer Text
+        TextView tvVersion = findViewById(R.id.tvVersion);
+//  in the above code we have  added the code for the to updated the application based on the hyperlink
+        try {//version inside the application===1.5
+            String versionName = getPackageManager()
+                    .getPackageInfo(getPackageName(), 0)
+                    .versionName;
+            String Oldversion = String.valueOf(1.14);//change last version  and updated the second last version
+            tvVersion.setText("Version " + Oldversion);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                tvVersion.setTooltipText("Download latest version");
+            }
+
+            tvVersion.setOnClickListener(v -> {
+
+                AlertDialog dialog = new AlertDialog.Builder(this)
+                        .setTitle("Download Update")
+                        .setMessage("Do you want to download the latest version?")
+                        .setPositiveButton("Download", (d, which) -> {
+
+                            tvVersion.setTextColor(Color.BLUE);
+//                            String url = "https://moofrosty.in/admin-assets/apk/Moofrosty_Version_"
+//                                    + versionName + ".apk";
+                            String url = "https://moofrosty.in/admin-assets/apk/Moofrosty_Version_"+versionName+".apk";
+//                            String url = "https://moofrosty.in/admin-assets/apk/Moofrosty_latest"+".apk";
+                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                            startActivity(intent);
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .create();
+
+                dialog.show();
+
+                // 🔥 Set button colors AFTER show()
+                Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+
+                positiveButton.setTextColor(ContextCompat.getColor(this, R.color.Purple_Color));
+                negativeButton.setTextColor(ContextCompat.getColor(this, R.color.Purple_Color));
+
+                positiveButton.setTypeface(null, Typeface.BOLD);
+                negativeButton.setTypeface(null, Typeface.BOLD);
+            });
+
+        } catch (Exception e) {
+            tvVersion.setText("Version N/A");
+        }
+    }
 
     private void setupBackPressHandler() {
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
@@ -279,7 +350,7 @@ public class DashboardActivity extends BaseActivity{
 //        Log.d("StatusCheck", "Token: " + token);
 //        Log.d("StatusCheck", "URL: " + call.request().url());
 //
-//        call.enqueue(new Callback<UserDetailResponse>() {
+//        callsete .enqueue(new Callback<UserDetailResponse>() {
 //
 //            @Override
 //            public void onResponse(Call<UserDetailResponse> call, Response<UserDetailResponse> response) {

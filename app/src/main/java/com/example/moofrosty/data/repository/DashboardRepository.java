@@ -1,6 +1,11 @@
 package com.example.moofrosty.data.repository;
 
+import static androidx.browser.customtabs.CustomTabsClient.getPackageName;
+
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
 
@@ -8,7 +13,9 @@ import com.example.moofrosty.core.network.ApiClient;
 import com.example.moofrosty.core.network.ApiService;
 import com.example.moofrosty.core.network.Resource;
 import com.example.moofrosty.data.model.DashboardItem;
+import com.example.moofrosty.data.model.UpdateResponse;
 import com.example.moofrosty.data.model.UserDetailResponse;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,6 +83,10 @@ public class DashboardRepository {
                 if (response.isSuccessful() && response.body() != null) {
 
                     UserDetailResponse resp = response.body();
+                    Gson gson = new Gson();
+                    String jsonResponse = gson.toJson(resp);
+
+                    Log.d("FULL_JSON_RESP0ONSE_UserDetails", jsonResponse);
 
                     if (resp.getData() != null) {
 
@@ -100,6 +111,83 @@ public class DashboardRepository {
             }
         });
     }
+//    public void checkAppUpdate() {
+//
+//        ApiService apiService = ApiClient.getApi();
+//
+//        Call<UpdateResponse> call = apiService.checkAppUpdate();
+//
+//        call.enqueue(new retrofit2.Callback<UpdateResponse>() {
+//            @Override
+//            public void onResponse(Call<UpdateResponse> call, retrofit2.Response<UpdateResponse> response) {
+//
+//                if (response.isSuccessful() && response.body() != null) {
+//
+//                    UpdateResponse data = response.body();
+//
+//                    int latestVersionCode = data.getLatestVersionCode();
+//                    String apkUrl = data.getApkUrl();
+//                    boolean forceUpdate = data.isForceUpdate();
+//                    String message = data.getUpdateMessage();
+//
+//                    try {
+//                        int currentVersionCode = getPackageManager()
+//                                .getPackageInfo(getPackageName(), 0).versionCode;
+//
+//                        if (latestVersionCode > currentVersionCode) {
+//
+//                            if (forceUpdate) {
+//                                showForceUpdateDialog(apkUrl, message);
+//                            } else {
+//                                showOptionalUpdateDialog(apkUrl, message);
+//                            }
+//
+//                        } else {
+//                            Toast.makeText(getApplicationContext(),
+//                                    "You are using the latest version",
+//                                    Toast.LENGTH_SHORT).show();
+//                        }
+//
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                }
+//            }
+//
+////            private String getPackageName() {
+////                return null;
+////            }
+////
+////            private void showOptionalUpdateDialog(String apkUrl, String message) {
+////                Toast.makeText(getApplicationContext(),
+////                        "Optional Update",
+////                        Toast.LENGTH_SHORT).show();
+////            }
+////
+////            private void showForceUpdateDialog(String apkUrl, String message) {
+////                Toast.makeText(getApplicationContext(),
+////                        "Force Update",
+////                        Toast.LENGTH_SHORT).show();
+////            }
+//
+//            private PackageManager getPackageManager() {
+//                return null;
+//            }
+//
+//            private Context getApplicationContext() {
+//                return null;
+//            }
+//
+//            @Override
+//            public void onFailure(Call<UpdateResponse> call, Throwable t) {
+//                t.printStackTrace();
+//                Toast.makeText(getApplicationContext(),
+//                        "Update check failed",
+//                        Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 
 }
 

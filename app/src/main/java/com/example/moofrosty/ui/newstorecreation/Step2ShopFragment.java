@@ -1,6 +1,8 @@
 package com.example.moofrosty.ui.newstorecreation;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +27,7 @@ import com.example.moofrosty.data.model.BeatResponse;
 import com.example.moofrosty.data.model.LocationResponse;
 import com.example.moofrosty.data.model.RssResponse;
 import com.example.moofrosty.data.model.SecondaryChannelResponse;
+import com.example.moofrosty.ui.splash.BaseActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -37,6 +41,7 @@ public class Step2ShopFragment extends Fragment {
     private TextInputEditText etShopName, etPin, etAddressline1,etAddressline2,etAddressline3;
     private TextInputLayout tilShopName, tilCountry, tilState, tilDistrict, tilCity, tilBeat, tilRsId, tilSecondaryChannel, tilOutletType, tilAddress1,tilAddress2,tilAddress3,tilPin;
     private View loadingOverlay;
+    private boolean isReturningFromSettings = false;
     public Step2ShopFragment() {
         // Required empty public constructor
     }
@@ -437,6 +442,17 @@ public class Step2ShopFragment extends Fragment {
                 tilAddress1.setError("Address Line 1 required");
                 isValid = false;
             }
+            if (!isLocationEnabled(requireContext())) {
+                Toast.makeText(requireContext(),
+                        "Please enable location",
+                        Toast.LENGTH_LONG).show();
+
+                isReturningFromSettings = true; // ✅ mark
+
+                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                return;
+            }
+
 
 //            if (etAddressline2.getText().toString().trim().isEmpty()) {
 //                tilAddress2.setError("Address Line 2 required");
@@ -519,6 +535,40 @@ public class Step2ShopFragment extends Fragment {
             Log.d("STORE_CREATION_Details", logDetails);
         });
 
+    }
+
+
+        private void redirectToBaseActivity() {
+            Intent intent = new Intent(getContext(), BaseActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
+    private boolean isLocationEnabled(Context context) {
+        int locationMode = 0;
+        try {
+            locationMode = Settings.Secure.getInt(
+                    context.getContentResolver(),
+                    Settings.Secure.LOCATION_MODE
+            );
+        } catch (Settings.SettingNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        //    private void redirectToBaseActivity() {
+//        Intent intent = new Intent(getContext(), BaseActivity.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        startActivity(intent);
+//    }
+//private void redirectToBaseActivity() {
+//    Intent intent = new Intent(requireActivity(), BaseActivity.class);
+//    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//    startActivity(intent);
+//    requireActivity().finish(); // optional but recommended
+//}
+        if (locationMode == Settings.Secure.LOCATION_MODE_OFF) {
+            return false;
+        }
+        return true;
     }
 }
 //package com.example.moofrosty.ui.newstorecreation;

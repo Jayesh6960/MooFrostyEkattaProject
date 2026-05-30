@@ -1,5 +1,9 @@
 package com.example.moofrosty.ui.newstorecreation;
 
+import static androidx.core.location.LocationManagerCompat.isLocationEnabled;
+
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -7,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +27,7 @@ public class Step3KycSelectionFragment extends Fragment {
 
     private CreateStoreViewModel viewModel;
     private RadioGroup radioGroup;
+    private boolean isReturningFromSettings = false;
 
 
     public Step3KycSelectionFragment() {
@@ -54,9 +60,20 @@ public class Step3KycSelectionFragment extends Fragment {
         }
 
         btnNext.setOnClickListener(v -> {
+
             int selectedId = radioGroup.getCheckedRadioButtonId();
             if(selectedId == -1) {
                 Toast.makeText(requireContext(), "Select a Document Type", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (!isLocationEnabled(requireContext())) {
+                Toast.makeText(requireContext(),
+                        "Please enable location",
+                        Toast.LENGTH_LONG).show();
+
+                isReturningFromSettings = true; // ✅ mark
+
+                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                 return;
             }
             RadioButton rb = view.findViewById(selectedId);
@@ -64,5 +81,35 @@ public class Step3KycSelectionFragment extends Fragment {
             Log.d("selectedDocType", "onViewCreated: "+viewModel.selectedDocType);
             ((CreateStoreWizardActivity) requireActivity()).nextStep();
         });
+
+
+    }
+
+    private boolean isLocationEnabled(Context context) {
+        int locationMode = 0;
+        try {
+            locationMode = Settings.Secure.getInt(
+                    context.getContentResolver(),
+                    Settings.Secure.LOCATION_MODE
+            );
+        } catch (Settings.SettingNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        //    private void redirectToBaseActivity() {
+//        Intent intent = new Intent(getContext(), BaseActivity.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        startActivity(intent);
+//    }
+//private void redirectToBaseActivity() {
+//    Intent intent = new Intent(requireActivity(), BaseActivity.class);
+//    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//    startActivity(intent);
+//    requireActivity().finish(); // optional but recommended
+//}
+        if (locationMode == Settings.Secure.LOCATION_MODE_OFF) {
+            return false;
+        }
+        return true;
     }
 }

@@ -2,6 +2,7 @@
 <androidx.appcompat.widget.Toolbar
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/dashboard_toolbar"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
@@ -67,7 +68,18 @@
             android:textColor="@color/white"
             android:textStyle="bold"
             android:visibility="gone" />
+        <TextView
+            android:id="@+id/tv_preview_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="230dp"
+            android:drawableEnd="@drawable/ic_location_map"
+            android:visibility="gone"
+            android:background="?attr/selectableItemBackgroundBorderless" />
+
 
     </RelativeLayout>
+
+
 
 </androidx.appcompat.widget.Toolbar>

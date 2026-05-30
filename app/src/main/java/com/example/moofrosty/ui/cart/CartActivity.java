@@ -188,7 +188,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.CartI
             }
         });
     }
-
+// are per the requiremnt
     private void setupRecyclerView() {
         adapter = new CartAdapter(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -309,7 +309,9 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.CartI
         }
     }
 
-    @Override public void onDeleteItem(Product p) { cartViewModel.removeFromCart(p); }
+    @Override public void onDeleteItem(Product p) {
+        cartViewModel.removeFromCart(p);
+    }
 
 //    @Override public void onDeleteItem(Product p) {
 //        cartViewModel.removeFromCart(p);

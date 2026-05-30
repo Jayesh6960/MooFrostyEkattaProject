@@ -155,7 +155,7 @@ public class AtmSummaryActivity extends AppCompatActivity {
 ////                    if (resource.data != null && !resource.data.isEmpty()) {
 ////
 ////                        // ✅ Update RecyclerView
-////                        adapter.updateList(resource.data);
+////                        adapter.updateList(resource.data);vv
 ////
 ////                        // ✅ Update Header / Summary from first item
 ////                        StoreModel first = resource.data.get(0);

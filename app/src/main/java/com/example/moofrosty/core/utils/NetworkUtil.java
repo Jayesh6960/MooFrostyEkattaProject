@@ -3,6 +3,7 @@ package com.example.moofrosty.core.utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 public class NetworkUtil {
     public static boolean isNetworkAvailable(Context mContext) {
@@ -18,6 +19,7 @@ public class NetworkUtil {
                 if ((netInfo.isConnected() && netInfo.isAvailable()) ||
                         (netInfo.getType() != ConnectivityManager.TYPE_WIFI && netInfo.getType() != ConnectivityManager.TYPE_MOBILE)) {
                     isResult = true;
+                    Log.d("isNetworkAvailable", "isNetworkAvailable: ");
                 }
             }
         }

@@ -110,7 +110,7 @@
 
             // --- 1. LOG THE PAYLOAD ---
             Log.d("addstore", "---------- ADD STORE REQUEST START ----------");
-            Log.d("addstore", "Owner Name: " + req.ownerFullName);
+            Log.d("addstoreowner fulln ame", "Owner Name: " + req.ownerFullName);
             Log.d("addstore", "Email: " + req.ownerEmail);
             Log.d("addstore", "Mobile: " + req.mobileNumber);
             Log.d("addstore", "Store Name: " + req.storeName);

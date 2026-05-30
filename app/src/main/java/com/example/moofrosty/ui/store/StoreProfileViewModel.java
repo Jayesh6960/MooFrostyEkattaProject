@@ -95,7 +95,14 @@ public class StoreProfileViewModel extends ViewModel {
         public float distance;
         public double currentLat;
         public double currentLng;
-        public GeofenceData(float d, double lat, double lng) { this.distance = d; this.currentLat = lat; this.currentLng = lng; }
+        public String createdFrom;
+//        public String outletLat;
+//        public String outletLng;
+
+
+        public GeofenceData(float d, double lat, double lng) {
+            this.distance = d; this.currentLat = lat; this.currentLng = lng;
+        }
     }
 
  //   this tis for fragment data set

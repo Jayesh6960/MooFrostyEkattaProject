@@ -37,6 +37,9 @@ import com.example.moofrosty.R;
 import com.example.moofrosty.core.utils.NetworkUtil;
 import com.example.moofrosty.data.local.SessionManager;
 import com.example.moofrosty.data.model.AttendanceStatusResponse;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.Priority;
 import com.google.android.material.button.MaterialButton;
 
 import java.io.IOException;
@@ -209,7 +212,7 @@ public class AttendanceActivity extends AppCompatActivity {
                 tvStatusMessage.setText("Punched In: " + data.intime + " | Punched Out: " + data.outtime);
                 break;
 
-//            case 4: // Sunday
+//            case 4: // Sunday0
 //                btnPunch.setText("SUNDAY");
 //                btnPunch.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
 //                btnPunch.setEnabled(false);
@@ -227,6 +230,7 @@ public class AttendanceActivity extends AppCompatActivity {
     }
 
     private void handlePunchClick() {
+
         // 1. Check Internet
         if (!NetworkUtil.isNetworkAvailable(this)) {
             Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
@@ -234,37 +238,94 @@ public class AttendanceActivity extends AppCompatActivity {
         }
 
         // 2. Check Permissions
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    LOCATION_PERMISSION_REQUEST_CODE);
             return;
         }
 
-        // 3. Check GPS Enabled
+        // 3. Check Location Enabled (GPS + Network)
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            Toast.makeText(this, "Please Enable GPS", Toast.LENGTH_SHORT).show();
+
+        boolean isGps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        boolean isNetwork = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+        if (!isGps && !isNetwork) {
+            Toast.makeText(this, "Enable Location Services", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
             return;
         }
 
-        // 4. Fetch Location
-        Location loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        if (loc == null) {
-            // Fallback to Network Provider
-            loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        }
+        Toast.makeText(this, "Fetching Location...", Toast.LENGTH_SHORT).show();
 
-        if (loc != null) {
-            String coords = loc.getLatitude() + "," + loc.getLongitude();
-            String addressStr = getAddressFromLocation(loc.getLatitude(), loc.getLongitude());
+        // 4. Fetch Location (Modern API)
+        FusedLocationProviderClient fusedLocationClient =
+                LocationServices.getFusedLocationProviderClient(this);
 
-            // 5. Perform Punch
-            viewModel.performPunch(addressStr, coords);
-        } else {
-            Toast.makeText(this, "Fetching Location... Try again in a moment.", Toast.LENGTH_SHORT).show();
-            // In a real app, you would register a LocationListener here to wait for a fix
-        }
+//        fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
+//                .addOnSuccessListener(location -> {
+//
+//                    if (location != null) {
+//
+//                        handlePunchWithLocation(location);
+//
+//                    } else {
+//                        // fallback if null
+//                        requestFreshLocation(fusedLocationClient);
+//                    }
+//                })
+//                .addOnFailureListener(e -> {
+//                    Toast.makeText(this,
+//                            "Location error: " + e.getMessage(),
+//                            Toast.LENGTH_SHORT).show();
+//                });
+//         used to take  the correct and approoximate cordinates
+                fusedLocationClient.getCurrentLocation(Priority.PRIORITY_BALANCED_POWER_ACCURACY, null)
+                .addOnSuccessListener(location -> {
+
+                    if (location != null) {
+
+                        handlePunchWithLocation(location);
+
+                    } else {
+                        // fallback if null
+                        requestFreshLocation(fusedLocationClient);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this,
+                            "Location error: " + e.getMessage(),
+                            Toast.LENGTH_SHORT).show();
+                });
+
     }
+
+    private void requestFreshLocation(FusedLocationProviderClient fusedLocationClient) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this::handlePunchWithLocation);
+
+    }
+
+    private void handlePunchWithLocation(Location location) {
+        String coords = location.getLatitude() + "," + location.getLongitude();
+        String addressStr = getAddressFromLocation(location.getLatitude(), location.getLongitude());
+        viewModel.performPunch(addressStr, coords);
+
+    }
+
 
     private String getAddressFromLocation(double lat, double lng) {
         try {
@@ -314,11 +375,7 @@ public class AttendanceActivity extends AppCompatActivity {
 //        tvTitle.setText("Attendance");
 //        btnBack.setOnClickListener(v -> finish());
 //
-//        sessionManager = new SessionManager(this);
-//
-//        // 3. Setup Menu
-//        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-//        viewModel = new ViewModelProvider(this).get(AttendanceViewModel.class);
+//      0  viewModel = new ViewModelProvider(this).get(AttendanceViewModel.class);
 //
 //        // 4. Observers
 //        viewModel.getMenuItems().observe(this, items -> {

@@ -151,6 +151,14 @@
                 app:cornerRadius="8dp"
                 android:backgroundTint="#4CAF50"
                 android:visibility="gone"/>
+<!--            <fragment-->
+<!--                android:id="@+id/map_preview"-->
+<!--                android:layout_marginTop="45dp"-->
+<!--                android:layout_marginLeft="200dp"-->
+<!--                android:name="com.google.android.gms.maps.SupportMapFragment"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="200dp"-->
+<!--                android:visibility="visible"/>-->
 
         </LinearLayout>
     </ScrollView>

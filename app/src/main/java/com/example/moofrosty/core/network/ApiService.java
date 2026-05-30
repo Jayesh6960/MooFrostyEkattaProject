@@ -25,6 +25,7 @@
     import com.example.moofrosty.data.model.StoreListResponses;
     import com.example.moofrosty.data.model.StoreListWrapperResponse;
     import com.example.moofrosty.data.model.SubCategoryResponse;
+    import com.example.moofrosty.data.model.UpdateResponse;
     import com.example.moofrosty.data.model.UserDetailResponse;
     import com.example.moofrosty.data.model.UserStatusResponse;
     import com.example.moofrosty.ui.ATMSummary.StoreModel;;
@@ -314,4 +315,12 @@
                 @Query("order_no") String orderNo,
                 @Query("bill_no") String billNo
         );
+
+
+//        @GET("api/app-update.php")
+//        Call<UpdateResponse> checkAppUpdate(
+//                @Query("version") String version,
+//                @Query("platform") String platform,
+//                @Query("app_name") String appName
+//        );
     }

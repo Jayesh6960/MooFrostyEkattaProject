@@ -1,5 +1,7 @@
 package com.example.moofrosty.ui.newstorecreation;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -11,6 +13,8 @@ import com.example.moofrosty.data.model.LocationResponse;
 import com.example.moofrosty.data.model.RssResponse;
 import com.example.moofrosty.data.model.SecondaryChannelResponse;
 import com.example.moofrosty.data.repository.CreateStoreRepository;
+import com.google.gson.Gson;
+import com.google.gson.Gson;
 
 import java.io.File;
 
@@ -100,8 +104,11 @@ public class CreateStoreViewModel extends ViewModel {
 //        repository.submitStore(token, formData, submitResult);
 //    }
 
+
+
     public void submitStore(String token) {
-        // Populate the request model locally to pass to repo
+
+        // Populate request model
         CreateStoreRequestModel req = new CreateStoreRequestModel();
         req.ownerFullName = ownerName;
         req.ownerEmail = email;
@@ -126,8 +133,15 @@ public class CreateStoreViewModel extends ViewModel {
         req.uploadShopBoardImage = boardImage;
         req.uploadShopInsideImage = insideImage;
 
-        repository.submitStore(token, req, submitResult);
+        // Convert to JSON
+        Gson gson = new Gson();
+        String json = gson.toJson(req);
 
+        // Print JSON in Logcat
+        Log.d("STORE_JSON", json);
+
+        // Call API
+        repository.submitStore(token, req, submitResult);
     }
     public void fetchRss(String token) {
         repository.getRssIdentifiers(token, rssList);

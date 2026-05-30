@@ -69,4 +69,7 @@ public class DashboardViewModel extends ViewModel{
     public void checkUserStatus(String token) {
         repository.checkUserStatus(token, userStatusLiveData);
     }
+//    public void checkAppUpdate() {
+//        repository.checkAppUpdate();
+//    }
 }

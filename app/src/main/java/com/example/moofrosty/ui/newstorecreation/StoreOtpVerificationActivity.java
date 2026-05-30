@@ -1,6 +1,11 @@
 package com.example.moofrosty.ui.newstorecreation;
 
+import static java.security.AccessController.getContext;
+
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -14,6 +19,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
@@ -21,10 +27,15 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+//import com.example.moofrosty.Manifest;
 import com.example.moofrosty.R;
 import com.example.moofrosty.core.network.Resource;
 import com.example.moofrosty.core.utils.NetworkUtil;
 import com.example.moofrosty.data.local.SessionManager;
+import com.example.moofrosty.ui.splash.BaseActivity;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -37,7 +48,7 @@ import com.google.firebase.auth.PhoneAuthProvider;
 
 import java.util.concurrent.TimeUnit;
 
-public class StoreOtpVerificationActivity extends AppCompatActivity {
+public class StoreOtpVerificationActivity extends BaseActivity {
 
     private StoreVerificationViewModel viewModel;
     private SessionManager sessionManager;
@@ -54,6 +65,7 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
     ScrollView scrollView;
     private boolean isOtpRequestInProgress = false;
     private CountDownTimer countDownTimer;
+    TextView tvLocation;
 
     private FirebaseAuth mAuth;
     private String mVerificationId;
@@ -73,12 +85,16 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         }
         btnBack = findViewById(R.id.btn_back);
         btnMenu = findViewById(R.id.btn_menu);
         tvTitle = findViewById(R.id.tv_title);
         tvDate = findViewById(R.id.tv_date_picker);
         scrollView = findViewById(R.id.scrollview);
+        TextView tvLocation = findViewById(R.id.tv_preview_location);
+
+
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.app_bar_layout), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -100,6 +116,11 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
         btnMenu.setVisibility(View.GONE);
 
         tvDate.setVisibility(View.GONE);
+        tvLocation.setVisibility(View.GONE);
+
+        tvLocation.setOnClickListener(v -> {
+            openMapWithLocation();
+        });
         viewModel = new ViewModelProvider(this).get(StoreVerificationViewModel.class);
         sessionManager = new SessionManager(this);
 
@@ -110,6 +131,18 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
         btnSubmitOtp = findViewById(R.id.btn_submit_otp);
         tvStatus = findViewById(R.id.tv_status);
         till_mob=findViewById(R.id.till_mob);
+
+
+
+
+        SupportMapFragment mapFragment = (SupportMapFragment)
+                getSupportFragmentManager().findFragmentById(R.id.tv_preview_location);
+
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(googleMap -> {
+                // Use your map here
+            });
+        }
 
 
         tvTitle.setText("Registration");
@@ -131,9 +164,11 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(this, "Session Expired", Toast.LENGTH_SHORT).show();
                     }
-                } else {
+                }
+                else {
                     Toast.makeText(this, "No Internet Connection", Toast.LENGTH_LONG).show();
                 }
+
             });
         //:Latest Updated code for  then firebase implemention
 
@@ -188,10 +223,13 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
 //                return;
 //            }
 
+
+
             if (!otp.equals("123456")) {
                 etOtp.setError("Invalid OTP");
                 return;
             }
+
 
             // --- SUCCESS LOGIC ---
             Toast.makeText(this, "OTP Verified Successfully!", Toast.LENGTH_SHORT).show();
@@ -261,6 +299,38 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
         });
     }
 
+    private void openMapWithLocation() {
+
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+            return;
+        }
+
+        FusedLocationProviderClient fusedLocationClient =
+                LocationServices.getFusedLocationProviderClient(this);
+
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(location -> {
+                    if (location != null) {
+
+                        double lat = location.getLatitude();
+                        double lng = location.getLongitude();
+
+                        // Open Google Maps with location
+                        String uri = "geo:" + lat + "," + lng + "?q=" + lat + "," + lng;
+
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                        intent.setPackage("com.google.android.apps.maps");
+                        startActivity(intent);
+
+                    } else {
+                        Toast.makeText(this, "Fetching location...", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
     //    Updated code Date 06-01-2026
     private void showRegisteredNumberBottomSheet(String storeDetails, String rsDetails) {
         BottomSheetDialog dialog = new BottomSheetDialog(this);
@@ -405,7 +475,15 @@ public class StoreOtpVerificationActivity extends AppCompatActivity {
         tvStatus.setTextColor(getColor(R.color.Purple_Color));
         tvStatus.setVisibility(View.VISIBLE);
 
+
         etOtp.requestFocus();
     }
+    private void redirectToBaseActivity() {
+        Intent intent = new Intent(this, BaseActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
 
 }

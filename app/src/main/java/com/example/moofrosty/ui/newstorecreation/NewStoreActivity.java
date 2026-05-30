@@ -1,10 +1,13 @@
 package com.example.moofrosty.ui.newstorecreation;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -19,6 +22,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -35,11 +39,15 @@ import com.example.moofrosty.core.utils.NetworkUtil;
 import com.example.moofrosty.data.local.SessionManager;
 import com.example.moofrosty.data.model.StoreListResponse;
 import com.example.moofrosty.ui.attendance.AttendanceActivity;
+import com.example.moofrosty.ui.splash.BaseActivity;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.Priority;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Calendar;
 //Latest changes 05-03-2026
-public class NewStoreActivity extends AppCompatActivity {
+public class NewStoreActivity extends BaseActivity {
 
     private NewStoreListViewModel viewModel;
     private TextView tvDate, tvEmpty, tvTitle;
@@ -51,12 +59,15 @@ public class NewStoreActivity extends AppCompatActivity {
     FloatingActionButton fabAdd;
     Toolbar toolbar;
     boolean isAttendanceMarked;
+    TextView tvLocation;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
-//        EdgeToEdge.enable(this);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_new_store);
         WindowInsetsControllerCompat windowInsetsController =
                 WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
@@ -69,6 +80,9 @@ public class NewStoreActivity extends AppCompatActivity {
         btnMenu = findViewById(R.id.btn_menu);
         tvTitle = findViewById(R.id.tv_title);
         tvDate = findViewById(R.id.tv_date_picker);
+        tvLocation =findViewById(R.id.tv_preview_location);
+
+        tvLocation.setVisibility(View.VISIBLE);
 
 
         if (getSupportActionBar() != null) {
@@ -92,6 +106,7 @@ public class NewStoreActivity extends AppCompatActivity {
         tvDate.setVisibility(View.VISIBLE);
 
 
+
         sessionManager = new SessionManager(this);
         isAttendanceMarked = sessionManager.isAttendanceMarked();
         // 1. Init Views
@@ -108,12 +123,21 @@ public class NewStoreActivity extends AppCompatActivity {
 
         // 3. Setup Toolbar
         tvTitle.setText("New Outlet Creation");
-        btnBack.setOnClickListener(v -> finish());
+//        btnBack.setOnClickListener(v -> finish());
+        btnBack.setOnClickListener(v ->
+                getOnBackPressedDispatcher().onBackPressed()
+        );
+
 
         // 4. Setup Recycler
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+
         tvDate.setOnClickListener(v -> showDatePicker());
+
+        tvLocation.setOnClickListener(v -> {
+            openMapWithLocation();
+        });
 
         // 6. FAB Logic
         fabAdd.setOnClickListener(v -> {
@@ -126,7 +150,8 @@ public class NewStoreActivity extends AppCompatActivity {
 //                startActivity(intent);
             } else if (isPresentOut) {
                 Toast.makeText(this, "You have punched out for today. Cannot create a new store.", Toast.LENGTH_LONG).show();
-            } else {
+            }
+            else {
                 Intent intent = new Intent(NewStoreActivity.this, StoreOtpVerificationActivity.class);
                 startActivity(intent);
             }
@@ -172,6 +197,81 @@ public class NewStoreActivity extends AppCompatActivity {
         // 8. Initial Load with Network Check
         checkNetworkAndLoad();
     }
+    @Override
+    public void onBackPressed() {
+        // custom logic
+        super.onBackPressed();
+    }
+
+//    private void openMapWithLocation() {
+//
+//        if (ActivityCompat.checkSelfPermission(this,
+//                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//
+//            ActivityCompat.requestPermissions(this,
+//                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+//            return;
+//        }
+//
+//        FusedLocationProviderClient fusedLocationClient =
+//                LocationServices.getFusedLocationProviderClient(this);
+//
+//        fusedLocationClient.getLastLocation()
+//                .addOnSuccessListener(location -> {
+//                    if (location != null) {
+//
+//                        double lat = location.getLatitude();
+//                        double lng = location.getLongitude();
+//
+//                        // Open Google Maps with location
+//                        String uri = "geo:" + lat + "," + lng + "?q=" + lat + "," + lng;
+//
+//                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+//                        intent.setPackage("com.google.android.apps.maps");
+//                        startActivity(intent);
+//
+//                    } else {
+//                        Toast.makeText(this, "Fetching location...", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//    }
+private void openMapWithLocation() {
+
+    if (ActivityCompat.checkSelfPermission(this,
+            Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+        return;
+    }
+
+    FusedLocationProviderClient fusedLocationClient =
+            LocationServices.getFusedLocationProviderClient(this);
+
+//    Toast.makeText(this, "Fetching live location...", Toast.LENGTH_SHORT).show();
+
+    fusedLocationClient.getCurrentLocation(
+            Priority.PRIORITY_HIGH_ACCURACY,
+            null
+    ).addOnSuccessListener(location -> {
+
+        if (location != null) {
+
+            double lat = location.getLatitude();
+            double lng = location.getLongitude();
+
+            String uri = "geo:" + lat + "," + lng + "?q=" + lat + "," + lng;
+
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+            intent.setPackage("com.google.android.apps.maps");
+
+            startActivity(intent);
+
+        } else {
+            Toast.makeText(this, "Unable to get location. Try again.", Toast.LENGTH_SHORT).show();
+        }
+    });
+}
 
     private void checkNetworkAndLoad() {
         if (NetworkUtil.isNetworkAvailable(this)) {

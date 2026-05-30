@@ -210,7 +210,7 @@ import com.google.gson.Gson;
 //}
 public class BaseActivity extends AppCompatActivity {
 
-    protected SessionManager sessionManager;
+    public SessionManager sessionManager;
 
     private static final int LOCATION_PERMISSION_REQUEST = 101;
     private static final int GPS_REQUEST = 102;
@@ -269,7 +269,7 @@ public class BaseActivity extends AppCompatActivity {
 
     // ================= LOGOUT METHOD =================
 //
-    protected void logoutUser() {
+public void logoutUser() {
 
         sessionManager.logout();
 

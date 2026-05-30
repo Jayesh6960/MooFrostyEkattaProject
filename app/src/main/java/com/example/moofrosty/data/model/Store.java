@@ -129,6 +129,7 @@ package com.example.moofrosty.data.model;
 
 import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
+import java.util.List;
 
 public class Store implements Serializable {
 
@@ -149,9 +150,13 @@ public class Store implements Serializable {
 
     @SerializedName("ownerfullName")
     private String ownerName;
+    @SerializedName("created_from")
+    List<String> created_from;
 
     @SerializedName("owneremailId")
     private String ownerEmail;
+
+
 
     @SerializedName("lat_long")
     private String latLong;

@@ -7,8 +7,11 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.moofrosty.core.network.Resource;
+import com.example.moofrosty.data.model.CartItem;
 import com.example.moofrosty.data.model.CheckInRequest;
 import com.example.moofrosty.data.model.GeneralResponse;
+import com.example.moofrosty.data.model.Product;
+import com.example.moofrosty.data.model.ProductApiModel;
 import com.example.moofrosty.data.repository.TakeOrderActivityRepository;
 
 import java.text.SimpleDateFormat;
@@ -40,6 +43,7 @@ public class TakeOrderActivityViewModel extends ViewModel {
         // 3. Call Repo
         repository.checkOutStore(token, request, checkoutStatus);
     }
+
 
 
 }

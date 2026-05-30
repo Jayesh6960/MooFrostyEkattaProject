@@ -239,6 +239,7 @@ public class MyBeatRepository {
 //                    storesLiveData.setValue(Resource.success(extractedList));
 //                } else {
 //                    storesLiveData.setValue(Resource.error("Server Error", null));
+
 //                }
 //            }
 //            @Override

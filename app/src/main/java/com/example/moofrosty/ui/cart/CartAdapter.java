@@ -2,9 +2,11 @@ package com.example.moofrosty.ui.cart;
 
 import android.annotation.SuppressLint;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -73,8 +75,9 @@ public class CartAdapter extends ListAdapter<CartItem, CartAdapter.CartViewHolde
 
     static class CartViewHolder extends RecyclerView.ViewHolder {
         ImageView imgProduct;
-        TextView tvName, tvRate, tvMrp, tvQty, tvSavedBadge;
+        TextView tvName, tvRate, tvMrp, tvSavedBadge;
         ImageButton btnMinus, btnPlus, btnDelete;
+        EditText tvQty;
 
         public CartViewHolder(@NonNull View itemView, CartInteractionListener listener) {
             super(itemView);
@@ -137,6 +140,7 @@ public class CartAdapter extends ListAdapter<CartItem, CartAdapter.CartViewHolde
             int cases = item.getCaseQuantity();
             int units = item.getUnitQuantity();
 
+            Log.d("cartitme", "cartitem"+cases);
             // --- FIX 2: SHOW CASE/UNIT TEXT INSTEAD OF JUST NUMBER ---
             if (cases > 0 && units > 0) {
                 tvQty.setText(cases + " Case + " + units + " Unit");

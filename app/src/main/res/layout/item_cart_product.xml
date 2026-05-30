@@ -84,14 +84,17 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_baseline_remove_24" />
 
-            <TextView
+            <EditText
                 android:id="@+id/tv_unit_quantity_cart"
-                android:layout_width="50dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="1"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:cursorVisible="false"/>
             <ImageButton
                 android:id="@+id/btn_unit_plus_cart"
                 android:layout_width="40dp"

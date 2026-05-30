@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -219,6 +220,8 @@ public class TakeOrderFragment extends Fragment implements FilterSelectionListen
     }
 
     // --- Converter: API Model -> Cart Model ---
+    //mappiong the data with the cart activity
+    //passing as  the api data
     private Product mapToCartProduct(ProductApiModel apiModel) {
 //        String productType = "";
 //
@@ -247,7 +250,8 @@ public class TakeOrderFragment extends Fragment implements FilterSelectionListen
         );
         try {
             // [HIGHLIGHT] Use your custom getter which defaults to 1 if no case size is found
-            product.caseSize = apiModel.getCaseSizeInt();
+            product.caseSize = apiModel.getCaseSizeInt();//directly from yje backend side
+            Log.d("mapToCartProduct: ", "mapToCartProduct: "+apiModel.getCaseSizeInt());
         } catch (Exception e) { product.caseSize = 1; }
 //        try {
 //            product.caseSize = Integer.parseInt(apiModel.getUnit());
@@ -285,13 +289,25 @@ public class TakeOrderFragment extends Fragment implements FilterSelectionListen
             cartViewModel.addToCart(product); // This adds 1 unit (default)
         }
     }
-
-
+//cart data updeated  page
 //    @Override public void onAddToCartClick(ProductApiModel p) { cartViewModel.addToCart(mapToCartProduct(p)); }
     @Override public void onIncrementUnit(ProductApiModel p) { cartViewModel.incrementUnit(mapToCartProduct(p)); }
     @Override public void onDecrementUnit(ProductApiModel p) { cartViewModel.decrementUnit(mapToCartProduct(p)); }
     @Override public void onIncrementCase(ProductApiModel p) { cartViewModel.incrementCase(mapToCartProduct(p)); }
     @Override public void onDecrementCase(ProductApiModel p) { cartViewModel.decrementCase(mapToCartProduct(p)); }
+
+    @Override
+    public void onUnitQuantityDirectSet(ProductApiModel apiModel, int customQty) {
+        Product domainProduct = mapToCartProduct(apiModel);
+        cartViewModel.setUnitQuantityDirect(domainProduct, customQty);
+    }
+
+    @Override
+    public void onCaseQuantityDirectSet(ProductApiModel apiModel, int customQty) {
+        Product domainProduct = mapToCartProduct(apiModel);
+        cartViewModel.setCaseQuantityDirect(domainProduct, customQty);
+    }
+
 
 //        filterViewModel = new ViewModelProvider(requireActivity()).get(FilterViewModel.class);
 //

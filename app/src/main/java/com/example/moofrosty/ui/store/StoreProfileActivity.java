@@ -322,6 +322,131 @@ public class StoreProfileActivity extends AppCompatActivity {
             }
             showGeofenceDialog(data);
         });
+//        new code updated for the taking the null value from the database  latitueb and longitude fgorm the database
+//        viewModel.getGeofenceAlert().observe(this, data -> {
+//
+//            if (data == null) return;
+//
+//            // Dismiss progress dialog safely
+//            if (progressDialog != null && progressDialog.isShowing()) {
+//                progressDialog.dismiss();
+//            }
+//
+//            // ✅ Check current latitude & longitude
+////            if (data.currentLat==null || data.currentLng == null) {
+////                Log.e("Geofence", "Current latitude/longitude is null");
+////                return;
+////            }
+//
+//            // ✅ Optional: check invalid values
+//            //in the above case  user cane able to  enter into the store  without condition
+////            if (data.outletLng == 0.0 || data.outletLong == 0.0) {
+////                Log.e("Geofence", "Invalid location (0.0, 0.0)");
+////                return;
+////            }
+//
+//            // ✅ If everything is valid → show dialog
+//            showGeofenceDialog(data);
+//        });
+
+
+//        Activity --->> Viewmodle --->>>Repositary --->>Api Service--->> Api clinet--->> Network
+
+        viewModel.getGeofenceAlert().observe(this, data -> {
+
+            if (data == null) return;
+
+            // =========================================
+            // Dismiss Loader
+            // =========================================
+            if (progressDialog != null && progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+
+            // =========================================
+            // Current User GPS Logs
+            // =========================================
+            Log.d("Geofence", "Current Lat : " + data.currentLat);
+            Log.d("Geofence", "Current Lng : " + data.currentLng);
+
+            // =========================================
+            // Validate Current GPS
+            // =========================================
+            if (data.currentLat == 0.0 || data.currentLng == 0.0) {
+
+                Toast.makeText(this,
+                        "Unable to fetch current location",
+                        Toast.LENGTH_SHORT).show();
+
+                return;
+            }
+
+            // =========================================
+            // DASHBOARD STORE LOGIC
+            // =========================================
+            if (data.createdFrom != null &&
+                    data.createdFrom.equalsIgnoreCase("DASHBOARD")) {
+
+                Log.d("Geofence", "Dashboard Store");
+
+                // Skip Geofence
+                // Allow Entry
+                // Save Current GPS Logs
+                storeEnterApi(
+                        data.currentLat,
+                        data.currentLng,
+                        "Dashboard Store Entry"
+                );
+
+                return;
+            }
+
+            // =========================================
+            // APP STORE LOGIC
+            // =========================================
+
+//            Log.d("Geofence", "Outlet Lat : " + data.outletLat);
+//            Log.d("Geofence", "Outlet Lng : " + data.outletLng);
+            Log.d("Geofence", "Distance : " + data.distance);
+
+            // Validate Outlet Coordinates
+//            if (data.outletLat == 0.0 || data.outletLng == 0.0) {
+//
+//                Toast.makeText(this,
+//                        "Outlet location not available",
+//                        Toast.LENGTH_SHORT).show();
+//
+//                return;
+//            }
+
+            // =========================================
+            // GEOFENCE CHECK
+            // =========================================
+            if (data.distance <= 100) {
+
+                storeEnterApi(
+                        data.currentLat,
+                        data.currentLng,
+                        "App Store Entry"
+                );
+
+            } else {
+
+                showGeofenceDialog(data);
+            }
+        });
+
+    }
+
+    private void storeEnterApi(double lat,
+                               double lng,
+                               String remarks) {
+
+        Log.d("StoreEntry", "Lat : " + lat);
+        Log.d("StoreEntry", "Lng : " + lng);
+        Log.d("StoreEntry", "Remarks : " + remarks);
+
+        // Existing API Call
     }
 
     private void checkGpsAndProceed() {
@@ -431,24 +556,62 @@ public class StoreProfileActivity extends AppCompatActivity {
 //        });
 //
 //        builder.show();
-//    }
+//    }ge
 //Store--->> Outlet
-    private void showGeofenceDialog(StoreProfileViewModel.GeofenceData data) {
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle("Geofencing Alert!")
-                .setMessage(
-                        "Distance from Outlet: " + String.format("%.2f", data.distance) + "m\n\n" +
-                                "Current Lat: " + data.currentLat + "\n" +
-                                "Current Lng: " + data.currentLng + "\n\n" +
-                                "Please take order within 100m of Outlet location."
-                )
-                .setPositiveButton("OK", null)
-                .setIcon(R.drawable.ic_error_icon_geofensing)
-                .create();
-        dialog.setOnShowListener(d -> {
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-                    .setTextColor(getResources().getColor(R.color.Purple_Color));
-        });
-        dialog.show();
-    }
+//        private void showGeofenceDialog(StoreProfileViewModel.GeofenceData data) {
+//            AlertDialog dialog = new AlertDialog.Builder(this)
+//                    .setTitle("Geofencing Alert!")
+//                    .setMessage(
+//                            "Distance from Outlet: " + String.format("%.2f", data.distance) + "m\n\n" +
+//                                    "Current Lat: " + data.currentLat + "\n" +
+//                                    "Current Lng: " + data.currentLng + "\n\n" +
+//                                    "Please take order within 100m of Outlet location."
+//                    )
+//                    .setPositiveButton("OK", null)
+//                    .setIcon(R.drawable.ic_error_icon_geofensing)
+//                    .create();
+//            dialog.setOnShowListener(d -> {
+//                dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+//                        .setTextColor(getResources().getColor(R.color.Purple_Color));
+//            });
+//            dialog.show();
+//        }
+private void showGeofenceDialog(StoreProfileViewModel.GeofenceData data) {
+
+    // =========================================
+    // ✅ Print Logs in Logcat
+    // =========================================
+    Log.d("GeofenceLogs", "Outlet Distance : " + data.distance);
+    Log.d("GeofenceLogs", "Current Latitude : " + data.currentLat);
+    Log.d("GeofenceLogs", "Current Longitude : " + data.currentLng);
+
+    // Optional Outlet Coordinates
+//    Log.d("GeofenceLogs", "Outlet Latitude : " + data.outletLat);
+//    Log.d("GeofenceLogs", "Outlet Longitude : " + data.outletLng);
+
+    // =========================================
+    // ✅ Alert Dialog
+    // =========================================
+    AlertDialog dialog = new AlertDialog.Builder(this)
+            .setTitle("Geofencing Alert!")
+            .setMessage(
+                    "Distance from Outlet: " +
+                            String.format("%.2f", data.distance) + "m\n\n" +
+
+                            "Current Lat: " + data.currentLat + "\n" +
+                            "Current Lng: " + data.currentLng + "\n\n" +
+
+                            "Please take order within 100m of Outlet location."
+            )
+            .setPositiveButton("OK", null)
+            .setIcon(R.drawable.ic_error_icon_geofensing)
+            .create();
+
+    dialog.setOnShowListener(d -> {
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                .setTextColor(getResources().getColor(R.color.Purple_Color));
+    });
+
+    dialog.show();
+}
 }

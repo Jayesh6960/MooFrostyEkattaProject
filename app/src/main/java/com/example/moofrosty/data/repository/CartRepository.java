@@ -77,10 +77,10 @@ public class CartRepository {
                 // Usually API expects Total Units if type isn't specified,
                 // but if your API expects specific 'case_qty', we send getCaseQuantity().
                 // Assuming based on previous code you want TOTAL UNITS in the order:
-            //    int qty = item.getTotalUnits();
+                //    int qty = item.getTotalUnits();
                 if ("case".equalsIgnoreCase(item.getProduct().productType)) {
                     // If Product Type is "case", send the number of CASES
-//                    qty = item.getCaseQuantity();
+                    //                    qty = item.getCaseQuantity();
                     qty = item.getTotalUnits();
                 } else {
                     // If Product Type is "unit" (or others), send the TOTAL STOCK UNITS
@@ -103,13 +103,13 @@ public class CartRepository {
         Log.d(TAG, "ShopId: " + shopId);
         Log.d(TAG, "Order Date: " + date);
 
-// Log each item
-//        for (CheckoutRequest.CheckoutItem item : apiItems) {
-//            Log.d(TAG, "Item -> product_id: " + item.getProductId()
-//                    + ", quantity: " + item.getQuantity());
-//        }
+        // Log each item
+        //        for (CheckoutRequest.CheckoutItem item : apiItems) {
+        //            Log.d(TAG, "Item -> product_id: " + item.getProductId()
+        //                    + ", quantity: " + item.getQuantity());
+        //        }
 
-// Log full JSON (🔥 very useful)
+        // Log full JSON (🔥 very useful)
         Log.d(TAG, "CheckoutRequest JSON: " + new Gson().toJson(request));
 
         apiService.checkoutCart("Bearer " + token, request).enqueue(new Callback<GeneralResponse>() {
@@ -194,7 +194,7 @@ public class CartRepository {
     }
 
     private void modify(Product product, CartAction action) {
-//        Map<String, CartItem> map = getSafeMap();
+        //        Map<String, CartItem> map = getSafeMap();
         Map<String, CartItem> map = new HashMap<>(getSafeMap());       // this means give extra hasmap for list handle upside is single
         CartItem item = map.get(product.getId());
 
@@ -208,17 +208,17 @@ public class CartRepository {
         }
 
         // Get Stock Limits   for stock limit need then this need
-//        int stock = product.getStockInt();
-//        int currentTotal = item.getTotalUnits();
+        //        int stock = product.getStockInt();
+        //        int currentTotal = item.getTotalUnits();
 
         int caseSize = product.caseSize > 0 ? product.caseSize : 1;
 
         switch (action) {
             case INC_UNIT:
                 // Only allow if we have enough stock for 1 more unit
-//                if (currentTotal + 1 <= stock) {
-//                    item.incrementUnit();
-//                }
+                //                if (currentTotal + 1 <= stock) {
+                //                    item.incrementUnit();
+                //                }
                 item.incrementUnit();
                 break;
 
@@ -228,9 +228,9 @@ public class CartRepository {
 
             case INC_CASE:
                 // Only allow if we have enough stock for 1 more case
-//                if (currentTotal + caseSize <= stock) {
-//                    item.incrementCase();
-//                }
+                //                if (currentTotal + caseSize <= stock) {
+                //                    item.incrementCase();
+                //                }
                 item.incrementCase();
                 break;
 
@@ -259,6 +259,36 @@ public class CartRepository {
     private void updateLiveData(Map<String, CartItem> newCartMap) {
         _cartMap.setValue(newCartMap);
         recalculateTotals(newCartMap);
+    }
+
+    // for set direct 10 12
+    public void setUnitQuantityDirect(Product p, int targetUnitQty) {
+        modifyDirect(p, targetUnitQty, true);
+    }
+    public void setCaseQuantityDirect(Product p, int targetCaseQty) {
+        modifyDirect(p, targetCaseQty, false);
+    }
+    private void modifyDirect(Product product, int targetQty, boolean isUnitSetting) {
+        Map<String, CartItem> map = new HashMap<>(getSafeMap());
+        CartItem item = map.get(product.getId());
+        if (item == null) {
+            if (targetQty > 0) {
+                item = new CartItem(product);
+                map.put(product.getId(), item);
+            } else {
+                return; // No need to create a cart item for 0 quantity
+            }
+        }
+        if (isUnitSetting) {
+            item.setUnitQuantity(targetQty);
+        } else {
+            item.setCaseQuantity(targetQty);
+        }
+        // Clean up: If both unit and case quantities are 0, remove product from map entirely
+        if (map.containsKey(product.getId()) && item.getTotalUnits() == 0) {
+            map.remove(product.getId());
+        }
+        updateLiveData(map);
     }
 
     private void recalculateTotals(Map<String, CartItem> cartMap) {
@@ -300,32 +330,32 @@ public class CartRepository {
     // order list in order frag that code here
 
     // --- FETCH ORDER HISTORY ---
-//
-//    public void getOrderHistory(String token, int shopId, MutableLiveData<Resource<OrderHistoryResponse>> liveData) {
-//        liveData.setValue(Resource.loading(null));
-//
-//        String authToken = token.startsWith("Bearer ") ? token : "Bearer " + token;
-//
-//        Log.d(TAG, "Fetching Orders with Token: " + authToken + " and ShopId: " + shopId);
-//
-//        // [HIGHLIGHT] Pass shopId to apiService
-//        apiService.getOrderHistory(authToken, shopId).enqueue(new Callback<OrderHistoryResponse>() {
-//            @Override
-//            public void onResponse(Call<OrderHistoryResponse> call, Response<OrderHistoryResponse> response) {
-//                if (response.isSuccessful() && response.body() != null) {
-//                    OrderHistoryResponse resp = response.body();
-//                    liveData.setValue(Resource.success(resp));
-//                } else {
-//                    liveData.setValue(Resource.error("Error: " + response.code(), null));
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<OrderHistoryResponse> call, Throwable t) {
-//                liveData.setValue(Resource.error("Network Error: " + t.getMessage(), null));
-//            }
-//        });
-//    }
+    //
+    //    public void getOrderHistory(String token, int shopId, MutableLiveData<Resource<OrderHistoryResponse>> liveData) {
+    //        liveData.setValue(Resource.loading(null));
+    //
+    //        String authToken = token.startsWith("Bearer ") ? token : "Bearer " + token;
+    //
+    //        Log.d(TAG, "Fetching Orders with Token: " + authToken + " and ShopId: " + shopId);
+    //
+    //        // [HIGHLIGHT] Pass shopId to apiService
+    //        apiService.getOrderHistory(authToken, shopId).enqueue(new Callback<OrderHistoryResponse>() {
+    //            @Override
+    //            public void onResponse(Call<OrderHistoryResponse> call, Response<OrderHistoryResponse> response) {
+    //                if (response.isSuccessful() && response.body() != null) {
+    //                    OrderHistoryResponse resp = response.body();
+    //                    liveData.setValue(Resource.success(resp));
+    //                } else {
+    //                    liveData.setValue(Resource.error("Error: " + response.code(), null));
+    //                }
+    //            }
+    //
+    //            @Override
+    //            public void onFailure(Call<OrderHistoryResponse> call, Throwable t) {
+    //                liveData.setValue(Resource.error("Network Error: " + t.getMessage(), null));
+    //            }
+    //        });
+    //    }
 
     public void getOrderHistory(String token, int shopId, MutableLiveData<Resource<OrderHistoryResponse>> liveData) {
         liveData.setValue(Resource.loading(null));
@@ -377,43 +407,47 @@ public class CartRepository {
             }
         });
     }
-//    public void getOrderHistory(String token, MutableLiveData<Resource<OrderHistoryResponse>> liveData) {
-//        liveData.setValue(Resource.loading(null));
-//
-//        String authToken = token.startsWith("Bearer ") ? token : "Bearer " + token;
-//
-//        Log.d(TAG, "Fetching Orders with Token: " + authToken); // LOG 1
-//
-//        apiService.getOrderHistory(authToken).enqueue(new Callback<OrderHistoryResponse>() {
-//            @Override
-//            public void onResponse(Call<OrderHistoryResponse> call, Response<OrderHistoryResponse> response) {
-//                if (response.isSuccessful() && response.body() != null) {
-//                    OrderHistoryResponse resp = response.body();
-//
-//                    // LOG 2: Check data size
-//                    if(resp.data != null) {
-//                        Log.d(TAG, "Order List Size: " + resp.data.size());
-//                    } else {
-//                        Log.e(TAG, "Order List is NULL");
-//                    }
-//                    liveData.setValue(Resource.success(resp));
-//                } else {
-//                    Log.e(TAG, "API Error Code: " + response.code());
-//                    liveData.setValue(Resource.error("Error: " + response.code(), null));
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<OrderHistoryResponse> call, Throwable t) {
-//                Log.e(TAG, "Network Failure: " + t.getMessage());
-//                liveData.setValue(Resource.error("Network Error: " + t.getMessage(), null));
-//            }
-//        });
-//    }
+
+    public void updateCaseQuantity(Product product, int quantity) {
+        modifyDirect(product, quantity, false);
+    }
+    //    public void getOrderHistory(String token, MutableLiveData<Resource<OrderHistoryResponse>> liveData) {
+    //        liveData.setValue(Resource.loading(null));
+    //
+    //        String authToken = token.startsWith("Bearer ") ? token : "Bearer " + token;
+    //
+    //        Log.d(TAG, "Fetching Orders with Token: " + authToken); // LOG 1
+    //
+    //        apiService.getOrderHistory(authToken).enqueue(new Callback<OrderHistoryResponse>() {
+    //            @Override
+    //            public void onResponse(Call<OrderHistoryResponse> call, Response<OrderHistoryResponse> response) {
+    //                if (response.isSuccessful() && response.body() != null) {
+    //                    OrderHistoryResponse resp = response.body();
+    //
+    //                    // LOG 2: Check data size
+    //                    if(resp.data != null) {
+    //                        Log.d(TAG, "Order List Size: " + resp.data.size());
+    //                    } else {
+    //                        Log.e(TAG, "Order List is NULL");
+    //                    }
+    //                    liveData.setValue(Resource.success(resp));
+    //                } else {
+    //                    Log.e(TAG, "API Error Code: " + response.code());
+    //                    liveData.setValue(Resource.error("Error: " + response.code(), null));
+    //                }
+    //            }
+    //
+    //            @Override
+    //            public void onFailure(Call<OrderHistoryResponse> call, Throwable t) {
+    //                Log.e(TAG, "Network Failure: " + t.getMessage());
+    //                liveData.setValue(Resource.error("Network Error: " + t.getMessage(), null));
+    //            }
+    //        });
+    //    }
 
 
 }
-  //// woking code
+//// woking code
 ////     private void recalculateTotals(Map<String, CartItem> cartMap) {
 ////        double totalMrp = 0, totalRate = 0;
 ////        int uniqueItemCount = 0, totalUnitCount = 0;
